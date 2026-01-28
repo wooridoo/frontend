@@ -1,0 +1,59 @@
+/* Input Component Styles - WDS v2.1 */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-grey-700);
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--space-4);
+  font-size: var(--font-size-base);
+  color: var(--color-grey-900);
+  background-color: var(--color-grey-50);
+  border: 1px solid var(--color-grey-300);
+  border-radius: var(--radius-md);
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.input::placeholder {
+  color: var(--color-grey-500);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-orange-500);
+  box-shadow: 0 0 0 3px var(--color-orange-50);
+}
+
+.input:disabled {
+  background-color: var(--color-grey-100);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.input.error {
+  border-color: var(--color-error);
+}
+
+.input.error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.errorText {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+}
+
+.hintText {
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-500);
+}

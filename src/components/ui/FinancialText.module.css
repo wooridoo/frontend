@@ -1,0 +1,43 @@
+/* FinancialText Component Styles - WDS v2.1 */
+/* CRITICAL: Always use tabular-nums for money display */
+
+.financial {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Size Variants */
+.sm {
+  font-size: var(--font-size-sm);
+}
+
+.md {
+  font-size: var(--font-size-md);
+}
+
+.lg {
+  font-size: var(--font-size-lg);
+}
+
+.xl {
+  font-size: var(--font-size-xl);
+}
+
+/* Color Variants */
+.default {
+  color: var(--color-grey-900);
+}
+
+.income {
+  color: var(--color-income);
+}
+
+.expense {
+  color: var(--color-expense);
+}
+
+.locked {
+  color: var(--color-locked);
+}

@@ -1,0 +1,84 @@
+/* Badge Component Styles - WDS v2.1 */
+
+.base {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+/* Sizes */
+.sm {
+  height: 20px;
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.md {
+  height: 24px;
+  padding: 0 var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+/* Status Variants */
+.default {
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-700);
+}
+
+.success {
+  background-color: rgba(22, 163, 74, 0.1);
+  color: var(--color-success);
+}
+
+.warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning);
+}
+
+.error {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: var(--color-error);
+}
+
+.locked {
+  background-color: var(--color-grey-100);
+  color: var(--color-locked);
+}
+
+/* Brix Scale Variants */
+.brixHoney {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: var(--color-brix-honey);
+}
+
+.brixGrape {
+  background-color: rgba(147, 51, 234, 0.15);
+  color: var(--color-brix-grape);
+}
+
+.brixApple {
+  background-color: rgba(244, 63, 94, 0.15);
+  color: var(--color-brix-apple);
+}
+
+.brixMandarin {
+  background-color: var(--color-orange-50);
+  color: var(--color-brix-mandarin);
+}
+
+.brixTomato {
+  background-color: rgba(252, 165, 165, 0.2);
+  color: #B91C1C;
+}
+
+.brixBitter {
+  background-color: rgba(20, 83, 45, 0.1);
+  color: var(--color-brix-bitter);
+}
+
+.emoji {
+  font-size: 1em;
+}
