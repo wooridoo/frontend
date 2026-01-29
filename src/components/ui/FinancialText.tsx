@@ -12,6 +12,8 @@ export interface FinancialTextProps extends React.HTMLAttributes<HTMLSpanElement
   size?: 'sm' | 'md' | 'lg' | 'xl';
   /** Show + sign for positive amounts */
   showSign?: boolean;
+  /** Whether to animate the value change (rolling number) */
+  animated?: boolean;
 }
 
 /**
@@ -19,12 +21,16 @@ export interface FinancialTextProps extends React.HTMLAttributes<HTMLSpanElement
  * Always displays with tabular-nums for proper alignment
  * Use this for ALL money displays in the app
  */
+import { useEffect, useRef } from 'react';
+import { useSpring } from 'framer-motion';
+
 function FinancialText({
   amount,
   showCurrency = true,
   variant = 'default',
   size = 'md',
   showSign = false,
+  animated = true,
   className,
   ...props
 }: FinancialTextProps) {
@@ -36,6 +42,39 @@ function FinancialText({
     ? (isPositive ? 'income' : isNegative ? 'expense' : 'default')
     : variant;
 
+  const ref = useRef<HTMLSpanElement>(null);
+  const springValue = useSpring(Math.abs(amount), {
+    stiffness: 45,
+    damping: 10,
+    mass: 0.8,
+  });
+
+  useEffect(() => {
+    if (animated) {
+      springValue.set(Math.abs(amount));
+    }
+  }, [amount, animated, springValue]);
+
+  useEffect(() => {
+    if (!animated) return;
+
+    return springValue.on('change', (latest) => {
+      if (ref.current) {
+        const displayAmount = Math.round(latest);
+        const formattedValue = showCurrency
+          ? formatCurrency(displayAmount)
+          : formatNumber(displayAmount);
+
+        const prefix = showSign
+          ? (amount > 0 ? '+' : amount < 0 ? '-' : '') // Check original amount for sign
+          : '';
+
+        ref.current.textContent = `${prefix}${formattedValue}`;
+      }
+    });
+  }, [springValue, showCurrency, showSign, amount, animated]);
+
+  // Initial static render for SSR or disabled animation
   const displayAmount = Math.abs(amount);
   const formattedValue = showCurrency
     ? formatCurrency(displayAmount)
@@ -47,6 +86,7 @@ function FinancialText({
 
   return (
     <span
+      ref={ref}
       className={cn(
         styles.financial,
         styles[autoVariant],

@@ -34,6 +34,7 @@
   position: fixed;
   inset: 0;
   background-color: var(--color-overlay-dark);
+  backdrop-filter: var(--glass-blur);
   z-index: 999;
 }
 

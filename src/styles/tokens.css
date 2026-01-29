@@ -70,6 +70,11 @@
   --color-overlay-white: rgba(255, 255, 255, 0.9);
   --color-skeleton-wave: rgba(255, 255, 255, 0.4);
 
+  /* Glassmorphism Tokens */
+  --glass-surface: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-blur: blur(12px);
+
   /* Status Alpha (10% opacity backgrounds) */
   --color-success-alpha: rgba(22, 163, 74, 0.1);
   --color-warning-alpha: rgba(245, 158, 11, 0.1);
