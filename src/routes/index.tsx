@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage } from '@/pages/LoginPage';
+import { HomePage } from '@/pages/HomePage';
 
 const router = createBrowserRouter([
   // Auth Routes (Public)
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
   // Main Routes (Protected - TODO: Add auth guard)
   {
     path: '/',
-    element: <div>홈 페이지 (TODO)</div>,
+    element: <HomePage />,
   },
   {
     path: '/discover',

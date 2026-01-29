@@ -25,21 +25,64 @@
   --color-grey-50: #FAFAF9;
 
   /* Semantic Colors */
-  --color-income: #F59E0B;      /* 수입 (+) */
-  --color-expense: #1C1917;     /* 지출 (-) - Not Red */
-  --color-locked: #78716C;      /* 보증금 락 */
+  --color-income: #F59E0B;
+  /* 수입 (+) */
+  --color-expense: #1C1917;
+  /* 지출 (-) - Not Red */
+  --color-locked: #78716C;
+  /* 보증금 락 */
   --color-success: #16A34A;
   --color-error: #DC2626;
   --color-warning: #F59E0B;
   --color-info: #E9481E;
 
   /* Brix Scale (Sweetness/Reliability) */
-  --color-brix-honey: #F59E0B;     /* 60+ 🍯 */
-  --color-brix-grape: #9333EA;     /* 40~60 🍇 */
-  --color-brix-apple: #F43F5E;     /* 25~40 🍎 */
-  --color-brix-mandarin: #E9481E;  /* 12~25 🍊 */
-  --color-brix-tomato: #FCA5A5;    /* 0~12 🍅 */
-  --color-brix-bitter: #14532D;    /* <0 🥒 */
+  --color-brix-honey: #F59E0B;
+  /* 60+ 🍯 */
+  --color-brix-grape: #9333EA;
+  /* 40~60 🍇 */
+  --color-brix-apple: #F43F5E;
+  /* 25~40 🍎 */
+  --color-brix-mandarin: #E9481E;
+  /* 12~25 🍊 */
+  --color-brix-tomato: #FCA5A5;
+  /* 0~12 🍅 */
+  --color-brix-tomato-text: #B91C1C;
+  /* 0~12 🍅 text */
+  --color-brix-bitter: #14532D;
+  /* <0 🥒 */
+
+  /* Additional Grey Scale */
+  --color-grey-200: #E7E5E4;
+  --color-grey-400: #A8A29E;
+  --color-grey-600: #57534E;
+  --color-grey-800: #292524;
+
+  /* Surface */
+  --color-surface: #FFFFFF;
+  --color-background: #FAFAF9;
+
+  /* Overlay & Alpha Colors */
+  --color-overlay-dark: rgba(0, 0, 0, 0.5);
+  --color-overlay-darker: rgba(0, 0, 0, 0.7);
+  --color-overlay-light: rgba(255, 255, 255, 0.5);
+  --color-overlay-lighter: rgba(255, 255, 255, 0.8);
+  --color-overlay-white: rgba(255, 255, 255, 0.9);
+  --color-skeleton-wave: rgba(255, 255, 255, 0.4);
+
+  /* Status Alpha (10% opacity backgrounds) */
+  --color-success-alpha: rgba(22, 163, 74, 0.1);
+  --color-warning-alpha: rgba(245, 158, 11, 0.1);
+  --color-error-alpha: rgba(220, 38, 38, 0.1);
+  --color-focus-ring: 0 0 0 3px var(--color-orange-100);
+  --color-focus-ring-error: 0 0 0 3px rgba(220, 38, 38, 0.1);
+
+  /* Brix Alpha (15-20% opacity backgrounds) */
+  --color-brix-honey-alpha: rgba(245, 158, 11, 0.15);
+  --color-brix-grape-alpha: rgba(147, 51, 234, 0.15);
+  --color-brix-apple-alpha: rgba(244, 63, 94, 0.15);
+  --color-brix-tomato-alpha: rgba(252, 165, 165, 0.2);
+  --color-brix-bitter-alpha: rgba(20, 83, 45, 0.1);
 
   /* ==================== */
   /* 2. SPACING           */

@@ -45,7 +45,7 @@
 }
 
 .input.error:focus {
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  box-shadow: var(--color-focus-ring-error);
 }
 
 .errorText {

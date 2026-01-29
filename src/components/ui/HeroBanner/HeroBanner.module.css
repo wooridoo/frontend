@@ -1,0 +1,148 @@
+/* HeroBanner Styles - WDS v2.1 */
+
+.banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background-color: var(--color-grey-100);
+}
+
+/* Slides Container */
+.slidesContainer {
+  display: flex;
+  height: 100%;
+  transition: transform var(--motion-duration-slow) var(--motion-ease-standard);
+}
+
+.slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide:focus-visible {
+  outline: 2px solid var(--color-orange-500);
+  outline-offset: -2px;
+}
+
+/* Overlay */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-6);
+  background: linear-gradient(to top, var(--color-overlay-darker), transparent);
+  color: white;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Navigation Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-overlay-white);
+  border: none;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-700);
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+  opacity: 0;
+}
+
+.banner:hover .arrow {
+  opacity: 1;
+}
+
+.arrow:hover {
+  background-color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.prevArrow {
+  left: var(--space-4);
+}
+
+.nextArrow {
+  right: var(--space-4);
+}
+
+/* Dots Indicator */
+.dots {
+  position: absolute;
+  bottom: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-overlay-light);
+  border: none;
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.dot:hover {
+  background-color: var(--color-overlay-lighter);
+}
+
+.dot.activeDot {
+  background-color: white;
+  width: 24px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .banner {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-lg);
+  }
+
+  .arrow {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+  }
+
+  .overlay {
+    padding: var(--space-4);
+  }
+
+  .title {
+    font-size: var(--font-size-lg);
+  }
+}

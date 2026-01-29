@@ -1,0 +1,86 @@
+/* Avatar Styles - WDS v2.1 */
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background-color: var(--color-orange-100);
+  color: var(--color-orange-600);
+  font-weight: var(--font-weight-semibold);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Size Variants */
+.xs {
+  width: 24px;
+  height: 24px;
+  font-size: var(--font-size-xs);
+}
+
+.sm {
+  width: 32px;
+  height: 32px;
+  font-size: var(--font-size-sm);
+}
+
+.md {
+  width: 40px;
+  height: 40px;
+  font-size: var(--font-size-base);
+}
+
+.lg {
+  width: 56px;
+  height: 56px;
+  font-size: var(--font-size-md);
+}
+
+.xl {
+  width: 80px;
+  height: 80px;
+  font-size: var(--font-size-xl);
+}
+
+/* Image */
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Initials */
+.initials {
+  user-select: none;
+}
+
+/* Status Indicator */
+.status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 25%;
+  height: 25%;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-surface);
+}
+
+.online {
+  background-color: var(--color-success);
+}
+
+.offline {
+  background-color: var(--color-grey-400);
+}
+
+.away {
+  background-color: var(--color-warning);
+}
+
+.busy {
+  background-color: var(--color-error);
+}

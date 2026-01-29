@@ -1,0 +1,236 @@
+/* SideNav Styles - WDS v2.1 */
+
+/* Hamburger Button (Mobile) */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  padding: var(--space-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hamburgerLine {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-grey-700);
+  border-radius: 1px;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+/* Overlay (Mobile) */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-overlay-dark);
+  z-index: 999;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-grey-200);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+/* Logo */
+.logoWrapper {
+  padding: var(--space-2) 0;
+  margin-bottom: var(--space-4);
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+/* Auth Section */
+.authSection {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-grey-200);
+  margin-bottom: var(--space-4);
+}
+
+.authButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.loginButton,
+.signupButton {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.loginButton {
+  background-color: var(--color-orange-500);
+  color: white;
+  border: none;
+}
+
+.loginButton:hover {
+  background-color: var(--color-orange-600);
+}
+
+.signupButton {
+  background-color: transparent;
+  color: var(--color-grey-700);
+  border: 1px solid var(--color-grey-300);
+}
+
+.signupButton:hover {
+  background-color: var(--color-grey-100);
+}
+
+/* User Profile */
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-orange-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--color-orange-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.userName {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-grey-900);
+}
+
+/* Section */
+.section {
+  margin-bottom: var(--space-4);
+}
+
+.sectionTitle {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-grey-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+  padding: 0 var(--space-2);
+}
+
+/* Nav List */
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-700);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.navIcon {
+  font-size: var(--font-size-base);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+.navItem:hover {
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-900);
+}
+
+.navItem.active {
+  background-color: var(--color-orange-500);
+  color: white;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Logout Button */
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  text-align: left;
+  padding: var(--space-3) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-500);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.logoutButton:hover {
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-700);
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .overlay {
+    display: block;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--motion-duration-normal) var(--motion-ease-standard);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}

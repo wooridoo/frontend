@@ -1,0 +1,35 @@
+/* EmptyState Styles - WDS v2.1 */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.icon {
+  font-size: 64px;
+  margin-bottom: var(--space-4);
+  opacity: 0.8;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-grey-900);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.description {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-500);
+  margin: 0 0 var(--space-4) 0;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+.action {
+  margin-top: var(--space-2);
+}

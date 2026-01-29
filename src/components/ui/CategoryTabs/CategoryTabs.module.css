@@ -1,0 +1,86 @@
+/* CategoryTabs Styles - WDS v2.1 */
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.scrollButton {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-600);
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.scrollButton:hover {
+  background-color: var(--color-grey-100);
+  box-shadow: var(--shadow-md);
+}
+
+.scrollButton.left {
+  left: 0;
+}
+
+.scrollButton.right {
+  right: 0;
+}
+
+.tabList {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: var(--space-2) var(--space-8);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tabList::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-grey-100);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-700);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.tab:hover {
+  background-color: var(--color-grey-200);
+}
+
+.tab.selected {
+  background-color: var(--color-orange-500);
+  color: white;
+  font-weight: var(--font-weight-medium);
+}
+
+.icon {
+  font-size: var(--font-size-base);
+}
+
+.label {
+  line-height: 1;
+}
