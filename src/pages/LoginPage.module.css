@@ -32,14 +32,10 @@
   margin-bottom: var(--space-2);
 }
 
-.logoIcon {
-  font-size: 40px;
-}
-
-.logoText {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-orange-500);
+.logoImage {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
 }
 
 .tagline {

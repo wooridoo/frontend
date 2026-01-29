@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
 import { Button, Input } from '@/components/ui';
+import logo from '@/assets/woorido_logo.svg';
 import styles from './LoginPage.module.css';
 
 // Login form validation schema
@@ -50,10 +51,8 @@ export function LoginPage() {
         {/* Logo & Branding */}
         <header className={styles.header}>
           <div className={styles.logo}>
-            <span className={styles.logoIcon}>🍊</span>
-            <h1 className={styles.logoText}>우리두</h1>
+            <img src={logo} alt="우리두 로고" className={styles.logoImage} />
           </div>
-          <p className={styles.tagline}>함께하는 모임, 함께하는 성장</p>
         </header>
 
         {/* Login Form */}
