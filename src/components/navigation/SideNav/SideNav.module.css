@@ -40,23 +40,49 @@
 
 /* Sidebar */
 .sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 240px;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: var(--color-surface);
   border-right: 1px solid var(--color-grey-200);
   display: flex;
   flex-direction: column;
   padding: var(--space-4);
   overflow-y: auto;
-  z-index: 1000;
+  overflow-x: hidden;
+  transition: padding var(--motion-duration-normal);
+}
+
+.sidebar.collapsed {
+  padding: var(--space-4) var(--space-2);
+  align-items: center;
+}
+
+.sidebar.collapsed .sectionTitle {
+  display: none;
+}
+
+.sidebar.collapsed .logo {
+  width: 40px;
+  object-fit: contain;
+  object-position: left;
+}
+
+/* Use CSS clip to trim logo or switch image if needed. For now simple width change */
+
+/* Mobile Only Utility */
+.mobileOnly {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileOnly {
+    display: block;
+  }
 }
 
 /* Logo */
 .logoWrapper {
-  padding: var(--space-2) 0;
+  padding: var(--space-2) var(--space-3);
   margin-bottom: var(--space-4);
 }
 
@@ -227,11 +253,23 @@
   }
 
   .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    /* Fixed width for drawer */
+    z-index: 1002;
     transform: translateX(-100%);
     transition: transform var(--motion-duration-normal) var(--motion-ease-standard);
+    box-shadow: var(--shadow-xl);
   }
 
   .sidebar.open {
     transform: translateX(0);
   }
+}
+
+.hidden {
+  display: none;
 }

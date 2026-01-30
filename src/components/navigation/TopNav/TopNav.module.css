@@ -1,0 +1,184 @@
+/* TopNav Styles - WDS v2.1 */
+
+.root {
+  height: 64px;
+  border-bottom: 1px solid var(--color-grey-200);
+  background-color: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: padding var(--motion-duration-normal) var(--motion-ease-standard);
+}
+
+/* Left Section */
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 0 0 auto;
+  /* Prevent shrinking */
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--color-grey-600);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--motion-duration-fast);
+}
+
+.menuButton:hover {
+  background-color: var(--color-grey-100);
+}
+
+/* Center Section */
+.centerSection {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-4);
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--space-3);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--space-4) 0 var(--space-10);
+  /* Space for icon */
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background-color: var(--color-grey-100);
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-900);
+  transition: all var(--motion-duration-fast);
+}
+
+.searchInput:focus {
+  outline: none;
+  background-color: white;
+  border-color: var(--color-orange-300);
+  box-shadow: 0 0 0 4px var(--color-orange-100);
+}
+
+.searchInput::placeholder {
+  color: var(--color-grey-400);
+}
+
+/* Right Section */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Auth Buttons */
+.authButtons {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.button {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--motion-duration-fast);
+}
+
+.primaryButton {
+  background-color: var(--color-orange-500);
+  color: white;
+  border: none;
+}
+
+.primaryButton:hover {
+  background-color: var(--color-orange-600);
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: var(--color-grey-700);
+  border: 1px solid var(--color-grey-300);
+}
+
+.secondaryButton:hover {
+  background-color: var(--color-grey-100);
+}
+
+/* User Actions */
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.dangdoBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background-color: var(--color-orange-50);
+  border: 1px solid var(--color-orange-200);
+  border-radius: var(--radius-full);
+  color: var(--color-orange-700);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.balanceLink {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-700);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.balanceLink:hover {
+  color: var(--color-orange-600);
+}
+
+.profileButton {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-grey-200);
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .root {
+    padding: 0 var(--space-4);
+  }
+}

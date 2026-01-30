@@ -1,12 +1,16 @@
-import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
+import { SidebarIcon, type SidebarIconProps } from '@/components/ui/Icons';
+import { Profile } from '@/components/ui/Profile';
 import styles from './SideNav.module.css';
 import logo from '@/assets/woorido_logo.svg';
 
 interface SideNavProps {
   className?: string;
   isLoggedIn?: boolean;
+  isCollapsed?: boolean;
+  isOpen?: boolean; // Controlled state for mobile
+  onClose?: () => void;
   user?: {
     name: string;
     avatar?: string;
@@ -17,95 +21,82 @@ interface SideNavProps {
 interface NavItem {
   label: string;
   path: string;
-  icon?: string;
+  iconType: SidebarIconProps['type'];
 }
 
 const menuItems: NavItem[] = [
-  { label: '홈', path: '/', icon: '🏠' },
-  { label: '탐색', path: '/explore', icon: '🔍' },
-  { label: '추천', path: '/recommended', icon: '💝' },
+  { label: '홈', path: '/', iconType: 'home' },
+  { label: '탐색', path: '/explore', iconType: 'explore' },
+  { label: '추천', path: '/recommended', iconType: 'recommended' },
 ];
 
 const challengeItems: NavItem[] = [
-  { label: '피드', path: '/feed', icon: '📋' },
-  { label: '정기모임', path: '/meetings', icon: '📅' },
-  { label: '투표', path: '/votes', icon: '🗳️' },
-  { label: '장부', path: '/ledger', icon: '💰' },
-  { label: '멤버', path: '/members', icon: '👥' },
-  { label: '설정', path: '/settings', icon: '⚙️' },
+  { label: '피드', path: '/feed', iconType: 'feed' },
+  { label: '정기모임', path: '/meetings', iconType: 'meetings' },
+  { label: '투표', path: '/votes', iconType: 'votes' },
+  { label: '장부', path: '/ledger', iconType: 'ledger' },
+  { label: '멤버', path: '/members', iconType: 'members' },
+  { label: '설정', path: '/settings', iconType: 'settings' },
 ];
 
 const managementItems: NavItem[] = [
-  { label: '프로필', path: '/profile', icon: '👤' },
+  { label: '프로필', path: '/profile', iconType: 'profile' },
 ];
 
 export function SideNav({
   className,
   isLoggedIn = false,
+  isCollapsed = false,
+  isOpen = false, // Controlled state for mobile
+  onClose,
   user,
   onLogout
-}: SideNavProps) {
-  const [isOpen, setIsOpen] = useState(false);
+}: SideNavProps & { isOpen?: boolean; onClose?: () => void }) {
   const navigate = useNavigate();
-
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
 
   const handleLogin = () => {
     navigate('/login');
-    closeMenu();
+    onClose?.();
   };
 
   const handleSignup = () => {
     navigate('/signup');
-    closeMenu();
+    onClose?.();
   };
 
   const handleLogout = () => {
     onLogout?.();
-    closeMenu();
+    onClose?.();
+  };
+
+  const handleNavClick = () => {
+    onClose?.();
   };
 
   return (
     <>
-      {/* Hamburger Button (Mobile) */}
-      <button
-        className={styles.hamburger}
-        onClick={toggleMenu}
-        aria-label="메뉴 열기"
-      >
-        <span className={styles.hamburgerLine} />
-        <span className={styles.hamburgerLine} />
-        <span className={styles.hamburgerLine} />
-      </button>
-
       {/* Overlay (Mobile) */}
       {isOpen && (
-        <div className={styles.overlay} onClick={closeMenu} />
+        <div className={styles.overlay} onClick={onClose} />
       )}
 
       {/* Sidebar */}
-      <nav className={clsx(styles.sidebar, isOpen && styles.open, className)}>
+      <nav className={clsx(styles.sidebar, isOpen && styles.open, isCollapsed && styles.collapsed, className)}>
         {/* Logo */}
         <div className={styles.logoWrapper}>
-          <NavLink to="/" onClick={closeMenu}>
+          <NavLink to="/" onClick={handleNavClick}>
             <img src={logo} alt="우리두" className={styles.logo} />
           </NavLink>
         </div>
 
-        {/* Auth Buttons or User Profile */}
-        <div className={styles.authSection}>
+        {/* Auth Buttons or User Profile (Mobile Only) */}
+        <div className={clsx(styles.authSection, styles.mobileOnly)}>
           {isLoggedIn && user ? (
-            <div className={styles.userProfile}>
-              <div className={styles.avatar}>
-                {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} />
-                ) : (
-                  <span>{user.name.charAt(0)}</span>
-                )}
-              </div>
-              <span className={styles.userName}>{user.name}</span>
-            </div>
+            <Profile
+              user={{ name: user.name, avatar: user.avatar }}
+              size="md"
+              onClick={() => navigate('/profile')}
+            />
           ) : (
             <div className={styles.authButtons}>
               <button
@@ -135,10 +126,13 @@ export function SideNav({
                   className={({ isActive }) =>
                     clsx(styles.navItem, isActive && styles.active)
                   }
-                  onClick={closeMenu}
+                  onClick={handleNavClick}
+                  title={isCollapsed ? item.label : undefined}
                 >
-                  {item.icon && <span className={styles.navIcon}>{item.icon}</span>}
-                  <span>{item.label}</span>
+                  <span className={styles.navIcon}>
+                    <SidebarIcon type={item.iconType} size={20} />
+                  </span>
+                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>{item.label}</span>
                 </NavLink>
               </li>
             ))}
@@ -156,10 +150,13 @@ export function SideNav({
                   className={({ isActive }) =>
                     clsx(styles.navItem, isActive && styles.active)
                   }
-                  onClick={closeMenu}
+                  onClick={handleNavClick}
+                  title={isCollapsed ? item.label : undefined}
                 >
-                  {item.icon && <span className={styles.navIcon}>{item.icon}</span>}
-                  <span>{item.label}</span>
+                  <span className={styles.navIcon}>
+                    <SidebarIcon type={item.iconType} size={20} />
+                  </span>
+                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>{item.label}</span>
                 </NavLink>
               </li>
             ))}
@@ -177,10 +174,13 @@ export function SideNav({
                   className={({ isActive }) =>
                     clsx(styles.navItem, isActive && styles.active)
                   }
-                  onClick={closeMenu}
+                  onClick={handleNavClick}
+                  title={isCollapsed ? item.label : undefined}
                 >
-                  {item.icon && <span className={styles.navIcon}>{item.icon}</span>}
-                  <span>{item.label}</span>
+                  <span className={styles.navIcon}>
+                    <SidebarIcon type={item.iconType} size={20} />
+                  </span>
+                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>{item.label}</span>
                 </NavLink>
               </li>
             ))}
@@ -190,8 +190,10 @@ export function SideNav({
                   className={styles.logoutButton}
                   onClick={handleLogout}
                 >
-                  <span className={styles.navIcon}>🚪</span>
-                  <span>로그아웃</span>
+                  <span className={styles.navIcon}>
+                    <SidebarIcon type="logout" size={20} />
+                  </span>
+                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>로그아웃</span>
                 </button>
               </li>
             )}

@@ -1,34 +1,81 @@
 /* HomePage Styles - WDS v2.1 */
 
-.layout {
-  display: flex;
-  min-height: 100vh;
-  background-color: var(--color-background);
+.pageContainer {
+  width: 100%;
 }
 
-/* Main Content - offset for SideNav */
-.main {
-  flex: 1;
-  margin-left: 240px;
-  padding: var(--space-6);
-  max-width: 1200px;
-}
-
-/* Header */
-.header {
-  display: flex;
-  justify-content: flex-end;
+/* Hero Section */
+.heroSection {
   margin-bottom: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
-/* Banner Section */
-.bannerSection {
-  margin-bottom: var(--space-6);
-}
+
 
 /* Category Section */
 .categorySection {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.categoryList {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding: 0 var(--space-1);
+  /* Prevent shadow clipping */
+  padding-bottom: var(--space-2);
+  /* Space for scrollbar if visible */
+  scrollbar-width: none;
+  /* Hide scrollbar Firefox */
+  -ms-overflow-style: none;
+  /* Hide scrollbar IE/Edge */
+}
+
+.categoryList::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar Chrome/Safari */
+}
+
+.categoryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 64px;
+  cursor: pointer;
+}
+
+.categoryLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-600);
+  font-weight: var(--font-weight-medium);
+  transition: color var(--motion-duration-fast);
+}
+
+.categoryItem:hover .categoryLabel,
+.categoryItem.active .categoryLabel {
+  color: var(--color-orange-600);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Horizontal Scroll Container (My Challenges) */
+.scrollContainer {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  scrollbar-width: none;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollCardWrapper {
+  min-width: 280px;
+  flex: 0 0 auto;
 }
 
 /* Challenge Section */

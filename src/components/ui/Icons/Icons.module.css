@@ -1,0 +1,33 @@
+/* Icons.module.css */
+
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.categoryIconRoot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-grey-100);
+  border-radius: var(--radius-full);
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.categoryIconRoot:hover {
+  background-color: var(--color-grey-200);
+  transform: translateY(-2px);
+}
+
+.categoryIconRoot.active {
+  background-color: var(--color-orange-500);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.categoryIconRoot.active:hover {
+  background-color: var(--color-orange-600);
+}

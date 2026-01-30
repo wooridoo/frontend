@@ -1,0 +1,87 @@
+/* HeroAnimation.module.css */
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, var(--color-orange-50) 0%, var(--color-orange-100) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  height: 320px;
+  overflow: hidden;
+  position: relative;
+}
+
+.content {
+  flex: 1;
+  z-index: 10;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-grey-900);
+  margin-bottom: var(--space-2);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--color-grey-600);
+  margin-bottom: var(--space-6);
+}
+
+.ctaButton {
+  padding: var(--space-3) var(--space-6);
+  background-color: var(--color-orange-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: all var(--motion-duration-fast);
+  box-shadow: var(--shadow-md);
+}
+
+.ctaButton:hover {
+  background-color: var(--color-orange-600);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Graphics */
+.graphic {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  padding-bottom: var(--space-4);
+}
+
+.lottie {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    text-align: center;
+    padding: var(--space-6);
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .graphic {
+    margin-top: var(--space-6);
+    width: 100%;
+    height: 200px;
+  }
+}

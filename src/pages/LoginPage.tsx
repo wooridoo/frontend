@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
 import { Button, Input } from '@/components/ui';
+import { LoginButton } from '@/components/ui/LoginButton';
 import logo from '@/assets/woorido_logo.svg';
 import styles from './LoginPage.module.css';
 
@@ -73,15 +74,13 @@ export function LoginPage() {
             {...register('password')}
           />
 
-          <Button
+          <LoginButton
             type="submit"
-            variant="primary"
-            size="lg"
             isLoading={isLoading}
             className={styles.submitButton}
           >
             로그인
-          </Button>
+          </LoginButton>
         </form>
 
         {/* Divider */}

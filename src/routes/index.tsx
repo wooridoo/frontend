@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage } from '@/pages/LoginPage';
 import { HomePage } from '@/pages/HomePage';
+import { MainLayout } from '@/components/layout/MainLayout';
 
 const router = createBrowserRouter([
   // Auth Routes (Public)
@@ -13,30 +14,36 @@ const router = createBrowserRouter([
     element: <div>회원가입 페이지 (TODO)</div>,
   },
 
-  // Main Routes (Protected - TODO: Add auth guard)
+  // Main Layout Routes (Protected)
   {
     path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/discover',
-    element: <div>탐색 페이지 (TODO)</div>,
-  },
-  {
-    path: '/groups/:id',
-    element: <div>모임 상세 페이지 (TODO)</div>,
-  },
-  {
-    path: '/groups/create',
-    element: <div>모임 생성 페이지 (TODO)</div>,
-  },
-  {
-    path: '/my-groups',
-    element: <div>내 모임 페이지 (TODO)</div>,
-  },
-  {
-    path: '/mypage',
-    element: <div>마이페이지 (TODO)</div>,
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'discover',
+        element: <div>탐색 페이지 (TODO)</div>,
+      },
+      {
+        path: 'groups/:id',
+        element: <div>모임 상세 페이지 (TODO)</div>,
+      },
+      {
+        path: 'groups/create',
+        element: <div>모임 생성 페이지 (TODO)</div>,
+      },
+      {
+        path: 'my-groups',
+        element: <div>내 모임 페이지 (TODO)</div>,
+      },
+      {
+        path: 'mypage',
+        element: <div>마이페이지 (TODO)</div>,
+      },
+    ],
   },
 ]);
 
