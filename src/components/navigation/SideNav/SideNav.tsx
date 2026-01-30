@@ -15,7 +15,6 @@ interface SideNavProps {
     name: string;
     avatar?: string;
   };
-  onLogout?: () => void;
 }
 
 interface NavItem {
@@ -39,9 +38,7 @@ const challengeItems: NavItem[] = [
   { label: '설정', path: '/settings', iconType: 'settings' },
 ];
 
-const managementItems: NavItem[] = [
-  { label: '프로필', path: '/profile', iconType: 'profile' },
-];
+
 
 export function SideNav({
   className,
@@ -49,8 +46,7 @@ export function SideNav({
   isCollapsed = false,
   isOpen = false, // Controlled state for mobile
   onClose,
-  user,
-  onLogout
+  user
 }: SideNavProps & { isOpen?: boolean; onClose?: () => void }) {
   const navigate = useNavigate();
 
@@ -64,10 +60,7 @@ export function SideNav({
     onClose?.();
   };
 
-  const handleLogout = () => {
-    onLogout?.();
-    onClose?.();
-  };
+
 
   const handleNavClick = () => {
     onClose?.();
@@ -163,42 +156,7 @@ export function SideNav({
           </ul>
         </div>
 
-        {/* Management Section */}
-        <div className={styles.section}>
-          <span className={styles.sectionTitle}>관리</span>
-          <ul className={styles.navList}>
-            {managementItems.map((item) => (
-              <li key={item.path}>
-                <NavLink
-                  to={item.path}
-                  className={({ isActive }) =>
-                    clsx(styles.navItem, isActive && styles.active)
-                  }
-                  onClick={handleNavClick}
-                  title={isCollapsed ? item.label : undefined}
-                >
-                  <span className={styles.navIcon}>
-                    <SidebarIcon type={item.iconType} size={20} />
-                  </span>
-                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>{item.label}</span>
-                </NavLink>
-              </li>
-            ))}
-            {isLoggedIn && (
-              <li>
-                <button
-                  className={styles.logoutButton}
-                  onClick={handleLogout}
-                >
-                  <span className={styles.navIcon}>
-                    <SidebarIcon type="logout" size={20} />
-                  </span>
-                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>로그아웃</span>
-                </button>
-              </li>
-            )}
-          </ul>
-        </div>
+
       </nav>
     </>
   );

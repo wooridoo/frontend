@@ -26,6 +26,12 @@ export function MainLayout() {
     }
   };
 
+  const handleLogout = () => {
+    // TODO: Implement actual logout logic
+    console.log('Logging out...');
+    // navigate('/login'); // Uncomment when auth is ready
+  };
+
   return (
     <div className={clsx(styles.container, isSidebarCollapsed && styles.collapsed)}>
       <aside className={styles.sidebarArea}>
@@ -44,6 +50,7 @@ export function MainLayout() {
           user={user}
           isSidebarCollapsed={isSidebarCollapsed}
           onToggleSidebar={handleToggleSidebar}
+          onLogout={handleLogout}
         />
         <main className={styles.pageContent}>
           <Outlet context={{ isLoggedIn }} />

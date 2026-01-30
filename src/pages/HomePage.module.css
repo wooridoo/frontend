@@ -1,126 +1,94 @@
-/* HomePage Styles - WDS v2.1 */
-
 .pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+  /* More airy spacing like Ohou */
+  padding-bottom: var(--space-12);
+}
+
+.heroSection {
   width: 100%;
 }
 
-/* Hero Section */
-.heroSection {
-  margin-bottom: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-
-
-/* Category Section */
 .categorySection {
-  margin-bottom: var(--space-8);
+  padding: 0 var(--space-4);
+  /* Ensure it doesn't overflow horizontally on desktop */
+  width: 100%;
+  max-width: 100%;
 }
 
-.categoryList {
-  display: flex;
-  gap: var(--space-4);
-  overflow-x: auto;
-  padding: 0 var(--space-1);
-  /* Prevent shadow clipping */
-  padding-bottom: var(--space-2);
-  /* Space for scrollbar if visible */
-  scrollbar-width: none;
-  /* Hide scrollbar Firefox */
-  -ms-overflow-style: none;
-  /* Hide scrollbar IE/Edge */
-}
-
-.categoryList::-webkit-scrollbar {
-  display: none;
-  /* Hide scrollbar Chrome/Safari */
-}
-
-.categoryItem {
+.section {
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--space-4);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: var(--space-2);
-  min-width: 64px;
-  cursor: pointer;
 }
 
-.categoryLabel {
-  font-size: var(--font-size-xs);
-  color: var(--color-grey-600);
-  font-weight: var(--font-weight-medium);
-  transition: color var(--motion-duration-fast);
-}
-
-.categoryItem:hover .categoryLabel,
-.categoryItem.active .categoryLabel {
-  color: var(--color-orange-600);
+.sectionTitle {
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+  line-height: var(--line-height-tight);
 }
 
-/* Horizontal Scroll Container (My Challenges) */
+.moreLink {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-500);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.moreLink:hover {
+  color: var(--color-orange-500);
+}
+
 .scrollContainer {
   display: flex;
   gap: var(--space-4);
   overflow-x: auto;
-  padding-bottom: var(--space-4);
-  scrollbar-width: none;
+  scroll-behavior: smooth;
+  padding-bottom: var(--space-2);
+  margin: 0 calc(var(--space-4) * -1);
+  /* Negative margin for full bleeding */
+  padding: 0 var(--space-4) var(--space-2) var(--space-4);
+  /* Internal padding */
+  -webkit-overflow-scrolling: touch;
 }
 
 .scrollContainer::-webkit-scrollbar {
   display: none;
+  /* Hide scrollbar */
 }
 
-.scrollCardWrapper {
-  min-width: 280px;
-  flex: 0 0 auto;
-}
-
-/* Challenge Section */
-.challengeSection {
-  margin-bottom: var(--space-8);
-}
-
-.sectionTitle {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-grey-900);
-  margin: 0 0 var(--space-4) 0;
-}
-
-/* Grid Layout */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: repeat(2, 1fr);
+  /* Mobile: 2 columns */
+  gap: var(--space-x-4) var(--space-y-6);
+  /* Vertical gap larger */
 }
 
-/* Skeleton Card */
-.skeletonCard {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3);
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .main {
-    margin-left: 0;
-    padding: var(--space-4);
-    padding-top: 60px;
-    /* Space for hamburger */
-  }
-
-  .header {
-    justify-content: center;
+@media (min-width: 768px) {
+  .pageContainer {
+    gap: var(--space-12);
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    /* Desktop: 4 columns */
+    gap: var(--space-6);
   }
+}
+
+.skeletonWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }

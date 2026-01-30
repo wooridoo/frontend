@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { PanelLeftClose, PanelLeft, LogIn, UserPlus } from 'lucide-react';
 import { SearchIcon } from '@/components/ui/Icons';
+import { ProfileMenu } from '@/components/ui/Overlay';
 import styles from './TopNav.module.css';
 
 interface TopNavProps {
@@ -15,6 +16,7 @@ interface TopNavProps {
     sugarScore: number;
     balance: number;
   };
+  onLogout: () => void;
 }
 
 export function TopNav({
@@ -22,7 +24,8 @@ export function TopNav({
   isLoggedIn = false,
   isSidebarCollapsed,
   onToggleSidebar,
-  user
+  user,
+  onLogout
 }: TopNavProps) {
   const navigate = useNavigate();
 
@@ -67,17 +70,20 @@ export function TopNav({
               {user.balance.toLocaleString()}원
             </button>
 
-            {/* Profile */}
-            <button
-              className={styles.profileButton}
-              onClick={() => navigate('/settings/profile')}
-            >
-              {user.avatar ? (
-                <img src={user.avatar} alt={user.name} className={styles.profileImage} />
-              ) : (
-                <span>{user.name.slice(0, 1)}</span>
-              )}
-            </button>
+            {/* Profile Menu (Dropdown/Modal) */}
+            <ProfileMenu
+              user={user}
+              onLogout={onLogout}
+              trigger={
+                <button className={styles.profileButton}>
+                  {user.avatar ? (
+                    <img src={user.avatar} alt={user.name} className={styles.profileImage} />
+                  ) : (
+                    <span>{user.name.slice(0, 1)}</span>
+                  )}
+                </button>
+              }
+            />
           </div>
         ) : (
           <div className={styles.authButtons}>
@@ -99,3 +105,4 @@ export function TopNav({
     </header>
   );
 }
+
