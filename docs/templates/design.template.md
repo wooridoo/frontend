@@ -31,6 +31,9 @@ graph TD
 | POST | /api/v1/{resource} | |
 
 ### 3.2 요청/응답 스키마
+* **Spring Boot**: `Java 17 Record` 패턴 사용 권장 (Response/Request DTO 불변성 보장)
+* **Django**: `Pydantic` 모델 사용 권장 (엄격한 타입 검증)
+
 ```json
 // Request
 {
@@ -50,7 +53,13 @@ graph TD
 |----------|------|----------|
 | | | |
 
-### 4.2 ERD
+### 4.2 데이터 패턴 (Data Patterns)
+- **Soft Delete**: 물리 삭제 대신 `deleted_at` 컬럼 사용
+- **Locking**:
+    - **비관적 락 (Pessimistic)**: 금전/재고 관련 (`SELECT FOR UPDATE`)
+    - **낙관적 락 (Optimistic)**: 설정/프로필 관련 (`version` 컬럼)
+
+### 4.3 ERD
 <!-- Mermaid ER 다이어그램 -->
 
 ## 5. 프론트엔드 설계
@@ -62,9 +71,11 @@ graph TD
 
 ### 5.2 WDS 컴포넌트 사용
 - [ ] Button (variant: primary/secondary)
-- [ ] Card
+- [ ] Card (Glassmorphism eligible)
 - [ ] Form (react-hook-form + zod)
-- [ ] BottomSheet (vaul)
+- [ ] BottomSheet (vaul + glass effect)
+- [ ] BrixBadge (variant: 3d/flat)
+- [ ] Lottie Animation (--lottie)
 
 ## 6. WooriDo 도메인 규칙 적용
 
@@ -79,8 +90,12 @@ const brix = calculateBrix(paymentCount, activityScore);
 ```java
 // 트랜잭션 설정
 @Transactional(isolation = Isolation.READ_COMMITTED)
-// 비관적 락
+
+// 1. 비관적 락 (Pessimistic - Money)
 @Lock(LockModeType.PESSIMISTIC_WRITE)
+
+// 2. 낙관적 락 (Optimistic - Profile)
+// @Version Long version;
 ```
 
 ## 7. 테스트 계획

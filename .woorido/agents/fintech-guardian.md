@@ -30,9 +30,9 @@ hooks:
 
 ### 2. 락 전략
 ```
-권장: 비관적 락 (Pessimistic Lock)
-구현: SELECT ... FOR UPDATE
-목적: 돈 복사 버그 원천 차단
+권장: 비관적 락 (금전/재고) / 낙관적 락 (설정/프로필)
+구현: SELECT ... FOR UPDATE / @Version
+목적: 데이터 무결성 보장 및 충돌 방지
 ```
 
 ### 3. 금액 처리

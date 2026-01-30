@@ -143,15 +143,17 @@ public class [Resource] {
         WHERE [RESOURCE]_ID = #{id}
     </update>
 
-    <!-- DELETE -->
-    <delete id="deleteById">
-        DELETE FROM [RESOURCES]
-        WHERE [RESOURCE]_ID = #{id}
-    </delete>
+    <!-- SOFT DELETE -->
+    <update id="softDeleteById">
+        UPDATE [RESOURCES]
+        SET DELETED_AT = SYSDATE, UPDATED_AT = SYSDATE
+        WHERE [RESOURCE]_ID = #{id} AND DELETED_AT IS NULL
+    </update>
 
     <!-- COUNT -->
     <select id="countAll" resultType="int">
         SELECT COUNT(*) FROM [RESOURCES]
+        WHERE DELETED_AT IS NULL
     </select>
 
 </mapper>
@@ -165,14 +167,11 @@ public class [Resource] {
 -- 페이지네이션 (Oracle 12c+)
 SELECT * FROM (
     SELECT a.*, ROWNUM rnum FROM (
-        SELECT * FROM [RESOURCES] ORDER BY CREATED_AT DESC
+        SELECT * FROM [RESOURCES] 
+        WHERE DELETED_AT IS NULL
+        ORDER BY CREATED_AT DESC
     ) a WHERE ROWNUM <= #{offset + limit}
 ) WHERE rnum > #{offset}
-
--- 또는 FETCH (Oracle 12c+)
-SELECT * FROM [RESOURCES]
-ORDER BY CREATED_AT DESC
-OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
 
 -- UUID 생성
 SYS_GUID() -- RAW(16), 문자열 변환 필요
@@ -180,3 +179,30 @@ SYS_GUID() -- RAW(16), 문자열 변환 필요
 -- 현재 시간
 SYSDATE, SYSTIMESTAMP
 ```
+
+## Lock Patterns (동시성 제어)
+
+<!-- 낙관적 락 vs 비관적 락 -->
+
+```xml
+<!-- 1. 낙관적 락 (Optimistic Lock) - Profile/Settings -->
+<!-- Version 컬럼을 이용한 충돌 감지 -->
+<update id="updateWithVersion">
+    UPDATE [RESOURCES]
+    SET 
+        TITLE = #{title},
+        VERSION = VERSION + 1,
+        UPDATED_AT = SYSDATE
+    WHERE [RESOURCE]_ID = #{id} AND VERSION = #{version}
+</update>
+
+<!-- 2. 비관적 락 (Pessimistic Lock / SFU) - Money/Inventory -->
+<!-- SELECT ... FOR UPDATE 구문 사용 -->
+<select id="selectByIdForUpdate" resultMap="[resource]ResultMap">
+    SELECT [RESOURCE]_ID, AMOUNT, STATUS
+    FROM [RESOURCES]
+    WHERE [RESOURCE]_ID = #{id}
+    FOR UPDATE
+</select>
+```
+
