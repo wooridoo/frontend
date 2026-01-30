@@ -41,6 +41,7 @@ export function MainLayout() {
           user={user}
           isOpen={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}
+          onToggle={handleToggleSidebar}
         />
       </aside>
 

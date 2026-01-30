@@ -1,7 +1,8 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 import clsx from 'clsx';
 import { SidebarIcon, type SidebarIconProps } from '@/components/ui/Icons';
-import { Profile } from '@/components/ui/Profile';
+// Profile component removed per user feedback
 import styles from './SideNav.module.css';
 import logo from '@/assets/woorido_logo.svg';
 
@@ -11,6 +12,7 @@ interface SideNavProps {
   isCollapsed?: boolean;
   isOpen?: boolean; // Controlled state for mobile
   onClose?: () => void;
+  onToggle?: () => void;
   user?: {
     name: string;
     avatar?: string;
@@ -35,30 +37,19 @@ const challengeItems: NavItem[] = [
   { label: '투표', path: '/votes', iconType: 'votes' },
   { label: '장부', path: '/ledger', iconType: 'ledger' },
   { label: '멤버', path: '/members', iconType: 'members' },
-  { label: '설정', path: '/settings', iconType: 'settings' },
 ];
 
 
 
 export function SideNav({
   className,
-  isLoggedIn = false,
   isCollapsed = false,
   isOpen = false, // Controlled state for mobile
   onClose,
-  user
+  onToggle,
 }: SideNavProps & { isOpen?: boolean; onClose?: () => void }) {
-  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    navigate('/login');
-    onClose?.();
-  };
 
-  const handleSignup = () => {
-    navigate('/signup');
-    onClose?.();
-  };
 
 
 
@@ -74,39 +65,24 @@ export function SideNav({
       )}
 
       {/* Sidebar */}
-      <nav className={clsx(styles.sidebar, isOpen && styles.open, isCollapsed && styles.collapsed, className)}>
-        {/* Logo */}
-        <div className={styles.logoWrapper}>
-          <NavLink to="/" onClick={handleNavClick}>
+      <nav className={clsx(styles.sidebar, isOpen && styles.open, !isOpen && isCollapsed && styles.collapsed, className)}>
+        {/* Header: Toggle + Logo */}
+        <div className={styles.headerWrapper}>
+          <button
+            className={styles.toggleButton}
+            onClick={onToggle}
+            aria-label={isCollapsed ? "메뉴 펼치기" : "메뉴 접기"}
+          >
+            <Menu size={24} />
+          </button>
+
+          <NavLink to="/" onClick={handleNavClick} className={clsx(styles.logoLink, (isCollapsed && !isOpen) && styles.hidden)}>
             <img src={logo} alt="우리두" className={styles.logo} />
           </NavLink>
         </div>
 
         {/* Auth Buttons or User Profile (Mobile Only) */}
-        <div className={clsx(styles.authSection, styles.mobileOnly)}>
-          {isLoggedIn && user ? (
-            <Profile
-              user={{ name: user.name, avatar: user.avatar }}
-              size="md"
-              onClick={() => navigate('/profile')}
-            />
-          ) : (
-            <div className={styles.authButtons}>
-              <button
-                className={styles.loginButton}
-                onClick={handleLogin}
-              >
-                로그인
-              </button>
-              <button
-                className={styles.signupButton}
-                onClick={handleSignup}
-              >
-                회원가입
-              </button>
-            </div>
-          )}
-        </div>
+
 
         {/* Menu Section */}
         <div className={styles.section}>
@@ -123,9 +99,9 @@ export function SideNav({
                   title={isCollapsed ? item.label : undefined}
                 >
                   <span className={styles.navIcon}>
-                    <SidebarIcon type={item.iconType} size={20} />
+                    <SidebarIcon type={item.iconType} size={24} />
                   </span>
-                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>{item.label}</span>
+                  <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>{item.label}</span>
                 </NavLink>
               </li>
             ))}
@@ -147,9 +123,9 @@ export function SideNav({
                   title={isCollapsed ? item.label : undefined}
                 >
                   <span className={styles.navIcon}>
-                    <SidebarIcon type={item.iconType} size={20} />
+                    <SidebarIcon type={item.iconType} size={24} />
                   </span>
-                  <span className={clsx(styles.navLabel, isCollapsed && styles.hidden)}>{item.label}</span>
+                  <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>{item.label}</span>
                 </NavLink>
               </li>
             ))}

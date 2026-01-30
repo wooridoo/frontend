@@ -1,12 +1,15 @@
 .card {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3);
+  gap: var(--space-4);
+  /* Increased gap */
+  padding: var(--space-4);
+  /* Increased padding */
   border-radius: var(--radius-md);
   border: 1px solid var(--color-grey-200);
   background-color: var(--color-surface);
-  min-width: 260px;
+  min-width: 300px;
+  /* Increased min-width */
   /* Fixed width for horizontal scrolling list */
   cursor: pointer;
   transition: border-color var(--motion-duration-fast), box-shadow var(--motion-duration-fast);
@@ -18,8 +21,10 @@
 }
 
 .thumbnailWrapper {
-  width: 56px;
-  height: 56px;
+  width: 72px;
+  /* Increased from 56 */
+  height: 72px;
+  /* Increased from 56 */
   border-radius: var(--radius-md);
   overflow: hidden;
   flex-shrink: 0;
@@ -41,14 +46,16 @@
 .info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  /* Increased gap */
   flex: 1;
   min-width: 0;
   /* For text truncation */
 }
 
 .title {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
+  /* Increased from sm */
   font-weight: var(--font-weight-semibold);
   color: var(--color-grey-900);
   white-space: nowrap;

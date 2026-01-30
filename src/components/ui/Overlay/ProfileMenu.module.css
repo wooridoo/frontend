@@ -109,7 +109,7 @@
 
 /* Mobile Modal Styles (Glassmorphism) */
 .overlay {
-  background-color: rgba(0, 0, 0, 0.3);
+  /* background-color: rgba(0, 0, 0, 0.3); Removed per user feedback */
   backdrop-filter: blur(8px);
   /* Blur effect */
   position: fixed;

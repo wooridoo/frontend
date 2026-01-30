@@ -33,7 +33,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background-color: var(--color-overlay-dark);
+  /* background-color: var(--color-overlay-dark); Removed to match Profile modal */
   backdrop-filter: var(--glass-blur);
   z-index: 999;
 }
@@ -80,15 +80,55 @@
   }
 }
 
-/* Logo */
-.logoWrapper {
-  padding: var(--space-2) var(--space-3);
+/* Header (Toggle + Logo) */
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-2);
   margin-bottom: var(--space-4);
+  height: 40px;
+  /* Explicit height for alignment */
+}
+
+.toggleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: var(--space-1);
+  cursor: pointer;
+  color: var(--color-grey-900);
+  border-radius: var(--radius-full);
+  transition: background-color 0.2s;
+  width: 40px;
+  height: 40px;
+}
+
+.toggleButton:hover {
+  background-color: var(--color-grey-100);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
 }
 
 .logo {
-  width: 120px;
+  width: 100px;
   height: auto;
+  object-fit: contain;
+}
+
+/* Collapsed State Adjustments */
+.sidebar.collapsed .headerWrapper {
+  justify-content: center;
+  padding: var(--space-2) 0;
+}
+
+.sidebar.collapsed .logoLink {
+  display: none;
 }
 
 /* Auth Section */
@@ -194,7 +234,7 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-3);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--color-grey-700);
   text-decoration: none;
   border-radius: var(--radius-md);
@@ -205,7 +245,7 @@
   font-size: var(--font-size-base);
   line-height: 1;
   flex-shrink: 0;
-  width: 20px;
+  width: 24px;
   text-align: center;
 }
 
@@ -224,17 +264,28 @@
 .logoutButton {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  width: 100%;
-  text-align: left;
-  padding: var(--space-3) var(--space-3);
-  font-size: var(--font-size-sm);
+  gap: var(--space-3);
+  /* Increased gap */
+  padding: var(--space-4) var(--space-4);
+  /* Increased padding */
+  font-size: var(--font-size-base);
+  /* Increased font size */
   color: var(--color-grey-500);
   background: none;
   border: none;
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.logoutButton .navIcon {
+  font-size: var(--font-size-xl);
+  /* Increased icon container */
+  line-height: 1;
+  flex-shrink: 0;
+  width: 24px;
+  /* Increased width */
+  text-align: center;
 }
 
 .logoutButton:hover {
@@ -257,8 +308,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 280px;
-    /* Fixed width for drawer */
+    width: 250px;
     z-index: 1002;
     transform: translateX(-100%);
     transition: transform var(--motion-duration-normal) var(--motion-ease-standard);

@@ -58,26 +58,26 @@ export function ProfileMenu({ user, onLogout, trigger }: ProfileMenuProps) {
       <div className={styles.separator} />
 
       <button className={styles.menuItem} onClick={() => handleNavigate('/profile')}>
-        <SidebarIcon type="profile" size={18} />
+        <SidebarIcon type="profile" size={24} />
         마이페이지
       </button>
       <button className={styles.menuItem} onClick={() => handleNavigate('/my-challenges')}>
-        <SidebarIcon type="feed" size={18} />
+        <SidebarIcon type="feed" size={24} />
         나의 챌린지
       </button>
       <button className={styles.menuItem} onClick={() => handleNavigate('/ledger')}>
-        <SidebarIcon type="ledger" size={18} />
+        <SidebarIcon type="ledger" size={24} />
         나의 장부
       </button>
 
       <div className={styles.separator} />
 
       <button className={styles.menuItem} onClick={() => handleNavigate('/settings')}>
-        <SidebarIcon type="settings" size={18} />
+        <SidebarIcon type="settings" size={24} />
         설정
       </button>
       <button className={clsx(styles.menuItem, styles.logout)} onClick={handleLogout}>
-        <SidebarIcon type="logout" size={18} />
+        <SidebarIcon type="logout" size={24} />
         로그아웃
       </button>
     </div>

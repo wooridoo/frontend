@@ -62,18 +62,22 @@
 }
 
 .category {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
+  /* Increased from xs */
   color: var(--color-grey-500);
 }
 
 .title {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
+  /* Increased from base */
   font-weight: var(--font-weight-semibold);
   color: var(--color-grey-900);
   line-height: var(--line-height-snug);
   /* Truncate to 2 lines */
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
+  /* Standard property */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
