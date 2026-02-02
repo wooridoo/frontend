@@ -1,14 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { LoginPage } from '@/pages/LoginPage';
 import { HomePage } from '@/pages/HomePage';
 import { MainLayout } from '@/components/layout/MainLayout';
 
 const router = createBrowserRouter([
   // Auth Routes (Public)
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
   {
     path: '/signup',
     element: <div>회원가입 페이지 (TODO)</div>,

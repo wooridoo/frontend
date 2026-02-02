@@ -1,4 +1,3 @@
-export { HeroSection } from './HeroSection';
-export { GridCategory } from './GridCategory';
-export { ImageCard } from './ImageCard';
-export { StatusCard } from './StatusCard';
+export * from './Bento/BentoGrid';
+export * from './Hero/MainCarousel';
+// Cleaned up legacy exports

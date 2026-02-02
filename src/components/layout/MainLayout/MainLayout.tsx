@@ -1,60 +1,79 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
-import { SideNav } from '@/components/navigation/SideNav';
-import { TopNav } from '@/components/navigation/TopNav';
+import { SideNav, TopNav } from '@/components/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
 import styles from './MainLayout.module.css';
 
 export function MainLayout() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
 
-  // Mock User State (Replace with specific Auth Context later)
-  const isLoggedIn = true; // Temporary for verification
-  const user = {
-    name: '김우리',
-    avatar: 'https://i.pravatar.cc/150?u=woorido',
-    sugarScore: 72,
-    balance: 154000
-  };
+  // State for sidebar (Desktop defaults to open/expanded, Mobile hidden)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  const handleToggleSidebar = () => {
-    if (window.innerWidth <= 768) {
-      setIsMobileMenuOpen(!isMobileMenuOpen);
+  // Initial Responsive Check
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    // Run on mount
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const toggleSidebar = () => {
+    if (window.innerWidth < 768) {
+      setIsMobileOpen(!isMobileOpen);
     } else {
-      setIsSidebarCollapsed(!isSidebarCollapsed);
+      setIsSidebarOpen(!isSidebarOpen);
     }
   };
 
   const handleLogout = () => {
-    // TODO: Implement actual logout logic
-    console.log('Logging out...');
-    // navigate('/login'); // Uncomment when auth is ready
+    logout();
+    navigate('/login');
   };
 
   return (
-    <div className={clsx(styles.container, isSidebarCollapsed && styles.collapsed)}>
-      <aside className={styles.sidebarArea}>
-        <SideNav
-          isCollapsed={isSidebarCollapsed}
-          isLoggedIn={isLoggedIn}
-          user={user}
-          isOpen={isMobileMenuOpen}
-          onClose={() => setIsMobileMenuOpen(false)}
-          onToggle={handleToggleSidebar}
-        />
-      </aside>
+    <div className={styles.container}>
+      {/* 1. Sticky Header */}
+      <TopNav
+        isLoggedIn={!!user}
+        user={user || undefined}
+        onLogout={handleLogout}
+        isSidebarCollapsed={!isSidebarOpen}
+        onToggleSidebar={toggleSidebar}
+        className={styles.header}
+      />
 
-      <div className={styles.contentArea}>
-        <TopNav
-          isLoggedIn={isLoggedIn}
-          user={user}
-          isSidebarCollapsed={isSidebarCollapsed}
-          onToggleSidebar={handleToggleSidebar}
-          onLogout={handleLogout}
+      {/* 2. Layout Body */}
+      <div className={styles.body}>
+        {/* Fixed Sidebar */}
+        <SideNav
+          isLoggedIn={!!user}
+          user={user || undefined}
+          isCollapsed={!isSidebarOpen} // Desktop functionality
+          isOpen={isMobileOpen} // Mobile functionality
+          onClose={() => setIsMobileOpen(false)}
         />
-        <main className={styles.pageContent}>
-          <Outlet context={{ isLoggedIn }} />
+
+        {/* Main Content Area */}
+        <main
+          className={clsx(
+            styles.main,
+            isSidebarOpen ? styles.mainShifted : styles.mainCollapsed
+          )}
+        >
+          <Outlet />
         </main>
       </div>
     </div>

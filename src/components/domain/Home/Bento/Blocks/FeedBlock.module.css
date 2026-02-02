@@ -1,0 +1,215 @@
+.container {
+  width: 100%;
+  height: 100%;
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+}
+
+.controls {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.controlBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-grey-200);
+  background-color: white;
+  color: var(--color-grey-600);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.controlBtn:hover {
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-900);
+  border-color: var(--color-grey-300);
+}
+
+/* Hide controls on desktop if needed? No, user requested them. */
+@media (min-width: 1280px) {
+  .controls {
+    display: flex;
+    /* Show controls on desktop */
+  }
+}
+
+/* Feed List Container */
+/* Renamed from .list to .grid in TSX, keeping semantic name here but supporting both just in case or fully replacing */
+/* Feed List Container */
+/* Renamed from .list to .grid in TSX, keeping semantic name here but supporting both just in case or fully replacing */
+.grid {
+  flex: 1;
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-2);
+  /* Space for shadow/scroll */
+
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Desktop: Keep flex layout for horizontal scroll */
+@media (min-width: 1280px) {
+  .grid {
+    display: flex;
+    /* Force flex instead of grid */
+    overflow-x: hidden;
+    /* Hide scrollbar but allow programmatic scroll */
+    scroll-behavior: smooth;
+    padding-bottom: 0;
+    height: 100%;
+  }
+}
+
+/* Card Styles */
+.card {
+  min-width: 260px;
+  /* Mobile: Fixed width for carousel */
+  scroll-snap-align: start;
+  background-color: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-grey-100);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+  /* Fill parent height */
+}
+
+/* Desktop: Card fills grid cell - NO, now it scrolls */
+@media (min-width: 1280px) {
+  .card {
+    min-width: 25%;
+    /* Show approx 4 items */
+    width: 25%;
+    flex-shrink: 0;
+  }
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 140px;
+  /* Mobile default */
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1280px) {
+  .imageWrapper {
+    height: 60%;
+    /* Desktop: Taller image (Poster style) */
+    max-height: 240px;
+    /* Limit max height if needed, or let it flex */
+    flex: 1;
+    /* Allow image to fill available space */
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+.cardContent {
+  padding: var(--space-4);
+  flex: 1;
+  /* Fill remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* Space out content */
+}
+
+.tag {
+  font-size: 10px;
+  color: var(--color-orange-600);
+  font-weight: var(--font-weight-bold);
+  background-color: var(--color-orange-50);
+  padding: 2px 6px;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-bottom: var(--space-2);
+}
+
+.titleLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.titleLink:hover .cardTitle {
+  color: var(--color-orange-600);
+}
+
+.cardTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+  margin-bottom: var(--space-2);
+  line-height: 1.4;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-4);
+}
+
+.participants {
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-500);
+}
+
+.joinBtn {
+  background-color: var(--color-grey-900);
+  color: white;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  transition: background-color 0.2s;
+}
+
+.joinBtn:hover {
+  background-color: black;
+}

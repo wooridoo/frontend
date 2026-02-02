@@ -1,0 +1,152 @@
+.card {
+  background-color: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-grey-100);
+}
+
+.noticeCard {
+  background-color: #FFF7ED;
+  /* Light orange tint */
+  border-color: #FFEDD5;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
+}
+
+.authorInfo {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-grey-100);
+}
+
+.metaData {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.name {
+  font-weight: 600;
+  color: var(--color-grey-900);
+  font-size: 14px;
+}
+
+.leaderBadge {
+  font-size: 10px;
+  background-color: var(--color-grey-800);
+  color: white;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.noticeBadge {
+  font-size: 10px;
+  background-color: #EF4444;
+  color: white;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.time {
+  font-size: 12px;
+  color: var(--color-grey-400);
+}
+
+.moreButton {
+  color: var(--color-grey-400);
+  padding: 4px;
+}
+
+/* Content */
+.content {
+  margin-bottom: var(--space-4);
+}
+
+.text {
+  font-size: 15px;
+  color: var(--color-grey-800);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.pinIcon {
+  display: inline-block;
+  color: #EF4444;
+  margin-right: 6px;
+  transform: rotate(45deg);
+}
+
+.imageGrid {
+  margin-top: var(--space-3);
+  display: grid;
+  gap: 4px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.grid1 {
+  grid-template-columns: 1fr;
+}
+
+.grid2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.postImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 400px;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  gap: var(--space-4);
+  border-top: 1px solid var(--color-grey-100);
+  padding-top: var(--space-3);
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-grey-500);
+  font-size: 13px;
+  transition: color 0.1s;
+}
+
+.actionButton:hover {
+  color: var(--color-orange-500);
+}
+
+.shareAction {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-grey-400);
+  font-size: 13px;
+}

@@ -1,0 +1,17 @@
+.feedContainer {
+  max-width: 680px;
+  /* Limit width for reading ease, centered */
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+}
+
+@media (max-width: 768px) {
+  .feedContainer {
+    padding: var(--space-4);
+  }
+}
+
+.feedList {
+  display: flex;
+  flex-direction: column;
+}

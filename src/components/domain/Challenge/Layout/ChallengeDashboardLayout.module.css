@@ -1,0 +1,9 @@
+.layout {
+  min-height: 100vh;
+  background-color: var(--color-grey-50);
+}
+
+.content {
+  /* This area will contain the specific page content (Feed, Ledger, etc.) */
+  min-height: 500px;
+}

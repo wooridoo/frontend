@@ -1,0 +1,83 @@
+.container {
+  width: 100%;
+  height: 100%;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+}
+
+.title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-4);
+  color: var(--color-grey-900);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  /* Increased gap */
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  padding-bottom: var(--space-2);
+  /* Add bottom padding */
+}
+
+@media (min-width: 640px) {
+  .grid {
+    gap: var(--space-6);
+    /* Wider gap on desktop */
+    row-gap: var(--space-4);
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  /* Increased text gap */
+  cursor: pointer;
+  transition: transform 0.2s;
+  width: 100%;
+  /* Ensure click area */
+}
+
+.item:hover {
+  transform: translateY(-2px);
+}
+
+.iconWrapper {
+  width: 56px;
+  /* Increased from 40px to 56px */
+  height: 56px;
+  border-radius: var(--radius-2xl);
+  /* Softer rounded square or stick to full? Let's keep circle or soft square. Circle is consistent. */
+  background-color: var(--color-grey-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-600);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.iconWrapper svg {
+  width: 28px;
+  height: 28px;
+  /* Control icon size explicitly if needed, or rely on parent font-size usually */
+}
+
+.item:hover .iconWrapper {
+  background-color: var(--color-orange-100);
+  color: var(--color-orange-500);
+}
+
+.label {
+  font-size: var(--font-size-base);
+  /* Increased from 11px to sm (14px) */
+  color: var(--color-grey-700);
+  font-weight: var(--font-weight-medium);
+}

@@ -1,0 +1,130 @@
+.hero {
+  background-color: white;
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-grey-100);
+}
+
+.cover {
+  height: 160px;
+  background: linear-gradient(135deg, #FFD1C1 0%, #FFE4D6 100%);
+  /* Soft Orange Gradient */
+  position: relative;
+  border-radius: var(--radius-lg);
+  margin: var(--space-4);
+  margin-bottom: 0;
+}
+
+.content {
+  padding: 0 var(--space-6);
+  margin-top: -40px;
+  /* Overlap cover */
+  position: relative;
+  display: flex;
+  gap: var(--space-4);
+}
+
+/* Icon (books emoji in design) */
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+  font-size: 40px;
+}
+
+.info {
+  padding-top: 48px;
+  /* Offset for icon overlap */
+  flex: 1;
+}
+
+.badges {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.categoryBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-grey-600);
+  background-color: var(--color-grey-100);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.certBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #059669;
+  /* Green */
+  background-color: #D1FAE5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+  margin-bottom: var(--space-1);
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-500);
+  margin-bottom: var(--space-3);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-500);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.separator {
+  color: var(--color-grey-300);
+}
+
+/* Leader Badge */
+.leaderBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--color-grey-50);
+  padding: 2px 8px 2px 2px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-grey-200);
+}
+
+.leaderIcon {
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-grey-800);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaderLabel {
+  font-weight: 600;
+  color: var(--color-grey-900);
+}
+
+.leaderName {
+  color: var(--color-grey-700);
+}
+
+.leaderScore {
+  color: var(--color-orange-500);
+  font-weight: 600;
+}

@@ -1,63 +1,47 @@
-/* MainLayout.module.css */
-
 .container {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  /* Default Sidebar Width */
-  min-height: 100vh;
-  transition: grid-template-columns var(--motion-duration-normal) var(--motion-ease-standard);
-  background-color: var(--color-background);
-}
-
-.container.collapsed {
-  grid-template-columns: 80px 1fr;
-  /* Collapsed Width */
-}
-
-/* Sidebar Area */
-.sidebarArea {
-  position: relative;
-  z-index: 50;
-}
-
-/* Main Content Area */
-.contentArea {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  /* Prevent flex overflow */
+  min-height: 100vh;
+  background-color: var(--color-grey-50);
 }
 
-/* Page Content Wrapper */
-.pageContent {
+.body {
+  display: flex;
   flex: 1;
-  padding: var(--space-6);
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
+  position: relative;
+  /* TopNav is sticky, so body sits naturally in flow, but SideNav is fixed top:60px */
 }
 
-/* Mobile Responsive */
+.main {
+  flex: 1;
+  /* width: 100%; REMOVED to prevent horizontal scroll */
+  /* margin-top: 60px; REMOVED (TopNav consumes space in flex flow) */
+  /* Clear Fixed Header */
+  transition: margin-left var(--motion-duration-slow) var(--motion-ease-standard);
+  min-height: calc(100vh - 60px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainShifted {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+}
+
+.mainCollapsed {
+  margin-left: 72px;
+  width: calc(100% - 72px);
+}
+
+
+
 @media (max-width: 768px) {
 
-  .container,
-  .container.collapsed {
-    display: block;
-    /* Switch to block layout */
+  .mainShifted,
+  .mainCollapsed {
+    margin-left: 0;
+    /* Mobile: sidebar is overlay */
   }
 
-  .sidebarArea {
-    position: absolute;
-    /* Remove from flow */
-    width: 0;
-    height: 0;
-    overflow: visible;
-    /* Allow hamburger/drawer to be seen */
-  }
-
-  .pageContent {
-    padding: var(--space-4);
-    min-height: calc(100vh - 64px);
-    /* Ensure minimum height */
-  }
 }

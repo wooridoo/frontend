@@ -37,7 +37,7 @@ export function GridCategory({
             <CategoryIcon
               type={cat.type}
               isActive={selectedCategory === cat.id}
-              size={48}
+              size={32}
             />
           </div>
           <span className={styles.label}>{cat.label}</span>

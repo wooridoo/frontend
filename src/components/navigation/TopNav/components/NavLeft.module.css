@@ -1,0 +1,37 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 0 0 auto;
+}
+
+.menuButton {
+  padding: 8px;
+  border-radius: 50%;
+  color: var(--color-grey-700);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuButton:hover {
+  background-color: var(--color-grey-100);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 24px;
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .root {
+    gap: var(--space-2);
+  }
+}

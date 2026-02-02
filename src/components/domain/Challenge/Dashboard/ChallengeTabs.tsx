@@ -1,0 +1,33 @@
+import { NavLink } from 'react-router-dom';
+import clsx from 'clsx';
+import { Layout, Calendar, CreditCard, Vote, Users } from 'lucide-react';
+import styles from './ChallengeTabs.module.css';
+
+const TABS = [
+  { path: 'feed', label: '피드', icon: Layout },
+  { path: 'meetings', label: '정기모임', icon: Calendar },
+  { path: 'ledger', label: '장부', icon: CreditCard },
+  { path: 'votes', label: '투표', icon: Vote, count: 2 },
+  { path: 'members', label: '멤버', icon: Users },
+];
+
+export function ChallengeTabs() {
+  return (
+    <div className={styles.container}>
+      <nav className={styles.tabs}>
+        {TABS.map((tab) => (
+          <NavLink
+            key={tab.path}
+            to={tab.path}
+            className={({ isActive }) => clsx(styles.tab, isActive && styles.active)}
+            end={tab.path === 'feed'} // Only feed is root-like if needed
+          >
+            <tab.icon size={16} className={styles.icon} />
+            <span className={styles.label}>{tab.label}</span>
+            {tab.count && <span className={styles.badge}>{tab.count}</span>}
+          </NavLink>
+        ))}
+      </nav>
+    </div>
+  );
+}
