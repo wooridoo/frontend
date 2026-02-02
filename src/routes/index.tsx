@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from '@/pages/HomePage';
-import { MainLayout } from '@/components/layout/MainLayout';
+import { MainLayout } from '@/components/layout';
 
 const router = createBrowserRouter([
   // Auth Routes (Public)
