@@ -3,15 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Dialog from '@radix-ui/react-dialog';
 import clsx from 'clsx';
-import { SidebarIcon } from '@/components/ui/Icons'; // Reusing icons
+import { SidebarIcon } from '@/components/ui/Icons';
+import { BrixBadge } from '@/components/domain/BrixBadge';
+import { getBrixGrade, formatBrix } from '@/lib/brix';
+import type { User } from '@/types/domain';
 import styles from './ProfileMenu.module.css';
 
 interface ProfileMenuProps {
-  user: {
-    name: string;
-    avatar?: string;
-    sugarScore?: number;
-  };
+  user: User;
   onLogout: () => void;
   trigger: React.ReactNode;
 }
@@ -43,15 +42,18 @@ export function ProfileMenu({ user, onLogout, trigger }: ProfileMenuProps) {
     <div className={styles.menuContainer}>
       <div className={styles.userInfo}>
         <div className={styles.avatarLarge}>
-          {user.avatar ? (
-            <img src={user.avatar} alt={user.name} className={styles.avatarImg} />
+          {user.profileImage ? (
+            <img src={user.profileImage} alt={user.name} className={styles.avatarImg} />
           ) : (
             <span className={styles.avatarFallback}>{user.name.charAt(0)}</span>
           )}
         </div>
         <div className={styles.userDetails}>
           <span className={styles.userName}>{user.name}</span>
-          <span className={styles.userBrix}>🍬 {user.sugarScore || 0}g</span>
+          <div className={styles.userBrix}>
+            <BrixBadge grade={getBrixGrade(user.brix)} variant="flat" size="sm" showLabel={false} />
+            <span className={styles.brixValue}>{formatBrix(user.brix)} Brix</span>
+          </div>
         </div>
       </div>
 

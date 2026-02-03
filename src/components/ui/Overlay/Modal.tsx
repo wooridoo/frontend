@@ -1,6 +1,6 @@
-import { Dialog, DialogContent, DialogOverlay, DialogPortal } from '@radix-ui/react-dialog';
+import { Dialog, DialogContent, DialogOverlay, DialogPortal, DialogTitle, DialogDescription } from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
-import { cn } from '@/lib/utils'; // Assuming you have a utility for merging classes, or I'll use clsx directly
+import { cn } from '@/lib/utils';
 
 interface ModalProps {
   isOpen: boolean;
@@ -26,6 +26,8 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
             className
           )}
         >
+          <DialogTitle className="sr-only">Dialog</DialogTitle>
+          <DialogDescription className="sr-only">Dialog Content</DialogDescription>
           {children}
           <button
             onClick={onClose}

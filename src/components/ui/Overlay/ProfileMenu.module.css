@@ -44,15 +44,23 @@
 }
 
 .userName {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   color: var(--color-grey-900);
 }
 
 .userBrix {
-  font-size: var(--font-size-sm);
-  color: var(--color-orange-600);
-  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: 4px;
+}
+
+.brixValue {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-grey-800);
+  margin-left: 4px;
 }
 
 .separator {
@@ -67,7 +75,7 @@
   gap: var(--space-3);
   padding: var(--space-3);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   color: var(--color-grey-700);
   background: none;
   border: none;

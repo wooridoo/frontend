@@ -1,16 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
-import { LogIn, UserPlus, Bell } from 'lucide-react';
+import { LogIn, UserPlus } from 'lucide-react';
 import { ProfileMenu } from '@/components/ui/Overlay';
+import { NotificationOverlay } from '@/components/domain/Notification/NotificationOverlay';
 import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { BrixBadge } from '@/components/domain/BrixBadge/BrixBadge';
+import { getBrixGrade, formatBrix } from '@/lib/brix';
+import { formatCurrency } from '@/lib/utils';
+import type { User } from '@/types/domain';
 import styles from './NavRight.module.css';
-
-interface User {
-  name: string;
-  avatar?: string;
-  sugarScore: number;
-  balance: number;
-}
 
 interface NavRightProps {
   isLoggedIn?: boolean;
@@ -26,11 +24,26 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
     <div className={styles.root}>
       {isLoggedIn && user ? (
         <div className={styles.userActions}>
-          {/* Notification Bell */}
-          <button className={styles.iconButton}>
-            <Bell size={24} />
-            <span className={styles.notiDot} />
-          </button>
+          <div className={styles.userInfo}>
+            {/* Brix Badge & Score */}
+            <div className={styles.brixContainer}>
+              <BrixBadge grade={getBrixGrade(user.brix)} variant="3d" size="sm" showLabel={false} />
+              <span className={styles.brixScore}>{formatBrix(user.brix)} Brix</span>
+            </div>
+
+            {/* Account Balance */}
+            {user.account && (
+              <div className={styles.balanceContainer}>
+                <span className={styles.balanceLabel}>보유금</span>
+                <span className={styles.balanceValue}>{formatCurrency(user.account.balance)}</span>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.divider} />
+
+          {/* Notification Overlay */}
+          <NotificationOverlay />
 
           {/* Profile Menu */}
           <ProfileMenu
@@ -38,8 +51,8 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
             onLogout={onLogout}
             trigger={
               <button className={styles.profileButton}>
-                {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} className={styles.profileImage} />
+                {user.profileImage ? (
+                  <img src={user.profileImage} alt={user.name} className={styles.profileImage} />
                 ) : (
                   <span>{user.name.slice(0, 1)}</span>
                 )}
@@ -70,3 +83,4 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
     </div>
   );
 }
+

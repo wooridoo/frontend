@@ -34,7 +34,7 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   color: var(--color-grey-900);
-  background-color: var(--color-grey-50);
+  background-color: var(--color-white);
 }
 
 /* Remove default button styles */

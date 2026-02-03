@@ -3,6 +3,7 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useJoinModalStore } from '@/store/useJoinModalStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import { formatCurrency } from '@/lib/utils';
 import styles from './JoinChallengeModal.module.css';
 
 export function JoinChallengeModal() {
@@ -41,7 +42,7 @@ export function JoinChallengeModal() {
             </p>
             <div className={styles.balanceInfo}>
               <span>현재 보유 크레딧</span>
-              <span className={styles.balance}>{user?.balance.toLocaleString()}원</span>
+              <span className={styles.balance}>{formatCurrency(user?.account?.balance || 0)}</span>
             </div>
             <Button onClick={handleNext} className={styles.nextButton}>다음</Button>
           </div>

@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui';
 import { BrixBadgeLottie } from './BrixBadgeLottie';
-
-export type BrixGrade = 'HONEY' | 'GRAPE' | 'APPLE' | 'TANGERINE' | 'TOMATO' | 'BITTER';
+import type { BrixGrade } from '@/types/domain';
+import { GRADE_CONFIG } from '@/lib/brix';
 
 interface BrixBadgeProps {
   grade: BrixGrade;
@@ -11,15 +11,6 @@ interface BrixBadgeProps {
   className?: string;
   showLabel?: boolean;
 }
-
-const GRADE_CONFIG: Record<BrixGrade, { label: string; emoji: string; brixVariant: 'honey' | 'grape' | 'apple' | 'mandarin' | 'tomato' | 'bitter' }> = {
-  HONEY: { label: '꿀', emoji: '🍯', brixVariant: 'honey' },
-  GRAPE: { label: '포도', emoji: '🍇', brixVariant: 'grape' },
-  APPLE: { label: '사과', emoji: '🍎', brixVariant: 'apple' },
-  TANGERINE: { label: '귤', emoji: '🍊', brixVariant: 'mandarin' },
-  TOMATO: { label: '토마토', emoji: '🍅', brixVariant: 'tomato' },
-  BITTER: { label: '쓴맛', emoji: '🥒', brixVariant: 'bitter' },
-};
 
 export function BrixBadge({
   grade,
@@ -61,3 +52,6 @@ export function BrixBadge({
     </Badge>
   );
 }
+
+export type { BrixGrade };
+

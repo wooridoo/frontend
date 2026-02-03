@@ -1,3 +1,4 @@
+import type { User } from '@/types/domain';
 import clsx from 'clsx';
 import { NavLeft } from './components/NavLeft';
 import { NavSearch } from './components/NavSearch';
@@ -9,12 +10,7 @@ interface TopNavProps {
   isLoggedIn?: boolean;
   isSidebarCollapsed: boolean;
   onToggleSidebar: () => void;
-  user?: {
-    name: string;
-    avatar?: string;
-    sugarScore: number;
-    balance: number;
-  };
+  user?: User;
   onLogout: () => void;
 }
 
