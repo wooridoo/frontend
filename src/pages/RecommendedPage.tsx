@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import styles from './RecommendedPage.module.css';
 import { PageContainer } from '@/components/layout';
 import { PageHeader } from '@/components/navigation';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { Button } from '@/components/ui';
-import { useLoginModalStore } from '@/store/useLoginModalStore';
 import { Loader2 } from 'lucide-react';
 
 const MOCK_RECOMMENDATIONS = [
@@ -15,8 +14,7 @@ const MOCK_RECOMMENDATIONS = [
 ];
 
 export function RecommendedPage() {
-  const { isLoggedIn, user } = useAuthStore();
-  const { onOpen } = useLoginModalStore();
+  const { isLoggedIn, user, requireAuth } = useAuthGuard();
   const [loading, setLoading] = useState(false);
   const [challenges, setChallenges] = useState<typeof MOCK_RECOMMENDATIONS>([]);
 
@@ -43,7 +41,7 @@ export function RecommendedPage() {
             로그인하시면 회원님의 관심사와 활동 패턴을 분석해<br />
             딱 맞는 챌린지를 추천해드려요!
           </p>
-          <Button onClick={onOpen} className={styles.loginButton}>
+          <Button onClick={() => requireAuth()} className={styles.loginButton}>
             로그인하고 추천받기
           </Button>
         </div>

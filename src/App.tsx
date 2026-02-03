@@ -10,6 +10,8 @@ import { FeedPage } from './components/domain/Challenge/Feed/FeedPage';
 import { MainLayout } from './components/layout';
 import { LoginModal } from './components/domain/Auth/LoginModal';
 import { JoinChallengeModal } from './components/domain/Challenge/JoinChallengeModal';
+import { AccessDeniedModal } from './components/domain/Auth/AccessDeniedModal';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -45,10 +47,11 @@ function App() {
             {/* Shortcut: Global Feed -> My Main Challenge */}
             <Route path="/feed" element={<Navigate to="/challenges/1/feed" replace />} />
           </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <LoginModal />
         <JoinChallengeModal />
+        <AccessDeniedModal />
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

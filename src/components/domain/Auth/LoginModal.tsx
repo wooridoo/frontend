@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input } from '@/components/ui';
 import logo from '@/assets/woorido_logo.svg';
 import { Modal } from '@/components/ui/Overlay/Modal';
@@ -25,9 +25,17 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginModal() {
-  const { isOpen, onClose } = useLoginModalStore();
+  const { isOpen, onClose, redirectOnReject, message } = useLoginModalStore();
   const { login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    onClose();
+    if (redirectOnReject) {
+      navigate(redirectOnReject);
+    }
+  };
 
   const {
     register,
@@ -45,7 +53,7 @@ export function LoginModal() {
       console.log('Login attempt:', data);
 
       login(); // Set dummy user
-      onClose();
+      onClose(); // Normal close on success (no redirect rejection)
     } catch (error) {
       console.error('Login failed:', error);
     } finally {
@@ -54,8 +62,15 @@ export function LoginModal() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className={styles.modalContent}>
+    <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
       <div className={styles.container}>
+        {/* Optional Alert Message */}
+        {message && (
+          <div className={styles.alertMessage}>
+            {message}
+          </div>
+        )}
+
         {/* Logo & Branding */}
         <header className={styles.header}>
           <div className={styles.logo}>

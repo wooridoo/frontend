@@ -1,0 +1,59 @@
+.modalContent {
+  width: 100%;
+  max-width: 360px;
+  padding: 0;
+  border-radius: 20px;
+  background-color: var(--color-white);
+  overflow: hidden;
+}
+
+.container {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-grey-100);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.icon {
+  color: var(--color-grey-600);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-grey-900);
+  margin-bottom: 12px;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-grey-600);
+  margin-bottom: 32px;
+  word-break: keep-all;
+}
+
+.description strong {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.actions {
+  width: 100%;
+}
+
+.actionButton {
+  width: 100%;
+}

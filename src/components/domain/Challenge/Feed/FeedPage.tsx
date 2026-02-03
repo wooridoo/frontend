@@ -1,45 +1,60 @@
+import { useParams } from 'react-router-dom';
 import styles from './FeedPage.module.css';
 import { PostEditor } from './PostEditor';
 import { PostCard } from './PostCard';
-
-const MOCK_POSTS: Array<React.ComponentProps<typeof PostCard>> = [
-  {
-    id: 1,
-    author: { name: '김철수', avatar: 'https://i.pravatar.cc/150?u=1', role: 'leader' },
-    content: '📢 2월 정기모임 장소가 변경되었습니다!\n강남역 → 선릉역 스터디카페로 변경됩니다. 참석 여부 투표 부탁드려요~',
-    createdAt: '1시간 전',
-    likes: 8,
-    comments: 3,
-    isNotice: true,
-  },
-  {
-    id: 2,
-    author: { name: '이영희', avatar: 'https://i.pravatar.cc/150?u=2' },
-    content: '이번 주 독서 인증합니다! 📚\n"클린 코드" 완독했어요. 다음 달 모임에서 후기 나눠요~',
-    images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600'],
-    createdAt: '2시간 전',
-    likes: 12,
-    comments: 5,
-  },
-  {
-    id: 3,
-    author: { name: '박민수', avatar: 'https://i.pravatar.cc/150?u=3' },
-    content: '다음 달에 읽을 책 추천받습니다!\n개발 관련 책이면 좋을 것 같아요. 어떤 책이 좋을까요?',
-    createdAt: '5시간 전',
-    likes: 6,
-    comments: 14,
-  }
-];
+import { useChallengeGuard } from '@/hooks/useChallengeGuard';
+import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
+import { VerificationModal } from '../VerificationModal';
+import { useVerificationModalStore } from '@/store/useVerificationModalStore';
+import { Button } from '@/components/ui';
+import { Camera } from 'lucide-react';
 
 export function FeedPage() {
+  const { id } = useParams<{ id: string }>();
+  const { data: posts, isLoading, error } = useChallengeGuard(id || '');
+  const verificationModal = useVerificationModalStore();
+
+  if (isLoading) {
+    return (
+      <div className={styles.feedContainer}>
+        <div className="flex flex-col gap-4">
+          <Skeleton className="w-full h-32 rounded-lg" />
+          {[1, 2, 3].map(i => (
+            <Skeleton key={i} className="w-full h-48 rounded-lg" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Error is handled by useEffect in the hook (Redirects), but we render null/fallback here
+  if (error) {
+    return null;
+  }
+
   return (
     <div className={styles.feedContainer}>
+      <div className={styles.headerAction}>
+        {/* Verification Trigger */}
+        <Button
+          onClick={verificationModal.onOpen}
+          className="w-full mb-4 bg-primary text-white flex gap-2 items-center justify-center py-4 rounded-xl"
+        >
+          <Camera size={20} />
+          오늘의 인증하기
+        </Button>
+      </div>
+
       <PostEditor />
       <div className={styles.feedList}>
-        {MOCK_POSTS.map(post => (
+        {posts?.map(post => (
           <PostCard key={post.id} {...post} />
         ))}
       </div>
+
+      <VerificationModal />
+      <VerificationModal />
     </div>
   );
 }
+

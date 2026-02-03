@@ -11,6 +11,21 @@
   width: 100%;
 }
 
+/* Alert Message */
+.alertMessage {
+  background-color: #FEF2F2;
+  /* Red 50 */
+  color: #DC2626;
+  /* Red 600 */
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
 .header {
   display: flex;
   flex-direction: column;

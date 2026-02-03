@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from '@/pages/HomePage';
+import { NotFoundPage } from '@/pages/NotFoundPage';
 import { MainLayout } from '@/components/layout';
 
 const router = createBrowserRouter([
@@ -38,7 +39,17 @@ const router = createBrowserRouter([
         path: 'mypage',
         element: <div>마이페이지 (TODO)</div>,
       },
+      // 404 inside Main Layout (preserves nav)
+      {
+        path: '*',
+        element: <NotFoundPage />,
+      },
     ],
+  },
+  // 404 Fallback for non-layout routes
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ]);
 

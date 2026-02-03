@@ -193,3 +193,12 @@
     display: flex;
   }
 }
+
+.emptyItem {
+  padding: 10px 12px;
+}
+
+.emptyText {
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
+}

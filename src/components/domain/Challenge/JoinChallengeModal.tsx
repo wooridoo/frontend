@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useJoinModalStore } from '@/store/useJoinModalStore';
@@ -8,13 +10,18 @@ import styles from './JoinChallengeModal.module.css';
 
 export function JoinChallengeModal() {
   const { isOpen, onClose } = useJoinModalStore();
-  const { user } = useAuthStore();
+  const { user, joinChallenge } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<'info' | 'payment' | 'success'>('info');
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleClose = () => {
     setStep('info');
     onClose();
+    if (step === 'success') {
+      navigate('/challenge/1/feed');
+    }
   };
 
   const handleNext = async () => {
@@ -24,6 +31,13 @@ export function JoinChallengeModal() {
       setIsLoading(true);
       // Simulate Payment API
       await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Update Store: User joined Challenge #1
+      joinChallenge(1);
+
+      // Invalidate Query to ensure FeedPage re-fetches with new permissions
+      await queryClient.invalidateQueries({ queryKey: ['challenge', '1'] });
+
       setIsLoading(false);
       setStep('success');
     }

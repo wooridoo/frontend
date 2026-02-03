@@ -6,6 +6,7 @@ interface AuthState {
   user: User | null;
   login: (userData?: User) => void;
   logout: () => void;
+  joinChallenge: (challengeId: number) => void; // Simulation Action
 }
 
 const DUMMY_USER: User = {
@@ -26,19 +27,35 @@ const DUMMY_USER: User = {
     challengeCount: 3,
     completedChallenges: 1,
     totalSupportAmount: 50000
-  }
+  },
+  participatingChallengeIds: [] // Default: Not joined any challenge (Test P0 Join Flow)
 };
 
-export const useAuthStore = create<AuthState>((set) => ({
-  isLoggedIn: false,
-  user: null,
-  login: (userData) => set({
-    isLoggedIn: true,
-    user: userData || DUMMY_USER
-  }),
-  logout: () => set({
-    isLoggedIn: false,
-    user: null
-  }),
-}));
+import { persist } from 'zustand/middleware';
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      isLoggedIn: false,
+      user: null,
+      login: (userData) => set({
+        isLoggedIn: true,
+        user: userData || DUMMY_USER
+      }),
+      logout: () => set({
+        isLoggedIn: false,
+        user: null
+      }),
+      joinChallenge: (challengeId: number) => set((state) => ({
+        user: state.user ? {
+          ...state.user,
+          participatingChallengeIds: [...(state.user.participatingChallengeIds || []), challengeId]
+        } : null
+      }))
+    }),
+    {
+      name: 'auth-storage', // unique name
+    }
+  )
+);
 

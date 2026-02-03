@@ -24,6 +24,7 @@ export interface User {
   profileImage?: string;
   status: 'ACTIVE' | 'SUSPENDED' | 'WITHDRAWN';
   brix: number;
+  participatingChallengeIds?: number[]; // Added for strict auth check
   account?: Account;
   stats?: UserStats;
 }

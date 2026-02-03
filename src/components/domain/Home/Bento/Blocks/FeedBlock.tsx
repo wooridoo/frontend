@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from './FeedBlock.module.css';
-import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 
 const INITIAL_ITEMS = [
   { id: 1, title: '하루 물 2L 마시기', participants: 120, tag: '건강', image: 'https://picsum.photos/seed/water/300/200' },
@@ -16,7 +16,8 @@ export function FeedBlock() {
   const [items, setItems] = useState(INITIAL_ITEMS);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { onOpen } = useLoginModalStore();
+
+  const { handleChallengeAction, isParticipant } = useAuthGuard();
 
   const scroll = (direction: 'left' | 'right') => {
     if (containerRef.current) {
@@ -85,7 +86,12 @@ export function FeedBlock() {
               </Link>
               <div className={styles.cardFooter}>
                 <span className={styles.participants}>{item.participants}명 참여</span>
-                <button className={styles.joinBtn} onClick={onOpen}>참여</button>
+                <button
+                  className={styles.joinBtn}
+                  onClick={() => handleChallengeAction(item.id)}
+                >
+                  {isParticipant(item.id) ? '이동' : '참여'}
+                </button>
               </div>
             </div>
           </div>

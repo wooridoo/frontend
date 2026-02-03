@@ -4,9 +4,8 @@ import styles from './ChallengeDetailPage.module.css';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { PageContainer } from '@/components/layout';
 import { PageHeader } from '@/components/navigation';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useLoginModalStore } from '@/store/useLoginModalStore';
 import { useJoinModalStore } from '@/store/useJoinModalStore';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 
 export function ChallengeDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -25,8 +24,7 @@ export function ChallengeDetailPage() {
 }
 
 function ChallengeDetailContent({ id }: { id?: string }) {
-  const { isLoggedIn } = useAuthStore();
-  const loginModal = useLoginModalStore();
+  const { requireAuth } = useAuthGuard();
   const joinModal = useJoinModalStore();
 
   const [data, setData] = useState<{ title: string; description: string } | null>(null);
@@ -45,10 +43,8 @@ function ChallengeDetailContent({ id }: { id?: string }) {
   }, [id]);
 
   const handleJoinClick = () => {
-    if (isLoggedIn) {
+    if (requireAuth()) {
       joinModal.onOpen();
-    } else {
-      loginModal.onOpen();
     }
   };
 
