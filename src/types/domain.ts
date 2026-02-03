@@ -102,3 +102,124 @@ export interface BrixConfig {
   emoji: string;
   brixVariant: 'honey' | 'grape' | 'apple' | 'mandarin' | 'tomato' | 'bitter';
 }
+
+/**
+ * Meeting Domain Types
+ */
+export interface MeetingMember {
+  userId: number;
+  nickname: string;
+  profileImage?: string;
+  status: 'ATTENDING' | 'ABSENT' | 'PENDING';
+  joinedAt?: string;
+}
+
+export interface Meeting {
+  id: string; // UUID
+  challengeId: string;
+  title: string;
+  description: string;
+  date: string; // ISO Date
+  location: string;
+  locationUrl?: string; // Map link
+  isOnline: boolean;
+  meetingUrl?: string; // Online meeting link (Added based on API specs commonly having this for online meetings)
+  maxMembers: number;
+  currentMembers: number;
+  status: 'SCHEDULED' | 'COMPLETED' | 'CANCELED';
+  members?: MeetingMember[];
+  myStatus?: 'ATTENDING' | 'ABSENT' | 'PENDING' | 'NONE';
+}
+
+/**
+ * Ledger Domain Types
+ */
+export type TransactionType = 'SUPPORT' | 'EXPENSE' | 'FEE' | 'DEPOSIT' | 'REFUND';
+
+export interface Transaction {
+  transactionId: number;
+  type: TransactionType;
+  amount: number;
+  description: string;
+  createdAt: string; // ISO Date
+}
+
+export interface ChallengeAccountStats {
+  totalSupport: number;
+  totalExpense: number;
+  totalFee: number;
+  monthlyAverage: {
+    support: number;
+    expense: number;
+  };
+}
+
+export interface SupportStatus {
+  thisMonth: {
+    paid: number;
+    unpaid: number;
+    total: number;
+  };
+}
+
+export interface ChallengeAccount {
+  challengeId: number;
+  balance: number;
+  lockedDeposits: number;
+  availableBalance: number;
+  stats: ChallengeAccountStats;
+  recentTransactions: Transaction[];
+  supportStatus: SupportStatus;
+}
+
+/**
+ * Vote Domain Types
+ */
+export type VoteType = 'EXPENSE' | 'KICK' | 'LEADER_KICK' | 'DISSOLVE';
+export type VoteStatus = 'IN_PROGRESS' | 'APPROVED' | 'REJECTED' | 'DISMISSED';
+export type VoteOption = 'AGREE' | 'DISAGREE' | 'ABSTAIN';
+
+export interface VoteCount {
+  agree: number;
+  disagree: number;
+  abstain: number;
+  notVoted: number;
+  total: number;
+}
+
+export interface VoteResult {
+  passed: boolean;
+  agree: number;
+  disagree: number;
+  abstain: number;
+  notVoted: number;
+  total: number;
+  requiredApproval: number;
+  approvalRate: number;
+}
+
+export interface Vote {
+  voteId: number;
+  challengeId: number;
+  type: VoteType;
+  title: string;
+  description?: string;
+  status: VoteStatus;
+  createdBy: {
+    userId: number;
+    nickname: string;
+    profileImage?: string;
+  };
+  targetInfo?: {
+    targetId: number;
+    amount?: number;
+    category?: string;
+  };
+  voteCount: VoteCount;
+  myVote?: VoteOption;
+  eligibleVoters: number;
+  requiredApproval: number; // e.g. 7
+  deadline: string; // ISO Date
+  createdAt: string; // ISO Date
+  result?: VoteResult; // Only when status !== IN_PROGRESS
+}

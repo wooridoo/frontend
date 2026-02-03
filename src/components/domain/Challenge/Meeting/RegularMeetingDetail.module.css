@@ -1,0 +1,107 @@
+.container {
+  padding-bottom: 80px;
+  /* Space for floating button */
+}
+
+.section {
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-grey-100);
+}
+
+.meetingTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+  margin-bottom: var(--space-3);
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  color: var(--color-grey-700);
+  font-size: var(--font-size-md);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+  margin-bottom: var(--space-3);
+}
+
+.description {
+  color: var(--color-grey-600);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.memberList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.memberAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 1px solid var(--color-grey-200);
+}
+
+.memberName {
+  font-size: var(--font-size-md);
+  color: var(--color-grey-800);
+  font-weight: var(--font-weight-medium);
+}
+
+.floatingContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-4);
+  background: linear-gradient(to top, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0));
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  max-width: var(--layout-max-width);
+  /* Assuming mobile view constraint if any, or 100% */
+  margin: 0 auto;
+}
+
+.actionButton {
+  width: 100%;
+  padding: var(--space-3);
+  background-color: var(--color-orange-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButton:active {
+  background-color: var(--color-orange-600);
+}
+
+.actionButton:disabled {
+  background-color: var(--color-grey-300);
+  cursor: not-allowed;
+}
+
+.actionButton.cancel {
+  background-color: var(--color-grey-200);
+  color: var(--color-grey-700);
+}

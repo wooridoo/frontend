@@ -1,0 +1,151 @@
+.container {
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.navigation {
+  margin-bottom: 1rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.statusRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.date {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: 0.5rem;
+}
+
+.author {
+  color: var(--color-gray-600);
+  font-size: 0.875rem;
+}
+
+.content {
+  margin-bottom: 2rem;
+  background-color: var(--color-gray-50);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.description {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.targetInfo {
+  font-size: 0.875rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--color-gray-300);
+}
+
+.targetLabel {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.votingSection {
+  background: white;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.results h3,
+.actions h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.resultItem {
+  margin-bottom: 1rem;
+}
+
+.resultLabel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.progressBar {
+  height: 8px;
+  background-color: var(--color-gray-100);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 4px;
+}
+
+.progressFill.danger {
+  background-color: var(--color-red-500);
+}
+
+.progressFill.neutral {
+  background-color: var(--color-gray-400);
+}
+
+.resultBanner {
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.resultBanner.passed {
+  background-color: var(--color-green-100);
+  color: var(--color-green-700);
+}
+
+.resultBanner.failed {
+  background-color: var(--color-red-100);
+  color: var(--color-red-700);
+}
+
+.myVote {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+}
+
+.myVoteValue {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.buttonGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.deadlineInfo {
+  text-align: center;
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+}

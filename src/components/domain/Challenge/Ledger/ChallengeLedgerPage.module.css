@@ -1,0 +1,176 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-bottom: 80px;
+}
+
+/* Summary Card */
+.summaryCard {
+  background-color: var(--color-grey-900);
+  color: white;
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.summaryLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-400);
+  margin-bottom: var(--space-1);
+}
+
+.summaryBalance {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-4);
+}
+
+.summaryStats {
+  display: flex;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-grey-700);
+}
+
+.statItem {
+  flex: 1;
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-400);
+  margin-bottom: var(--space-1);
+}
+
+.statValue {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+}
+
+.income {
+  color: #60a5fa;
+  /* Blue-400 */
+}
+
+.expense {
+  color: #f87171;
+  /* Red-400 */
+}
+
+/* Support Status Section */
+.statusSection {
+  padding: 0 var(--space-1);
+}
+
+.statusHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-2);
+}
+
+.statusTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+}
+
+.statusInfo {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-600);
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-grey-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: var(--color-orange-500);
+  transition: width 0.5s ease-out;
+  border-radius: var(--radius-full);
+}
+
+/* Transaction List Section */
+.transactionSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+  padding: 0 var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.transactionList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.transactionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s;
+}
+
+.transactionItem:hover {
+  background-color: var(--color-grey-50);
+}
+
+.transactionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.transactionDesc {
+  font-size: var(--font-size-base);
+  color: var(--color-grey-900);
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.typeBadge {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-600);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+}
+
+.transactionDate {
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-500);
+}
+
+.transactionAmount {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.plus {
+  color: var(--color-success-600);
+}
+
+.minus {
+  color: var(--color-error-600);
+}
