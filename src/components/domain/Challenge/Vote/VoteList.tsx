@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVotes } from '../../../../hooks/useVote';
 import { VoteItem } from './VoteItem';
-import { Button, Loading, ErrorBoundary } from '../../../../components/common';
+import { Button, Loading } from '../../../../components/common';
 import styles from './VoteList.module.css';
 
 export function VoteList() {
