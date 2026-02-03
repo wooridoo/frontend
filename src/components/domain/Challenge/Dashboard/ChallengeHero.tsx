@@ -39,7 +39,7 @@ export function ChallengeHero({ title, category, leaderName, leaderScore }: Chal
             {/* Leader Badge */}
             <div className={styles.leaderBadge}>
               <div className={styles.leaderIcon}>
-                <Crown size={12} color="#fff" />
+                <Crown size={12} className="text-white" />
               </div>
               <span className={styles.leaderLabel}>리더</span>
               <span className={styles.leaderName}>{leaderName}</span>
