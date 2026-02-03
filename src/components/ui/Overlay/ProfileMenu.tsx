@@ -7,7 +7,9 @@ import { SidebarIcon } from '@/components/ui/Icons';
 import { BrixBadge } from '@/components/domain/BrixBadge';
 import { getBrixGrade, formatBrix } from '@/lib/brix';
 import type { User } from '@/types/domain';
+
 import styles from './ProfileMenu.module.css';
+import { PATHS } from '@/routes/paths';
 
 interface ProfileMenuProps {
   user: User;
@@ -59,22 +61,22 @@ export function ProfileMenu({ user, onLogout, trigger }: ProfileMenuProps) {
 
       <div className={styles.separator} />
 
-      <button className={styles.menuItem} onClick={() => handleNavigate('/profile')}>
+      <button className={styles.menuItem} onClick={() => handleNavigate(PATHS.MY.PROFILE)}>
         <SidebarIcon type="profile" size={24} />
         마이페이지
       </button>
-      <button className={styles.menuItem} onClick={() => handleNavigate('/my-challenges')}>
+      <button className={styles.menuItem} onClick={() => handleNavigate(PATHS.MY.CHALLENGES)}>
         <SidebarIcon type="feed" size={24} />
         나의 챌린지
       </button>
-      <button className={styles.menuItem} onClick={() => handleNavigate('/ledger')}>
+      <button className={styles.menuItem} onClick={() => handleNavigate(PATHS.MY.LEDGER)}>
         <SidebarIcon type="ledger" size={24} />
         나의 장부
       </button>
 
       <div className={styles.separator} />
 
-      <button className={styles.menuItem} onClick={() => handleNavigate('/settings')}>
+      <button className={styles.menuItem} onClick={() => handleNavigate(PATHS.MY.SETTINGS)}>
         <SidebarIcon type="settings" size={24} />
         설정
       </button>

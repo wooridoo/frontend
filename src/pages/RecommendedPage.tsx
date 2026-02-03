@@ -6,24 +6,22 @@ import { PageHeader } from '@/components/navigation';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { Button } from '@/components/ui';
 import { Loader2 } from 'lucide-react';
-
-const MOCK_RECOMMENDATIONS = [
-  { id: 101, title: '나를 위한 맞춤: 아침 요가', participants: 45, tag: '건강', image: 'https://picsum.photos/seed/yoga/300/200' },
-  { id: 102, title: '직장인을 위한 재테크', participants: 210, tag: '자산', image: 'https://picsum.photos/seed/invest/300/200' },
-  { id: 103, title: '영어 회화 마스터', participants: 88, tag: '역량', image: 'https://picsum.photos/seed/english/300/200' },
-];
+import { MOCK_CHALLENGES } from '@/lib/api/mocks/challenges';
+import type { Challenge } from '@/types/domain';
+import { PATHS } from '@/routes/paths';
 
 export function RecommendedPage() {
   const { isLoggedIn, user, requireAuth } = useAuthGuard();
   const [loading, setLoading] = useState(false);
-  const [challenges, setChallenges] = useState<typeof MOCK_RECOMMENDATIONS>([]);
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
 
   useEffect(() => {
     if (isLoggedIn) {
       setLoading(true);
       // Simulate personalized algorithm delay
       const timer = setTimeout(() => {
-        setChallenges(MOCK_RECOMMENDATIONS);
+        // Pick top 3 as recommendations for now
+        setChallenges(MOCK_CHALLENGES.slice(0, 3));
         setLoading(false);
       }, 1000);
       return () => clearTimeout(timer);
@@ -70,16 +68,16 @@ export function RecommendedPage() {
         ) : (
           <div className={styles.grid}>
             {challenges.map(challenge => (
-              <Link to={`/challenges/${challenge.id}`} key={challenge.id} className={styles.card}>
+              <Link to={PATHS.CHALLENGE.DETAIL(challenge.id)} key={challenge.id} className={styles.card}>
                 <div className={styles.imageWrapper}>
-                  <img src={challenge.image} alt={challenge.title} className={styles.image} />
+                  <img src={challenge.thumbnailUrl || ''} alt={challenge.name} className={styles.image} />
                   <div className={styles.badge}>98% 일치</div>
                 </div>
                 <div className={styles.cardContent}>
-                  <span className={styles.tag}>{challenge.tag}</span>
-                  <h3 className={styles.cardTitle}>{challenge.title}</h3>
+                  <span className={styles.tag}>{challenge.category}</span>
+                  <h3 className={styles.cardTitle}>{challenge.name}</h3>
                   <div className={styles.cardFooter}>
-                    <span className={styles.participants}>{challenge.participants}명 참여 중</span>
+                    <span className={styles.participants}>{challenge.currentMembers.toLocaleString()}명 참여 중</span>
                   </div>
                 </div>
               </Link>

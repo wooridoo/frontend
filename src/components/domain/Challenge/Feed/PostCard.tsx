@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Heart, MessageCircle, Share2, MoreVertical, Pin } from 'lucide-react';
+import { ChallengeRole } from '@/types/enums';
 import styles from './PostCard.module.css';
 
 interface PostCardProps {
@@ -7,7 +8,7 @@ interface PostCardProps {
   author: {
     name: string;
     avatar: string;
-    role?: 'leader' | 'member';
+    role?: ChallengeRole;
   };
   content: string;
   images?: string[];
@@ -27,7 +28,7 @@ export function PostCard({ author, content, images, createdAt, likes, comments, 
           <div className={styles.metaData}>
             <div className={styles.nameRow}>
               <span className={styles.name}>{author.name}</span>
-              {author.role === 'leader' && <span className={styles.leaderBadge}>👑 리더</span>}
+              {author.role === ChallengeRole.LEADER && <span className={styles.leaderBadge}>👑 리더</span>}
               {isNotice && <span className={styles.noticeBadge}>📢 필독</span>}
             </div>
             <span className={styles.time}>{createdAt}</span>

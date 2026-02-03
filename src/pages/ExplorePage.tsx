@@ -1,21 +1,29 @@
 import { useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom'; // Link added
+import { useSearchParams, Link } from 'react-router-dom';
 import styles from './ExplorePage.module.css';
 import { PageContainer } from '@/components/layout';
 import { PageHeader } from '@/components/navigation';
+import { MOCK_CHALLENGES } from '@/lib/api/mocks/challenges';
+import { Category } from '@/types/enums';
+import type { Challenge } from '@/types/domain';
+import { PATHS } from '@/routes/paths';
 
 const CATEGORIES = ['전체', '건강', '역량', '취미', '자산', '생활'];
 
-const MOCK_CHALLENGES = [
-  { id: 1, title: '하루 물 2L 마시기', participants: 120, tag: '건강', image: 'https://picsum.photos/seed/water/300/200' },
-  { id: 2, title: '영어 단어 50개 암기', participants: 85, tag: '역량', image: 'https://picsum.photos/seed/eng/300/200' },
-  { id: 3, title: '매일 1만원 저축하기', participants: 230, tag: '자산', image: 'https://picsum.photos/seed/money/300/200' },
-  { id: 4, title: '아침 6시 기상하기', participants: 50, tag: '생활', image: 'https://picsum.photos/seed/morning/300/200' },
-  { id: 5, title: '매일 30분 독서', participants: 42, tag: '역량', image: 'https://picsum.photos/seed/read/300/200' },
-  { id: 6, title: '주 3회 러닝', participants: 156, tag: '건강', image: 'https://picsum.photos/seed/run/300/200' },
-  { id: 7, title: '가계부 쓰기', participants: 98, tag: '자산', image: 'https://picsum.photos/seed/account/300/200' },
-  { id: 8, title: '필사하기', participants: 34, tag: '취미', image: 'https://picsum.photos/seed/write/300/200' },
-];
+// Helper to map UI Category strings to Enum or filter logic
+function matchCategory(uiCategory: string, challengeCategory: Category): boolean {
+  if (uiCategory === '전체') return true;
+
+  // Mapping logic
+  switch (uiCategory) {
+    case '건강': return challengeCategory === Category.EXERCISE;
+    case '역량': return challengeCategory === Category.STUDY;
+    case '자산': return challengeCategory === Category.SAVINGS;
+    case '취미': return challengeCategory === Category.HOBBY;
+    case '생활': return challengeCategory === Category.OTHER || challengeCategory === Category.CULTURE || challengeCategory === Category.FOOD || challengeCategory === Category.TRAVEL;
+    default: return false;
+  }
+}
 
 export function ExplorePage() {
   const [searchParams] = useSearchParams();
@@ -24,20 +32,16 @@ export function ExplorePage() {
 
   // Filter for Search Results
   const searchResults = query
-    ? MOCK_CHALLENGES.filter(c => c.title.toLowerCase().includes(query.toLowerCase()))
+    ? MOCK_CHALLENGES.filter(c => c.name.toLowerCase().includes(query.toLowerCase()))
     : [];
 
-  // Filter for Category (Recommended Section or Main View)
+  // Filter for Category
   const categoryResults = MOCK_CHALLENGES.filter(challenge => {
-    return selectedCategory === '전체' || challenge.tag === selectedCategory;
+    return matchCategory(selectedCategory, challenge.category);
   });
 
   return (
     <PageContainer className={styles.page}>
-      {/* 
-         The user requested to remove the search bar from within the page 
-         because TopNav already has one. 
-      */}
       <PageHeader title="탐색" />
 
       {/* Category Filter */}
@@ -56,7 +60,7 @@ export function ExplorePage() {
       </div>
 
       <div className={styles.contentContainer}>
-        {/* 1. Search Results Section (Only if query exists) */}
+        {/* 1. Search Results Section */}
         {query && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>
@@ -80,8 +84,6 @@ export function ExplorePage() {
             {query ? '이런 챌린지는 어때요?' : (selectedCategory === '전체' ? '추천 챌린지' : `${selectedCategory} 챌린지`)}
           </h2>
           <div className={styles.grid}>
-            {/* If searching, show random recommendations over pure category filter? 
-                 For simplicity, showing category results here. */}
             {categoryResults.slice(0, 8).map(challenge => (
               <ChallengeCard key={challenge.id} challenge={challenge} />
             ))}
@@ -92,17 +94,19 @@ export function ExplorePage() {
   );
 }
 
-function ChallengeCard({ challenge }: { challenge: typeof MOCK_CHALLENGES[0] }) {
+function ChallengeCard({ challenge }: { challenge: Challenge }) {
+  // Map Category Enum back to display string if needed, or use directly
+  // For now simple display
   return (
-    <Link to={`/challenges/${challenge.id}`} className={styles.card}>
+    <Link to={PATHS.CHALLENGE.DETAIL(challenge.id)} className={styles.card}>
       <div className={styles.imageWrapper}>
-        <img src={challenge.image} alt={challenge.title} className={styles.image} />
-        <span className={styles.tag}>{challenge.tag}</span>
+        <img src={challenge.thumbnailUrl || 'https://via.placeholder.com/300'} alt={challenge.name} className={styles.image} />
+        <span className={styles.tag}>{challenge.category}</span>
       </div>
       <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{challenge.title}</h3>
+        <h3 className={styles.cardTitle}>{challenge.name}</h3>
         <div className={styles.cardFooter}>
-          <span className={styles.participants}>{challenge.participants}명 참여 중</span>
+          <span className={styles.participants}>{challenge.currentMembers}명 참여 중</span>
         </div>
       </div>
     </Link>

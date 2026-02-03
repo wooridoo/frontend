@@ -23,22 +23,23 @@ export function ChallengeDetailPage() {
   );
 }
 
+import { MOCK_CHALLENGES } from '@/lib/api/mocks/challenges';
+import type { Challenge } from '@/types/domain';
+
 function ChallengeDetailContent({ id }: { id?: string }) {
   const { requireAuth } = useAuthGuard();
   const joinModal = useJoinModalStore();
 
-  const [data, setData] = useState<{ title: string; description: string } | null>(null);
+  const [data, setData] = useState<Challenge | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API call
+    // Simulate API call using mocks
     const timer = setTimeout(() => {
-      setData({
-        title: `Challenge #${id}`,
-        description: '매일 아침 6시 기상하고 인증하는 챌린지입니다. 함께 습관을 만들어보아요!',
-      });
+      const found = MOCK_CHALLENGES.find(c => c.id === id);
+      setData(found || null);
       setIsLoading(false);
-    }, 1000);
+    }, 600);
     return () => clearTimeout(timer);
   }, [id]);
 
@@ -55,24 +56,27 @@ function ChallengeDetailContent({ id }: { id?: string }) {
     <section className={styles.section}>
       <div className={styles.hero}>
         <div className={styles.imagePlaceholder}>
-          {/* Image would go here */}
-          <span className={styles.emoji}>🌅</span>
+          {data.thumbnailUrl ? (
+            <img src={data.thumbnailUrl} alt={data.name} className="w-full h-full object-cover" />
+          ) : (
+            <span className={styles.emoji}>🌅</span>
+          )}
         </div>
         <div className={styles.info}>
-          <span className={styles.categoryBadge}>생활습관</span>
-          <h2 className={styles.challengeTitle}>{data.title}</h2>
-          <p className={styles.description}>{data.description}</p>
+          <span className={styles.categoryBadge}>{data.category}</span>
+          <h2 className={styles.challengeTitle}>{data.name}</h2>
+          <p className={styles.description}>{data.description || '설명이 없습니다.'}</p>
         </div>
       </div>
 
       <div className={styles.stats}>
         <div className={styles.statItem}>
           <span className={styles.statLabel}>참여자</span>
-          <span className={styles.statValue}>1,234명</span>
+          <span className={styles.statValue}>{data.currentMembers.toLocaleString()}명</span>
         </div>
         <div className={styles.statItem}>
           <span className={styles.statLabel}>인증률</span>
-          <span className={styles.statValue}>85%</span>
+          <span className={styles.statValue}>{data.certificationRate || 0}%</span>
         </div>
       </div>
 

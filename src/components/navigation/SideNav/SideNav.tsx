@@ -4,7 +4,9 @@ import clsx from 'clsx';
 import { SidebarIcon, type SidebarIconProps } from '@/components/ui/Icons';
 import styles from './SideNav.module.css';
 import logo from '@/assets/woorido_logo.svg';
+
 import { useAuthGuard } from '@/hooks/useAuthGuard';
+import { PATHS } from '@/routes/paths';
 
 interface SideNavProps {
   className?: string;
@@ -25,19 +27,20 @@ interface NavItem {
   iconType: SidebarIconProps['type'];
 }
 
+
 // Section 1: Main Navigation
 const mainItems: NavItem[] = [
-  { label: '홈', path: '/', iconType: 'home' },
-  { label: '탐색', path: '/explore', iconType: 'explore' },
-  { label: '추천', path: '/recommended', iconType: 'recommended' },
+  { label: '홈', path: PATHS.HOME, iconType: 'home' },
+  { label: '탐색', path: PATHS.EXPLORE, iconType: 'explore' },
+  { label: '추천', path: '/recommended', iconType: 'recommended' }, // Recommended not yet in PATHS, keeping as string or adding to PATHS? Let's add it to PATHS later or keep string if P2
 ];
 
 // Section 2: Subscriptions (Joined Challenges) - Mock Data
 // In real app, this comes from API/Store
 const joinedChallenges = [
-  { id: 1, label: '책벌레들', path: '/challenges/1/feed', iconType: 'feed' },
-  { id: 2, label: '이른새벽 기상', path: '/challenges/2/feed', iconType: 'feed' },
-  // { id: 3, label: '헬스장 출석', path: '/challenges/3/feed', iconType: 'feed' },
+  { id: 1, label: '책벌레들', path: PATHS.CHALLENGE.FEED(1), iconType: 'feed' },
+  { id: 2, label: '이른새벽 기상', path: PATHS.CHALLENGE.FEED(2), iconType: 'feed' },
+  // { id: 3, label: '헬스장 출석', path: PATHS.CHALLENGE.FEED(3), iconType: 'feed' },
 ] as const;
 
 
@@ -69,7 +72,7 @@ export function SideNav({
           <button className={styles.menuButton} onClick={onClose}>
             <Menu size={24} />
           </button>
-          <NavLink to="/" onClick={handleNavClick} className={styles.logoLink}>
+          <NavLink to={PATHS.HOME} onClick={handleNavClick} className={styles.logoLink}>
             <img src={logo} alt="우리두" className={styles.logo} />
           </NavLink>
         </div>

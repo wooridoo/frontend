@@ -7,6 +7,7 @@ import { useJoinModalStore } from '@/store/useJoinModalStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { formatCurrency } from '@/lib/utils';
 import styles from './JoinChallengeModal.module.css';
+import { PATHS } from '@/routes/paths';
 
 export function JoinChallengeModal() {
   const { isOpen, onClose } = useJoinModalStore();
@@ -20,7 +21,7 @@ export function JoinChallengeModal() {
     setStep('info');
     onClose();
     if (step === 'success') {
-      navigate('/challenge/1/feed');
+      navigate(PATHS.CHALLENGE.FEED(1));
     }
   };
 

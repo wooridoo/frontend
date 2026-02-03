@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { SideNav, TopNav } from '@/components/navigation';
+import { PATHS } from '@/routes/paths';
 import { useAuthStore } from '@/store/useAuthStore';
 import styles from './MainLayout.module.css';
 
@@ -40,7 +41,7 @@ export function MainLayout() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate(PATHS.HOME);
   };
 
   return (

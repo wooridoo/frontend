@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginModalStore } from '@/store/useLoginModalStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useAccessDeniedModalStore } from '@/components/domain/Auth/AccessDeniedModal';
+import { PATHS } from '@/routes/paths';
 
 export function useChallengeGuard(challengeId: string) {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ export function useChallengeGuard(challengeId: string) {
 
   useEffect(() => {
     if (error instanceof ApiError) {
+      console.log('🔒 useChallengeGuard Error:', error.status, error.message, 'ID:', challengeId);
+
       if (error.status === 401) {
         // Case 1: Not Logged In -> Open Login Modal
         if (!useLoginModalStore.getState().isOpen) {
@@ -38,12 +41,12 @@ export function useChallengeGuard(challengeId: string) {
             // Case 1-B: Session Expired (Client thinks logged in, Server says 401)
             logout(); // Reset client state
             onOpenLogin({
-              redirectOnReject: '/',
+              redirectOnReject: PATHS.HOME,
               message: '로그인이 만료되었습니다. 다시 로그인해주세요.'
             });
           } else {
             // Case 1-A: Just Guest
-            onOpenLogin({ redirectOnReject: '/' });
+            onOpenLogin({ redirectOnReject: PATHS.HOME });
           }
         }
       } else if (error.status === 403) {
@@ -54,7 +57,7 @@ export function useChallengeGuard(challengeId: string) {
       } else if (error.status === 404) {
         // Case 3: Not Found -> Redirect to 404 Page (or let Router handle it via navigate)
         // Since we are inside a component, we can force navigate.
-        navigate('/404', { replace: true });
+        navigate(PATHS.NOT_FOUND, { replace: true });
       }
     }
   }, [error, challengeId, navigate, onOpenLogin, onOpenAccessDenied]);

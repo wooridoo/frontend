@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { PATHS } from '@/routes/paths';
 import clsx from 'clsx';
 import { LogIn, UserPlus } from 'lucide-react';
 import { ProfileMenu } from '@/components/ui/Overlay';
@@ -64,7 +65,7 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
         <div className={styles.authButtons}>
           <button
             className={clsx(styles.button, styles.secondaryButton)}
-            onClick={onOpen}
+            onClick={() => onOpen()}
             aria-label="로그인"
           >
             <LogIn size={16} />
@@ -72,7 +73,7 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
           </button>
           <button
             className={clsx(styles.button, styles.primaryButton)}
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate(PATHS.AUTH.SIGNUP)}
             aria-label="회원가입"
           >
             <UserPlus size={16} />
@@ -83,4 +84,3 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
     </div>
   );
 }
-

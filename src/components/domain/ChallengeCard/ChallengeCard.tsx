@@ -1,13 +1,14 @@
 import clsx from 'clsx';
-import styles from './ChallengeCard.module.css';
 import { Badge } from '@/components/ui';
+import { Category } from '@/types/enums';
+import styles from './ChallengeCard.module.css';
 
 interface ChallengeCardProps {
   className?: string;
   id: string;
   title: string;
   thumbnailUrl?: string;
-  category: string;
+  category: Category;
   participantCount: number;
   currentRound: number;
   totalRounds: number;

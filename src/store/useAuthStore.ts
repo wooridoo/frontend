@@ -4,7 +4,8 @@ import type { User } from '@/types/domain';
 interface AuthState {
   isLoggedIn: boolean;
   user: User | null;
-  login: (userData?: User) => void;
+  accessToken: string | null; // Added for API Client
+  login: (userData?: User, token?: string) => void;
   logout: () => void;
   joinChallenge: (challengeId: number) => void; // Simulation Action
 }
@@ -15,7 +16,7 @@ const DUMMY_USER: User = {
   name: '김우리',
   nickname: '우리두',
   profileImage: 'https://i.pravatar.cc/150?u=woorido',
-  status: 'ACTIVE',
+  status: UserStatus.ACTIVE, // Use Enum
   brix: 72.5,
   account: {
     accountId: 101,
@@ -28,23 +29,27 @@ const DUMMY_USER: User = {
     completedChallenges: 1,
     totalSupportAmount: 50000
   },
-  participatingChallengeIds: [] // Default: Not joined any challenge (Test P0 Join Flow)
+  participatingChallengeIds: []
 };
 
 import { persist } from 'zustand/middleware';
+import { UserStatus } from '@/types/enums';
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       isLoggedIn: false,
       user: null,
-      login: (userData) => set({
+      accessToken: null,
+      login: (userData, token) => set({
         isLoggedIn: true,
-        user: userData || DUMMY_USER
+        user: userData || DUMMY_USER,
+        accessToken: token || 'mock-access-token',
       }),
       logout: () => set({
         isLoggedIn: false,
-        user: null
+        user: null,
+        accessToken: null,
       }),
       joinChallenge: (challengeId: number) => set((state) => ({
         user: state.user ? {

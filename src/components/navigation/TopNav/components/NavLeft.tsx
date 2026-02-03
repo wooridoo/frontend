@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import styles from './NavLeft.module.css';
 import logo from '@/assets/woorido_logo.svg';
+import { PATHS } from '@/routes/paths';
 
 interface NavLeftProps {
   isSidebarCollapsed: boolean;
@@ -21,7 +22,7 @@ export function NavLeft({ isSidebarCollapsed, onToggleSidebar }: NavLeftProps) {
       </button>
 
       {/* 2. Logo */}
-      <Link to="/" className={styles.logoLink}>
+      <Link to={PATHS.HOME} className={styles.logoLink}>
         <img src={logo} alt="우리두" className={styles.logo} />
       </Link>
     </div>

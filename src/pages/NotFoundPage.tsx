@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { PATHS } from '@/routes/paths';
 import { Button } from '@/components/ui';
 import { AlertCircle } from 'lucide-react';
 import styles from './NotFoundPage.module.css';
@@ -18,7 +19,7 @@ export function NotFoundPage() {
           이동되었을 수 있습니다.
         </p>
         <div className={styles.actions}>
-          <Button onClick={() => navigate('/')} variant="primary" size="lg">
+          <Button onClick={() => navigate(PATHS.HOME)} variant="primary" size="lg">
             홈으로 돌아가기
           </Button>
           <Button onClick={() => navigate(-1)} variant="secondary" size="lg">

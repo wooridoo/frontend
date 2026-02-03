@@ -1,3 +1,5 @@
+import { UserStatus, Category } from './enums';
+
 /**
  * User Domain Types
  * Based on API_SPECIFICATION_1.0.0.md and DB_Schema_1.0.0.md
@@ -14,17 +16,18 @@ export interface UserStats {
   challengeCount: number;
   completedChallenges: number;
   totalSupportAmount: number;
+  // ... other stats
 }
 
 export interface User {
   userId: number;
   email: string;
-  name: string; // Added missing name field
+  name: string;
   nickname: string;
   profileImage?: string;
-  status: 'ACTIVE' | 'SUSPENDED' | 'WITHDRAWN';
+  status: UserStatus;
   brix: number;
-  participatingChallengeIds?: number[]; // Added for strict auth check
+  participatingChallengeIds?: number[];
   account?: Account;
   stats?: UserStats;
 }
@@ -57,14 +60,16 @@ export interface NotificationResponse {
   unreadCount: number;
 }
 
-
 /**
  * Challenge Domain Types
  */
 export interface Challenge {
   id: string; // UUID
   name: string;
-  category: string;
+  category: Category;
+  thumbnailUrl?: string; // Added for UI
+  description?: string; // Added for UI
+  certificationRate?: number; // Added for UI (0-100)
   currentMembers: number;
   minMembers: number;
   maxMembers: number;
@@ -72,8 +77,24 @@ export interface Challenge {
 }
 
 /**
- * Brix System Types
+ * SNS Domain Types
  */
+export interface Post {
+  id: string; // UUID
+  challengeId?: string;
+  createdBy: User; // or just userId? Typically expanded in frontend
+  title?: string;
+  content: string;
+  category: import('./enums').PostCategory;
+  isNotice: boolean;
+  isPinned: boolean;
+  likeCount: number;
+  commentCount: number;
+  viewCount: number;
+  images?: string[]; // Simplified for now
+  createdAt: string;
+}
+
 export type BrixGrade = 'HONEY' | 'GRAPE' | 'APPLE' | 'TANGERINE' | 'TOMATO' | 'BITTER';
 
 export interface BrixConfig {
