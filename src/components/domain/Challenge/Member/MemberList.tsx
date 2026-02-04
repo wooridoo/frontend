@@ -38,7 +38,7 @@ export function MemberList() {
     }
 
     const handleMemberClick = (memberId: number) => {
-        navigate(`members/${memberId}`);
+        navigate(`/challenges/${challengeId}/members/${memberId}`);
     };
 
     return (

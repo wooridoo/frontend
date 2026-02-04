@@ -1,6 +1,10 @@
 import type { Meeting } from '@/types/domain';
+import { client } from './client';
 
-// Mock Data
+// Default to MOCK if not explicitly disabled
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
+
+// Mock Data (Moved from inline or separate file if needed, keeping inline for now as per plan)
 const MOCK_MEETINGS: Meeting[] = [
   {
     id: '1',
@@ -32,28 +36,57 @@ const MOCK_MEETINGS: Meeting[] = [
     currentMembers: 0,
     status: 'SCHEDULED',
     myStatus: 'NONE'
+  },
+  {
+    id: '3',
+    challengeId: '2',
+    title: '영어 회화 스터디 1회차',
+    description: '기본적인 자기소개와 프리토킹 시간을 가집니다.',
+    date: '2026-02-15T20:00:00',
+    location: '강남구 역삼동 스터디룸',
+    isOnline: false,
+    maxMembers: 10,
+    currentMembers: 3,
+    status: 'SCHEDULED',
+    myStatus: 'NONE',
+    members: [
+      { userId: 5, nickname: 'David', status: 'ATTENDING', profileImage: 'https://i.pravatar.cc/150?u=5' }
+    ]
   }
 ];
 
 export async function getMeeting(id: string): Promise<Meeting> {
-  // Simulate Network Delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  const found = MOCK_MEETINGS.find(m => m.id === id);
-  if (!found) {
-    throw new Error('Meeting not found');
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const found = MOCK_MEETINGS.find(m => m.id === id);
+    if (!found) throw new Error('Meeting not found');
+    return found;
   }
-  return found;
+
+  // client.get returns the unwrapped 'data' object from the API response
+  const meeting = await client.get<Meeting>(`/meetings/${id}`);
+  return meeting;
 }
 
 export async function getChallengeMeetings(challengeId: string): Promise<Meeting[]> {
-  // Simulate Network Delay
-  await new Promise(resolve => setTimeout(resolve, 500));
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return MOCK_MEETINGS.filter(m => m.challengeId === challengeId);
+  }
 
-  return MOCK_MEETINGS.filter(m => m.challengeId === challengeId);
+  // API returns { content: Meeting[], page: ... }
+  const response = await client.get<{ content: Meeting[] }>(`/challenges/${challengeId}/meetings`);
+
+  // Checking for content existence to avoid undefined return
+  return response?.content || [];
 }
 
 export async function attendMeeting(meetingId: string, status: 'ATTENDING' | 'ABSENT'): Promise<void> {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  console.log(`Updated meeting ${meetingId} status to ${status}`);
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log(`[Mock] Updated meeting ${meetingId} status to ${status}`);
+    return;
+  }
+
+  await client.post(`/meetings/${meetingId}/attend`, { status });
 }

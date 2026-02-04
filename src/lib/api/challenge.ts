@@ -189,8 +189,9 @@ async function mockGetChallenge(challengeId: string): Promise<ChallengeInfo> {
 export async function getChallenge(challengeId: string): Promise<ChallengeInfo> {
   if (USE_MOCK) return mockGetChallenge(challengeId);
 
-  const { data } = await client.get<{ data: ChallengeInfo }>(`/challenges/${challengeId}`);
-  return data;
+  // client.get returns the unwrapped data (ChallengeInfo)
+  const challenge = await client.get<ChallengeInfo>(`/challenges/${challengeId}`);
+  return challenge;
 }
 
 /**
@@ -215,8 +216,9 @@ export async function getChallenges(params?: { query?: string; category?: string
     return results;
   }
 
-  const { data } = await client.get<{ data: ChallengeInfo[] }>('/challenges', { params });
-  return data;
+  // client.get returns unwrapped data { content: ..., page: ... }
+  const response = await client.get<{ content: ChallengeInfo[] }>('/challenges', { params });
+  return response.content;
 }
 
 /**

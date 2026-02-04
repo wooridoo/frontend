@@ -16,9 +16,9 @@ export interface Meeting {
     description: string;
     date: string; // ISO Date
     location: string;
-    locationUrl?: string; // Map link
     isOnline: boolean;
-    meetingUrl?: string; // Online meeting link (Added based on API specs commonly having this for online meetings)
+    // meetingUrl?: string; // Removed to align with API Spec
+    // locationUrl?: string; // Removed to align with API Spec
     maxMembers: number;
     currentMembers: number;
     status: 'SCHEDULED' | 'COMPLETED' | 'CANCELED';

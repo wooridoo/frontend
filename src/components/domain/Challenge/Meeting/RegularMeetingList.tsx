@@ -12,7 +12,7 @@ export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
   return (
     <div className={styles.meetingList}>
       {data.map(meeting => (
-        <Link key={meeting.id} to={`meetings/${meeting.id}`} className={styles.meetingItem}>
+        <Link key={meeting.id} to={`/challenges/${challengeId}/meetings/${meeting.id}`} className={styles.meetingItem}>
           <div className={styles.meetingHeader}>
             <span className={styles.meetingTitle}>{meeting.title}</span>
             <span className={styles.meetingStatus}>
