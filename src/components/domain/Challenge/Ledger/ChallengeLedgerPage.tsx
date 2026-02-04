@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useChallengeAccount } from '@/hooks/useLedger';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
+import { formatCurrency } from '@/utils/format';
+import { ExpenseList } from './ExpenseList';
 import styles from './ChallengeLedgerPage.module.css';
 
 export function ChallengeLedgerPage() {
@@ -25,19 +27,19 @@ export function ChallengeLedgerPage() {
       <section className={styles.summaryCard}>
         <div className={styles.summaryLabel}>현재 잔액</div>
         <div className={styles.summaryBalance}>
-          {data.balance.toLocaleString()}원
+          {formatCurrency(data.balance, { withSuffix: true })}
         </div>
         <div className={styles.summaryStats}>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>이번 달 입금</div>
             <div className={`${styles.statValue} ${styles.income}`}>
-              +{data.stats.monthlyAverage.support.toLocaleString()}
+              +{formatCurrency(data.stats.monthlyAverage.support, { symbol: false })}
             </div>
           </div>
           <div className={styles.statItem}>
             <div className={styles.statLabel}>이번 달 지출</div>
             <div className={`${styles.statValue} ${styles.expense}`}>
-              -{data.stats.monthlyAverage.expense.toLocaleString()}
+              -{formatCurrency(data.stats.monthlyAverage.expense, { symbol: false })}
             </div>
           </div>
         </div>
@@ -78,12 +80,18 @@ export function ChallengeLedgerPage() {
               </div>
               <div className={`${styles.transactionAmount} ${['SUPPORT', 'DEPOSIT'].includes(tx.type) ? styles.plus : styles.minus}`}>
                 {['SUPPORT', 'DEPOSIT'].includes(tx.type) ? '+' : '-'}
-                {tx.amount.toLocaleString()}
+                {formatCurrency(tx.amount, { symbol: false })}
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {/* 4. Expense List (New) */}
+      <section className={styles.expenseSection}>
+        <ExpenseList />
+      </section>
     </div>
   );
 }
+

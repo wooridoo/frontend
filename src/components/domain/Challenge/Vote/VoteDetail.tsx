@@ -2,7 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useVoteDetail, useCastVote } from '../../../../hooks/useVote';
 import { Button, Loading } from '../../../../components/common';
 import { VoteStatusBadge } from './VoteStatusBadge';
-import type { VoteOption } from '../../../../types/domain';
+import { VoteStatus, type VoteOption } from '../../../../types/domain';
+import { formatCurrency } from '@/utils/format';
 import styles from './VoteDetail.module.css';
 
 export function VoteDetail() {
@@ -20,7 +21,7 @@ export function VoteDetail() {
     }
   };
 
-  const isEnded = vote.status !== 'IN_PROGRESS';
+  const isEnded = vote.status !== VoteStatus.PENDING;
   const hasVoted = !!vote.myVote;
   const showResults = isEnded || hasVoted;
 
@@ -54,7 +55,7 @@ export function VoteDetail() {
         {vote.targetInfo && (
           <div className={styles.targetInfo}>
             <span className={styles.targetLabel}>관련 항목:</span>
-            {vote.type === 'EXPENSE' ? `${vote.targetInfo.amount?.toLocaleString()}원 지출` : '멤버 강퇴'}
+            {vote.type === 'EXPENSE' ? `${formatCurrency(vote.targetInfo.amount ?? 0, { withSuffix: true })} 지출` : '멤버 강퇴'}
           </div>
         )}
       </div>

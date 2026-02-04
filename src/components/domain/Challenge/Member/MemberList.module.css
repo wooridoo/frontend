@@ -1,0 +1,98 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.summary {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+.summaryItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.summaryCount {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.statusActive {
+    color: var(--color-success);
+}
+
+.statusOverdue {
+    color: var(--color-error);
+}
+
+.statusGrace {
+    color: var(--color-warning);
+}
+
+/* Filter Tabs */
+.tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-1);
+    background: var(--color-background);
+    border-radius: var(--radius-lg);
+}
+
+.tab {
+    flex: 1;
+    padding: var(--space-2) var(--space-3);
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    color: var(--color-text-primary);
+}
+
+.tabActive {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Member List */
+.memberList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.emptyState {
+    padding: var(--space-8);
+    text-align: center;
+    color: var(--color-text-secondary);
+}
+
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}

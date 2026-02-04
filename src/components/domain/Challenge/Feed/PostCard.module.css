@@ -1,5 +1,5 @@
 .card {
-  background-color: white;
+  background-color: var(--color-surface);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   margin-bottom: var(--space-4);
@@ -8,9 +8,9 @@
 }
 
 .noticeCard {
-  background-color: #FFF7ED;
+  background-color: var(--color-warning-subtle);
   /* Light orange tint */
-  border-color: #FFEDD5;
+  border-color: var(--color-warning-border);
 }
 
 /* Header */
@@ -62,8 +62,8 @@
 
 .noticeBadge {
   font-size: 10px;
-  background-color: #EF4444;
-  color: white;
+  background-color: var(--color-danger);
+  color: var(--color-white);
   padding: 1px 4px;
   border-radius: 4px;
   font-weight: 600;
@@ -93,7 +93,7 @@
 
 .pinIcon {
   display: inline-block;
-  color: #EF4444;
+  color: var(--color-danger);
   margin-right: 6px;
   transform: rotate(45deg);
 }

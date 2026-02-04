@@ -29,7 +29,7 @@ const DUMMY_USER: User = {
     completedChallenges: 1,
     totalSupportAmount: 50000
   },
-  participatingChallengeIds: []
+  participatingChallengeIds: [1, 2, 3] // 개발용: 기본 참여 챌린지
 };
 
 import { persist } from 'zustand/middleware';

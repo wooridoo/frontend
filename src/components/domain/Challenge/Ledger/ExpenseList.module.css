@@ -1,0 +1,151 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2, 8px);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg, 18px);
+  font-weight: 600;
+  color: var(--color-text-primary, #111);
+}
+
+.totalAmount {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-secondary, #666);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+}
+
+.expenseItem {
+  background: var(--color-bg-surface, #fff);
+  border: 1px solid var(--color-border-default, #e5e5e5);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-4, 16px);
+  transition: box-shadow 0.2s ease;
+}
+
+.expenseItem:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.expenseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-2, 8px);
+}
+
+.expenseInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+}
+
+.categoryBadge {
+  font-size: var(--font-size-xs, 12px);
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-primary-subtle, #e8f4ff);
+  color: var(--color-primary, #3b82f6);
+  font-weight: 500;
+}
+
+.expenseTitle {
+  font-weight: 600;
+  color: var(--color-text-primary, #111);
+}
+
+.statusBadge {
+  font-size: var(--font-size-xs, 12px);
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+  font-weight: 500;
+}
+
+.statusBadge.pending {
+  background: var(--color-warning-subtle, #fff7e6);
+  color: var(--color-warning, #f59e0b);
+}
+
+.statusBadge.approved {
+  background: var(--color-success-subtle, #ecfdf5);
+  color: var(--color-success, #10b981);
+}
+
+.statusBadge.rejected {
+  background: var(--color-danger-subtle, #fef2f2);
+  color: var(--color-danger, #ef4444);
+}
+
+.statusBadge.paid {
+  background: var(--color-primary-subtle, #e8f4ff);
+  color: var(--color-primary, #3b82f6);
+}
+
+.expenseDesc {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-secondary, #666);
+  margin-bottom: var(--space-3, 12px);
+  line-height: 1.5;
+}
+
+.expenseFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.requester {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text-secondary, #666);
+}
+
+.requesterAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.amount {
+  font-weight: 600;
+}
+
+.normalAmount {
+  color: var(--color-danger, #ef4444);
+}
+
+.rejectedAmount {
+  color: var(--color-text-muted, #999);
+  text-decoration: line-through;
+}
+
+.expenseDate {
+  font-size: var(--font-size-xs, 12px);
+  color: var(--color-text-muted, #999);
+  margin-top: var(--space-2, 8px);
+  text-align: right;
+}
+
+.empty {
+  text-align: center;
+  padding: var(--space-8, 32px);
+  color: var(--color-text-muted, #999);
+  background: var(--color-bg-subtle, #fafafa);
+  border-radius: var(--radius-lg, 12px);
+}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useVotes } from '../../../../hooks/useVote';
 import { VoteItem } from './VoteItem';
 import { Button, Loading } from '../../../../components/common';
+import { VoteStatus } from '../../../../types/domain';
 import styles from './VoteList.module.css';
 
 export function VoteList() {
@@ -12,12 +13,12 @@ export function VoteList() {
 
   const { data: votes, isLoading, error } = useVotes(
     id!,
-    tab === 'IN_PROGRESS' ? 'IN_PROGRESS' : undefined
+    tab === 'IN_PROGRESS' ? VoteStatus.PENDING : undefined
   );
 
   // Filter for completed if needed (as API might return mixed if status param not perfectly aligned with UI tab logic yet)
   const displayVotes = votes?.filter(v =>
-    tab === 'IN_PROGRESS' ? v.status === 'IN_PROGRESS' : v.status !== 'IN_PROGRESS'
+    tab === 'IN_PROGRESS' ? v.status === VoteStatus.PENDING : v.status !== VoteStatus.PENDING
   );
 
   if (isLoading) return <Loading />;
