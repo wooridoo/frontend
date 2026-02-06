@@ -49,12 +49,12 @@
 }
 
 .income {
-  color: #60a5fa;
+  color: var(--color-primary-light);
   /* Blue-400 */
 }
 
 .expense {
-  color: #f87171;
+  color: var(--color-danger);
   /* Red-400 */
 }
 
@@ -172,5 +172,9 @@
 }
 
 .minus {
-  color: var(--color-error-600);
+  color: var(--color-danger, #ef4444);
+}
+
+.expenseSection {
+  margin-top: var(--space-6, 24px);
 }

@@ -1,37 +1,49 @@
-import { Outlet } from 'react-router-dom';
-import { ChallengeHero } from '../Dashboard/ChallengeHero';
+import { Outlet, useParams } from 'react-router-dom';
+import { ChallengeHero, ChallengeHeroSkeleton } from '../Dashboard/ChallengeHero';
 import { ChallengeStats } from '../Dashboard/ChallengeStats';
 import { ChallengeTabs } from '../Dashboard/ChallengeTabs';
+import { useChallengeDetail } from '@/hooks/useChallenge';
 import styles from './ChallengeDashboardLayout.module.css';
 
 export function ChallengeDashboardLayout() {
-  // Mock Data (In reality, fetch from React Query using URL params id)
-  const challengeData = {
-    title: '책벌레들',
-    category: '인증',
-    leaderName: '김철수',
-    leaderScore: 65.5,
-  };
+  const { id } = useParams<{ id: string }>();
+  const { data: challenge, isLoading, error } = useChallengeDetail(id);
+
+  if (isLoading) {
+    return (
+      <div className={styles.layout}>
+        <ChallengeHeroSkeleton />
+        {/* Skeleton for Stats & Tabs could be added here */}
+        <div style={{ height: 200 }}></div>
+      </div>
+    );
+  }
+
+  if (error || !challenge) {
+    return (
+      <div className={styles.layout}>
+        <div style={{ padding: 40, textAlign: 'center' }}>
+          <h3>챌린지 정보를 불러올 수 없습니다.</h3>
+          <p>{error?.message || '잠시 후 다시 시도해주세요.'}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.layout}>
       {/* 1. Hero */}
-      <ChallengeHero
-        title={challengeData.title}
-        category={challengeData.category}
-        leaderName={challengeData.leaderName}
-        leaderScore={challengeData.leaderScore}
-      />
+      <ChallengeHero challenge={challenge} />
 
       {/* 2. Stats Dashboard */}
-      <ChallengeStats />
+      <ChallengeStats challengeId={id} />
 
       {/* 3. Sticky Tabs */}
       <ChallengeTabs />
 
       {/* 4. Tab Content */}
       <main className={styles.content}>
-        <Outlet />
+        <Outlet context={{ challenge }} />
       </main>
     </div>
   );

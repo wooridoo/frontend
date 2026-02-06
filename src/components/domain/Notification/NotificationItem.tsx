@@ -4,6 +4,7 @@ import { Calendar, CreditCard, MessageCircle, Info } from 'lucide-react';
 import clsx from 'clsx';
 import type { Notification } from '@/types/domain';
 import { useVoteMeeting, useApprovePayment } from '@/lib/api/notification';
+import { formatCurrency } from '@/utils/format';
 import styles from './NotificationItem.module.css';
 
 interface NotificationItemProps {
@@ -86,7 +87,7 @@ export function NotificationItem({ notification, onClick }: NotificationItemProp
             className={clsx(styles.actionBtn, styles.primary)}
             onClick={handlePayment}
           >
-            {notification.data.amount.toLocaleString()}원 결제 승인
+            {formatCurrency(notification.data.amount, { withSuffix: true })} 결제 승인
           </button>
         </div>
       )}

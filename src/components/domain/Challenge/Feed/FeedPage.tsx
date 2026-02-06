@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import styles from './FeedPage.module.css';
 import { PostEditor } from './PostEditor';
 import { PostCard } from './PostCard';
-import { useChallengeGuard } from '@/hooks/useChallengeGuard';
+import { useFeed } from '@/hooks/useFeed';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { VerificationModal } from '../VerificationModal';
 import { useVerificationModalStore } from '@/store/useVerificationModalStore';
@@ -11,7 +11,7 @@ import { Camera } from 'lucide-react';
 
 export function FeedPage() {
   const { id } = useParams<{ id: string }>();
-  const { data: posts, isLoading, error } = useChallengeGuard(id || '');
+  const { data: posts, isLoading, error } = useFeed(id);
   const verificationModal = useVerificationModalStore();
 
   if (isLoading) {
@@ -27,9 +27,15 @@ export function FeedPage() {
     );
   }
 
-  // Error is handled by useEffect in the hook (Redirects), but we render null/fallback here
+  // Error handling: API errors are thrown, render empty state
   if (error) {
-    return null;
+    return (
+      <div className={styles.feedContainer}>
+        <div className="text-center py-8 text-gray-500">
+          피드를 불러오는 중 오류가 발생했습니다.
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -47,14 +53,18 @@ export function FeedPage() {
 
       <PostEditor />
       <div className={styles.feedList}>
-        {posts?.map(post => (
-          <PostCard key={post.id} {...post} />
-        ))}
+        {posts?.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            아직 게시글이 없습니다. 첫 번째 글을 작성해보세요!
+          </div>
+        ) : (
+          posts?.map(post => (
+            <PostCard key={post.id} {...post} />
+          ))
+        )}
       </div>
 
-      <VerificationModal />
       <VerificationModal />
     </div>
   );
 }
-

@@ -1,27 +1,25 @@
 import { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import styles from './ExplorePage.module.css';
 import { PageContainer } from '@/components/layout';
 import { PageHeader } from '@/components/navigation';
-import { MOCK_CHALLENGES } from '@/lib/api/mocks/challenges';
+import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { Category } from '@/types/enums';
-import type { Challenge } from '@/types/domain';
 import { PATHS } from '@/routes/paths';
 
 const CATEGORIES = ['전체', '건강', '역량', '취미', '자산', '생활'];
 
-// Helper to map UI Category strings to Enum or filter logic
-function matchCategory(uiCategory: string, challengeCategory: Category): boolean {
-  if (uiCategory === '전체') return true;
-
-  // Mapping logic
+// UI Category -> API Category Enum Mapping
+function mapCategoryToEnum(uiCategory: string): string | undefined {
+  if (uiCategory === '전체') return undefined;
   switch (uiCategory) {
-    case '건강': return challengeCategory === Category.EXERCISE;
-    case '역량': return challengeCategory === Category.STUDY;
-    case '자산': return challengeCategory === Category.SAVINGS;
-    case '취미': return challengeCategory === Category.HOBBY;
-    case '생활': return challengeCategory === Category.OTHER || challengeCategory === Category.CULTURE || challengeCategory === Category.FOOD || challengeCategory === Category.TRAVEL;
-    default: return false;
+    case '건강': return Category.EXERCISE;
+    case '역량': return Category.STUDY;
+    case '자산': return Category.SAVINGS;
+    case '취미': return Category.HOBBY;
+    case '생활': return Category.OTHER; // 생활은 매핑이 모호하므로 OTHER로 (Legacy 로직 참고)
+    default: return undefined;
   }
 }
 
@@ -30,15 +28,17 @@ export function ExplorePage() {
   const query = searchParams.get('q') || '';
   const [selectedCategory, setSelectedCategory] = useState('전체');
 
-  // Filter for Search Results
-  const searchResults = query
-    ? MOCK_CHALLENGES.filter(c => c.name.toLowerCase().includes(query.toLowerCase()))
-    : [];
-
-  // Filter for Category
-  const categoryResults = MOCK_CHALLENGES.filter(challenge => {
-    return matchCategory(selectedCategory, challenge.category);
+  // Query Function
+  const { data: challenges, isLoading } = useQuery({
+    queryKey: ['challenges', 'explore', query, selectedCategory],
+    queryFn: () => getChallenges({
+      query: query || undefined,
+      category: mapCategoryToEnum(selectedCategory)
+    }),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
+
+  const content = challenges || [];
 
   return (
     <PageContainer className={styles.page}>
@@ -64,12 +64,14 @@ export function ExplorePage() {
         {query && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>
-              '{query}' 검색결과 <span className={styles.count}>{searchResults.length}</span>
+              '{query}' 검색결과 <span className={styles.count}>{content.length}</span>
             </h2>
-            {searchResults.length > 0 ? (
+            {isLoading ? (
+              <div className={styles.emptyState}>검색 중...</div>
+            ) : content.length > 0 ? (
               <div className={styles.grid}>
-                {searchResults.map(challenge => (
-                  <ChallengeCard key={challenge.id} challenge={challenge} />
+                {content.map(challenge => (
+                  <ChallengeCard key={challenge.challengeId} challenge={challenge} />
                 ))}
               </div>
             ) : (
@@ -78,35 +80,39 @@ export function ExplorePage() {
           </section>
         )}
 
-        {/* 2. Recommended / Category Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            {query ? '이런 챌린지는 어때요?' : (selectedCategory === '전체' ? '추천 챌린지' : `${selectedCategory} 챌린지`)}
-          </h2>
-          <div className={styles.grid}>
-            {categoryResults.slice(0, 8).map(challenge => (
-              <ChallengeCard key={challenge.id} challenge={challenge} />
-            ))}
-          </div>
-        </section>
+        {/* 2. Recommended / Category Section (Only show if not searching or separate logic) */}
+        {!query && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>
+              {selectedCategory === '전체' ? '전체 챌린지' : `${selectedCategory} 챌린지`}
+            </h2>
+            {isLoading ? (
+              <div className={styles.emptyState}>로딩 중...</div>
+            ) : (
+              <div className={styles.grid}>
+                {content.slice(0, 8).map(challenge => (
+                  <ChallengeCard key={challenge.challengeId} challenge={challenge} />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
       </div>
     </PageContainer>
   );
 }
 
-function ChallengeCard({ challenge }: { challenge: Challenge }) {
-  // Map Category Enum back to display string if needed, or use directly
-  // For now simple display
+function ChallengeCard({ challenge }: { challenge: ChallengeInfo }) {
   return (
-    <Link to={PATHS.CHALLENGE.DETAIL(challenge.id)} className={styles.card}>
+    <Link to={PATHS.CHALLENGE.DETAIL(String(challenge.challengeId))} className={styles.card}>
       <div className={styles.imageWrapper}>
-        <img src={challenge.thumbnailUrl || 'https://via.placeholder.com/300'} alt={challenge.name} className={styles.image} />
+        <img src={challenge.thumbnailUrl || 'https://via.placeholder.com/300'} alt={challenge.title} className={styles.image} />
         <span className={styles.tag}>{challenge.category}</span>
       </div>
       <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{challenge.name}</h3>
+        <h3 className={styles.cardTitle}>{challenge.title}</h3>
         <div className={styles.cardFooter}>
-          <span className={styles.participants}>{challenge.currentMembers}명 참여 중</span>
+          <span className={styles.participants}>{challenge.memberCount.current}명 참여 중</span>
         </div>
       </div>
     </Link>

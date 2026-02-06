@@ -1,0 +1,179 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+/* Profile Section */
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+}
+
+.avatarWrapper {
+    position: relative;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.leaderBadge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--color-surface);
+}
+
+.leaderBadge svg {
+    width: 12px;
+    height: 12px;
+    color: white;
+}
+
+.nickname {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.brix {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    background: var(--color-background);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+}
+
+.memberSince {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+}
+
+/* Stats Grid */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+}
+
+.statCard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+}
+
+.statLabel {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.statLabel svg {
+    width: 16px;
+    height: 16px;
+}
+
+.statValue {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.statUnit {
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+}
+
+/* Support History */
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.sectionTitle {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.historyList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.historyItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+}
+
+.historyMonth {
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.historyAmount {
+    font-weight: 600;
+    color: var(--color-success);
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4) 0;
+}
+
+.delegateButton {
+    flex: 1;
+    padding: var(--space-3);
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.delegateButton:hover {
+    background: var(--color-primary-dark);
+}
+
+.delegateButton:disabled {
+    background: var(--color-text-tertiary);
+    cursor: not-allowed;
+}
+
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}

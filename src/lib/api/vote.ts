@@ -1,4 +1,4 @@
-import type { Vote, VoteOption, VoteType, VoteStatus } from '../../types/domain';
+import { type Vote, type VoteOption, type VoteType, VoteStatus } from '../../types/domain';
 
 // Mock Data for Logic Verification
 const MOCK_VOTES: Vote[] = [
@@ -8,7 +8,7 @@ const MOCK_VOTES: Vote[] = [
     type: 'EXPENSE',
     title: '회식비 30만원 지출 승인',
     description: '1월 정기모임 회식비입니다. 강남역 맛집에서 진행 예정입니다.',
-    status: 'IN_PROGRESS',
+    status: VoteStatus.PENDING,
     createdBy: {
       userId: 1,
       nickname: '홍길동',
@@ -38,7 +38,7 @@ const MOCK_VOTES: Vote[] = [
     type: 'KICK',
     title: '멤버 김철수 강퇴 투표',
     description: '3회 연속 무단 불참으로 인한 강퇴 건의입니다.',
-    status: 'APPROVED',
+    status: VoteStatus.APPROVED,
     createdBy: {
       userId: 1,
       nickname: '홍길동',
@@ -79,10 +79,10 @@ export async function getChallengeVotes(
   let votes = [...MOCK_VOTES];
 
   if (status) {
-    if (status === 'IN_PROGRESS') {
-      votes = votes.filter(v => v.status === 'IN_PROGRESS');
+    if (status === VoteStatus.PENDING) {
+      votes = votes.filter(v => v.status === VoteStatus.PENDING);
     } else {
-      votes = votes.filter(v => v.status !== 'IN_PROGRESS');
+      votes = votes.filter(v => v.status !== VoteStatus.PENDING);
     }
   }
 
@@ -117,7 +117,7 @@ export async function createVote(
     type: data.type,
     title: data.title,
     description: data.description,
-    status: 'IN_PROGRESS',
+    status: VoteStatus.PENDING,
     createdBy: {
       userId: 1,
       nickname: 'Current User', // Mock

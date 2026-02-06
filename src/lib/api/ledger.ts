@@ -1,5 +1,20 @@
+/**
+ * Ledger (Challenge Account) API Module
+ * 
+ * Mock ↔ Spring 전환 가능 구조
+ * API 정의서 028번: 챌린지 어카운트 조회
+ */
+import { client } from './client';
 import type { ChallengeAccount } from '@/types/domain';
 
+// =====================
+// Mock 전환 플래그
+// =====================
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
+
+// =====================
+// Mock Data (028 Response)
+// =====================
 const MOCK_ACCOUNT: ChallengeAccount = {
   challengeId: 1,
   balance: 5000000,
@@ -42,32 +57,38 @@ const MOCK_ACCOUNT: ChallengeAccount = {
       amount: 100000,
       description: '이영희 2월 서포트 납입',
       createdAt: '2026-02-01T09:30:00Z'
-    },
-    {
-      transactionId: 102,
-      type: 'FEE',
-      amount: 500,
-      description: '1월 운용 수수료',
-      createdAt: '2026-01-31T23:59:00Z'
-    },
-    {
-      transactionId: 101,
-      type: 'EXPENSE',
-      amount: 120000,
-      description: '1월 정기모임 대관료',
-      createdAt: '2026-01-20T19:00:00Z'
     }
   ]
 };
 
+// =====================
+// Mock Functions
+// =====================
+async function mockGetChallengeAccount(challengeId: string): Promise<ChallengeAccount> {
+  await new Promise(resolve => setTimeout(resolve, 600));
+
+  // 간단한 ID 체크
+  if (challengeId === '999') {
+    throw new Error('Challenge not found');
+  }
+
+  return { ...MOCK_ACCOUNT, challengeId: Number(challengeId) };
+}
+
+// =====================
+// API Functions
+// =====================
+
+/**
+ * 챌린지 어카운트 조회 (028)
+ */
 export async function getChallengeAccount(challengeId: string): Promise<ChallengeAccount> {
-  if (!challengeId) throw new Error('Challenge ID is required');
+  if (USE_MOCK) {
+    return mockGetChallengeAccount(challengeId);
+  }
 
-  // Simulate Network Delay
-  await new Promise(resolve => setTimeout(resolve, 600)); // Little bit slower for drama
-
-  // In a real app, we would fetch by challengeId
-  // if (challengeId !== '1') throw new Error('Account not found');
-
-  return MOCK_ACCOUNT;
+  const { data } = await client.get<{ data: ChallengeAccount }>(
+    `/challenges/${challengeId}/account`
+  );
+  return data;
 }

@@ -79,10 +79,13 @@
   margin: 0 auto;
 }
 
+
+
 .actionButton {
   width: 100%;
   padding: var(--space-3);
-  background-color: var(--color-orange-500);
+  background-color: var(--color-primary);
+  /* Use primary token */
   color: white;
   border: none;
   border-radius: var(--radius-lg);
@@ -93,7 +96,7 @@
 }
 
 .actionButton:active {
-  background-color: var(--color-orange-600);
+  background-color: var(--color-primary-dark);
 }
 
 .actionButton:disabled {

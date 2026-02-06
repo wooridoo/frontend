@@ -13,9 +13,9 @@
 
 /* Alert Message */
 .alertMessage {
-  background-color: #FEF2F2;
+  background-color: var(--color-danger-bg);
   /* Red 50 */
-  color: #DC2626;
+  color: var(--color-danger);
   /* Red 600 */
   padding: 12px;
   border-radius: 8px;
@@ -44,7 +44,7 @@
 
 .subtitle {
   font-size: 14px;
-  color: #666;
+  color: var(--color-text-secondary);
   text-align: center;
 }
 
@@ -65,7 +65,7 @@
   margin: 24px 0;
   position: relative;
   font-size: 12px;
-  color: #999;
+  color: var(--color-text-tertiary);
 }
 
 .divider::before,
@@ -73,7 +73,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background-color: #eee;
+  background-color: var(--color-border-default);
 }
 
 .divider span {
@@ -108,11 +108,11 @@
 
 .signupPrompt {
   font-size: 14px;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .signupLink {
-  color: #FF6B00;
+  color: var(--color-primary);
   /* Brand color */
   font-weight: 600;
   text-decoration: none;

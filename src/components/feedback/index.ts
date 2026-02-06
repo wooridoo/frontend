@@ -1,2 +1,2 @@
-export { Skeleton } from './Skeleton';
-export { EmptyState } from './EmptyState';
+export { Skeleton } from './Skeleton/Skeleton';
+export { EmptyState } from './EmptyState/EmptyState';

@@ -22,6 +22,8 @@ import { ChallengeLedgerPage } from './components/domain/Challenge/Ledger/Challe
 import { VoteList } from './components/domain/Challenge/Vote/VoteList';
 import { CreateVote } from './components/domain/Challenge/Vote/CreateVote';
 import { VoteDetail } from './components/domain/Challenge/Vote/VoteDetail';
+import { MemberList } from './components/domain/Challenge/Member/MemberList';
+import { MemberDetail } from './components/domain/Challenge/Member/MemberDetail';
 import { useParams } from 'react-router-dom';
 
 // Wrapper to pass challengeId param
@@ -74,7 +76,8 @@ function App() {
                       <Route path="votes" element={<VoteList />} />
                       <Route path="votes/new" element={<CreateVote />} />
                       <Route path="votes/:voteId" element={<VoteDetail />} />
-                      <Route path="members" element={<div>멤버 페이지 준비중</div>} />
+                      <Route path="members" element={<MemberList />} />
+                      <Route path="members/:memberId" element={<MemberDetail />} />
                     </Route>
                   </Route>
                 </Route>

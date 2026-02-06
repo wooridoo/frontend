@@ -24,6 +24,13 @@
   --color-orange-600: #D43D16;
   --color-orange-50: #FFF7ED;
 
+  /* Aliases for Component Compat */
+  --color-primary: var(--color-orange-500);
+  --color-primary-dark: var(--color-orange-600);
+  --color-red-500: var(--color-error);
+  --color-red-600: #B91C1C;
+  /* Darker red matching brix-tomato-text or custom */
+
   /* Grey Scale */
   --color-grey-900: #1C1917;
   --color-grey-700: #44403C;
