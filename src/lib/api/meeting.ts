@@ -88,7 +88,7 @@ export async function attendMeeting(meetingId: string, status: 'ATTENDING' | 'AB
     return;
   }
 
-  await client.post(`/meetings/${meetingId}/attend`, { status });
+  await client.post(`/meetings/${meetingId}/attendance`, { status });
 }
 
 // --- Additional Meeting API Functions ---

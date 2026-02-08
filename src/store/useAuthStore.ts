@@ -10,30 +10,10 @@ interface AuthState {
   joinChallenge: (challengeId: number) => void; // Simulation Action
 }
 
-const DUMMY_USER: User = {
-  userId: 1,
-  email: 'user@woorido.com',
-  name: '김우리',
-  nickname: '우리두',
-  profileImage: 'https://i.pravatar.cc/150?u=woorido',
-  status: UserStatus.ACTIVE, // Use Enum
-  brix: 72.5,
-  account: {
-    accountId: 101,
-    balance: 154000,
-    availableBalance: 154000,
-    lockedBalance: 0
-  },
-  stats: {
-    challengeCount: 3,
-    completedChallenges: 1,
-    totalSupportAmount: 50000
-  },
-  participatingChallengeIds: [1, 2, 3] // 개발용: 기본 참여 챌린지
-};
+
 
 import { persist } from 'zustand/middleware';
-import { UserStatus } from '@/types/enums';
+
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -43,7 +23,7 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       login: (userData, token) => set({
         isLoggedIn: true,
-        user: userData || DUMMY_USER,
+        user: userData || null,
         accessToken: token || 'mock-access-token',
       }),
       logout: () => set({

@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { PATHS } from '@/routes/paths';
 import clsx from 'clsx';
 import { LogIn, UserPlus } from 'lucide-react';
 import { ProfileMenu } from '@/components/ui/Overlay';
 import { NotificationOverlay } from '@/components/domain/Notification/NotificationOverlay';
 import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { useSignupModalStore } from '@/store/useSignupModalStore';
 import { BrixBadge } from '@/components/domain/BrixBadge/BrixBadge';
 import { getBrixGrade, formatBrix } from '@/lib/brix';
 import { formatCurrency } from '@/lib/utils';
@@ -18,8 +17,8 @@ interface NavRightProps {
 }
 
 export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) {
-  const navigate = useNavigate();
-  const { onOpen } = useLoginModalStore();
+  const { onOpen: openLogin } = useLoginModalStore();
+  const { onOpen: openSignup } = useSignupModalStore();
 
   return (
     <div className={styles.root}>
@@ -65,7 +64,7 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
         <div className={styles.authButtons}>
           <button
             className={clsx(styles.button, styles.secondaryButton)}
-            onClick={() => onOpen()}
+            onClick={() => openLogin()}
             aria-label="로그인"
           >
             <LogIn size={16} />
@@ -73,7 +72,7 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
           </button>
           <button
             className={clsx(styles.button, styles.primaryButton)}
-            onClick={() => navigate(PATHS.AUTH.SIGNUP)}
+            onClick={() => openSignup()}
             aria-label="회원가입"
           >
             <UserPlus size={16} />

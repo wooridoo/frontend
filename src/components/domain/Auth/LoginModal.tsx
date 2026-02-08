@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Input } from '@/components/ui';
 import logo from '@/assets/woorido_logo.svg';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { useSignupModalStore } from '@/store/useSignupModalStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import styles from './LoginModal.module.css';
 
@@ -26,6 +27,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginModal() {
   const { isOpen, onClose, redirectOnReject, message } = useLoginModalStore();
+  const { onOpen: openSignup } = useSignupModalStore();
   const { login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -35,6 +37,11 @@ export function LoginModal() {
     if (redirectOnReject) {
       navigate(redirectOnReject);
     }
+  };
+
+  const handleSignupLink = () => {
+    onClose();
+    openSignup();
   };
 
   const {
@@ -141,9 +148,9 @@ export function LoginModal() {
         <footer className={styles.footer}>
           <p className={styles.signupPrompt}>
             아직 회원이 아니신가요?{' '}
-            <Link to="/signup" className={styles.signupLink} onClick={onClose}>
+            <button type="button" onClick={handleSignupLink} className={styles.signupLink} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0 }}>
               회원가입
-            </Link>
+            </button>
           </p>
         </footer>
       </div>

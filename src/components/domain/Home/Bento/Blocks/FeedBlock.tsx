@@ -1,23 +1,33 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from './FeedBlock.module.css';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
-
-const INITIAL_ITEMS = [
-  { id: 1, title: '하루 물 2L 마시기', participants: 120, tag: '건강', image: 'https://picsum.photos/seed/water/300/200' },
-  { id: 2, title: '영어 단어 50개 암기', participants: 85, tag: '학습', image: 'https://picsum.photos/seed/eng/300/200' },
-  { id: 3, title: '매일 1만원 저축하기', participants: 230, tag: '재테크', image: 'https://picsum.photos/seed/money/300/200' },
-  { id: 4, title: '아침 6시 기상하기', participants: 50, tag: '생활', image: 'https://picsum.photos/seed/morning/300/200' },
-  { id: 5, title: '독서 30분', participants: 42, tag: '학습', image: 'https://picsum.photos/seed/book/300/200' },
-];
+import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 
 export function FeedBlock() {
-  const [items, setItems] = useState(INITIAL_ITEMS);
+  const [items, setItems] = useState<ChallengeInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { handleChallengeAction, isParticipant } = useAuthGuard();
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      setLoading(true);
+      try {
+        // Fetch challenges (using empty query for now to get a list)
+        const challenges = await getChallenges({ category: '전체' });
+        setItems(challenges);
+      } catch (error) {
+        console.error('Failed to fetch challenges:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChallenges();
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (containerRef.current) {
@@ -29,31 +39,16 @@ export function FeedBlock() {
     }
   };
 
-  // Mock Infinite Scroll
+  // Mock Infinite Scroll (API might not support pagination yet, so we just check scroll)
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
       // If we are close to the end (within 100px)
       if (scrollWidth - (scrollLeft + clientWidth) < 100 && !loading) {
-        loadMore();
+        // Implement pagination if API supports it later
+        // loadMore(); 
       }
     }
-  };
-
-  const loadMore = () => {
-    setLoading(true);
-    // Simulate API delay
-    setTimeout(() => {
-      const newItems = Array.from({ length: 4 }).map((_, i) => ({
-        id: items.length + i + 1,
-        title: `새로운 챌린지 ${items.length + i + 1}`,
-        participants: Math.floor(Math.random() * 100),
-        tag: ['건강', '학습', '재테크', '취미'][Math.floor(Math.random() * 4)],
-        image: `https://picsum.photos/300/200?random=${items.length + i}`,
-      }));
-      setItems((prev) => [...prev, ...newItems]);
-      setLoading(false);
-    }, 1000);
   };
 
   return (
@@ -75,29 +70,33 @@ export function FeedBlock() {
         onScroll={handleScroll}
       >
         {items.map((item) => (
-          <div key={item.id} className={styles.card}>
-            <Link to={`/challenges/${item.id}`} className={styles.imageWrapper}>
-              <img src={item.image} alt={item.title} className={styles.image} />
+          <div key={item.challengeId} className={styles.card}>
+            <Link to={`/challenges/${item.challengeId}`} className={styles.imageWrapper}>
+              <img
+                src={item.thumbnailUrl || `https://picsum.photos/seed/${item.challengeId}/300/200`}
+                alt={item.title}
+                className={styles.image}
+              />
             </Link>
             <div className={styles.cardContent}>
-              <span className={styles.tag}>{item.tag}</span>
-              <Link to={`/challenges/${item.id}`} className={styles.titleLink}>
+              <span className={styles.tag}>{item.category}</span>
+              <Link to={`/challenges/${item.challengeId}`} className={styles.titleLink}>
                 <h4 className={styles.cardTitle}>{item.title}</h4>
               </Link>
               <div className={styles.cardFooter}>
-                <span className={styles.participants}>{item.participants}명 참여</span>
+                <span className={styles.participants}>{item.memberCount.current}명 참여</span>
                 <button
                   className={styles.joinBtn}
-                  onClick={() => handleChallengeAction(item.id)}
+                  onClick={() => handleChallengeAction(item.challengeId)}
                 >
-                  {isParticipant(item.id) ? '이동' : '참여'}
+                  {isParticipant(item.challengeId) ? '이동' : '참여'}
                 </button>
               </div>
             </div>
           </div>
         ))}
-        {loading && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '100px' }}>
+        {loading && items.length === 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '20px' }}>
             <Loader2 className="animate-spin text-gray-400" />
           </div>
         )}

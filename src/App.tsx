@@ -1,19 +1,14 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { PATHS } from '@/routes/paths';
-import { HomePage } from './pages/HomePage';
-import { ExplorePage } from './pages/ExplorePage';
-import { RecommendedPage } from './pages/RecommendedPage';
-import { MyProfilePage } from './pages/MyProfilePage';
-import { MyChallengesPage } from './pages/MyChallengesPage';
-import { AccountPage } from './pages/AccountPage';
-import { TransactionHistoryPage } from './pages/TransactionHistoryPage';
+
 import { ChallengeDashboardLayout } from './components/domain/Challenge/Layout/ChallengeDashboardLayout';
-import { FeedPage } from './components/domain/Challenge/Feed/FeedPage';
+
 import { MainLayout } from './components/layout';
 import { LoginModal } from './components/domain/Auth/LoginModal';
+import { SignupModal } from './components/domain/Auth/SignupModal';
 import { JoinChallengeModal } from './components/domain/Challenge/JoinChallengeModal';
 import { CreateChallengeModal } from './components/domain/Challenge/CreateChallengeModal';
 import { CreditChargeModal } from './components/domain/Account/CreditChargeModal';
@@ -33,19 +28,31 @@ import { DeleteChallengeModal } from './components/domain/Challenge/DeleteChalle
 import { LeaveChallengeModal } from './components/domain/Challenge/LeaveChallengeModal';
 import { SupportPaymentModal } from './components/domain/Challenge/SupportPaymentModal';
 import { PostDetailModal } from './components/domain/Challenge/Feed/PostDetailModal';
-import { NotFoundPage } from './pages/NotFoundPage';
+
 import { AuthGuard } from './components/auth/AuthGuard';
 import { ChallengeGuard } from './components/auth/ChallengeGuard';
 import { ErrorBoundary, Loading } from './components/common';
 import { RegularMeetingDetail } from './components/domain/Challenge/Meeting/RegularMeetingDetail';
 import { RegularMeetingList } from './components/domain/Challenge/Meeting/RegularMeetingList';
-import { ChallengeLedgerPage } from './components/domain/Challenge/Ledger/ChallengeLedgerPage';
+
 import { VoteList } from './components/domain/Challenge/Vote/VoteList';
 import { CreateVote } from './components/domain/Challenge/Vote/CreateVote';
 import { VoteDetail } from './components/domain/Challenge/Vote/VoteDetail';
 import { MemberList } from './components/domain/Challenge/Member/MemberList';
 import { MemberDetail } from './components/domain/Challenge/Member/MemberDetail';
 import { useParams } from 'react-router-dom';
+
+// Lazy Loading Pages
+const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
+const ExplorePage = lazy(() => import('./pages/ExplorePage').then(module => ({ default: module.ExplorePage })));
+const RecommendedPage = lazy(() => import('./pages/RecommendedPage').then(module => ({ default: module.RecommendedPage })));
+const MyProfilePage = lazy(() => import('./pages/MyProfilePage').then(module => ({ default: module.MyProfilePage })));
+const MyChallengesPage = lazy(() => import('./pages/MyChallengesPage').then(module => ({ default: module.MyChallengesPage })));
+const AccountPage = lazy(() => import('./pages/AccountPage').then(module => ({ default: module.AccountPage })));
+const TransactionHistoryPage = lazy(() => import('./pages/TransactionHistoryPage').then(module => ({ default: module.TransactionHistoryPage })));
+const FeedPage = lazy(() => import('./components/domain/Challenge/Feed/FeedPage').then(module => ({ default: module.FeedPage })));
+const ChallengeLedgerPage = lazy(() => import('./components/domain/Challenge/Ledger/ChallengeLedgerPage').then(module => ({ default: module.ChallengeLedgerPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })));
 
 // Wrapper to pass challengeId param
 function RegularMeetingListWrapper() {
@@ -104,12 +111,18 @@ function App() {
                   </Route>
                 </Route>
 
+                {/* Redirects for missing pages/modal triggers */}
+                <Route path="/signup" element={<Navigate to="/" replace />} />
+                <Route path="/login" element={<Navigate to="/" replace />} />
+                <Route path="/challenges" element={<Navigate to="/explore" replace />} />
+
                 {/* Shortcut: Global Feed -> My Main Challenge */}
                 <Route path={PATHS.FEED} element={<Navigate to={PATHS.CHALLENGE.FEED('1')} replace />} />
               </Route>
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
             <LoginModal />
+            <SignupModal />
             <JoinChallengeModal />
             <CreateChallengeModal />
             <CreditChargeModal />
