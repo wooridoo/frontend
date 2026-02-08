@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useAccessDeniedModalStore } from '@/components/domain/Auth/AccessDeniedModal';
+import { useAccessDeniedModalStore } from '@/store/useAccessDeniedModalStore';
 import { PATHS } from '@/routes/paths';
 
 export function ChallengeGuard() {

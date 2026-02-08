@@ -6,12 +6,33 @@ import { PATHS } from '@/routes/paths';
 import { HomePage } from './pages/HomePage';
 import { ExplorePage } from './pages/ExplorePage';
 import { RecommendedPage } from './pages/RecommendedPage';
+import { MyProfilePage } from './pages/MyProfilePage';
+import { MyChallengesPage } from './pages/MyChallengesPage';
+import { AccountPage } from './pages/AccountPage';
+import { TransactionHistoryPage } from './pages/TransactionHistoryPage';
 import { ChallengeDashboardLayout } from './components/domain/Challenge/Layout/ChallengeDashboardLayout';
 import { FeedPage } from './components/domain/Challenge/Feed/FeedPage';
 import { MainLayout } from './components/layout';
 import { LoginModal } from './components/domain/Auth/LoginModal';
 import { JoinChallengeModal } from './components/domain/Challenge/JoinChallengeModal';
+import { CreateChallengeModal } from './components/domain/Challenge/CreateChallengeModal';
+import { CreditChargeModal } from './components/domain/Account/CreditChargeModal';
+import { WithdrawModal } from './components/domain/Account/WithdrawModal';
 import { AccessDeniedModal } from './components/domain/Auth/AccessDeniedModal';
+import { PasswordResetModal } from './components/domain/Auth/PasswordResetModal';
+import { EditProfileModal } from './components/domain/Auth/EditProfileModal';
+import { WithdrawAccountModal } from './components/domain/Auth/WithdrawAccountModal';
+import { CreateMeetingModal } from './components/domain/Meeting/CreateMeetingModal';
+import { EditMeetingModal } from './components/domain/Meeting/EditMeetingModal';
+import { AttendanceResponseModal } from './components/domain/Meeting/AttendanceResponseModal';
+import { CompleteMeetingModal } from './components/domain/Meeting/CompleteMeetingModal';
+import { EditChallengeModal } from './components/domain/Challenge/EditChallengeModal';
+import { SupportSettingsModal } from './components/domain/Challenge/SupportSettingsModal';
+import { DelegateLeaderModal } from './components/domain/Challenge/DelegateLeaderModal';
+import { DeleteChallengeModal } from './components/domain/Challenge/DeleteChallengeModal';
+import { LeaveChallengeModal } from './components/domain/Challenge/LeaveChallengeModal';
+import { SupportPaymentModal } from './components/domain/Challenge/SupportPaymentModal';
+import { PostDetailModal } from './components/domain/Challenge/Feed/PostDetailModal';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { AuthGuard } from './components/auth/AuthGuard';
 import { ChallengeGuard } from './components/auth/ChallengeGuard';
@@ -56,11 +77,12 @@ function App() {
 
                 {/* My Routes - Protected */}
                 <Route element={<AuthGuard />}>
-                  <Route path={PATHS.MY.PROFILE} element={<div>마이페이지 준비중</div>} />
-                  <Route path={PATHS.MY.CHALLENGES} element={<div>나의 챌린지 준비중</div>} />
+                  <Route path={PATHS.MY.PROFILE} element={<MyProfilePage />} />
+                  <Route path={PATHS.MY.CHALLENGES} element={<MyChallengesPage />} />
                   <Route path={PATHS.MY.LEDGER} element={<div>나의 장부 준비중</div>} />
                   <Route path={PATHS.MY.SETTINGS} element={<div>설정 준비중</div>} />
-                  <Route path={PATHS.MY.ACCOUNT} element={<div>계정 관리 준비중</div>} />
+                  <Route path={PATHS.MY.ACCOUNT} element={<AccountPage />} />
+                  <Route path="/me/account/transactions" element={<TransactionHistoryPage />} />
                 </Route>
                 {/* Challenge Routes: Intro (Index) vs Dashboard (Sub-routes) */}
                 <Route path={PATHS.CHALLENGE.DETAIL(':id')}>
@@ -89,7 +111,27 @@ function App() {
             </Routes>
             <LoginModal />
             <JoinChallengeModal />
+            <CreateChallengeModal />
+            <CreditChargeModal />
+            <WithdrawModal />
             <AccessDeniedModal />
+            {/* Auth Modals */}
+            <PasswordResetModal />
+            <EditProfileModal />
+            <WithdrawAccountModal />
+            {/* Meeting Modals */}
+            <CreateMeetingModal />
+            <EditMeetingModal />
+            <AttendanceResponseModal />
+            <CompleteMeetingModal />
+            {/* Challenge Management Modals */}
+            <EditChallengeModal />
+            <SupportSettingsModal />
+            <DelegateLeaderModal />
+            <DeleteChallengeModal />
+            <LeaveChallengeModal />
+            <SupportPaymentModal />
+            <PostDetailModal />
           </BrowserRouter>
         </Suspense>
       </ErrorBoundary>

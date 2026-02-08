@@ -247,3 +247,45 @@ export function validateChallengeAccess(challengeId: string): void {
     throw new ApiError('해당 챌린지에 참여하지 않았습니다.', 403);
   }
 }
+
+// --- Additional Challenge API Functions ---
+
+export interface UpdateChallengeRequest {
+  challengeId: number;
+  title: string;
+  description?: string;
+  category: string;
+  thumbnailUrl?: string;
+  maxMembers: number;
+}
+
+export async function updateChallenge(data: UpdateChallengeRequest): Promise<ChallengeInfo> {
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log('[Mock] Updated challenge:', data.challengeId);
+    return { ...MOCK_CHALLENGES_DATA[0], ...data };
+  }
+
+  return client.put<ChallengeInfo>(`/challenges/${data.challengeId}`, data);
+}
+
+export async function deleteChallenge(challengeId: string): Promise<void> {
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log(`[Mock] Deleted challenge ${challengeId}`);
+    return;
+  }
+
+  await client.delete(`/challenges/${challengeId}`);
+}
+
+export async function leaveChallenge(challengeId: string): Promise<void> {
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log(`[Mock] Left challenge ${challengeId}`);
+    return;
+  }
+
+  await client.delete(`/challenges/${challengeId}/leave`);
+}
+

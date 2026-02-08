@@ -49,7 +49,7 @@ export function MemberDetail() {
             await delegateMutation.mutateAsync(member.memberId);
             alert('리더 권한이 위임되었습니다.');
             navigate(-1);
-        } catch (error) {
+        } catch {
             alert('위임에 실패했습니다.');
         }
     };
