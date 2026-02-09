@@ -1,0 +1,128 @@
+/* FAB (Floating Action Button) Styles - WDS v2.1 */
+
+.fab {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  z-index: var(--z-index-fab, 100);
+  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+/* Positions */
+.bottomRight {
+  bottom: 80px;
+  right: 24px;
+}
+
+.bottomLeft {
+  bottom: 80px;
+  left: 24px;
+}
+
+.bottomCenter {
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Sizes */
+.sm {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  font-size: 20px;
+}
+
+.md {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  font-size: 24px;
+}
+
+.lg {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  font-size: 28px;
+}
+
+/* Extended (with label) */
+.extended {
+  width: auto;
+  padding: 0 var(--spacing-lg);
+  gap: var(--spacing-xs);
+  border-radius: var(--radius-xl);
+}
+
+.extended .label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+/* Variants */
+.primary {
+  background: linear-gradient(135deg, var(--color-orange-500), var(--color-orange-600));
+  color: var(--color-white);
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+}
+
+.primary:hover {
+  background: linear-gradient(135deg, var(--color-orange-600), var(--color-orange-700));
+  box-shadow: 0 6px 16px rgba(255, 107, 0, 0.45);
+  transform: scale(1.05);
+}
+
+.primary:active {
+  transform: scale(0.98);
+}
+
+.secondary {
+  background-color: var(--color-surface);
+  color: var(--color-grey-700);
+  box-shadow: var(--shadow-md);
+}
+
+.secondary:hover {
+  background-color: var(--color-grey-50);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Icon */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+/* Focus state */
+.fab:focus-visible {
+  outline: 2px solid var(--color-orange-500);
+  outline-offset: 3px;
+}
+
+/* Ripple effect */
+.fab::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  border-radius: inherit;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.fab:active::after {
+  transform: translate(-50%, -50%) scale(1.5);
+  opacity: 1;
+  transition: transform 0s, opacity 0s;
+}

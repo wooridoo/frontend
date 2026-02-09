@@ -179,6 +179,7 @@ export async function approveExpense(
     challengeId: string,
     expenseId: number,
     approved: boolean,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _reason?: string
 ): Promise<Expense> {
     await new Promise(resolve => setTimeout(resolve, 600));

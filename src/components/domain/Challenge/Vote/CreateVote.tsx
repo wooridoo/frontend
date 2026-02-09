@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCreateVote } from '../../../../hooks/useVote';
 import { Button, Input } from '../../../../components/common';
+import type { VoteType } from '../../../../types/domain';
 import styles from './CreateVote.module.css';
 
 export function CreateVote() {
@@ -9,7 +10,12 @@ export function CreateVote() {
   const navigate = useNavigate();
   const { mutate: createVote, isPending } = useCreateVote(id!);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    type: VoteType;
+    title: string;
+    description: string;
+    deadline: string;
+  }>({
     type: 'EXPENSE',
     title: '',
     description: '',
@@ -23,7 +29,7 @@ export function CreateVote() {
     // TODO: Validate deadline is > 24h from now (logic in implementation plan)
 
     createVote({
-      type: form.type as any,
+      type: form.type,
       title: form.title,
       description: form.description,
       deadline: new Date(form.deadline).toISOString(),
@@ -49,7 +55,7 @@ export function CreateVote() {
           <label>투표 유형</label>
           <select
             value={form.type}
-            onChange={e => setForm({ ...form, type: e.target.value })}
+            onChange={e => setForm({ ...form, type: e.target.value as VoteType })}
             className={styles.select}
           >
             <option value="EXPENSE">지출 승인</option>

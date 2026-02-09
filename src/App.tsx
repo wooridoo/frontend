@@ -6,6 +6,13 @@ import { PATHS } from '@/routes/paths';
 import { HomePage } from './pages/HomePage';
 import { ExplorePage } from './pages/ExplorePage';
 import { RecommendedPage } from './pages/RecommendedPage';
+import { SignupPage } from './pages/SignupPage';
+import { ChallengeDetailPage } from './pages/ChallengeDetailPage';
+import { WalletPage } from './pages/WalletPage';
+import { ChargePage } from './pages/ChargePage';
+import { WithdrawPage } from './pages/WithdrawPage';
+import { MyPage } from './pages/MyPage';
+import { CreateChallengePage } from './pages/CreateChallengePage';
 import { ChallengeDashboardLayout } from './components/domain/Challenge/Layout/ChallengeDashboardLayout';
 import { FeedPage } from './components/domain/Challenge/Feed/FeedPage';
 import { MainLayout } from './components/layout';
@@ -50,18 +57,27 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route element={<MainLayout />}>
+                <Route path={PATHS.SIGNUP} element={<SignupPage />} />
                 <Route path={PATHS.HOME} element={<HomePage />} />
                 <Route path={PATHS.EXPLORE} element={<ExplorePage />} />
                 <Route path={PATHS.RECOMMENDED} element={<RecommendedPage />} />
+                <Route path={PATHS.CHALLENGE.NEW} element={<CreateChallengePage />} />
 
-                {/* My Routes - Protected */}
                 <Route element={<AuthGuard />}>
-                  <Route path={PATHS.MY.PROFILE} element={<div>마이페이지 준비중</div>} />
+                  <Route path={PATHS.MY.PROFILE} element={<MyPage />} />
                   <Route path={PATHS.MY.CHALLENGES} element={<div>나의 챌린지 준비중</div>} />
-                  <Route path={PATHS.MY.LEDGER} element={<div>나의 장부 준비중</div>} />
+                  <Route path={PATHS.WALLET.ROOT} element={<WalletPage />} />
+                  <Route path={PATHS.WALLET.CHARGE} element={<ChargePage />} />
+                  <Route path={PATHS.WALLET.WITHDRAW} element={<WithdrawPage />} />
+
+                  {/* Alias for My Ledger -> Wallet */}
+                  <Route path={PATHS.MY.LEDGER} element={<Navigate to={PATHS.WALLET.ROOT} replace />} />
+
                   <Route path={PATHS.MY.SETTINGS} element={<div>설정 준비중</div>} />
                   <Route path={PATHS.MY.ACCOUNT} element={<div>계정 관리 준비중</div>} />
                 </Route>
+                <Route path={PATHS.CHALLENGE.INTRO(':id')} element={<ChallengeDetailPage />} />
+
                 {/* Challenge Routes: Intro (Index) vs Dashboard (Sub-routes) */}
                 <Route path={PATHS.CHALLENGE.DETAIL(':id')}>
                   <Route element={<ChallengeGuard />}>

@@ -1,4 +1,4 @@
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BentoGrid, BentoItem } from '@/components/domain/Home/Bento/BentoGrid';
 import { HeroBlock } from '@/components/domain/Home/Bento/Blocks/HeroBlock';
 import { StatusBlock } from '@/components/domain/Home/Bento/Blocks/StatusBlock';
@@ -6,19 +6,16 @@ import { ActiveChallengeBlock } from '@/components/domain/Home/Bento/Blocks/Acti
 import { CategoryBlock } from '@/components/domain/Home/Bento/Blocks/CategoryBlock';
 import { FeedBlock } from '@/components/domain/Home/Bento/Blocks/FeedBlock';
 import { PageContainer } from '@/components/layout';
+import { FAB } from '@/components/ui';
+import { PATHS } from '@/routes/paths';
 import styles from './HomePage.module.css';
 
-// Legacy components commented out for now
-// import { HeroSection, GridCategory, ImageCard, StatusCard } from '@/components/domain/Home/index';
-// import { Skeleton, EmptyState } from '@/components/feedback';
-
-// interface MainLayoutContext {
-//   isLoggedIn: boolean;
-// }
-
 export function HomePage() {
-  // const navigate = useNavigate();
-  // const { isLoggedIn } = useOutletContext<MainLayoutContext>();
+  const navigate = useNavigate();
+
+  const handleCreateChallenge = () => {
+    navigate(PATHS.CHALLENGE.NEW);
+  };
 
   return (
     <PageContainer className={styles.pageContainer}>
@@ -52,6 +49,15 @@ export function HomePage() {
         </BentoItem>
 
       </BentoGrid>
+
+      {/* Floating Action Button for Challenge Creation */}
+      <FAB
+        variant="primary"
+        size="lg"
+        position="bottomRight"
+        onClick={handleCreateChallenge}
+        aria-label="새 챌린지 만들기"
+      />
     </PageContainer>
   );
 }

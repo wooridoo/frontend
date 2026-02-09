@@ -1,0 +1,240 @@
+/* Card Component Styles - WDS v2.1 */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface, #ffffff);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+/* Variants */
+.elevated {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.elevated:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.outlined {
+  border: 1px solid var(--color-grey-200, #e5e7eb);
+  box-shadow: none;
+}
+
+.outlined:hover {
+  border-color: var(--color-grey-300, #d1d5db);
+}
+
+.filled {
+  background-color: var(--color-grey-50, #f9fafb);
+  box-shadow: none;
+}
+
+.filled:hover {
+  background-color: var(--color-grey-100, #f3f4f6);
+}
+
+/* NEW: Accent variant - top color bar */
+.accent {
+  border: 1px solid var(--color-grey-200, #e5e7eb);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: visible;
+}
+
+.accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-orange-500, #ff6b00), var(--color-orange-400, #ff8533));
+  border-radius: 16px 16px 0 0;
+}
+
+.accent:hover {
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.15);
+  border-color: var(--color-orange-200, #ffd4b3);
+}
+
+/* Sizes */
+.sm {
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.md {
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.lg {
+  padding: 24px;
+  border-radius: 20px;
+}
+
+/* Interactive */
+.interactive {
+  cursor: pointer;
+}
+
+.interactive:focus-visible {
+  outline: 2px solid var(--color-orange-500, #ff6b00);
+  outline-offset: 2px;
+}
+
+/* Collapsible */
+.collapsible {
+  overflow: hidden;
+}
+
+/* Loading */
+.loading {
+  pointer-events: none;
+}
+
+/* Parts: Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-grey-100, #f3f4f6);
+  margin-bottom: 12px;
+}
+
+.headerCollapsible {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+  margin: -16px -16px 12px -16px;
+  padding: 16px;
+  border-bottom: none;
+}
+
+.headerCollapsible:hover {
+  background-color: var(--color-grey-50, #f9fafb);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--color-orange-50, #fff7ed), var(--color-orange-100, #ffedd5));
+  border-radius: 10px;
+  color: var(--color-orange-600, #ea580c);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chevron {
+  color: var(--color-grey-400, #9ca3af);
+  transition: transform 0.2s ease;
+}
+
+.chevronExpanded {
+  transform: rotate(180deg);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-grey-900, #111827);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--color-grey-500, #6b7280);
+  margin: 4px 0 0 0;
+}
+
+/* Parts: Body */
+.body {
+  flex: 1;
+}
+
+.bodyCollapsible {
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Parts: Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-grey-100, #f3f4f6);
+  margin-top: 12px;
+}
+
+/* Image Support */
+.image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: -16px -16px 16px -16px;
+  width: calc(100% + 32px);
+}
+
+.imageTop {
+  margin: 0;
+  width: 100%;
+  border-radius: 16px 16px 0 0;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeletonLine {
+  height: 16px;
+  background: linear-gradient(90deg,
+      var(--color-grey-100, #f3f4f6) 25%,
+      var(--color-grey-200, #e5e7eb) 50%,
+      var(--color-grey-100, #f3f4f6) 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

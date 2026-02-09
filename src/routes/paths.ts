@@ -5,15 +5,22 @@ export const PATHS = {
     SIGNUP: '/signup', // Modal trigger conceptually
   },
   RECOMMENDED: '/recommended',
+  SIGNUP: '/signup',
   EXPLORE: '/explore',
   FEED: '/feed', // Global shortcut
   NOT_FOUND: '/404',
+  WALLET: {
+    ROOT: '/wallet',
+    CHARGE: '/wallet/charge',
+    WITHDRAW: '/wallet/withdraw',
+  },
   CHALLENGE: {
     ROOT: '/challenges',
-    CREATE: '/challenges/create',
-    DETAIL: (id: string | number) => `/challenges/${id}`,
-    DASHBOARD: (id: string | number) => `/challenges/${id}/dashboard`,
-    FEED: (id: string | number) => `/challenges/${id}/feed`,
+    NEW: '/challenges/new',
+    DETAIL: (id: string) => `/challenges/${id}`,
+    INTRO: (id: string) => `/challenges/${id}/intro`, // 비멤버용 소개 페이지
+    FEED: (id: string) => `/challenges/${id}/feed`,
+    MEETINGS: (id: string) => `/challenges/${id}/meetings`,
     MEMBERS: (id: string | number) => `/challenges/${id}/members`,
     SETTINGS: (id: string | number) => `/challenges/${id}/settings`,
   },

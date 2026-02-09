@@ -2,12 +2,14 @@ import { create } from 'zustand';
 
 interface JoinModalStore {
   isOpen: boolean;
-  onOpen: () => void;
+  challengeId: string | null;
+  onOpen: (id?: string) => void;
   onClose: () => void;
 }
 
 export const useJoinModalStore = create<JoinModalStore>((set) => ({
   isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
+  challengeId: null,
+  onOpen: (id) => set({ isOpen: true, challengeId: id || null }),
+  onClose: () => set({ isOpen: false, challengeId: null }),
 }));
