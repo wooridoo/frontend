@@ -29,7 +29,7 @@ export function CreateVote() {
     // TODO: Validate deadline is > 24h from now (logic in implementation plan)
 
     createVote({
-      type: form.type,
+      type: form.type as 'EXPENSE' | 'KICK' | 'DISSOLVE',
       title: form.title,
       description: form.description,
       deadline: new Date(form.deadline).toISOString(),

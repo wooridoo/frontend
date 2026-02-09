@@ -47,6 +47,7 @@ axiosInstance.interceptors.request.use(
 
 // Response: Unwrapping & Error Handling
 axiosInstance.interceptors.response.use(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (response: AxiosResponse<ApiResponse<any>>) => {
     // 1. HTTP 200 OK
     const responseBody = response.data;
@@ -70,6 +71,7 @@ axiosInstance.interceptors.response.use(
     // If no wrapper, return full data (fallback)
     return responseBody;
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (error: AxiosError<ApiResponse<any>>) => {
     // Handle HTTP Errors (4xx, 5xx)
     const status = error.response?.status || 500;
@@ -89,17 +91,17 @@ axiosInstance.interceptors.response.use(
 
 export const client = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>
-    axiosInstance.get<any, T>(url, config),
+    axiosInstance.get<unknown, T>(url, config),
 
-  post: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    axiosInstance.post<any, T>(url, data, config),
+  post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    axiosInstance.post<unknown, T>(url, data, config),
 
-  put: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    axiosInstance.put<any, T>(url, data, config),
+  put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    axiosInstance.put<unknown, T>(url, data, config),
 
   delete: <T>(url: string, config?: AxiosRequestConfig) =>
-    axiosInstance.delete<any, T>(url, config),
+    axiosInstance.delete<unknown, T>(url, config),
 
-  patch: <T>(url: string, data?: any, config?: AxiosRequestConfig) =>
-    axiosInstance.patch<any, T>(url, data, config),
+  patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    axiosInstance.patch<unknown, T>(url, data, config),
 };

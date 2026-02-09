@@ -1,35 +1,7 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import { type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import styles from './Badge.module.css';
-
-const badgeVariants = cva(styles.base, {
-  variants: {
-    variant: {
-      default: styles.default,
-      success: styles.success,
-      warning: styles.warning,
-      error: styles.error,
-      locked: styles.locked,
-    },
-    // Brix Scale for sweetness/reliability scores
-    brix: {
-      honey: styles.brixHoney,
-      grape: styles.brixGrape,
-      apple: styles.brixApple,
-      mandarin: styles.brixMandarin,
-      tomato: styles.brixTomato,
-      bitter: styles.brixBitter,
-    },
-    size: {
-      sm: styles.sm,
-      md: styles.md,
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'md',
-  },
-});
+import { badgeVariants } from './Badge.variants';
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
@@ -46,4 +18,5 @@ function Badge({ className, variant, brix, size, emoji, children, ...props }: Ba
   );
 }
 
-export { Badge, badgeVariants };
+export { Badge };
+

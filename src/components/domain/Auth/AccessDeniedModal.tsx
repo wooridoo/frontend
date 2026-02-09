@@ -1,24 +1,10 @@
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
-import { create } from 'zustand';
 import { Lock } from 'lucide-react';
 import styles from './AccessDeniedModal.module.css';
 import { PATHS } from '@/routes/paths';
-
-interface AccessDeniedModalStore {
-  isOpen: boolean;
-  challengeId: string | null;
-  onOpen: (challengeId: string) => void;
-  onClose: () => void;
-}
-
-export const useAccessDeniedModalStore = create<AccessDeniedModalStore>((set) => ({
-  isOpen: false,
-  challengeId: null,
-  onOpen: (challengeId) => set({ isOpen: true, challengeId }),
-  onClose: () => set({ isOpen: false, challengeId: null }),
-}));
+import { useAccessDeniedModalStore } from '@/store/useAccessDeniedModalStore';
 
 export function AccessDeniedModal() {
   const { isOpen, onClose, challengeId } = useAccessDeniedModalStore();

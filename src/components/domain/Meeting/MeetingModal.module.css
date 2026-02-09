@@ -1,0 +1,128 @@
+.modalContent {
+    max-width: 500px;
+    width: 100%;
+}
+
+.container {
+    padding: var(--spacing-lg);
+}
+
+.title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-lg);
+    text-align: center;
+}
+
+/* Form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.fieldGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.input,
+.textarea,
+.select {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+/* Location Type Toggle */
+.locationToggle {
+    display: flex;
+    gap: var(--spacing-sm);
+    background: var(--color-surface-secondary);
+    padding: 4px;
+    border-radius: var(--radius-md);
+}
+
+.toggleButton {
+    flex: 1;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toggleButton.active {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Date Time */
+.dateTimeRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-sm);
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+.actions button {
+    flex: 1;
+}
+
+.cancelButton {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+
+.submitButton {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* Error */
+.error {
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+}

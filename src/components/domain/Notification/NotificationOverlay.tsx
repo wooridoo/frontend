@@ -15,7 +15,7 @@ export function NotificationOverlay({ children }: NotificationOverlayProps) {
   const { mutate: markAsRead } = useMarkAsRead();
 
   const unreadCount = data?.unreadCount || 0;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const notifications = data?.content || [];
 
   const handleItemClick = (id: number) => {

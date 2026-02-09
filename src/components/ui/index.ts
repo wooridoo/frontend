@@ -1,8 +1,10 @@
 /* UI Components - Barrel Export */
 
-export { Button, buttonVariants, type ButtonProps } from './Button';
+export { Button, type ButtonProps } from './Button';
+export { buttonVariants } from './Button.variants';
 export { Input, type InputProps } from './Input';
-export { Badge, badgeVariants, type BadgeProps } from './Badge';
+export { Badge, type BadgeProps } from './Badge';
+export { badgeVariants } from './Badge.variants';
 export { FinancialText, type FinancialTextProps } from './FinancialText';
 export { CategoryTabs, type CategoryTabsProps, type Category } from './CategoryTabs/CategoryTabs';
 export { ProfileMenu } from './Overlay/ProfileMenu';

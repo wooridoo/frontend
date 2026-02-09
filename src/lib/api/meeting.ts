@@ -88,5 +88,81 @@ export async function attendMeeting(meetingId: string, status: 'ATTENDING' | 'AB
     return;
   }
 
-  await client.post(`/meetings/${meetingId}/attend`, { status });
+  await client.post(`/meetings/${meetingId}/attendance`, { status });
 }
+
+// --- Additional Meeting API Functions ---
+
+export interface CreateMeetingRequest {
+  challengeId: string;
+  title: string;
+  description?: string;
+  meetingDateTime: string;
+  locationType: 'OFFLINE' | 'ONLINE';
+  location: string;
+  maxParticipants: number;
+}
+
+export interface UpdateMeetingRequest {
+  meetingId: string;
+  title: string;
+  description?: string;
+  meetingDateTime: string;
+  locationType: 'OFFLINE' | 'ONLINE';
+  location: string;
+  maxParticipants: number;
+}
+
+export async function createMeeting(data: CreateMeetingRequest): Promise<Meeting> {
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const newMeeting: Meeting = {
+      id: String(Date.now()),
+      challengeId: data.challengeId,
+      title: data.title,
+      description: data.description || '',
+      date: data.meetingDateTime,
+      location: data.location,
+      isOnline: data.locationType === 'ONLINE',
+      maxMembers: data.maxParticipants,
+      currentMembers: 0,
+      status: 'SCHEDULED',
+      myStatus: 'ATTENDING',
+    };
+    console.log('[Mock] Created meeting:', newMeeting);
+    return newMeeting;
+  }
+
+  return client.post<Meeting>(`/challenges/${data.challengeId}/meetings`, data);
+}
+
+export async function updateMeeting(data: UpdateMeetingRequest): Promise<Meeting> {
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log('[Mock] Updated meeting:', data.meetingId);
+    return MOCK_MEETINGS[0];
+  }
+
+  return client.put<Meeting>(`/meetings/${data.meetingId}`, data);
+}
+
+export async function completeMeeting(meetingId: string): Promise<void> {
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log(`[Mock] Completed meeting ${meetingId}`);
+    return;
+  }
+
+  await client.post(`/meetings/${meetingId}/complete`);
+}
+
+export async function respondAttendance(meetingId: string, status: 'ATTENDING' | 'NOT_ATTENDING' | 'MAYBE'): Promise<void> {
+  if (USE_MOCK) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log(`[Mock] Responded to meeting ${meetingId} with ${status}`);
+    return;
+  }
+
+  await client.post(`/meetings/${meetingId}/attendance`, { status });
+}
+

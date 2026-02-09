@@ -1,5 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getChallengeMeetings, getMeeting, attendMeeting } from '@/lib/api/meeting';
+import {
+  getChallengeMeetings,
+  getMeeting,
+  attendMeeting,
+  createMeeting,
+  updateMeeting,
+  completeMeeting,
+  respondAttendance,
+  type CreateMeetingRequest,
+  type UpdateMeetingRequest,
+} from '@/lib/api/meeting';
 
 export function useMeeting(id?: string) {
   const { data, isLoading, error } = useQuery({
@@ -43,3 +53,53 @@ export function useAttendMeeting() {
 
   return { mutate, isPending };
 }
+
+// --- Additional Meeting Hooks ---
+
+export function useCreateMeeting() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateMeetingRequest) => createMeeting(data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['challenge', variables.challengeId, 'meetings'] });
+    },
+  });
+}
+
+export function useUpdateMeeting() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdateMeetingRequest) => updateMeeting(data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['meeting', variables.meetingId] });
+      queryClient.invalidateQueries({ queryKey: ['challenge'] });
+    },
+  });
+}
+
+export function useCompleteMeeting() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (meetingId: string) => completeMeeting(meetingId),
+    onSuccess: (_, meetingId) => {
+      queryClient.invalidateQueries({ queryKey: ['meeting', meetingId] });
+      queryClient.invalidateQueries({ queryKey: ['challenge'] });
+    },
+  });
+}
+
+export function useRespondAttendance() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ meetingId, status }: { meetingId: string; status: 'ATTENDING' | 'NOT_ATTENDING' | 'MAYBE' }) =>
+      respondAttendance(meetingId, status),
+    onSuccess: (_, { meetingId }) => {
+      queryClient.invalidateQueries({ queryKey: ['meeting', meetingId] });
+    },
+  });
+}
+

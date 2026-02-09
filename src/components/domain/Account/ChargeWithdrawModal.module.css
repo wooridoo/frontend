@@ -1,0 +1,178 @@
+.modalContent {
+    max-width: 440px;
+    width: 100%;
+}
+
+.container {
+    padding: var(--spacing-lg);
+}
+
+.title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-lg);
+    text-align: center;
+}
+
+/* Amount Selection */
+.amountSection {
+    margin-bottom: var(--spacing-lg);
+}
+
+.label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+    display: block;
+}
+
+.amountGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.amountButton {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.amountButton:hover {
+    border-color: var(--color-primary);
+    background: rgba(var(--color-primary-rgb), 0.05);
+}
+
+.amountButton.selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: white;
+}
+
+.customInput {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-lg);
+    text-align: right;
+}
+
+.customInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+/* Summary */
+.summary {
+    background: var(--color-surface-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-xs) 0;
+}
+
+.summaryLabel {
+    color: var(--color-text-secondary);
+}
+
+.summaryValue {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.summaryValue.total {
+    font-size: var(--font-size-lg);
+    color: var(--color-primary);
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.actions button {
+    flex: 1;
+}
+
+.cancelButton {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+
+.submitButton {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* Success State */
+.successContent {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+}
+
+.successIcon {
+    font-size: 64px;
+    margin-bottom: var(--spacing-md);
+}
+
+.successMessage {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.successAmount {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Withdraw specific */
+.bankInfo {
+    background: var(--color-surface-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.bankRow {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-xs) 0;
+}
+
+.bankLabel {
+    color: var(--color-text-secondary);
+}
+
+.bankValue {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}
+
+.warning {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    color: #b45309;
+}
