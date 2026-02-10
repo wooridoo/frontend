@@ -50,6 +50,8 @@
   --color-error: #DC2626;
   --color-warning: #F59E0B;
   --color-info: #E9481E;
+  --color-support: #3B82F6;
+  /* Blue for Support/Funding */
 
   /* Brix Scale (Sweetness/Reliability) */
   --color-brix-honey: #F59E0B;
@@ -94,6 +96,7 @@
   --color-success-alpha: rgba(22, 163, 74, 0.1);
   --color-warning-alpha: rgba(245, 158, 11, 0.1);
   --color-error-alpha: rgba(220, 38, 38, 0.1);
+  --color-support-alpha: rgba(59, 130, 246, 0.1);
   --color-focus-ring: 0 0 0 3px var(--color-orange-100);
   --color-focus-ring-error: 0 0 0 3px rgba(220, 38, 38, 0.1);
 

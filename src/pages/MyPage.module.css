@@ -105,6 +105,7 @@
   font-weight: 500;
 }
 
-.chevron {
-  color: var(--color-grey-400);
+
+.dangerText {
+  color: var(--color-status-danger, var(--color-error));
 }

@@ -107,7 +107,7 @@ export function MyPage() {
           </div>
           <div className={styles.menuItem} onClick={handleLogout}>
             <div className={styles.menuIcon}><LogOut size={20} /></div>
-            <span className={`${styles.menuText} ${styles.dangerText}`} style={{ color: '#ef4444' }}>
+            <span className={`${styles.menuText} ${styles.dangerText}`}>
               로그아웃
             </span>
           </div>

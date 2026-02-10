@@ -117,15 +117,15 @@
 }
 
 .transactionIcon.deposit {
-    background: rgba(34, 197, 94, 0.1);
+    background: var(--color-success-alpha);
 }
 
 .transactionIcon.withdraw {
-    background: rgba(239, 68, 68, 0.1);
+    background: var(--color-error-alpha);
 }
 
 .transactionIcon.support {
-    background: rgba(59, 130, 246, 0.1);
+    background: var(--color-support-alpha);
 }
 
 .transactionDetails {
@@ -155,11 +155,11 @@
 }
 
 .transactionAmount.positive {
-    color: #22c55e;
+    color: var(--color-success);
 }
 
 .transactionAmount.negative {
-    color: #ef4444;
+    color: var(--color-error);
 }
 
 .transactionBalance {
