@@ -19,3 +19,9 @@ export interface Post {
     images?: string[]; // Simplified for now
     createdAt: string;
 }
+
+export interface CreatePostInput {
+    content: string;
+    images?: string[];
+    isNotice?: boolean;
+}

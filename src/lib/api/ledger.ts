@@ -5,7 +5,7 @@
  * API 정의서 028번: 챌린지 어카운트 조회
  */
 import { client } from './client';
-import type { ChallengeAccount } from '@/types/domain';
+import type { ChallengeAccount } from '@/types/ledger';
 
 // =====================
 // Mock 전환 플래그

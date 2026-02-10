@@ -2,7 +2,7 @@
  * Meeting Domain Types
  */
 export interface MeetingMember {
-    userId: number;
+    userId: string;
     nickname: string;
     profileImage?: string;
     status: 'ATTENDING' | 'ABSENT' | 'PENDING';

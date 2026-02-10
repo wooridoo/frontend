@@ -26,8 +26,8 @@ export function useAuthGuard() {
    * @param challengeId 
    * @returns boolean
    */
-  const isParticipant = (challengeId: number): boolean => {
-    return !!user?.participatingChallengeIds?.includes(challengeId);
+  const isParticipant = (challengeId: string | number): boolean => {
+    return !!user?.participatingChallengeIds?.includes(String(challengeId));
   };
 
   /**
@@ -36,7 +36,7 @@ export function useAuthGuard() {
    * - Logged In + Joined -> Navigate to Feed
    * - Logged In + Not Joined -> Navigate to Intro (Sales Page)
    */
-  const handleChallengeAction = (challengeId: number) => {
+  const handleChallengeAction = (challengeId: string | number) => {
     if (!requireAuth()) return;
 
     if (isParticipant(challengeId)) {

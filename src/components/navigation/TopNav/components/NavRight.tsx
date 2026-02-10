@@ -7,7 +7,7 @@ import { useSignupModalStore } from '@/store/useSignupModalStore';
 import { BrixBadge } from '@/components/domain/BrixBadge/BrixBadge';
 import { getBrixGrade, formatBrix } from '@/lib/brix';
 import { formatCurrency } from '@/lib/utils';
-import type { User } from '@/types/domain';
+import type { User } from '@/types/user';
 import styles from './NavRight.module.css';
 
 interface NavRightProps {
@@ -52,9 +52,9 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
             trigger={
               <button className={styles.profileButton}>
                 {user.profileImage ? (
-                  <img src={user.profileImage} alt={user.name} className={styles.profileImage} />
+                  <img src={user.profileImage} alt={user.name || user.nickname} className={styles.profileImage} />
                 ) : (
-                  <span>{user.name.slice(0, 1)}</span>
+                  <span>{(user.name || user.nickname || '?').slice(0, 1)}</span>
                 )}
               </button>
             }

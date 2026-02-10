@@ -3,6 +3,7 @@
  * 사용자 프로필 관련 React Query 훅
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/store/useAuthStore';
 import { getMyProfile, updateMyProfile, checkNickname, withdrawAccount } from '@/lib/api/user';
 import type { UpdateProfileRequest } from '@/lib/api/user';
 
@@ -16,10 +17,12 @@ export const userKeys = {
  * 내 프로필 조회
  */
 export function useMyProfile() {
+    const { isLoggedIn } = useAuthStore();
     return useQuery({
         queryKey: userKeys.profile(),
         queryFn: getMyProfile,
         staleTime: 1000 * 60 * 5, // 5분
+        enabled: isLoggedIn, // Only fetch when logged in
     });
 }
 

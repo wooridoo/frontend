@@ -4,7 +4,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getFeed, getPost, createPost, updatePost, deletePost, toggleLike } from '@/lib/api/feed';
-import type { Post, CreatePostInput } from '@/lib/api/feed';
+import type { Post, CreatePostInput } from '@/types/feed';
 
 /**
  * 피드 목록 조회 훅
@@ -21,7 +21,10 @@ export function useFeed(challengeId: string | undefined) {
 /**
  * 게시글 상세 조회 훅
  */
-export function usePost(postId: number | undefined) {
+/**
+ * 게시글 상세 조회 훅
+ */
+export function usePost(postId: string | undefined) {
     return useQuery({
         queryKey: ['post', postId],
         queryFn: () => getPost(postId!),
@@ -51,8 +54,8 @@ export function useUpdatePost(challengeId: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ postId, data }: { postId: number; data: Partial<CreatePostInput> }) =>
-            updatePost(postId, data),
+        mutationFn: ({ postId, data }: { postId: string; data: Partial<CreatePostInput> }) =>
+            updatePost(challengeId, postId, data),
         onSuccess: (updatedPost) => {
             // 피드 목록 갱신
             queryClient.invalidateQueries({ queryKey: ['feed', challengeId] });
@@ -69,7 +72,7 @@ export function useDeletePost(challengeId: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (postId: number) => deletePost(postId),
+        mutationFn: (postId: string) => deletePost(challengeId, postId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['feed', challengeId] });
         },
@@ -83,7 +86,7 @@ export function useToggleLike(challengeId: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (postId: number) => toggleLike(postId),
+        mutationFn: (postId: string) => toggleLike(challengeId, postId),
         onSuccess: (updatedPost) => {
             // 낙관적 UI 업데이트: 피드 목록에서 해당 게시글만 업데이트
             queryClient.setQueryData<Post[]>(['feed', challengeId], (oldPosts) => {

@@ -2,7 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Calendar, CreditCard, MessageCircle, Info } from 'lucide-react';
 import clsx from 'clsx';
-import type { Notification } from '@/types/domain';
+import type { Notification } from '@/types/notification';
 import { useVoteMeeting, useApprovePayment } from '@/lib/api/notification';
 import { formatCurrency } from '@/utils/format';
 import styles from './NotificationItem.module.css';

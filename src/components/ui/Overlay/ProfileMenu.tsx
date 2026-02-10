@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { User } from '@/types/domain';
+import type { User } from '@/types/user';
 import { ResponsiveOverlay } from './ResponsiveOverlay';
 import { ProfileMenuContent } from './ProfileMenuContent';
 import styles from './ProfileMenu.module.css'; // For internal styles if needed, or pass className

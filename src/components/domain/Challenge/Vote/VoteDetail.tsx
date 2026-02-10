@@ -9,8 +9,8 @@ import styles from './VoteDetail.module.css';
 export function VoteDetail() {
   const { id, voteId } = useParams<{ id: string; voteId: string }>();
   const navigate = useNavigate();
-  const { data: vote, isLoading } = useVoteDetail(Number(voteId));
-  const { mutate: castVote, isPending: isCasting } = useCastVote(Number(voteId), id!);
+  const { data: vote, isLoading } = useVoteDetail(voteId!);
+  const { mutate: castVote, isPending: isCasting } = useCastVote(voteId!, id!);
 
   if (isLoading) return <Loading />;
   if (!vote) return <div>Vote not found</div>;

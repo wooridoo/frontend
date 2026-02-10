@@ -37,7 +37,7 @@ export function MemberDetail() {
     const { user, role, stats, supportHistory } = member;
 
     // Check if current user is leader (can delegate)
-    const isCurrentUserLeader = currentUser?.participatingChallengeIds?.includes(Number(challengeId));
+    const isCurrentUserLeader = currentUser?.participatingChallengeIds?.includes(challengeId!);
     const canDelegate = isCurrentUserLeader && role !== ChallengeRole.LEADER;
 
     const handleDelegate = async () => {

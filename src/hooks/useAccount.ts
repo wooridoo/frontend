@@ -3,6 +3,7 @@
  * 계좌 관련 React Query 훅
  */
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useAuthStore } from '@/store/useAuthStore';
 import {
     getMyAccount,
     getTransactionHistory,
@@ -24,14 +25,17 @@ export const accountKeys = {
 
 // GET My Account
 export function useMyAccount() {
+    const { isLoggedIn } = useAuthStore();
     return useQuery({
         queryKey: accountKeys.my(),
-        queryFn: () => getMyAccount(),
+        queryFn: getMyAccount,
+        enabled: isLoggedIn,
     });
 }
 
 // GET Transaction History (Infinite)
 export function useTransactionHistoryInfinite(filters: TransactionHistoryParams = {}) {
+    const { isLoggedIn } = useAuthStore();
     return useInfiniteQuery({
         queryKey: accountKeys.transactions(filters),
         queryFn: ({ pageParam }) =>
@@ -41,6 +45,7 @@ export function useTransactionHistoryInfinite(filters: TransactionHistoryParams 
             return (data.currentPage + 1 < data.totalPages) ? data.currentPage + 1 : undefined;
         },
         initialPageParam: 0,
+        enabled: isLoggedIn,
     });
 }
 

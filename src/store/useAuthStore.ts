@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { User } from '@/types/domain';
+import type { User } from '@/types/user';
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -7,7 +7,7 @@ interface AuthState {
   accessToken: string | null; // Added for API Client
   login: (userData?: User, token?: string) => void;
   logout: () => void;
-  joinChallenge: (challengeId: number) => void; // Simulation Action
+  joinChallenge: (challengeId: string) => void; // Simulation Action
 }
 
 
@@ -24,14 +24,14 @@ export const useAuthStore = create<AuthState>()(
       login: (userData, token) => set({
         isLoggedIn: true,
         user: userData || null,
-        accessToken: token || 'mock-access-token',
+        accessToken: token || null,
       }),
       logout: () => set({
         isLoggedIn: false,
         user: null,
         accessToken: null,
       }),
-      joinChallenge: (challengeId: number) => set((state) => ({
+      joinChallenge: (challengeId: string) => set((state) => ({
         user: state.user ? {
           ...state.user,
           participatingChallengeIds: [...(state.user.participatingChallengeIds || []), challengeId]

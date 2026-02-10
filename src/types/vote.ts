@@ -28,19 +28,19 @@ export interface VoteResult {
 }
 
 export interface Vote {
-    voteId: number;
-    challengeId: number;
+    voteId: string;
+    challengeId: string;
     type: VoteType;
     title: string;
     description?: string;
     status: VoteStatus;
     createdBy: {
-        userId: number;
+        userId: string;
         nickname: string;
         profileImage?: string;
     };
     targetInfo?: {
-        targetId: number;
+        targetId: string;
         amount?: number;
         category?: string;
     };

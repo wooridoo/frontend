@@ -1,4 +1,4 @@
-import type { BrixGrade, BrixConfig } from '@/types/domain';
+import type { BrixGrade, BrixConfig } from '@/types/brix';
 
 export const GRADE_CONFIG: Record<BrixGrade, BrixConfig> = {
   HONEY: { label: '꿀', emoji: '🍯', brixVariant: 'honey' }, // 60+
@@ -13,7 +13,8 @@ export const GRADE_CONFIG: Record<BrixGrade, BrixConfig> = {
  * Get Brix Grade based on score
  * Based on USER_BRIX_SYSTEM.md Section 8
  */
-export function getBrixGrade(score: number): BrixGrade {
+export function getBrixGrade(score: number | undefined | null): BrixGrade {
+  if (score === undefined || score === null) return 'TOMATO'; // Default grade
   if (score >= 60) return 'HONEY';
   if (score >= 40) return 'GRAPE';
   if (score >= 25) return 'APPLE';
@@ -25,8 +26,8 @@ export function getBrixGrade(score: number): BrixGrade {
 /**
  * Format Brix score to 1 decimal place
  */
-export function formatBrix(score: number): string {
-  return score.toFixed(1);
+export function formatBrix(score: number | undefined | null): string {
+  return (score ?? 0).toFixed(1);
 }
 
 /**

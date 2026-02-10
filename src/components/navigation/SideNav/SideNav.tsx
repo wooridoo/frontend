@@ -38,8 +38,8 @@ const mainItems: NavItem[] = [
 // Section 2: Subscriptions (Joined Challenges) - Mock Data
 // In real app, this comes from API/Store
 const joinedChallenges = [
-  { id: 1, label: '책벌레들', path: PATHS.CHALLENGE.FEED(1), iconType: 'feed' },
-  { id: 2, label: '이른새벽 기상', path: PATHS.CHALLENGE.FEED(2), iconType: 'feed' },
+  { id: '1', label: '책벌레들', path: PATHS.CHALLENGE.FEED('1'), iconType: 'feed' },
+  { id: '2', label: '이른새벽 기상', path: PATHS.CHALLENGE.FEED('2'), iconType: 'feed' },
   // { id: 3, label: '헬스장 출석', path: PATHS.CHALLENGE.FEED(3), iconType: 'feed' },
 ] as const;
 

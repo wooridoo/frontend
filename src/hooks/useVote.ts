@@ -10,7 +10,7 @@ export function useVotes(challengeId: string, status?: VoteStatus) {
   });
 }
 
-export function useVoteDetail(voteId: number) {
+export function useVoteDetail(voteId: string) {
   return useQuery({
     queryKey: ['vote', voteId],
     queryFn: () => getVoteDetail(voteId),
@@ -26,7 +26,7 @@ export function useCreateVote(challengeId: string) {
       type: 'EXPENSE' | 'KICK' | 'LEADER_KICK' | 'DISSOLVE';
       title: string;
       description?: string;
-      targetId?: number;
+      targetId?: string;
       deadline: string;
     }) => createVote(challengeId, data),
     onSuccess: () => {
@@ -35,7 +35,7 @@ export function useCreateVote(challengeId: string) {
   });
 }
 
-export function useCastVote(voteId: number, challengeId: string) {
+export function useCastVote(voteId: string, challengeId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({

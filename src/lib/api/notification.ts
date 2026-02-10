@@ -1,7 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Notification, NotificationResponse } from '@/types/domain';
+import { useAuthStore } from '@/store/useAuthStore';
+import { client } from './client';
+import type { Notification, NotificationResponse } from '@/types/notification';
 
+// =====================
+// Mock 전환 플래그
+// =====================
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
+
+// =====================
 // Mock Data
+// =====================
 const MOCK_NOTIFICATIONS: Notification[] = [
   {
     notificationId: 1,
@@ -42,11 +51,11 @@ const MOCK_NOTIFICATIONS: Notification[] = [
   }
 ];
 
-// Mock API Call
-const getNotifications = async (): Promise<NotificationResponse> => {
-  // Simulate network delay
+// =====================
+// Mock Functions
+// =====================
+const mockGetNotifications = async (): Promise<NotificationResponse> => {
   await new Promise(resolve => setTimeout(resolve, 500));
-
   return {
     content: MOCK_NOTIFICATIONS,
     totalElements: MOCK_NOTIFICATIONS.length,
@@ -55,18 +64,42 @@ const getNotifications = async (): Promise<NotificationResponse> => {
   };
 };
 
+const mockMarkAsRead = async (notificationId: number): Promise<void> => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  console.log(`[Mock] Notification ${notificationId} marked as read`);
+};
+
+// =====================
+// API Functions
+// =====================
+const getNotifications = async (): Promise<NotificationResponse> => {
+  if (USE_MOCK) return mockGetNotifications();
+  return client.get<NotificationResponse>('/notifications');
+};
+
+const markAsRead = async (notificationId: number): Promise<void> => {
+  if (USE_MOCK) return mockMarkAsRead(notificationId);
+  return client.patch(`/notifications/${notificationId}/read`);
+};
+
+
+// =====================
 // React Query Hooks
+// =====================
 export const NOTIFICATION_KEYS = {
   all: ['notifications'] as const,
   list: () => [...NOTIFICATION_KEYS.all, 'list'] as const,
 };
 
 export function useNotifications() {
+  const { isLoggedIn } = useAuthStore();
   return useQuery({
     queryKey: NOTIFICATION_KEYS.list(),
     queryFn: getNotifications,
     // Polling or other configs can go here
-    staleTime: 1000 * 60, // 1 minute
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchInterval: 1000 * 60 * 5, // Poll every 5 minutes instead of refetching constantly
+    enabled: isLoggedIn,
   });
 }
 
@@ -74,12 +107,7 @@ export function useMarkAsRead() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (notificationId: number) => {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 300));
-      console.log(`Notification ${notificationId} marked as read`);
-      // Update local mock data (fake) if needed, but usually just invalidating query is enough
-    },
+    mutationFn: markAsRead,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.list() });
     }
@@ -111,3 +139,4 @@ export function useApprovePayment() {
     }
   });
 }
+

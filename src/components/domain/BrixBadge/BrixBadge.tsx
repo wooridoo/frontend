@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui';
 import { BrixBadgeLottie } from './BrixBadgeLottie';
-import type { BrixGrade } from '@/types/domain';
+import type { BrixGrade } from '@/types/brix';
 import { GRADE_CONFIG } from '@/lib/brix';
 
 interface BrixBadgeProps {

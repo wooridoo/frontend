@@ -106,7 +106,14 @@ function ChallengeCard({ challenge }: { challenge: ChallengeInfo }) {
   return (
     <Link to={PATHS.CHALLENGE.DETAIL(String(challenge.challengeId))} className={styles.card}>
       <div className={styles.imageWrapper}>
-        <img src={challenge.thumbnailUrl || 'https://via.placeholder.com/300'} alt={challenge.title} className={styles.image} />
+        <img
+          src={challenge.thumbnailUrl || 'https://via.placeholder.com/300?text=No+Image'}
+          alt={challenge.title}
+          className={styles.image}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300?text=No+Image';
+          }}
+        />
         <span className={styles.tag}>{challenge.category}</span>
       </div>
       <div className={styles.cardContent}>

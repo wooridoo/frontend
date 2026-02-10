@@ -1,4 +1,4 @@
-import type { User } from '@/types/domain';
+import type { User } from '@/types/user';
 import clsx from 'clsx';
 import { NavLeft } from './components/NavLeft';
 import { NavSearch } from './components/NavSearch';

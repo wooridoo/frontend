@@ -1,7 +1,7 @@
 import { UserStatus } from './enums';
 
 export interface Account {
-    accountId: number;
+    accountId: string;
     balance: number;
     availableBalance: number;
     lockedBalance: number;
@@ -15,14 +15,14 @@ export interface UserStats {
 }
 
 export interface User {
-    userId: number;
+    userId: string;
     email: string;
     name: string;
     nickname: string;
     profileImage?: string;
     status: UserStatus;
     brix: number;
-    participatingChallengeIds?: number[];
+    participatingChallengeIds?: string[];
     account?: Account;
     stats?: UserStats;
 }

@@ -10,11 +10,11 @@ export function ChallengeGuard() {
   const { onOpen } = useAccessDeniedModalStore();
   const navigate = useNavigate();
 
-  const challengeId = Number(id);
+  const challengeId = id!;
 
   useEffect(() => {
     // 1. Invalid ID Check
-    if (isNaN(challengeId)) {
+    if (!challengeId) {
       navigate(PATHS.NOT_FOUND, { replace: true });
       return;
     }

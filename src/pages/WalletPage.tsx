@@ -1,25 +1,50 @@
 import { useNavigate } from 'react-router-dom';
-import { Download, Plus } from 'lucide-react';
+import { Download, Plus, Loader2 } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PATHS } from '@/routes/paths';
+import { getMyProfile } from '@/lib/api/user';
 import styles from './WalletPage.module.css';
-
-// Mock Data
-const MOCK_WALLET = {
-  balance: 12500,
-  history: [
-    { id: 1, type: '충전', amount: 30000, date: '2026.02.05 14:30', isPlus: true },
-    { id: 2, type: '챌린지 참가비', amount: -5000, date: '2026.02.05 15:00', isPlus: false },
-    { id: 3, type: '보증금 환급', amount: 10000, date: '2026.02.01 09:00', isPlus: true },
-    { id: 4, type: '출금', amount: -22500, date: '2026.01.28 11:20', isPlus: false },
-  ],
-};
 
 export function WalletPage() {
   const navigate = useNavigate();
-  // TODO: Fetch wallet data
-  const wallet = MOCK_WALLET;
+
+  const { data: user, isLoading, error } = useQuery({
+    queryKey: ['myProfile'],
+    queryFn: getMyProfile,
+  });
+
+  if (isLoading) {
+    return (
+      <PageContainer>
+        <PageHeader title="나의 지갑" showBack />
+        <div className="flex justify-center items-center h-[60vh]">
+          <Loader2 className="animate-spin text-gray-400" size={32} />
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <PageContainer>
+        <PageHeader title="나의 지갑" showBack />
+        <div className="flex flex-col justify-center items-center h-[60vh] gap-4">
+          <div className="text-gray-500">지갑 정보를 불러올 수 없습니다.</div>
+          <button
+            className="px-4 py-2 bg-gray-200 rounded-lg text-sm"
+            onClick={() => navigate(PATHS.AUTH.LOGIN)}
+          >
+            로그인 하러 가기
+          </button>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  // TODO: Add separate API for personal wallet transaction history
+  const history: any[] = [];
 
   return (
     <PageContainer>
@@ -28,7 +53,7 @@ export function WalletPage() {
       <div className={styles.balanceCard}>
         <span className={styles.balanceLabel}>보유 잔액</span>
         <div className={styles.balanceAmount}>
-          {wallet.balance.toLocaleString()}
+          {(user.account?.balance || 0).toLocaleString()}
           <span className={styles.currency}>Brix</span>
         </div>
       </div>
@@ -56,8 +81,8 @@ export function WalletPage() {
         </div>
 
         <div className={styles.historyList}>
-          {wallet.history.length > 0 ? (
-            wallet.history.map((item) => (
+          {history.length > 0 ? (
+            history.map((item) => (
               <div key={item.id} className={styles.historyItem}>
                 <div className={styles.historyInfo}>
                   <span className={styles.historyType}>{item.type}</span>

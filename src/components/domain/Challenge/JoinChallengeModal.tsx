@@ -21,7 +21,7 @@ export function JoinChallengeModal() {
     setStep('info');
     onClose();
     if (step === 'success') {
-      navigate(PATHS.CHALLENGE.FEED(1));
+      navigate(PATHS.CHALLENGE.FEED('1'));
     }
   };
 
@@ -34,7 +34,7 @@ export function JoinChallengeModal() {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // Update Store: User joined Challenge #1
-      joinChallenge(1);
+      joinChallenge('1');
 
       // Invalidate Query to ensure FeedPage re-fetches with new permissions
       await queryClient.invalidateQueries({ queryKey: ['challenge', '1'] });

@@ -1,34 +1,36 @@
 import clsx from 'clsx';
 import { Heart, MessageCircle, Share2, MoreVertical, Pin } from 'lucide-react';
-import { ChallengeRole } from '@/types/enums';
+import { type User } from '@/types/user';
 import styles from './PostCard.module.css';
 
 interface PostCardProps {
-  id: number;
-  author: {
-    name: string;
-    avatar: string;
-    role?: ChallengeRole;
-  };
+  id: string;
+  createdBy: User;
   content: string;
   images?: string[];
   createdAt: string;
-  likes: number;
-  comments: number;
+  likeCount: number;
+  commentCount: number;
   isNotice?: boolean;
 }
 
-export function PostCard({ author, content, images, createdAt, likes, comments, isNotice }: PostCardProps) {
+export function PostCard({ createdBy, content, images, createdAt, likeCount, commentCount, isNotice }: PostCardProps) {
+  const authorName = createdBy.nickname;
+  const authorImage = createdBy.profileImage || `https://i.pravatar.cc/150?u=${createdBy.userId}`;
+  // User doesn't have role directly usually? Leader check needs challenge info.
+  // For now, assuming User object has what we need or we display what pertains to user.
+  // The layout uses createdBy.
+
   return (
     <div className={clsx(styles.card, isNotice && styles.noticeCard)}>
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.authorInfo}>
-          <img src={author.avatar} alt={author.name} className={styles.avatar} />
+          <img src={authorImage} alt={authorName} className={styles.avatar} />
           <div className={styles.metaData}>
             <div className={styles.nameRow}>
-              <span className={styles.name}>{author.name}</span>
-              {author.role === ChallengeRole.LEADER && <span className={styles.leaderBadge}>👑 리더</span>}
+              <span className={styles.name}>{authorName}</span>
+              {/* Role badge handling might need extra prop if not in User */}
               {isNotice && <span className={styles.noticeBadge}>📢 필독</span>}
             </div>
             <span className={styles.time}>{createdAt}</span>
@@ -57,11 +59,11 @@ export function PostCard({ author, content, images, createdAt, likes, comments, 
       <div className={styles.footer}>
         <button className={styles.actionButton}>
           <Heart size={18} />
-          <span>{likes}</span>
+          <span>{likeCount}</span>
         </button>
         <button className={styles.actionButton}>
           <MessageCircle size={18} />
-          <span>{comments}</span>
+          <span>{commentCount}</span>
         </button>
         <button className={styles.shareAction}>
           <Share2 size={18} />

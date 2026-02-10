@@ -55,14 +55,17 @@ export function LoginModal() {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      console.log('Login attempt:', data);
+      const { login: apiLogin } = await import('@/lib/api/auth');
+      const response = await apiLogin({ email: data.email, password: data.password });
 
-      login(); // Set dummy user
-      onClose(); // Normal close on success (no redirect rejection)
+      console.log('Login success:', response);
+
+      // Store token and user data
+      login(response.user, response.accessToken);
+      onClose();
     } catch (error) {
       console.error('Login failed:', error);
+      // alert('로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.');
     } finally {
       setIsLoading(false);
     }

@@ -46,8 +46,9 @@ import { useParams } from 'react-router-dom';
 const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
 const ExplorePage = lazy(() => import('./pages/ExplorePage').then(module => ({ default: module.ExplorePage })));
 const RecommendedPage = lazy(() => import('./pages/RecommendedPage').then(module => ({ default: module.RecommendedPage })));
-// const MyProfilePage = lazy(() => import('./pages/MyProfilePage').then(module => ({ default: module.MyProfilePage })));
-// const MyChallengesPage = lazy(() => import('./pages/MyChallengesPage').then(module => ({ default: module.MyChallengesPage })));
+const MyPage = lazy(() => import('./pages/MyPage').then(module => ({ default: module.MyPage })));
+const MyChallengesPage = lazy(() => import('./pages/MyChallengesPage').then(module => ({ default: module.MyChallengesPage })));
+const WalletPage = lazy(() => import('./pages/WalletPage').then(module => ({ default: module.WalletPage })));
 const AccountPage = lazy(() => import('./pages/AccountPage').then(module => ({ default: module.AccountPage })));
 const TransactionHistoryPage = lazy(() => import('./pages/TransactionHistoryPage').then(module => ({ default: module.TransactionHistoryPage })));
 const FeedPage = lazy(() => import('./components/domain/Challenge/Feed/FeedPage').then(module => ({ default: module.FeedPage })));
@@ -69,6 +70,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1,
+      refetchOnWindowFocus: false, // Prevent excessive refetching
     },
   },
 });
@@ -88,9 +90,9 @@ function App() {
                 <Route path={PATHS.CHALLENGE.NEW} element={<CreateChallengePage />} />
 
                 <Route element={<AuthGuard />}>
-                  <Route path={PATHS.MY.PROFILE} element={<div>마이페이지 준비중</div>} />
-                  <Route path={PATHS.MY.CHALLENGES} element={<div>나의 챌린지 준비중</div>} />
-                  <Route path={PATHS.MY.LEDGER} element={<div>나의 장부 준비중</div>} />
+                  <Route path={PATHS.MY.PROFILE} element={<MyPage />} />
+                  <Route path={PATHS.MY.CHALLENGES} element={<MyChallengesPage />} />
+                  <Route path={PATHS.MY.LEDGER} element={<WalletPage />} />
                   <Route path={PATHS.MY.SETTINGS} element={<div>설정 준비중</div>} />
                   <Route path={PATHS.MY.ACCOUNT} element={<AccountPage />} />
                   <Route path="/me/account/transactions" element={<TransactionHistoryPage />} />

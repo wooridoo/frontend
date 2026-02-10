@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useAuthStore } from '@/store/useAuthStore';
 import type { ApiResponse } from '@/types/api';
+import { toast } from 'sonner';
 
 // --- Error Handling ---
 
@@ -82,6 +83,11 @@ axiosInstance.interceptors.response.use(
 
     // Optional: Handle 401 Global Logout triggers here if not handled by Guard
     // if (status === 401) { ... }
+
+    // Global Error Notification (except 401/403 which might be handled by AuthGuard or silently)
+    if (status !== 401 && status !== 403) {
+      toast.error(message);
+    }
 
     return Promise.reject(new ApiError(message, status, code, details));
   }

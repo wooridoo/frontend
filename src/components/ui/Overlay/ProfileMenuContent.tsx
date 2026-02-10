@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { SidebarIcon } from '@/components/ui/Icons';
 import { BrixBadge } from '@/components/domain/BrixBadge';
 import { getBrixGrade, formatBrix } from '@/lib/brix';
-import type { User } from '@/types/domain';
+import type { User } from '@/types/user';
 import { PATHS } from '@/routes/paths';
 import styles from './ProfileMenu.module.css';
 
@@ -18,13 +18,13 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
             <div className={styles.userInfo}>
                 <div className={styles.avatarLarge}>
                     {user.profileImage ? (
-                        <img src={user.profileImage} alt={user.name} className={styles.avatarImg} />
+                        <img src={user.profileImage} alt={user.name || user.nickname} className={styles.avatarImg} />
                     ) : (
-                        <span className={styles.avatarFallback}>{user.name.charAt(0)}</span>
+                        <span className={styles.avatarFallback}>{(user.name || user.nickname || '?').charAt(0)}</span>
                     )}
                 </div>
                 <div className={styles.userDetails}>
-                    <span className={styles.userName}>{user.name}</span>
+                    <span className={styles.userName}>{user.name || user.nickname || 'Unknown'}</span>
                     <div className={styles.userBrix}>
                         <BrixBadge grade={getBrixGrade(user.brix)} variant="flat" size="sm" showLabel={false} />
                         <span className={styles.brixValue}>{formatBrix(user.brix)} Brix</span>
