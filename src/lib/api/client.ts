@@ -1,6 +1,5 @@
 import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useAuthStore } from '@/store/useAuthStore';
 import type { ApiResponse } from '@/types/api';
 import { toast } from 'sonner';
 
@@ -22,7 +21,7 @@ export class ApiError extends Error {
 
 // --- Client Configuration ---
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -34,12 +33,22 @@ const axiosInstance: AxiosInstance = axios.create({
 
 // --- Interceptors ---
 
-// Request: Attach Token
+// Request: Attach Token from LocalStorage (Avoiding Circular Dependency)
 axiosInstance.interceptors.request.use(
   (config) => {
-    const { accessToken } = useAuthStore.getState();
-    if (accessToken && config.headers) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    try {
+      // zustand persist stores data in localStorage under the key 'auth-storage'
+      const storageStr = localStorage.getItem('auth-storage');
+      if (storageStr) {
+        const storage = JSON.parse(storageStr);
+        // Zustand persist structure: { state: { ... }, version: ... }
+        const accessToken = storage.state?.accessToken;
+        if (accessToken && config.headers) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to parse auth token from storage', e);
     }
     return config;
   },
@@ -84,7 +93,17 @@ axiosInstance.interceptors.response.use(
     // Optional: Handle 401 Global Logout triggers here if not handled by Guard
     // if (status === 401) { ... }
 
-    // Global Error Notification (except 401/403 which might be handled by AuthGuard or silently)
+    // Detailed Error Logging
+    console.error('❌ API Error Details:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status,
+      message,
+      responseBody: responseBody,
+      headers: error.config?.headers
+    });
+
+    // Global Error Notification (except 401/403)
     if (status !== 401 && status !== 403) {
       toast.error(message);
     }

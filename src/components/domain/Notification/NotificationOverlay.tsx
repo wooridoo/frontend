@@ -11,14 +11,16 @@ interface NotificationOverlayProps {
 
 export function NotificationOverlay({ children }: NotificationOverlayProps) {
   const [open, setOpen] = useState(false);
-  const { data, isLoading } = useNotifications();
+  const { data, isLoading, error } = useNotifications();
+
+  console.log('🖥️ NotificationOverlay State:', { isLoading, hasData: !!data, error });
   const { mutate: markAsRead } = useMarkAsRead();
 
   const unreadCount = data?.unreadCount || 0;
-   
+
   const notifications = data?.content || [];
 
-  const handleItemClick = (id: number) => {
+  const handleItemClick = (id: string) => {
     markAsRead(id);
   };
 

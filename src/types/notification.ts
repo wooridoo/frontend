@@ -10,7 +10,7 @@ export interface NotificationData {
 }
 
 export interface Notification {
-    notificationId: number;
+    notificationId: string;
     type: NotificationType;
     title: string;
     message: string;

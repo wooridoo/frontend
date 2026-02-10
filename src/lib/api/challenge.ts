@@ -4,36 +4,14 @@
  * 
  * Mock ↔ Spring 전환 가능 구조
  */
-import { client, ApiError } from './client';
-import { useAuthStore } from '@/store/useAuthStore';
-import { ChallengeStatus } from '@/types/enums';
+import { client } from './client';
 
-
+import type { ChallengeInfo } from '@/types/challenge';
+export type { ChallengeInfo };
 
 // =====================
-// Types
+// Types (Imported from @/types/challenge)
 // =====================
-export interface ChallengeInfo {
-  challengeId: string;
-  title: string;
-  description?: string;
-  category: string;
-  status: ChallengeStatus;
-  memberCount: {
-    current: number;
-    max: number;
-  };
-  supportAmount: number;
-  startDate: string;
-  endDate: string;
-  thumbnailUrl?: string; // API 스펙과 맞춤 (legacy: thumbnailUrl)
-  certificationRate?: number; // Legacy 호환용
-  leader: {
-    userId: string;
-    nickname: string;
-    brix: number;
-  };
-}
 
 // =====================
 // API Functions
@@ -58,24 +36,15 @@ export async function getChallenges(params?: { query?: string; category?: string
 }
 
 /**
- * 챌린지 참여 여부 확인 (Helper)
+ * 내 챌린지 목록 조회 (027)
  */
-export function isParticipant(challengeId: string): boolean {
-  const { user } = useAuthStore.getState();
-  return user?.participatingChallengeIds?.includes(challengeId) ?? false;
+export async function getMyChallenges(status?: 'participating' | 'completed'): Promise<ChallengeInfo[]> {
+  const response = await client.get<{ content: ChallengeInfo[] }>('/challenges/me', { params: { status } });
+  return response.content;
 }
 
-/**
- * 챌린지 접근 권한 검증 (Helper)
- */
-export function validateChallengeAccess(challengeId: string): void {
-  const { isLoggedIn, user } = useAuthStore.getState();
-  if (!isLoggedIn || !user) throw new ApiError('로그인이 필요합니다.', 401);
 
-  if (!user.participatingChallengeIds?.includes(challengeId)) {
-    throw new ApiError('해당 챌린지에 참여하지 않았습니다.', 403);
-  }
-}
+// Helpers moved to @/lib/utils/challengeUtils.ts
 
 // --- Additional Challenge API Functions ---
 
@@ -100,3 +69,6 @@ export async function leaveChallenge(challengeId: string): Promise<void> {
   await client.delete(`/challenges/${challengeId}/leave`);
 }
 
+export async function joinChallenge(challengeId: string, depositAmount: number): Promise<void> {
+  await client.post(`/challenges/${challengeId}/join`, { depositAmount });
+}

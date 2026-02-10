@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui';
-import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
+import { getMyChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { useCreateChallengeModalStore } from '@/store/useCreateChallengeModalStore';
 import { ChallengeStatus } from '@/types/enums';
 import { PATHS } from '@/routes/paths';
@@ -42,7 +42,7 @@ export function MyChallengesPage() {
 
     const { data: challenges = [], isLoading } = useQuery({
         queryKey: ['challenges', 'me'],
-        queryFn: () => getChallenges(), // Will be replaced with getMyChallenges API
+        queryFn: () => getMyChallenges(),
     });
 
     const filteredChallenges = challenges.filter((challenge) => {

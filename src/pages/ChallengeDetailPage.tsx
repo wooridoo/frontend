@@ -5,7 +5,8 @@ import { Button, Badge } from '@/components/ui';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { useJoinModalStore } from '@/store/useJoinModalStore';
-import { getChallenge, isParticipant } from '@/lib/api/challenge';
+import { getChallenge } from '@/lib/api/challenge';
+import { isParticipant } from '@/lib/utils/challengeUtils';
 import styles from './ChallengeDetailPage.module.css';
 
 export function ChallengeDetailPage() {

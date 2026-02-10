@@ -75,7 +75,18 @@ const queryClient = new QueryClient({
   },
 });
 
+import { useAuthStore } from '@/store/useAuthStore';
+import { useEffect } from 'react';
+
 function App() {
+  const { isLoggedIn, syncParticipatingChallenges } = useAuthStore();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      syncParticipatingChallenges();
+    }
+  }, [isLoggedIn, syncParticipatingChallenges]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary>

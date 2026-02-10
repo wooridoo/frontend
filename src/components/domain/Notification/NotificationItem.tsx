@@ -3,7 +3,7 @@ import { ko } from 'date-fns/locale';
 import { Calendar, CreditCard, MessageCircle, Info } from 'lucide-react';
 import clsx from 'clsx';
 import type { Notification } from '@/types/notification';
-import { useVoteMeeting, useApprovePayment } from '@/lib/api/notification';
+// import { useVoteMeeting, useApprovePayment } from '@/lib/api/notification';
 import { formatCurrency } from '@/utils/format';
 import styles from './NotificationItem.module.css';
 
@@ -13,20 +13,22 @@ interface NotificationItemProps {
 }
 
 export function NotificationItem({ notification, onClick }: NotificationItemProps) {
-  const { mutate: voteMeeting } = useVoteMeeting();
-  const { mutate: approvePayment } = useApprovePayment();
+  // const { mutate: voteMeeting } = useVoteMeeting();
+  // const { mutate: approvePayment } = useApprovePayment();
 
   const handleVote = (vote: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (notification.data.targetId) {
-      voteMeeting({ meetingId: notification.data.targetId, vote });
+      console.log('Vote:', vote);
+      // voteMeeting({ meetingId: notification.data.targetId, vote });
     }
   };
 
   const handlePayment = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (notification.data.targetId) {
-      approvePayment(notification.data.targetId);
+      console.log('Approve Payment');
+      // approvePayment(notification.data.targetId);
     }
   };
 
@@ -87,7 +89,7 @@ export function NotificationItem({ notification, onClick }: NotificationItemProp
             className={clsx(styles.actionBtn, styles.primary)}
             onClick={handlePayment}
           >
-            {formatCurrency(notification.data.amount, { withSuffix: true })} 결제 승인
+            {formatCurrency(notification.data.amount)} 결제 승인
           </button>
         </div>
       )}

@@ -8,7 +8,7 @@ import styles from './NotificationOverlay.module.css';
 interface NotificationListProps {
     notifications: NotificationType[];
     isLoading: boolean;
-    onItemClick: (id: number) => void;
+    onItemClick: (id: string) => void;
     onMarkAllRead?: () => void;
 }
 
