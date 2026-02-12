@@ -38,7 +38,7 @@ export function useAttendMeeting() {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: ({ meetingId, status }: { meetingId: string; status: 'ATTENDING' | 'ABSENT' }) =>
+    mutationFn: ({ meetingId, status }: { meetingId: string; status: 'AGREE' | 'DISAGREE' }) =>
       attendMeeting(meetingId, status),
     onSuccess: (_, { meetingId }) => {
       // Invalidate meeting detail and challenge meetings list
@@ -48,7 +48,7 @@ export function useAttendMeeting() {
   });
 
   // Wrapper to match previous signature (approx) or easier usage
-  const mutate = (meetingId: string, status: 'ATTENDING' | 'ABSENT') =>
+  const mutate = (meetingId: string, status: 'AGREE' | 'DISAGREE') =>
     mutateAsync({ meetingId, status });
 
   return { mutate, isPending };
@@ -95,7 +95,7 @@ export function useRespondAttendance() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ meetingId, status }: { meetingId: string; status: 'ATTENDING' | 'NOT_ATTENDING' | 'MAYBE' }) =>
+    mutationFn: ({ meetingId, status }: { meetingId: string; status: 'AGREE' | 'DISAGREE' | 'PENDING' }) =>
       respondAttendance(meetingId, status),
     onSuccess: (_, { meetingId }) => {
       queryClient.invalidateQueries({ queryKey: ['meeting', meetingId] });

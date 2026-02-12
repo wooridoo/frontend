@@ -12,7 +12,7 @@ export function CompleteMeetingModal() {
         if (!meeting) return;
 
         try {
-            await completeMutation.mutateAsync(meeting.id);
+            await completeMutation.mutateAsync(meeting.meetingId);
             onClose();
         } catch {
             // Error handled by mutation

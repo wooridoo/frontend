@@ -33,7 +33,7 @@ export function EditMeetingModal() {
     // Derive initial form data from meeting using useMemo
     const initialFormData = useMemo(() => {
         if (!meeting) return defaultFormData;
-        const dateTime = new Date(meeting.date);
+        const dateTime = new Date(meeting.meetingDate);
         return {
             title: meeting.title,
             description: meeting.description || '',
@@ -71,10 +71,10 @@ export function EditMeetingModal() {
         try {
             const dateTime = `${formData.meetingDate}T${formData.meetingTime}:00`;
             await updateMutation.mutateAsync({
-                meetingId: meeting.id,
+                meetingId: meeting.meetingId,
                 title: formData.title,
                 description: formData.description,
-                meetingDateTime: dateTime,
+                meetingDate: dateTime,
                 locationType: formData.locationType,
                 location: formData.location,
                 maxParticipants: formData.maxParticipants,

@@ -8,12 +8,12 @@ export function AttendanceResponseModal() {
     const { isOpen, meeting, onClose } = useAttendanceModalStore();
     const respondMutation = useRespondAttendance();
 
-    const handleResponse = async (status: 'ATTENDING' | 'NOT_ATTENDING' | 'MAYBE') => {
+    const handleResponse = async (status: 'AGREE' | 'DISAGREE' | 'PENDING') => {
         if (!meeting) return;
 
         try {
             await respondMutation.mutateAsync({
-                meetingId: meeting.id,
+                meetingId: meeting.meetingId,
                 status,
             });
             onClose();
@@ -45,7 +45,7 @@ export function AttendanceResponseModal() {
                                 {meeting.title}
                             </h3>
                             <p style={{ color: 'var(--color-text-secondary)', margin: 0 }}>
-                                📅 {formatDate(meeting.date)}
+                                📅 {formatDate(meeting.meetingDate)}
                             </p>
                             <p style={{ color: 'var(--color-text-secondary)', margin: 'var(--spacing-xs) 0 0' }}>
                                 📍 {meeting.location}
@@ -54,21 +54,21 @@ export function AttendanceResponseModal() {
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)' }}>
                             <Button
-                                onClick={() => handleResponse('ATTENDING')}
+                                onClick={() => handleResponse('AGREE')}
                                 disabled={respondMutation.isPending}
                                 style={{ background: '#22c55e' }}
                             >
                                 ✓ 참석
                             </Button>
                             <Button
-                                onClick={() => handleResponse('MAYBE')}
+                                onClick={() => handleResponse('PENDING')}
                                 disabled={respondMutation.isPending}
                                 variant="secondary"
                             >
                                 🤔 미정
                             </Button>
                             <Button
-                                onClick={() => handleResponse('NOT_ATTENDING')}
+                                onClick={() => handleResponse('DISAGREE')}
                                 disabled={respondMutation.isPending}
                                 variant="secondary"
                                 style={{ color: '#ef4444' }}

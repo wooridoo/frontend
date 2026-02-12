@@ -70,7 +70,7 @@ export function CreateMeetingModal() {
                 challengeId: challengeId!,
                 title: formData.title,
                 description: formData.description,
-                meetingDateTime: dateTime,
+                meetingDate: dateTime,
                 locationType: formData.locationType,
                 location: formData.location,
                 maxParticipants: formData.maxParticipants,

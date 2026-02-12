@@ -25,7 +25,7 @@ export async function getChallengeMeetings(challengeId: string): Promise<Meeting
   return response.meetings || response.content || [];
 }
 
-export async function attendMeeting(meetingId: string, status: 'ATTENDING' | 'ABSENT'): Promise<void> {
+export async function attendMeeting(meetingId: string, status: 'AGREE' | 'DISAGREE'): Promise<void> {
   await client.post(`/meetings/${meetingId}/attendance`, { status });
 }
 
@@ -35,7 +35,7 @@ export interface CreateMeetingRequest {
   challengeId: string;
   title: string;
   description?: string;
-  meetingDateTime: string;
+  meetingDate: string;
   locationType: 'OFFLINE' | 'ONLINE';
   location: string;
   maxParticipants: number;
@@ -45,7 +45,7 @@ export interface UpdateMeetingRequest {
   meetingId: string;
   title: string;
   description?: string;
-  meetingDateTime: string;
+  meetingDate: string;
   locationType: 'OFFLINE' | 'ONLINE';
   location: string;
   maxParticipants: number;
@@ -63,7 +63,7 @@ export async function completeMeeting(meetingId: string): Promise<void> {
   await client.post(`/meetings/${meetingId}/complete`);
 }
 
-export async function respondAttendance(meetingId: string, status: 'ATTENDING' | 'NOT_ATTENDING' | 'MAYBE'): Promise<void> {
+export async function respondAttendance(meetingId: string, status: 'AGREE' | 'DISAGREE' | 'PENDING'): Promise<void> {
   await client.post(`/meetings/${meetingId}/attendance`, { status });
 }
 

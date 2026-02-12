@@ -48,7 +48,7 @@ export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
       </div>
       <div className={styles.meetingList}>
         {data.map(meeting => (
-          <Link key={meeting.id} to={`/challenges/${challengeId}/meetings/${meeting.id}`} className={styles.meetingItem}>
+          <Link key={meeting.meetingId} to={`/challenges/${challengeId}/meetings/${meeting.meetingId}`} className={styles.meetingItem}>
             <div className={styles.meetingHeader}>
               <span className={styles.meetingTitle}>{meeting.title}</span>
               <span className={styles.meetingStatus}>
@@ -56,7 +56,7 @@ export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
               </span>
             </div>
             <div className={styles.meetingInfo}>
-              <span>📅 {new Date(meeting.date).toLocaleDateString()}</span>
+              <span>📅 {new Date(meeting.meetingDate).toLocaleDateString()}</span>
               <span>📍 {meeting.isOnline ? '온라인' : meeting.location}</span>
             </div>
           </Link>

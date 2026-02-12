@@ -30,11 +30,11 @@ function RegularMeetingContent({ id }: { id?: string }) {
   if (isLoading) return <RegularMeetingSkeleton />;
   if (!data) return <div>모임을 찾을 수 없습니다.</div>;
 
-  const isAttending = data.myStatus === 'ATTENDING';
+  const isAttending = data.myAttendance?.status === 'AGREE';
 
   const handleAction = async () => {
-    const newStatus = isAttending ? 'ABSENT' : 'ATTENDING';
-    await attend(data.id, newStatus);
+    const newStatus = isAttending ? 'DISAGREE' : 'AGREE';
+    await attend(data.meetingId, newStatus);
     setShowModal(false);
     // Removed alert, relies on UI update (button state change)
   };
@@ -46,7 +46,7 @@ function RegularMeetingContent({ id }: { id?: string }) {
 
         <div className={styles.infoRow}>
           <span>📅</span>
-          <span>{new Date(data.date).toLocaleString('ko-KR', {
+          <span>{new Date(data.meetingDate).toLocaleString('ko-KR', {
             month: 'long', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit'
           })}</span>
         </div>
@@ -64,7 +64,7 @@ function RegularMeetingContent({ id }: { id?: string }) {
 
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>
-          참석자 ({data.currentMembers}/{data.maxMembers})
+          참석자 ({data.attendance?.confirmed || 0}/{data.attendance?.total || 0})
         </h3>
         <div className={styles.memberList}>
           {data.members?.map(member => (

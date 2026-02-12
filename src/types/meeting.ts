@@ -5,23 +5,35 @@ export interface MeetingMember {
     userId: string;
     nickname: string;
     profileImage?: string;
-    status: 'ATTENDING' | 'ABSENT' | 'PENDING';
+    status: 'AGREE' | 'DISAGREE' | 'PENDING';
     joinedAt?: string;
 }
 
 export interface Meeting {
-    id: string; // UUID
+    meetingId: string; // UUID (matches backend)
     challengeId: string;
     title: string;
     description: string;
-    date: string; // ISO Date
+    meetingDate: string; // ISO Date (matches backend)
     location: string;
     isOnline: boolean;
-    // meetingUrl?: string; // Removed to align with API Spec
-    // locationUrl?: string; // Removed to align with API Spec
-    maxMembers: number;
-    currentMembers: number;
     status: 'SCHEDULED' | 'COMPLETED' | 'CANCELED';
     members?: MeetingMember[];
-    myStatus?: 'ATTENDING' | 'ABSENT' | 'PENDING' | 'NONE';
+
+    // Nested Attendance Data from Backend
+    attendance?: {
+        confirmed: number;
+        declined: number;
+        pending: number;
+        total: number;
+    };
+    myAttendance?: {
+        status: 'AGREE' | 'DISAGREE' | 'PENDING' | 'NONE';
+        respondedAt?: string;
+    };
+
+    // Deprecated: Use nested attendance properties instead
+    currentMembers?: number;
+    maxMembers?: number;
+    myStatus?: 'AGREE' | 'DISAGREE' | 'PENDING' | 'NONE';
 }
