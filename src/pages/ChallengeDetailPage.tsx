@@ -10,14 +10,22 @@ import { getChallengeMembers } from '@/lib/api/member';
 import { isParticipant } from '@/lib/utils/challengeUtils';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
 import { Avatar } from '@/components/ui/Avatar';
+import { PATHS } from '@/routes/paths'; // Added PATHS import
 import styles from './ChallengeDetailPage.module.css';
+
+import { useAuthStore } from '@/store/useAuthStore';
+import { useMemo } from 'react';
+
+// ...
 
 export function ChallengeDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { onOpen } = useJoinModalStore();
+  const { user } = useAuthStore();
 
   const { data: challenge, isLoading: isChallengeLoading, error } = useQuery({
+    // ... (keep usage of getChallenge)
     queryKey: ['challenge', id],
     queryFn: () => getChallenge(id!),
     enabled: !!id,
@@ -29,13 +37,24 @@ export function ChallengeDetailPage() {
     enabled: !!id,
   });
 
+  const isJoined = useMemo(() => {
+    if (!challenge) return false;
+    // 1. Check global store (fast)
+    if (isParticipant(challenge.challengeId)) return true;
+    // 2. Check fetched member list (reliable)
+    if (user && membersData?.members) {
+      return membersData.members.some(member => String(member.user.userId) === String(user.userId));
+    }
+    return false;
+  }, [challenge, membersData, user]);
+
   const handleJoin = () => {
+    if (isJoined) return; // Prevent join if already joined
     if (challenge) {
       onOpen(String(challenge.challengeId));
     }
   };
 
-  const isJoined = challenge ? isParticipant(challenge.challengeId) : false;
   const isLoading = isChallengeLoading || isMembersLoading;
 
   if (isLoading) {
@@ -93,7 +112,7 @@ export function ChallengeDetailPage() {
           {/* 리더 프로필 이미지 API 부재로 기본 이미지 사용 */}
           <Avatar
             name={challenge.leader.nickname}
-            src={null} // Leader profile image not in API yet
+            src={null} // 리더 프로필 이미지가 API에 아직 없음
             size="md"
             className={styles.hostAvatar}
           />
@@ -147,10 +166,10 @@ export function ChallengeDetailPage() {
         <Button
           size="lg"
           className={styles.joinButton}
-          onClick={handleJoin}
-          disabled={isJoined || challenge.status === 'COMPLETED'}
+          onClick={isJoined ? () => navigate(PATHS.CHALLENGE.DETAIL(challenge.challengeId)) : handleJoin}
+          disabled={!isJoined && challenge.status === 'COMPLETED'}
         >
-          {isJoined ? '이미 참여중입니다' : '챌린지 참여하기'}
+          {isJoined ? '입장하기' : '챌린지 참여하기'}
         </Button>
       </div>
     </PageContainer>

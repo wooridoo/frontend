@@ -5,7 +5,7 @@ import styles from './ExplorePage.module.css';
 import { PageContainer } from '@/components/layout';
 import { PageHeader } from '@/components/navigation';
 import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
-import { getCategoryLabel } from '@/lib/utils/categoryLabels';
+import { getCategoryLabel, CATEGORY_LABELS } from '@/lib/utils/categoryLabels';
 import { Category } from '@/types/enums';
 import { PATHS } from '@/routes/paths';
 
@@ -27,7 +27,16 @@ function mapCategoryToEnum(uiCategory: string): string | undefined {
 export function ExplorePage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+  const categoryParam = searchParams.get('category');
+
+  // Initialize state from URL param if present, mapping Enum -> UI Label
+  // default to '전체'
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    if (categoryParam && CATEGORY_LABELS[categoryParam]) {
+      return CATEGORY_LABELS[categoryParam];
+    }
+    return '전체';
+  });
 
   // Query Function
   const { data: challenges, isLoading } = useQuery({

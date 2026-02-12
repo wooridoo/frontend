@@ -32,11 +32,12 @@ export const useAuthStore = create<AuthState>()(
         user: userData ? normalizeUser(userData) : null,
       }),
       logout: async () => {
-        // 서버 측 토큰 무효화 시도 (실패해도 로컬 상태는 정리)
+        // 서버 측 로그아웃 요청 (토큰 무효화)
+        // 실패하더라도 클라이언트 로그아웃 처리는 계속 진행합니다.
         try {
           await client.post('/auth/logout');
         } catch {
-          // 서버 logout 실패해도 무시 — 로컬 정리가 우선
+          // 서버 로그아웃 실패 시 조용히 실패 처리
         }
         set({
           isLoggedIn: false,
@@ -44,16 +45,20 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
         });
       },
+      /**
+       * 사용자가 참여 중인 챌린지 목록을 서버와 동기화합니다.
+       * - 로그인 상태이고 액세스 토큰이 있을 때만 동작합니다.
+       * - '/challenges/me' API를 호출하여 참여 중인 챌린지 ID 목록을 가져옵니다.
+       */
       syncParticipatingChallenges: async () => {
         const { isLoggedIn, accessToken, user } = get();
-        // accessToken이 없으면 API 호출하지 않음 (401 방지)
+        // 로그인하지 않았거나 토큰/유저 정보가 없으면 중단
         if (!isLoggedIn || !accessToken || !user) return;
 
         try {
           const response = await client.get<ChallengeInfo[] | { challenges?: ChallengeInfo[], content?: ChallengeInfo[] }>('/challenges/me', { params: { status: 'participating' } });
 
-          // client interceptor가 { success, data } wrapper를 벗겨서 data만 반환함
-          // 백엔드 응답 구조: data가 배열이거나, { challenges: [...] } 형태일 수 있음
+          // API 응답 구조 유연하게 처리 (배열 또는 객체 감싸짐)
           const challenges = Array.isArray(response)
             ? response
             : (response.challenges || response.content || []);
@@ -66,11 +71,15 @@ export const useAuthStore = create<AuthState>()(
               participatingChallengeIds: challengeIds
             }
           });
-          console.log('✅ Synced participating challenges:', challengeIds);
+          console.log('✅ 참여 챌린지 동기화 완료:', challengeIds);
         } catch (error) {
-          console.error('❌ Failed to sync participating challenges:', error);
+          console.error('❌ 참여 챌린지 동기화 실패:', error);
         }
       },
+      /**
+       * 사용자 프로필 정보를 최신 상태로 갱신합니다.
+       * - 잔액 변경, 정보 수정 등 변경 사항을 스토어에 반영하기 위해 사용됩니다.
+       */
       refreshUser: async () => {
         const { isLoggedIn } = get();
         if (!isLoggedIn) return;
@@ -79,7 +88,7 @@ export const useAuthStore = create<AuthState>()(
           const userData = await getMyProfile();
           set({ user: normalizeUser(userData) });
         } catch (error) {
-          console.error('Failed to refresh user:', error);
+          console.error('사용자 정보 갱신 실패:', error);
         }
       }
     }),

@@ -7,10 +7,14 @@ import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PATHS } from '@/routes/paths';
 import { getMyProfile } from '@/lib/api/user';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useCreditChargeModalStore } from '@/store/useCreditChargeModalStore';
+import { useWithdrawModalStore } from '@/store/useWithdrawModalStore';
 import styles from './WalletPage.module.css';
 
 export function WalletPage() {
   const navigate = useNavigate();
+  const { onOpen: openChargeModal } = useCreditChargeModalStore();
+  const { onOpen: openWithdrawModal } = useWithdrawModalStore();
 
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['myProfile'],
@@ -19,7 +23,7 @@ export function WalletPage() {
 
   const { updateUser } = useAuthStore();
 
-  // Sync fresh wallet data to global store (for TopNav balance)
+  // 최신 지갑 데이터를 전역 스토어와 동기화 (상단 네비게이션 잔액 표시용)
   useEffect(() => {
     if (user) {
       updateUser(user);
@@ -54,7 +58,7 @@ export function WalletPage() {
     );
   }
 
-  // TODO: Add separate API for personal wallet transaction history
+  // TODO: 개인 지갑 거래 내역 조회를 위한 별도 API 추가 필요
   interface Transaction {
     id: string;
     type: string;
@@ -79,14 +83,14 @@ export function WalletPage() {
       <div className={styles.actionGrid}>
         <button
           className={styles.actionButton}
-          onClick={() => navigate(PATHS.WALLET.CHARGE)}
+          onClick={openChargeModal}
         >
           <div className={styles.actionIcon}><Plus size={24} /></div>
           <span className={styles.actionLabel}>충전하기</span>
         </button>
         <button
           className={styles.actionButton}
-          onClick={() => navigate(PATHS.WALLET.WITHDRAW)}
+          onClick={openWithdrawModal}
         >
           <div className={styles.actionIcon}><Download size={24} /></div>
           <span className={styles.actionLabel}>출금하기</span>

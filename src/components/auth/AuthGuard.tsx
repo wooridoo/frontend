@@ -10,26 +10,17 @@ export function AuthGuard() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!isLoggedIn) {
-      // Trigger Login Modal
-      // If user cancels login, where do they go? Usually Home or previous page.
+      // 로그인 모달 띄우기
+      // 사용자가 로그인을 취소하거나 실패하면 홈으로 리다이렉트 처리 옵션 등을 설정합니다.
       onOpen({
         redirectOnReject: PATHS.HOME,
         message: '로그인이 필요한 페이지입니다.'
       });
-
-      // Optional: Redirect immediately to prevent flash? 
-      // But we want to show the modal on the current route (background)?
-      // If we render null, background is white.
-      // If we render Outlet, user sees protected content for a split second?
-      // Better: Render a placeholder or "Access Denied" state behind the modal.
     }
   }, [isLoggedIn, onOpen, navigate]);
 
   if (!isLoggedIn) {
-    // Render nothing or a strict placeholder while modal is open
-    // Ideally, we might want to Redirect to a "Login Required" page 
-    // BUT our design uses Modals.
-    // So we return null (or a loader) and let the Modal (controlled globally) show up.
+    // 모달이 떠있는 동안 배경에는 아무것도 렌더링하지 않음 (또는 로딩 스피너)
     return null;
   }
 

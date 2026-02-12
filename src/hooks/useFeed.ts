@@ -87,12 +87,16 @@ export function useToggleLike(challengeId: string) {
 
     return useMutation({
         mutationFn: (postId: string) => toggleLike(challengeId, postId),
-        onSuccess: (updatedPost) => {
+        onSuccess: (response) => {
             // 낙관적 UI 업데이트: 피드 목록에서 해당 게시글만 업데이트
             queryClient.setQueryData<Post[]>(['feed', challengeId], (oldPosts) => {
                 if (!oldPosts) return oldPosts;
                 return oldPosts.map(post =>
-                    post.id === updatedPost.id ? updatedPost : post
+                    post.id === response.postId ? {
+                        ...post,
+                        isLiked: response.liked,
+                        likeCount: response.likeCount
+                    } : post
                 );
             });
         },

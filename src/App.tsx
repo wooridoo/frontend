@@ -58,6 +58,7 @@ const SignupPage = lazy(() => import('./pages/SignupPage').then(module => ({ def
 const CreateChallengePage = lazy(() => import('./pages/CreateChallengePage').then(module => ({ default: module.CreateChallengePage })));
 const ChallengeDetailPage = lazy(() => import('./pages/ChallengeDetailPage').then(module => ({ default: module.ChallengeDetailPage })));
 const PaymentCallbackPage = lazy(() => import('./pages/PaymentCallbackPage').then(module => ({ default: module.PaymentCallbackPage })));
+const SettingsPage = lazy(() => import('./pages/SettingsPage').then(module => ({ default: module.SettingsPage })));
 
 // Wrapper to pass challengeId param
 function RegularMeetingListWrapper() {
@@ -113,7 +114,12 @@ function App() {
                   <Route path={PATHS.MY.PROFILE} element={<MyPage />} />
                   <Route path={PATHS.MY.CHALLENGES} element={<MyChallengesPage />} />
                   <Route path={PATHS.MY.LEDGER} element={<WalletPage />} />
-                  <Route path={PATHS.MY.SETTINGS} element={<div>설정 준비중</div>} />
+                  <Route path={PATHS.MY.SETTINGS} element={<SettingsPage />} />
+
+                  // ... inside Routes
+                  <Route path={PATHS.MY.LEDGER} element={<WalletPage />} />
+                  <Route path={PATHS.MY.SETTINGS} element={<SettingsPage />} />
+                  <Route path={PATHS.MY.ACCOUNT} element={<AccountPage />} />
                   <Route path={PATHS.MY.ACCOUNT} element={<AccountPage />} />
                   <Route path="/me/account/transactions" element={<TransactionHistoryPage />} />
                   <Route path={PATHS.WALLET.PAYMENT_CALLBACK} element={<PaymentCallbackPage />} />

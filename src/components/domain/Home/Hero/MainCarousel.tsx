@@ -4,34 +4,28 @@ import { Button } from '@/components/ui';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './MainCarousel.module.css';
+import { Link } from 'react-router-dom';
 
 const SLIDES = [
   {
     id: 1,
-    label: '2월의 챌린지',
-    title: '함께하면 더 쉬운\n습관 만들기',
-    description: '혼자서는 작심삼일이라면?\n우리두와 함께 매일 조금씩 성장해요.',
-    emoji: '🚀',
-    action: '지금 시작하기',
+    label: '새로운 시작',
+    title: '나만의 챌린지를\n만들어보세요',
+    description: '원하는 목표를 설정하고\n친구들과 함께 달성해보세요.',
+    emoji: '✨',
+    action: '챌린지 만들기',
+    link: '/challenges/new',
     bgClass: 'bg-primary-50'
   },
   {
     id: 2,
-    label: '신규 기능',
-    title: '인증하고\n포인트 받자!',
-    description: '매일매일 챌린지 인증하면\n현금처럼 쓸 수 있는 릭스를 드려요.',
-    emoji: '📸',
-    action: '인증하러 가기',
+    label: '탐색하기',
+    title: '지금 뜨는 챌린지\n참여하기',
+    description: '다른 사람들은 어떤 목표를\n달성하고 있을까요?',
+    emoji: '🔥',
+    action: '챌린지 구경가기',
+    link: '/explore',
     bgClass: 'bg-orange-50'
-  },
-  {
-    id: 3,
-    label: '커뮤니티',
-    title: '같은 목표를 가진\n사람들과 함께',
-    description: '서로 응원하고 격려하며\n목표를 달성해보세요.',
-    emoji: '🤝',
-    action: '모임 둘러보기',
-    bgClass: 'bg-blue-50'
   }
 ];
 
@@ -79,7 +73,9 @@ export function MainCarousel() {
                 </h2>
                 <p className={styles.description}>{slide.description}</p>
                 <div className={styles.actions}>
-                  <Button variant="primary" size="lg">{slide.action}</Button>
+                  <Link to={slide.link}>
+                    <Button variant="primary" size="lg">{slide.action}</Button>
+                  </Link>
                 </div>
               </div>
               <div className={styles.imageWrapper}>

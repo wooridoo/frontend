@@ -149,12 +149,23 @@ export function LoginModal() {
 
         {/* Footer Links */}
         <footer className={styles.footer}>
-          <p className={styles.signupPrompt}>
-            아직 회원이 아니신가요?{' '}
-            <button type="button" onClick={handleSignupLink} className={styles.signupLink} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0 }}>
+          <div className="flex justify-center gap-4 text-sm text-gray-500 mb-2">
+            <button
+              type="button"
+              onClick={() => alert('비밀번호 찾기 기능은 준비 중입니다.')}
+              className="hover:text-gray-900 transition-colors"
+            >
+              비밀번호 찾기
+            </button>
+            <span>|</span>
+            <button
+              type="button"
+              onClick={handleSignupLink}
+              className="hover:text-gray-900 transition-colors"
+            >
               회원가입
             </button>
-          </p>
+          </div>
         </footer>
       </div>
     </Modal>

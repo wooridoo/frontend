@@ -13,6 +13,7 @@ export interface Post {
     category: PostCategory;
     isNotice: boolean;
     isPinned: boolean;
+    isLiked?: boolean;
     likeCount: number;
     commentCount: number;
     viewCount: number;
@@ -25,4 +26,10 @@ export interface CreatePostInput {
     content: string;
     category?: string;
     images?: string[];
+}
+
+export interface PostLikeResponse {
+    postId: string;
+    liked: boolean;
+    likeCount: number;
 }

@@ -27,7 +27,7 @@ export function FeedPage() {
     );
   }
 
-  // Error handling: API errors are thrown, render empty state
+  // 에러 처리: API 오류 발생 시 빈 상태 표시
   if (error) {
     return (
       <div className={styles.feedContainer}>
@@ -41,7 +41,7 @@ export function FeedPage() {
   return (
     <div className={styles.feedContainer}>
       <div className={styles.headerAction}>
-        {/* Verification Trigger */}
+        {/* 인증하기 버튼 (트리거) */}
         <Button
           onClick={verificationModal.onOpen}
           className="w-full mb-4 bg-primary text-white flex gap-2 items-center justify-center py-4 rounded-xl"

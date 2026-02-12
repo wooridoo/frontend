@@ -82,10 +82,13 @@ export function normalizePost(data: any): Post {
 
   return {
     ...data,
+    // Handle id normalization
+    id: data.id || data.postId,
     // Handle createdBy normalization recursively
     createdBy: normalizeUser(data.createdBy || data.author || data.user),
     images: data.images || [],
     likeCount: data.likeCount ?? 0,
     commentCount: data.commentCount ?? 0,
+    isLiked: data.isLiked ?? false,
   };
 }

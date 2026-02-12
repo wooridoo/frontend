@@ -16,7 +16,7 @@ export function WithdrawPage() {
   const { user, refreshUser } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Dynamic schema based on user balance
+  // 사용자 잔액에 기반한 동적 유효성 검사 스키마
   const withdrawSchema = z.object({
     bank: z.string().min(1, '은행을 선택해주세요'),
     accountNumber: z.string().min(10, '계좌번호를 입력해주세요').regex(/^\d+$/, '숫자만 입력해주세요'),
@@ -50,7 +50,7 @@ export function WithdrawPage() {
           accountNumber: data.accountNumber,
         });
         alert('출금 신청이 완료되었습니다.');
-        // Refresh user data
+        // 사용자 데이터 갱신
         await refreshUser();
         navigate(PATHS.WALLET.ROOT);
       } catch (error) {

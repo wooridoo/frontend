@@ -36,18 +36,18 @@ export function ChargePage() {
       try {
         const response = await requestCreditCharge({
           amount,
-          paymentMethod: 'CARD', // Defaulting to CARD
+          paymentMethod: 'CARD', // 기본 결제 수단: 카드
         });
 
-        // If API returns a payment URL (PG integration), redirect there
+        // API가 결제 URL을 반환하면 (PG 연동), 해당 URL로 리다이렉트
         if (response.paymentUrl) {
           window.location.href = response.paymentUrl;
           return;
         }
 
-        // Otherwise assume success (mock/direct charge)
+        // 직접 충전 성공 처리 (PG 팝업 없는 경우)
         alert('충전이 완료되었습니다.');
-        await refreshUser(); // Refresh user data
+        await refreshUser(); // 사용자 데이터 갱신
         navigate(PATHS.WALLET.ROOT);
       } catch (error) {
         console.error(error);

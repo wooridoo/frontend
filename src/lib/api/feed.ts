@@ -3,7 +3,7 @@
  * Vote 패턴 기반 구현
  */
 import { client } from './client';
-import type { Post } from '@/types/feed';
+import type { Post, PostLikeResponse } from '@/types/feed';
 
 // =====================
 // Types
@@ -78,6 +78,6 @@ export async function deletePost(challengeId: string, postId: string): Promise<v
 /**
  * 좋아요 토글
  */
-export async function toggleLike(challengeId: string, postId: string): Promise<Post> {
-    return client.post<Post>(`/challenges/${challengeId}/posts/${postId}/like`);
+export async function toggleLike(challengeId: string, postId: string): Promise<PostLikeResponse> {
+    return client.post<PostLikeResponse>(`/challenges/${challengeId}/posts/${postId}/like`);
 }
