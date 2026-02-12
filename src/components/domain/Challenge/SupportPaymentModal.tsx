@@ -2,31 +2,39 @@ import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useSupportPaymentModalStore } from '@/store/useSupportPaymentModalStore';
-import { useMyAccount } from '@/hooks/useAccount';
+import { useMyAccount, useSupportPayment } from '@/hooks/useAccount';
 import { formatCurrency } from '@/lib/utils';
+import { toast } from 'sonner';
 import styles from '../Account/ChargeWithdrawModal.module.css';
 
 export function SupportPaymentModal() {
-    const { isOpen, amount, onClose } = useSupportPaymentModalStore();
+    const { isOpen, challengeId, amount, onClose } = useSupportPaymentModalStore();
     const { data: account } = useMyAccount();
+    const supportMutation = useSupportPayment();
     const [step, setStep] = useState<'confirm' | 'success'>('confirm');
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const accountData = account && typeof account === 'object' && 'data' in account ? account.data : account;
-    const availableBalance = accountData?.availableBalance || 0;
+    const availableBalance = account?.availableBalance || 0;
     const hasEnoughBalance = availableBalance >= amount;
 
     const handleClose = () => {
         setStep('confirm');
+        supportMutation.reset();
         onClose();
     };
 
     const handlePayment = async () => {
-        setIsSubmitting(true);
-        // API call would go here
-        await new Promise(r => setTimeout(r, 1000));
-        setIsSubmitting(false);
-        setStep('success');
+        if (!challengeId) return;
+
+        try {
+            await supportMutation.mutateAsync({
+                challengeId,
+                amount,
+            });
+            setStep('success');
+            toast.success('서포트 결제가 완료되었습니다!');
+        } catch {
+            toast.error('서포트 결제에 실패했습니다. 다시 시도해주세요.');
+        }
     };
 
     return (
@@ -70,9 +78,9 @@ export function SupportPaymentModal() {
                             <Button
                                 onClick={handlePayment}
                                 className={styles.submitButton}
-                                disabled={!hasEnoughBalance || isSubmitting}
+                                disabled={!hasEnoughBalance || supportMutation.isPending}
                             >
-                                {isSubmitting ? '결제 중...' : '결제하기'}
+                                {supportMutation.isPending ? '결제 중...' : '결제하기'}
                             </Button>
                         </div>
                     </>

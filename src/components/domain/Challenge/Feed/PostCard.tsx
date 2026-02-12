@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { Heart, MessageCircle, Share2, MoreVertical, Pin } from 'lucide-react';
 import { type User } from '@/types/user';
+import { Avatar } from '@/components/ui/Avatar';
 import styles from './PostCard.module.css';
 
 interface PostCardProps {
@@ -15,18 +16,24 @@ interface PostCardProps {
 }
 
 export function PostCard({ createdBy, content, images, createdAt, likeCount, commentCount, isNotice }: PostCardProps) {
-  const authorName = createdBy.nickname;
-  const authorImage = createdBy.profileImage || `https://i.pravatar.cc/150?u=${createdBy.userId}`;
-  // User doesn't have role directly usually? Leader check needs challenge info.
-  // For now, assuming User object has what we need or we display what pertains to user.
-  // The layout uses createdBy.
+  // Determine author name safely
+  const author = createdBy || { nickname: '알 수 없음', profileImage: undefined, userId: 'unknown' };
+  const authorName = author.nickname;
+
+  // Use Avatar component instead of img
+
 
   return (
     <div className={clsx(styles.card, isNotice && styles.noticeCard)}>
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.authorInfo}>
-          <img src={authorImage} alt={authorName} className={styles.avatar} />
+          <Avatar
+            src={author.profileImage}
+            name={authorName}
+            size="md"
+            className={styles.avatar}
+          />
           <div className={styles.metaData}>
             <div className={styles.nameRow}>
               <span className={styles.name}>{authorName}</span>

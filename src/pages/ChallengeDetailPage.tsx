@@ -6,7 +6,10 @@ import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { useJoinModalStore } from '@/store/useJoinModalStore';
 import { getChallenge } from '@/lib/api/challenge';
+import { getChallengeMembers } from '@/lib/api/member';
 import { isParticipant } from '@/lib/utils/challengeUtils';
+import { getCategoryLabel } from '@/lib/utils/categoryLabels';
+import { Avatar } from '@/components/ui/Avatar';
 import styles from './ChallengeDetailPage.module.css';
 
 export function ChallengeDetailPage() {
@@ -14,9 +17,15 @@ export function ChallengeDetailPage() {
   const navigate = useNavigate();
   const { onOpen } = useJoinModalStore();
 
-  const { data: challenge, isLoading, error } = useQuery({
+  const { data: challenge, isLoading: isChallengeLoading, error } = useQuery({
     queryKey: ['challenge', id],
     queryFn: () => getChallenge(id!),
+    enabled: !!id,
+  });
+
+  const { data: membersData, isLoading: isMembersLoading } = useQuery({
+    queryKey: ['challengeMembers', id],
+    queryFn: () => getChallengeMembers(id!),
     enabled: !!id,
   });
 
@@ -27,13 +36,14 @@ export function ChallengeDetailPage() {
   };
 
   const isJoined = challenge ? isParticipant(challenge.challengeId) : false;
+  const isLoading = isChallengeLoading || isMembersLoading;
 
   if (isLoading) {
     return (
       <PageContainer>
         <PageHeader title="챌린지 상세" showBack />
-        <div className="flex justify-center items-center h-[60vh]">
-          <Loader2 className="animate-spin text-gray-400" size={32} />
+        <div className={styles.stateContainer}>
+          <Loader2 className="animate-spin" size={32} style={{ color: 'var(--color-grey-400)' }} />
         </div>
       </PageContainer>
     );
@@ -43,8 +53,8 @@ export function ChallengeDetailPage() {
     return (
       <PageContainer>
         <PageHeader title="챌린지 상세" showBack />
-        <div className="flex flex-col justify-center items-center h-[60vh] gap-4">
-          <div className="text-gray-500">챌린지 정보를 불러올 수 없습니다.</div>
+        <div className={styles.stateContainer}>
+          <div className={styles.stateText}>챌린지 정보를 불러올 수 없습니다.</div>
           <Button variant="ghost" onClick={() => navigate(-1)}>뒤로 가기</Button>
         </div>
       </PageContainer>
@@ -55,11 +65,7 @@ export function ChallengeDetailPage() {
   const frequency = '매일'; // API에 없으면 기본값 또는 추가 필드 필요
   const duration = `${(new Date(challenge.endDate).getTime() - new Date(challenge.startDate).getTime()) / (1000 * 60 * 60 * 24)}일`;
 
-  // 멤버 프로필 이미지는 API에 없으므로 임시 처리 (멤버 리스트 API 별도 호출 필요할 수 있음)
-  const memberList = Array(Math.min(challenge.memberCount.current, 4)).fill(null).map((_, i) => ({
-    id: i,
-    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`
-  }));
+  const memberList = membersData?.members?.slice(0, 4) || [];
 
   return (
     <PageContainer>
@@ -67,7 +73,7 @@ export function ChallengeDetailPage() {
 
       <div className={styles.heroSection}>
         <div className={styles.categoryBadge}>
-          <Badge variant="default">{challenge.category}</Badge>
+          <Badge variant="default">{getCategoryLabel(challenge.category)}</Badge>
         </div>
         <h1 className={styles.title}>{challenge.title}</h1>
         <div className={styles.tags}>
@@ -85,7 +91,12 @@ export function ChallengeDetailPage() {
         <p className={styles.description}>{challenge.description}</p>
         <div className={styles.hostInfo}>
           {/* 리더 프로필 이미지 API 부재로 기본 이미지 사용 */}
-          <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${challenge.leader.nickname}`} alt="Host" className={styles.hostAvatar} />
+          <Avatar
+            name={challenge.leader.nickname}
+            src={null} // Leader profile image not in API yet
+            size="md"
+            className={styles.hostAvatar}
+          />
           <div className={styles.hostText}>
             <span className={styles.hostLabel}>개설자</span>
             <span className={styles.hostName}>{challenge.leader.nickname}</span>
@@ -124,7 +135,7 @@ export function ChallengeDetailPage() {
         </div>
         <div className={styles.memberList}>
           {memberList.map((member) => (
-            <img key={member.id} src={member.avatar} alt="Member" className={styles.memberAvatar} />
+            <Avatar key={member.memberId} name={member.user.nickname} src={member.user.profileImage} size="sm" className={styles.memberAvatar} />
           ))}
           {challenge.memberCount.current > 4 && (
             <div className={styles.moreMembers}>+{challenge.memberCount.current - 4}</div>

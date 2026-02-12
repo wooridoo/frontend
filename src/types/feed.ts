@@ -21,7 +21,8 @@ export interface Post {
 }
 
 export interface CreatePostInput {
+    title: string;
     content: string;
+    category?: string;
     images?: string[];
-    isNotice?: boolean;
 }

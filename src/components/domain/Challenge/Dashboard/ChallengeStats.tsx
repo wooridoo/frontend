@@ -35,18 +35,14 @@ export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsP
 
   if (!account) return null;
 
-  const { balance, stats, supportStatus } = account;
-  const { monthlyAverage } = stats;
+  const balance = account.balance ?? 0;
+  const monthlyAverage = account.stats?.monthlyAverage ?? { support: 0, expense: 0 };
+  const supportTotal = account.supportStatus?.thisMonth?.total ?? 0;
 
-  // Next Support Day Calculation (Mock Logic for now, assume 1st of next month)
+  // Next Support Day Calculation (1st of next month)
   const today = new Date();
   const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
   const nextSupportDateStr = nextMonth.toISOString();
-
-  // Income/Expense are not directly in Account summary (usually), 
-  // but MOCK data has 'stats' which might have totals.
-  // For 'This Month', we might need more specific API or use what we have.
-  // Let's use monthlyAverage for now as a placeholder or real if available.
 
   return (
     <div className={styles.container}>
@@ -54,7 +50,7 @@ export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsP
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <span className={styles.label}>💰 모임 잔액</span>
-          <TrendingUp size={14} className="text-green-500" />
+          <TrendingUp size={14} style={{ color: 'var(--color-status-success)' }} />
         </div>
         <div className={styles.balance}>{formatCurrency(balance)}</div>
       </div>
@@ -65,7 +61,7 @@ export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsP
           <span className={styles.statLabel}>이번 달 수입</span>
           <span className={styles.income}>+{formatCurrency(monthlyAverage.support)}</span>
         </div>
-        <div className={styles.statSub}>{supportStatus.thisMonth.total}명 서포트 예정</div>
+        <div className={styles.statSub}>{supportTotal}명 서포트 예정</div>
 
         <div className={styles.divider} />
 

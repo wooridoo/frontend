@@ -36,13 +36,13 @@ export const NOTIFICATION_KEYS = {
 };
 
 export function useNotifications() {
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, accessToken } = useAuthStore();
   return useQuery({
     queryKey: NOTIFICATION_KEYS.list(),
     queryFn: getNotifications,
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchInterval: 1000 * 60 * 5,
-    enabled: isLoggedIn,
+    enabled: isLoggedIn && !!accessToken,
   });
 }
 

@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
 import { getMyProfile } from '@/lib/api/user';
 import { useAuthStore } from '@/store/useAuthStore';
+import { Avatar } from '@/components/ui/Avatar';
 import styles from './MyPage.module.css';
 
 export function MyPage() {
@@ -38,8 +39,8 @@ export function MyPage() {
     return (
       <PageContainer>
         <PageHeader title="마이페이지" />
-        <div className="flex justify-center items-center h-[60vh]">
-          <Loader2 className="animate-spin text-gray-400" size={32} />
+        <div className={styles.stateContainer}>
+          <Loader2 className="animate-spin" size={32} style={{ color: 'var(--color-grey-400)' }} />
         </div>
       </PageContainer>
     );
@@ -49,12 +50,12 @@ export function MyPage() {
     return (
       <PageContainer>
         <PageHeader title="마이페이지" />
-        <div className="flex flex-col justify-center items-center h-[60vh] gap-4">
-          <div className="text-gray-500">
+        <div className={styles.stateContainer}>
+          <div className={styles.stateText}>
             {error ? '로그인이 필요하거나 정보를 불러올 수 없습니다.' : '사용자 정보가 없습니다.'}
           </div>
           <button
-            className="px-4 py-2 bg-gray-200 rounded-lg text-sm"
+            className={styles.loginButton}
             onClick={() => navigate(PATHS.AUTH.LOGIN)}
           >
             로그인 하러 가기
@@ -87,9 +88,10 @@ export function MyPage() {
       <PageHeader title="마이페이지" />
 
       <div className={styles.profileSection}>
-        <img
-          src={user.profileImage || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nickname}`}
-          alt="Profile"
+        <Avatar
+          src={user.profileImage}
+          name={user.nickname}
+          size="xl"
           className={styles.avatar}
         />
         <div className={styles.profileInfo}>
@@ -102,17 +104,10 @@ export function MyPage() {
 
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
-          <span className={styles.statValue}>{user.stats?.challengeCount || 0}</span>
+          <span className={styles.statValue}>{user.participatingChallengeIds?.length || 0}</span>
           <span className={styles.statLabel}>참여중</span>
         </div>
-        <div className={styles.statCard}>
-          <span className={styles.statValue}>
-            {user.stats?.challengeCount
-              ? Math.round((user.stats.completedChallenges / user.stats.challengeCount) * 100)
-              : 0}%
-          </span>
-          <span className={styles.statLabel}>달성률</span>
-        </div>
+        {/* 달성률 Mock 제거 */}
       </div>
 
       <div className={styles.menuSection}>

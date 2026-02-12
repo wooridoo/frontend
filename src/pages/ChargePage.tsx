@@ -4,12 +4,15 @@ import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
+import { useAuthStore } from '@/store/useAuthStore';
+import { requestCreditCharge } from '@/lib/api/account';
 import styles from './ChargePage.module.css';
 
 const PRESET_AMOUNTS = [5000, 10000, 30000, 50000, 100000];
 
 export function ChargePage() {
   const navigate = useNavigate();
+  const { user, refreshUser } = useAuthStore();
   const [amount, setAmount] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,9 +34,20 @@ export function ChargePage() {
     if (confirm(`${amount.toLocaleString()}원을 충전하시겠습니까?`)) {
       setIsSubmitting(true);
       try {
-        // Mock Payment API
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const response = await requestCreditCharge({
+          amount,
+          paymentMethod: 'CARD', // Defaulting to CARD
+        });
+
+        // If API returns a payment URL (PG integration), redirect there
+        if (response.paymentUrl) {
+          window.location.href = response.paymentUrl;
+          return;
+        }
+
+        // Otherwise assume success (mock/direct charge)
         alert('충전이 완료되었습니다.');
+        await refreshUser(); // Refresh user data
         navigate(PATHS.WALLET.ROOT);
       } catch (error) {
         console.error(error);
@@ -50,7 +64,9 @@ export function ChargePage() {
 
       <div className={styles.titleSection}>
         <p className={styles.currentBalance}>현재 잔액</p>
-        <p className={styles.balanceValue}>12,500 Brix</p>
+        <p className={styles.balanceValue}>
+          {user?.account?.balance?.toLocaleString() || 0} Brix
+        </p>
       </div>
 
       <div className={styles.amountGrid}>

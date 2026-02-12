@@ -91,7 +91,6 @@ export function MainCarousel() {
       </div>
 
       {/* Controls */}
-      {/* Controls */}
       <div className={styles.controls}>
         <button onClick={prevSlide} className={styles.controlBtn}>
           <ChevronLeft size={20} />

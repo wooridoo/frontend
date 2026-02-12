@@ -37,7 +37,7 @@ export function useExpenses(
 /**
  * 지출 상세 조회 훅
  */
-export function useExpense(challengeId: string | undefined, expenseId: number | undefined) {
+export function useExpense(challengeId: string | undefined, expenseId: string | undefined) {
     return useQuery({
         queryKey: ['expense', challengeId, expenseId],
         queryFn: () => getExpense(challengeId!, expenseId!),
@@ -68,7 +68,7 @@ export function useApproveExpense(challengeId: string) {
 
     return useMutation({
         mutationFn: ({ expenseId, approved, reason }: {
-            expenseId: number;
+            expenseId: string;
             approved: boolean;
             reason?: string;
         }) => approveExpense(challengeId, expenseId, approved, reason),
@@ -87,7 +87,7 @@ export function useUpdateExpense(challengeId: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ expenseId, data }: { expenseId: number; data: Partial<CreateExpenseInput> }) =>
+        mutationFn: ({ expenseId, data }: { expenseId: string; data: Partial<CreateExpenseInput> }) =>
             updateExpense(challengeId, expenseId, data),
         onSuccess: (updatedExpense) => {
             queryClient.invalidateQueries({ queryKey: ['expenses', challengeId] });
@@ -103,7 +103,7 @@ export function useDeleteExpense(challengeId: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (expenseId: number) => deleteExpense(challengeId, expenseId),
+        mutationFn: (expenseId: string) => deleteExpense(challengeId, expenseId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['expenses', challengeId] });
             queryClient.invalidateQueries({ queryKey: ['ledger', challengeId] });

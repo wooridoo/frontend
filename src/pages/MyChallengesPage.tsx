@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui';
+import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
+import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { getMyChallenges, type ChallengeInfo } from '@/lib/api/challenge';
+import { getCategoryLabel } from '@/lib/utils/categoryLabels';
 import { useCreateChallengeModalStore } from '@/store/useCreateChallengeModalStore';
 import { ChallengeStatus } from '@/types/enums';
 import { PATHS } from '@/routes/paths';
@@ -24,16 +27,7 @@ const STATUS_MAP: Record<TabType, ChallengeStatus | null> = {
     completed: ChallengeStatus.COMPLETED,
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-    HOBBY: '취미',
-    STUDY: '학습',
-    EXERCISE: '운동',
-    SAVINGS: '저축',
-    TRAVEL: '여행',
-    FOOD: '음식',
-    CULTURE: '문화',
-    OTHER: '기타',
-};
+
 
 export function MyChallengesPage() {
     const navigate = useNavigate();
@@ -81,14 +75,16 @@ export function MyChallengesPage() {
     };
 
     return (
-        <div className={styles.container}>
-            {/* Header */}
-            <div className={styles.header}>
-                <h1 className={styles.title}>내 챌린지</h1>
-                <Button className={styles.createButton} onClick={openCreateModal}>
-                    + 새 챌린지
-                </Button>
-            </div>
+        <PageContainer>
+            <PageHeader
+                title="내 챌린지"
+                showBack
+                action={
+                    <Button className={styles.createButton} onClick={openCreateModal}>
+                        + 새 챌린지
+                    </Button>
+                }
+            />
 
             {/* Tabs */}
             <div className={styles.tabs}>
@@ -132,7 +128,7 @@ export function MyChallengesPage() {
                             />
                             <div className={styles.cardContent}>
                                 <div className={styles.cardCategory}>
-                                    {CATEGORY_LABELS[challenge.category] || challenge.category}
+                                    {getCategoryLabel(challenge.category)}
                                 </div>
                                 <h3 className={styles.cardTitle}>{challenge.title}</h3>
                                 <div className={styles.cardMeta}>
@@ -146,6 +142,6 @@ export function MyChallengesPage() {
                     ))}
                 </div>
             )}
-        </div>
+        </PageContainer>
     );
 }

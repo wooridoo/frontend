@@ -19,7 +19,8 @@ export function WithdrawAccountModal() {
         if (confirmText !== '탈퇴') return;
 
         try {
-            await withdrawMutation.mutateAsync();
+            // TODO: 실제로는 비밀번호 확인 절차가 필요함
+            await withdrawMutation.mutateAsync({ password: 'confirm-from-modal', reason: 'USER_REQUEST' });
             // Redirect to home or login page after withdrawal
             window.location.href = '/';
         } catch {

@@ -5,6 +5,6 @@ export {
   CardFooter,
   CardImage,
   CardSkeleton,
-  useCardContext,
   type CardProps,
 } from './Card';
+export { useCardContext } from './CardContext';

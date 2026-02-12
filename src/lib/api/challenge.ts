@@ -20,27 +20,47 @@ export type { ChallengeInfo };
 /**
  * 챌린지 상세 조회 (024)
  */
+import { normalizeChallenge } from '@/lib/utils/dataMappers';
+
+/**
+ * 챌린지 상세 조회 (024)
+ */
 export async function getChallenge(challengeId: string): Promise<ChallengeInfo> {
   // client.get returns the unwrapped data (ChallengeInfo)
   const challenge = await client.get<ChallengeInfo>(`/challenges/${challengeId}`);
-  return challenge;
+  return normalizeChallenge(challenge);
+}
+
+
+interface ChallengeResponse {
+  challenges?: ChallengeInfo[];
+  content?: ChallengeInfo[];
 }
 
 /**
  * 챌린지 목록 조회 (검색/탐색용)
  */
 export async function getChallenges(params?: { query?: string; category?: string; sort?: string; size?: number }): Promise<ChallengeInfo[]> {
-  // client.get returns unwrapped data { content: ..., page: ... }
-  const response = await client.get<{ content: ChallengeInfo[] }>('/challenges', { params });
-  return response.content;
+  const response = await client.get<ChallengeInfo[] | ChallengeResponse>('/challenges', { params });
+
+  const list = Array.isArray(response)
+    ? response
+    : (response.challenges || response.content || []);
+
+  return list.map(normalizeChallenge);
 }
 
 /**
  * 내 챌린지 목록 조회 (027)
  */
 export async function getMyChallenges(status?: 'participating' | 'completed'): Promise<ChallengeInfo[]> {
-  const response = await client.get<{ content: ChallengeInfo[] }>('/challenges/me', { params: { status } });
-  return response.content;
+  const response = await client.get<ChallengeInfo[] | ChallengeResponse>('/challenges/me', { params: { status } });
+
+  const list = Array.isArray(response)
+    ? response
+    : (response.challenges || response.content || []);
+
+  return list.map(normalizeChallenge);
 }
 
 
@@ -50,7 +70,7 @@ export async function getMyChallenges(status?: 'participating' | 'completed'): P
 
 export interface UpdateChallengeRequest {
   challengeId: string;
-  title: string;
+  name: string;
   description?: string;
   category: string;
   thumbnailUrl?: string;
@@ -71,4 +91,23 @@ export async function leaveChallenge(challengeId: string): Promise<void> {
 
 export async function joinChallenge(challengeId: string, depositAmount: number): Promise<void> {
   await client.post(`/challenges/${challengeId}/join`, { depositAmount });
+}
+
+/**
+ * 챌린지 생성 (P0)
+ */
+export interface CreateChallengeRequest {
+  category: string;
+  name: string;
+  description: string;
+  startDate: string;
+  maxMembers: number;
+  supportAmount: number;
+  depositAmount: number;
+  supportDay: number;
+  rules?: string;
+}
+
+export async function createChallenge(data: CreateChallengeRequest): Promise<ChallengeInfo> {
+  return client.post<ChallengeInfo>('/challenges', data);
 }

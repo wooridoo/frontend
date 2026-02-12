@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useMyProfile } from '@/hooks/useUser';
 import { Button } from '@/components/ui';
+import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
+import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { formatCurrency } from '@/lib/utils';
 import { PATHS } from '@/routes/paths';
 import styles from './MyProfilePage.module.css';
@@ -11,26 +13,33 @@ export function MyProfilePage() {
 
     if (isLoading) {
         return (
-            <div className={styles.loading}>
-                <div>로딩 중...</div>
-            </div>
+            <PageContainer>
+                <PageHeader title="프로필" showBack />
+                <div className={styles.loading}>
+                    <div>로딩 중...</div>
+                </div>
+            </PageContainer>
         );
     }
 
     if (error || !user) {
         return (
-            <div className={styles.error}>
-                <div>프로필을 불러올 수 없습니다.</div>
-                <Button onClick={() => window.location.reload()}>다시 시도</Button>
-            </div>
+            <PageContainer>
+                <PageHeader title="프로필" showBack />
+                <div className={styles.error}>
+                    <div>프로필을 불러올 수 없습니다.</div>
+                    <Button onClick={() => window.location.reload()}>다시 시도</Button>
+                </div>
+            </PageContainer>
         );
     }
 
-    // Use user.account as the display account (account from useMyAccount has different shape)
+    // Use user.account as the display account
     const displayAccount = user.account;
 
     return (
-        <div className={styles.container}>
+        <PageContainer>
+            <PageHeader title="프로필" showBack />
             {/* Header */}
             <div className={styles.header}>
                 <img
@@ -116,6 +125,6 @@ export function MyProfilePage() {
                     <span className={styles.menuArrow}>›</span>
                 </div>
             </div>
-        </div>
+        </PageContainer>
     );
 }

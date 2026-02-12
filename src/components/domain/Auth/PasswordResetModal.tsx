@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { usePasswordResetModalStore } from '@/store/usePasswordResetModalStore';
+import { requestPasswordReset } from '@/lib/api/auth';
 import styles from './AuthModal.module.css';
 
 export function PasswordResetModal() {
@@ -30,10 +31,14 @@ export function PasswordResetModal() {
         }
 
         setIsSubmitting(true);
-        // API call would go here
-        await new Promise(r => setTimeout(r, 1000));
-        setIsSubmitting(false);
-        setStep('sent');
+        try {
+            await requestPasswordReset(email);
+            setStep('sent');
+        } catch {
+            setError('비밀번호 재설정 이메일 전송에 실패했습니다. 다시 시도해주세요.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (

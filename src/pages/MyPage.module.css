@@ -109,3 +109,25 @@
 .dangerText {
   color: var(--color-status-danger, var(--color-error));
 }
+
+.stateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  gap: var(--spacing-md);
+}
+
+.stateText {
+  color: var(--color-grey-500);
+}
+
+.loginButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-grey-200);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}

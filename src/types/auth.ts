@@ -7,6 +7,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   accessToken: string;
+  refreshToken: string;
   user: User;
 }
 
@@ -17,8 +18,10 @@ export interface SignupRequest {
   name: string;
   phone: string;
   birthDate?: string;
+  gender?: string; // 'M' | 'F'
   profileImage?: string;
+  verificationToken?: string;
   termsAgreed: boolean;
   privacyAgreed: boolean;
-  marketingAgreed: boolean;
+  marketingAgreed?: boolean;
 }

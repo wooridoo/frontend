@@ -1,11 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import { Menu } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { SidebarIcon, type SidebarIconProps } from '@/components/ui/Icons';
 import styles from './SideNav.module.css';
 import logo from '@/assets/woorido_logo.svg';
 
 import { useAuthGuard } from '@/hooks/useAuthGuard';
+import { getMyChallenges } from '@/lib/api/challenge';
 import { PATHS } from '@/routes/paths';
 
 interface SideNavProps {
@@ -32,16 +34,8 @@ interface NavItem {
 const mainItems: NavItem[] = [
   { label: '홈', path: PATHS.HOME, iconType: 'home' },
   { label: '탐색', path: PATHS.EXPLORE, iconType: 'explore' },
-  { label: '추천', path: '/recommended', iconType: 'recommended' }, // Recommended not yet in PATHS, keeping as string or adding to PATHS? Let's add it to PATHS later or keep string if P2
+  { label: '추천', path: '/recommended', iconType: 'recommended' },
 ];
-
-// Section 2: Subscriptions (Joined Challenges) - Mock Data
-// In real app, this comes from API/Store
-const joinedChallenges = [
-  { id: '1', label: '책벌레들', path: PATHS.CHALLENGE.FEED('1'), iconType: 'feed' },
-  { id: '2', label: '이른새벽 기상', path: PATHS.CHALLENGE.FEED('2'), iconType: 'feed' },
-  // { id: 3, label: '헬스장 출석', path: PATHS.CHALLENGE.FEED(3), iconType: 'feed' },
-] as const;
 
 
 export function SideNav({
@@ -55,7 +49,15 @@ export function SideNav({
     onClose?.();
   };
 
-  const { isLoggedIn: isUserLoggedIn, user, isParticipant } = useAuthGuard();
+  const { isLoggedIn: isUserLoggedIn } = useAuthGuard();
+
+  // Fetch real joined challenges from API
+  const { data: joinedChallenges = [] } = useQuery({
+    queryKey: ['challenges', 'me', 'sidenav'],
+    queryFn: () => getMyChallenges('participating'),
+    enabled: isUserLoggedIn,
+    staleTime: 1000 * 60 * 5, // 5분 캐시
+  });
 
   return (
     <>
@@ -76,8 +78,6 @@ export function SideNav({
             <img src={logo} alt="우리두" className={styles.logo} />
           </NavLink>
         </div>
-
-        {/* Note: Logo is now in TopNav, so removed from here */}
 
         {/* 1. Main Menu Section */}
         <div className={styles.section}>
@@ -104,52 +104,34 @@ export function SideNav({
 
         <div className={styles.divider} />
 
-        {/* 2. Subscriptions (Joined Challenges) Section - Only show when logged in */}
-        {/* 2. Subscriptions (Joined Challenges) Section - Only show when logged in */}
-        {isUserLoggedIn && user?.participatingChallengeIds && (
+        {/* 2. Joined Challenges Section - Dynamic from API */}
+        {isUserLoggedIn && (
           <div className={styles.section}>
             <span className={clsx(styles.sectionTitle, (isCollapsed && !isOpen) && styles.hidden)}>가입한 챌린지</span>
             <ul className={styles.navList}>
-              {joinedChallenges
-                .filter(item => isParticipant(item.id))
-                .map((item) => (
-                  <li key={item.id}>
+              {joinedChallenges.length > 0 ? (
+                joinedChallenges.map((challenge) => (
+                  <li key={challenge.challengeId}>
                     <NavLink
-                      to={item.path}
+                      to={PATHS.CHALLENGE.FEED(String(challenge.challengeId))}
                       className={({ isActive }) =>
                         clsx(styles.navItem, isActive && styles.active)
                       }
                       onClick={handleNavClick}
-                      title={isCollapsed ? item.label : undefined}
+                      title={isCollapsed ? (challenge.title || 'Untitled') : undefined}
                     >
-                      {/* Reuse feed icon for now, or use challenge avatar if available */}
                       <span className={styles.challengeIcon}>
-                        {item.label.slice(0, 1)}
+                        {(challenge.title || '?').slice(0, 1)}
                       </span>
-                      <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>{item.label}</span>
+                      <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>{challenge.title || 'Untitled'}</span>
                     </NavLink>
                   </li>
-                ))}
-
-              {/* Show "No Challenges" if empty */}
-              {(!user.participatingChallengeIds || user.participatingChallengeIds.length === 0) && (
+                ))
+              ) : (
                 <li className={styles.emptyItem}>
                   <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden, styles.emptyText)}>
                     참여 중인 챌린지가 없습니다.
                   </span>
-                </li>
-              )}
-
-              {/* View All Button - Only show if there are challenges */}
-              {user.participatingChallengeIds.length > 0 && (
-                <li className={styles.viewAllItem}>
-                  <button className={clsx(styles.navItem, styles.viewAllButton)}>
-                    <span className={styles.navIcon}>
-                      {/* Chevron Down or similar */}
-                      <span style={{ fontSize: '18px' }}>⌄</span>
-                    </span>
-                    <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>더보기</span>
-                  </button>
                 </li>
               )}
             </ul>
@@ -160,3 +142,4 @@ export function SideNav({
     </>
   );
 }
+

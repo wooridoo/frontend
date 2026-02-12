@@ -8,7 +8,9 @@ import {
     updateChallenge,
     deleteChallenge,
     leaveChallenge,
+    createChallenge,
     type UpdateChallengeRequest,
+    type CreateChallengeRequest,
 } from '@/lib/api/challenge';
 
 /**
@@ -19,7 +21,21 @@ export function useChallengeDetail(challengeId: string | undefined) {
         queryKey: ['challenge', challengeId, 'detail'],
         queryFn: () => getChallenge(challengeId!),
         enabled: !!challengeId,
-        staleTime: 1000 * 60 * 10, // 10분 캐시 (자주 변하지 않음)
+        staleTime: 1000 * 60 * 10,
+    });
+}
+
+/**
+ * 챌린지 생성 훅
+ */
+export function useCreateChallenge() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: CreateChallengeRequest) => createChallenge(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['challenges'] });
+        },
     });
 }
 

@@ -1,15 +1,25 @@
 import { type Vote, type VoteOption, type VoteType, VoteStatus } from '../../types/domain';
 import { client } from './client';
 
+
+interface VoteResponse {
+  votes?: Vote[];
+  content?: Vote[];
+}
+
 export async function getChallengeVotes(
   challengeId: string,
   status?: VoteStatus
 ): Promise<Vote[]> {
-  const params: any = {};
+  const params: Record<string, string> = {};
   if (status) params.status = status;
 
-  const response = await client.get<{ content: Vote[] }>(`/challenges/${challengeId}/votes`, { params });
-  return response?.content || [];
+  const response = await client.get<Vote[] | VoteResponse>(`/challenges/${challengeId}/votes`, { params });
+
+  if (Array.isArray(response)) {
+    return response;
+  }
+  return response.votes || response.content || [];
 }
 
 export async function getVoteDetail(voteId: string): Promise<Vote> {

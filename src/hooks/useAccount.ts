@@ -8,12 +8,16 @@ import {
     getMyAccount,
     getTransactionHistory,
     requestCreditCharge,
-    requestWithdraw
+    requestWithdraw,
+    chargeCallback,
+    supportPayment,
 } from '@/lib/api/account';
 import type {
     CreditChargeRequest,
     WithdrawRequest,
-    TransactionHistoryParams
+    TransactionHistoryParams,
+    ChargeCallbackRequest,
+    SupportPaymentRequest,
 } from '@/types/account';
 
 // Query Keys
@@ -41,8 +45,7 @@ export function useTransactionHistoryInfinite(filters: TransactionHistoryParams 
         queryFn: ({ pageParam }) =>
             getTransactionHistory({ ...filters, page: pageParam as number, size: 20 }),
         getNextPageParam: (lastPage) => {
-            const data = lastPage.data;
-            return (data.currentPage + 1 < data.totalPages) ? data.currentPage + 1 : undefined;
+            return (lastPage.currentPage + 1 < lastPage.totalPages) ? lastPage.currentPage + 1 : undefined;
         },
         initialPageParam: 0,
         enabled: isLoggedIn,
@@ -68,6 +71,32 @@ export function useRequestWithdraw() {
 
     return useMutation({
         mutationFn: (data: WithdrawRequest) => requestWithdraw(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: accountKeys.my() });
+            queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
+        },
+    });
+}
+
+// POST Charge Callback (Toss 결제 결과 처리)
+export function useChargeCallback() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: ChargeCallbackRequest) => chargeCallback(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: accountKeys.my() });
+            queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
+        },
+    });
+}
+
+// POST Support Payment (서포트 결제)
+export function useSupportPayment() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: SupportPaymentRequest) => supportPayment(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: accountKeys.my() });
             queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });

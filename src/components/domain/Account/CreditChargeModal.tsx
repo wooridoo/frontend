@@ -27,7 +27,7 @@ export function CreditChargeModal() {
 
     const handleCharge = async () => {
         try {
-            await chargeMutation.mutateAsync({ amount, method: 'CARD' });
+            await chargeMutation.mutateAsync({ amount, paymentMethod: 'CARD' });
             setStep('success');
         } catch {
             // Error handled by mutation

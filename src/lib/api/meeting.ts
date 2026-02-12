@@ -10,12 +10,19 @@ export async function getMeeting(id: string): Promise<Meeting> {
   return meeting;
 }
 
-export async function getChallengeMeetings(challengeId: string): Promise<Meeting[]> {
-  // API returns { content: Meeting[], page: ... }
-  const response = await client.get<{ content: Meeting[] }>(`/challenges/${challengeId}/meetings`);
 
-  // Checking for content existence to avoid undefined return
-  return response?.content || [];
+interface MeetingResponse {
+  meetings?: Meeting[];
+  content?: Meeting[];
+}
+
+export async function getChallengeMeetings(challengeId: string): Promise<Meeting[]> {
+  const response = await client.get<Meeting[] | MeetingResponse>(`/challenges/${challengeId}/meetings`);
+
+  if (Array.isArray(response)) {
+    return response;
+  }
+  return response.meetings || response.content || [];
 }
 
 export async function attendMeeting(meetingId: string, status: 'ATTENDING' | 'ABSENT'): Promise<void> {

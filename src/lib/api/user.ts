@@ -8,8 +8,14 @@ import type { User } from '@/types/user';
 /**
  * 현재 로그인한 사용자 프로필 조회
  */
+import { normalizeUser } from '@/lib/utils/dataMappers';
+
+/**
+ * 현재 로그인한 사용자 프로필 조회
+ */
 export async function getMyProfile(): Promise<User> {
-    return client.get<User>('/users/me');
+    const response = await client.get<User>('/users/me');
+    return normalizeUser(response);
 }
 
 /**
@@ -35,6 +41,6 @@ export async function checkNickname(nickname: string): Promise<{ available: bool
 /**
  * 회원 탈퇴
  */
-export async function withdrawAccount(): Promise<void> {
-    return client.delete('/users/me');
+export async function withdrawAccount(data: { password: string; reason?: string }): Promise<void> {
+    return client.delete('/users/me', { data });
 }

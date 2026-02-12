@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Download, Plus, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -5,6 +6,7 @@ import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PATHS } from '@/routes/paths';
 import { getMyProfile } from '@/lib/api/user';
+import { useAuthStore } from '@/store/useAuthStore';
 import styles from './WalletPage.module.css';
 
 export function WalletPage() {
@@ -15,12 +17,21 @@ export function WalletPage() {
     queryFn: getMyProfile,
   });
 
+  const { updateUser } = useAuthStore();
+
+  // Sync fresh wallet data to global store (for TopNav balance)
+  useEffect(() => {
+    if (user) {
+      updateUser(user);
+    }
+  }, [user, updateUser]);
+
   if (isLoading) {
     return (
       <PageContainer>
         <PageHeader title="나의 지갑" showBack />
-        <div className="flex justify-center items-center h-[60vh]">
-          <Loader2 className="animate-spin text-gray-400" size={32} />
+        <div className={styles.centerContainer}>
+          <Loader2 className={styles.loadingIcon} size={32} />
         </div>
       </PageContainer>
     );
@@ -30,10 +41,10 @@ export function WalletPage() {
     return (
       <PageContainer>
         <PageHeader title="나의 지갑" showBack />
-        <div className="flex flex-col justify-center items-center h-[60vh] gap-4">
-          <div className="text-gray-500">지갑 정보를 불러올 수 없습니다.</div>
+        <div className={styles.centerContainer}>
+          <div className={styles.errorText}>지갑 정보를 불러올 수 없습니다.</div>
           <button
-            className="px-4 py-2 bg-gray-200 rounded-lg text-sm"
+            className={styles.loginButton}
             onClick={() => navigate(PATHS.AUTH.LOGIN)}
           >
             로그인 하러 가기
@@ -44,7 +55,14 @@ export function WalletPage() {
   }
 
   // TODO: Add separate API for personal wallet transaction history
-  const history: any[] = [];
+  interface Transaction {
+    id: string;
+    type: string;
+    date: string;
+    isPlus: boolean;
+    amount: number;
+  }
+  const history: Transaction[] = [];
 
   return (
     <PageContainer>

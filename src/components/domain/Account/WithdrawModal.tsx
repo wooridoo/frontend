@@ -15,8 +15,7 @@ export function WithdrawModal() {
     const withdrawMutation = useRequestWithdraw();
 
     // Handle wrapped response safely
-    const accountData = account && typeof account === 'object' && 'data' in account ? account.data : account;
-    const availableBalance = accountData?.availableBalance || 0;
+    const availableBalance = account?.availableBalance || 0;
 
     const handleClose = () => {
         setStep('form');

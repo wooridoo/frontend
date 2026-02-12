@@ -1,5 +1,6 @@
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { usePostDetailModalStore } from '@/store/usePostDetailModalStore';
+import { CommentSection } from '@/components/domain/Comment/CommentSection';
 
 export function PostDetailModal() {
     const { isOpen, post, onClose } = usePostDetailModalStore();
@@ -80,7 +81,11 @@ export function PostDetailModal() {
                     <span>❤️ {post.likeCount}</span>
                     <span>💬 {post.commentCount}</span>
                 </div>
+
+                {/* Comments */}
+                <CommentSection postId={post.id} />
             </div>
         </Modal>
     );
 }
+

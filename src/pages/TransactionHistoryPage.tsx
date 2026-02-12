@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTransactionHistoryInfinite } from '@/hooks/useAccount';
 import { Button } from '@/components/ui';
+import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
+import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { formatCurrency } from '@/lib/utils';
-import { PATHS } from '@/routes/paths';
 import type { Transaction } from '@/types/account';
 import styles from './TransactionHistoryPage.module.css';
 
@@ -17,7 +17,6 @@ const FILTER_OPTIONS: { value: FilterType; label: string }[] = [
 ];
 
 export function TransactionHistoryPage() {
-    const navigate = useNavigate();
     const [filter, setFilter] = useState<FilterType>('all');
 
     const {
@@ -28,7 +27,7 @@ export function TransactionHistoryPage() {
         isLoading,
     } = useTransactionHistoryInfinite({ size: 20 });
 
-    const allTransactions: Transaction[] = data?.pages?.flatMap(page => page.data?.transactions || []) || [];
+    const allTransactions: Transaction[] = data?.pages?.flatMap(page => page.transactions || []) || [];
 
     const filteredTransactions = allTransactions.filter(tx => {
         if (filter === 'all') return true;
@@ -73,18 +72,17 @@ export function TransactionHistoryPage() {
     };
 
     if (isLoading) {
-        return <div className={styles.loading}>로딩 중...</div>;
+        return (
+            <PageContainer>
+                <PageHeader title="거래 내역" showBack />
+                <div className={styles.loading}>로딩 중...</div>
+            </PageContainer>
+        );
     }
 
     return (
-        <div className={styles.container}>
-            {/* Header */}
-            <div className={styles.header}>
-                <h1 className={styles.title}>거래 내역</h1>
-                <button className={styles.backButton} onClick={() => navigate(PATHS.MY.ACCOUNT)}>
-                    ← 돌아가기
-                </button>
-            </div>
+        <PageContainer>
+            <PageHeader title="거래 내역" showBack />
 
             {/* Filters */}
             <div className={styles.filters}>
@@ -154,6 +152,6 @@ export function TransactionHistoryPage() {
                     )}
                 </div>
             )}
-        </div>
+        </PageContainer>
     );
 }

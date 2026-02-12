@@ -1,24 +1,8 @@
-import { forwardRef, createContext, useContext, useState } from 'react';
+import { forwardRef, useState, useContext } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import styles from './Card.module.css';
-
-// Context for Card compound components
-interface CardContextValue {
-  size: 'sm' | 'md' | 'lg';
-  isExpanded: boolean;
-  isCollapsible: boolean;
-  toggleExpanded: () => void;
-  isLoading: boolean;
-}
-
-const CardContext = createContext<CardContextValue>({
-  size: 'md',
-  isExpanded: true,
-  isCollapsible: false,
-  toggleExpanded: () => { },
-  isLoading: false,
-});
+import { CardContext } from './CardContext';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Card visual variant */
@@ -226,9 +210,6 @@ const CardSkeleton = () => (
     <div className={styles.skeletonLine} style={{ width: '85%' }} />
   </div>
 );
-
-// Hook for consuming card context
-export const useCardContext = () => useContext(CardContext);
 
 // Export compound components
 export { Card, CardHeader, CardBody, CardFooter, CardImage, CardSkeleton };

@@ -62,7 +62,7 @@ export function EditChallengeModal() {
         try {
             await updateMutation.mutateAsync({
                 challengeId: challenge.challengeId,
-                title: formData.title,
+                name: formData.title,
                 description: formData.description,
                 category: formData.category,
                 thumbnailUrl: formData.thumbnailUrl || undefined,

@@ -24,7 +24,10 @@ export function PostEditor({ onSuccess }: PostEditorProps) {
 
     setIsSubmitting(true);
     try {
-      await createPost.mutateAsync({ content: content.trim() });
+      await createPost.mutateAsync({
+        title: content.slice(0, 20), // 임시: 내용 앞부분을 제목으로 사용
+        content: content.trim()
+      });
       setContent('');
       onSuccess?.();
     } catch (error) {

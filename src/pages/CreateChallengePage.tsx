@@ -7,7 +7,9 @@ import { Upload, FileText, Settings, Wallet, Info } from 'lucide-react';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button, Input, Card, CardHeader, CardBody } from '@/components/ui';
+import { useCreateChallenge } from '@/hooks/useChallenge';
 import { PATHS } from '@/routes/paths';
+import { toast } from 'sonner';
 import styles from './CreateChallengePage.module.css';
 
 // Zod Schema (API 기준)
@@ -35,13 +37,14 @@ const CATEGORIES = [
 
 export function CreateChallengePage() {
   const navigate = useNavigate();
+  const createChallengeMutation = useCreateChallenge();
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ChallengeFormValues>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
@@ -63,18 +66,16 @@ export function CreateChallengePage() {
 
   const onSubmit = async (data: ChallengeFormValues) => {
     try {
-      // API Payload (supportDay는 1로 고정)
-      const payload = {
+      const result = await createChallengeMutation.mutateAsync({
         ...data,
         supportDay: 1, // 매월 1일 고정
-      };
-      console.log('Create Challenge Payload:', payload);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      alert('챌린지가 개설되었습니다!');
-      navigate(PATHS.HOME);
-    } catch (error) {
-      console.error(error);
-      alert('챌린지 개설 중 오류가 발생했습니다.');
+      });
+      toast.success('챌린지가 개설되었습니다!');
+      // 생성된 챌린지 상세 페이지로 이동
+      const newId = result.challengeId;
+      navigate(newId ? PATHS.CHALLENGE.DETAIL(newId) : PATHS.HOME);
+    } catch {
+      toast.error('챌린지 개설 중 오류가 발생했습니다.');
     }
   };
 
@@ -207,7 +208,7 @@ export function CreateChallengePage() {
               className={styles.submitButton}
               size="lg"
               type="submit"
-              isLoading={isSubmitting}
+              isLoading={createChallengeMutation.isPending}
             >
               챌린지 개설하기
             </Button>

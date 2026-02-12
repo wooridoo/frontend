@@ -21,7 +21,7 @@ export interface UseTossPaymentOptions {
 
 export function useTossPayment(options: UseTossPaymentOptions = {}) {
   const { customerKey = CUSTOMER_KEY } = options;
-  const paymentWidgetRef = useRef<PaymentWidgetInstance | null>(null);
+  const [paymentWidget, setPaymentWidget] = useState<PaymentWidgetInstance | null>(null);
   const paymentMethodsRef = useRef<ReturnType<PaymentWidgetInstance['renderPaymentMethods']> | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -31,7 +31,7 @@ export function useTossPayment(options: UseTossPaymentOptions = {}) {
     async function initWidget() {
       try {
         const widget = await loadPaymentWidget(CLIENT_KEY, customerKey);
-        paymentWidgetRef.current = widget;
+        setPaymentWidget(widget);
         setIsReady(true);
       } catch (err) {
         setError(err as Error);
@@ -42,7 +42,7 @@ export function useTossPayment(options: UseTossPaymentOptions = {}) {
     initWidget();
 
     return () => {
-      paymentWidgetRef.current = null;
+      setPaymentWidget(null);
       paymentMethodsRef.current = null;
     };
   }, [customerKey]);
@@ -50,12 +50,12 @@ export function useTossPayment(options: UseTossPaymentOptions = {}) {
   // 결제 수단 위젯 렌더링
   const renderPaymentMethods = useCallback(
     (selector: string, amount: number) => {
-      if (!paymentWidgetRef.current) {
+      if (!paymentWidget) {
         console.warn('Payment widget not initialized');
         return null;
       }
 
-      const paymentMethods = paymentWidgetRef.current.renderPaymentMethods(
+      const paymentMethods = paymentWidget.renderPaymentMethods(
         selector,
         { value: amount },
         { variantKey: 'DEFAULT' }
@@ -63,22 +63,22 @@ export function useTossPayment(options: UseTossPaymentOptions = {}) {
       paymentMethodsRef.current = paymentMethods;
       return paymentMethods;
     },
-    []
+    [paymentWidget]
   );
 
   // 약관 동의 위젯 렌더링
   const renderAgreement = useCallback(
     (selector: string) => {
-      if (!paymentWidgetRef.current) {
+      if (!paymentWidget) {
         console.warn('Payment widget not initialized');
         return null;
       }
 
-      return paymentWidgetRef.current.renderAgreement(selector, {
+      return paymentWidget.renderAgreement(selector, {
         variantKey: 'AGREEMENT',
       });
     },
-    []
+    [paymentWidget]
   );
 
   // 결제 금액 업데이트
@@ -91,12 +91,12 @@ export function useTossPayment(options: UseTossPaymentOptions = {}) {
   // 결제 요청
   const requestPayment = useCallback(
     async (paymentRequest: PaymentRequest) => {
-      if (!paymentWidgetRef.current) {
+      if (!paymentWidget) {
         throw new Error('Payment widget not initialized');
       }
 
       try {
-        await paymentWidgetRef.current.requestPayment({
+        await paymentWidget.requestPayment({
           orderId: paymentRequest.orderId,
           orderName: paymentRequest.orderName,
           successUrl: paymentRequest.successUrl,
@@ -109,7 +109,7 @@ export function useTossPayment(options: UseTossPaymentOptions = {}) {
         throw err;
       }
     },
-    []
+    [paymentWidget]
   );
 
   return {
@@ -119,6 +119,6 @@ export function useTossPayment(options: UseTossPaymentOptions = {}) {
     renderAgreement,
     updateAmount,
     requestPayment,
-    widget: paymentWidgetRef.current,
+    widget: paymentWidget,
   };
 }

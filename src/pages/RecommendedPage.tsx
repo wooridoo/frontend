@@ -7,6 +7,7 @@ import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { Button } from '@/components/ui';
 import { Loader2 } from 'lucide-react';
 import { getChallenges } from '@/lib/api/challenge';
+import { getCategoryLabel } from '@/lib/utils/categoryLabels';
 import { PATHS } from '@/routes/paths';
 
 export function RecommendedPage() {
@@ -74,7 +75,7 @@ export function RecommendedPage() {
                     {/* <div className={styles.badge}>98% 일치</div> - Recommendation Logic Not Implemented */}
                   </div>
                   <div className={styles.cardContent}>
-                    <span className={styles.tag}>{challenge.category}</span>
+                    <span className={styles.tag}>{getCategoryLabel(challenge.category)}</span>
                     <h3 className={styles.cardTitle}>{challenge.title}</h3>
                     <div className={styles.cardFooter}>
                       <span className={styles.participants}>{challenge.memberCount.current.toLocaleString()}명 참여 중</span>

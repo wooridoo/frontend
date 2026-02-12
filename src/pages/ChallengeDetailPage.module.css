@@ -192,3 +192,16 @@
 .joinButton {
   width: 100%;
 }
+
+.stateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  gap: var(--spacing-md);
+}
+
+.stateText {
+  color: var(--color-grey-500);
+}

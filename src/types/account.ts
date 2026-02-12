@@ -35,7 +35,7 @@ export interface Account {
 
 export interface Transaction {
     transactionId: string;
-    type: 'DEPOSIT' | 'WITHDRAW' | 'TRANSFER' | 'PAYMENT' | 'REFUND'; // Adjust based on backend enum
+    type: 'DEPOSIT' | 'WITHDRAW' | 'TRANSFER' | 'PAYMENT' | 'REFUND' | 'CHARGE' | 'SUPPORT' | 'SUPPORT_AUTO';
     amount: number;
     balanceAfter: number;
     description: string;
@@ -54,14 +54,14 @@ export interface TransactionHistoryResponse {
 
 export interface CreditChargeRequest {
     amount: number;
-    method: 'CARD' | 'BANK_TRANSFER' | 'VIRTUAL_ACCOUNT';
-    // Add other fields from CreditChargeRequest.java if needed
+    paymentMethod: 'CARD' | 'BANK_TRANSFER' | 'VIRTUAL_ACCOUNT';
+    returnUrl?: string;
 }
 
 export interface CreditChargeResponse {
-    chargeId: string;
-    redirectUrl?: string; // If PG integration requires redirect
-    status: 'PENDING' | 'COMPLETED' | 'FAILED';
+    orderId: string;
+    amount: number;
+    paymentUrl?: string;
 }
 
 export interface WithdrawRequest {
@@ -82,4 +82,33 @@ export interface TransactionHistoryParams {
     endDate?: string;
     page?: number;
     size?: number;
+}
+
+// --- Charge Callback (Toss 결제 후 콜백) ---
+
+export interface ChargeCallbackRequest {
+    orderId: string;
+    paymentKey: string;
+    amount: number;
+}
+
+export interface ChargeCallbackResponse {
+    transactionId: string;
+    amount: number;
+    balance: number;
+    status: 'SUCCESS' | 'FAILED';
+}
+
+// --- Support Payment ---
+
+export interface SupportPaymentRequest {
+    challengeId: string;
+    amount: number;
+}
+
+export interface SupportPaymentResponse {
+    transactionId: string;
+    amount: number;
+    balanceAfter: number;
+    status: 'SUCCESS' | 'FAILED';
 }

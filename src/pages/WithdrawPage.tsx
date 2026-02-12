@@ -7,25 +7,26 @@ import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
+import { useAuthStore } from '@/store/useAuthStore';
+import { requestWithdraw } from '@/lib/api/account';
 import styles from './WithdrawPage.module.css';
-
-// Mock Data
-const AVAILABLE_BALANCE = 12500;
-
-const withdrawSchema = z.object({
-  bank: z.string().min(1, '은행을 선택해주세요'),
-  accountNumber: z.string().min(10, '계좌번호를 입력해주세요').regex(/^\d+$/, '숫자만 입력해주세요'),
-  amount: z.number()
-    .min(1000, '최소 1,000원부터 출금 가능합니다')
-    .max(AVAILABLE_BALANCE, '출금 가능 금액을 초과했습니다'),
-  password: z.string().min(4, '비밀번호를 입력해주세요'),
-});
-
-type WithdrawFormValues = z.infer<typeof withdrawSchema>;
 
 export function WithdrawPage() {
   const navigate = useNavigate();
+  const { user, refreshUser } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Dynamic schema based on user balance
+  const withdrawSchema = z.object({
+    bank: z.string().min(1, '은행을 선택해주세요'),
+    accountNumber: z.string().min(10, '계좌번호를 입력해주세요').regex(/^\d+$/, '숫자만 입력해주세요'),
+    amount: z.number()
+      .min(1000, '최소 1,000원부터 출금 가능합니다')
+      .max(user?.account?.availableBalance || 0, '출금 가능 금액을 초과했습니다'),
+    password: z.string().min(4, '비밀번호를 입력해주세요'),
+  });
+
+  type WithdrawFormValues = z.infer<typeof withdrawSchema>;
 
   const {
     register,
@@ -43,9 +44,14 @@ export function WithdrawPage() {
     if (confirm(`${data.amount.toLocaleString()}원을 출금하시겠습니까?`)) {
       setIsSubmitting(true);
       try {
-        // Mock API Call
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await requestWithdraw({
+          amount: data.amount,
+          bankCode: data.bank,
+          accountNumber: data.accountNumber,
+        });
         alert('출금 신청이 완료되었습니다.');
+        // Refresh user data
+        await refreshUser();
         navigate(PATHS.WALLET.ROOT);
       } catch (error) {
         console.error(error);
@@ -57,7 +63,9 @@ export function WithdrawPage() {
   };
 
   const handleMaxAmount = () => {
-    setValue('amount', AVAILABLE_BALANCE, { shouldValidate: true });
+    if (user?.account?.availableBalance) {
+      setValue('amount', user.account.availableBalance, { shouldValidate: true });
+    }
   };
 
   return (
@@ -67,7 +75,7 @@ export function WithdrawPage() {
       <div className={styles.balanceSection}>
         <p className={styles.balanceLabel}>출금 가능 금액</p>
         <p className={styles.balanceValue}>
-          {AVAILABLE_BALANCE.toLocaleString()}
+          {user?.account?.availableBalance?.toLocaleString() || 0}
           <span className={styles.currency}>Brix</span>
         </p>
       </div>
@@ -135,6 +143,7 @@ export function WithdrawPage() {
             size="lg"
             type="submit"
             isLoading={isSubmitting}
+            disabled={!user || (user?.account?.availableBalance || 0) === 0}
           >
             출금 신청하기
           </Button>

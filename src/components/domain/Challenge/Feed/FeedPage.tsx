@@ -58,8 +58,8 @@ export function FeedPage() {
             아직 게시글이 없습니다. 첫 번째 글을 작성해보세요!
           </div>
         ) : (
-          posts?.map(post => (
-            <PostCard key={post.id} {...post} />
+          posts?.map((post, index) => (
+            <PostCard key={post.id || index} {...post} />
           ))
         )}
       </div>

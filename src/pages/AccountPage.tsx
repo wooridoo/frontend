@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useMyAccount, useTransactionHistoryInfinite } from '@/hooks/useAccount';
 import { useCreditChargeModalStore } from '@/store/useCreditChargeModalStore';
 import { useWithdrawModalStore } from '@/store/useWithdrawModalStore';
+import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
+import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { formatCurrency } from '@/lib/utils';
 import type { Transaction } from '@/types/account';
 import styles from './AccountPage.module.css';
@@ -14,12 +16,17 @@ export function AccountPage() {
     const { onOpen: openWithdrawModal } = useWithdrawModalStore();
 
     if (accountLoading) {
-        return <div className={styles.loading}>로딩 중...</div>;
+        return (
+            <PageContainer>
+                <PageHeader title="내 지갑" showBack />
+                <div className={styles.loading}>로딩 중...</div>
+            </PageContainer>
+        );
     }
 
     // Handle wrapped response
-    const accountData = account && typeof account === 'object' && 'data' in account ? account.data : account;
-    const transactions: Transaction[] = transactionsData?.pages?.[0]?.data?.transactions || [];
+    const accountData = account;
+    const transactions: Transaction[] = transactionsData?.pages?.[0]?.transactions || [];
 
     const getTransactionIcon = (type: string) => {
         switch (type) {
@@ -42,12 +49,8 @@ export function AccountPage() {
     };
 
     return (
-        <div className={styles.container}>
-            {/* Header */}
-            <div className={styles.header}>
-                <h1 className={styles.title}>내 지갑</h1>
-                <p className={styles.subtitle}>크레딧을 충전하고 관리하세요</p>
-            </div>
+        <PageContainer>
+            <PageHeader title="내 지갑" showBack />
 
             {/* Balance Card */}
             <div className={styles.balanceCard}>
@@ -122,6 +125,6 @@ export function AccountPage() {
                     </ul>
                 )}
             </div>
-        </div>
+        </PageContainer>
     );
 }

@@ -7,13 +7,13 @@
 import { client } from './client';
 import type { ChallengeAccount } from '@/types/ledger';
 
+import { normalizeChallengeAccount } from '@/lib/utils/dataMappers';
+
 /**
  * 챌린지 어카운트 조회 (028)
  */
 export async function getChallengeAccount(challengeId: string): Promise<ChallengeAccount> {
-  const { data } = await client.get<{ data: ChallengeAccount }>(
-    `/challenges/${challengeId}/account`
-  );
-  return data;
+  const response = await client.get<ChallengeAccount>(`/challenges/${challengeId}/account`);
+  return normalizeChallengeAccount(response);
 }
 

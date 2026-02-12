@@ -13,6 +13,7 @@ export const PATHS = {
     ROOT: '/wallet',
     CHARGE: '/wallet/charge',
     WITHDRAW: '/wallet/withdraw',
+    PAYMENT_CALLBACK: '/wallet/payment/callback',
   },
   CHALLENGE: {
     ROOT: '/challenges',

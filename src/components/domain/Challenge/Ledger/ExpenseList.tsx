@@ -89,7 +89,7 @@ export function ExpenseList() {
         );
     }
 
-    if (!data || data.content.length === 0) {
+    if (!data || data.expenses.length === 0) {
         return (
             <div className={styles.container}>
                 <div className={styles.empty}>
@@ -108,7 +108,7 @@ export function ExpenseList() {
                 </span>
             </div>
             <div className={styles.list}>
-                {data.content.map(expense => (
+                {data.expenses.map(expense => (
                     <ExpenseItem key={expense.expenseId} expense={expense} />
                 ))}
             </div>

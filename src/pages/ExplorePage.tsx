@@ -5,6 +5,7 @@ import styles from './ExplorePage.module.css';
 import { PageContainer } from '@/components/layout';
 import { PageHeader } from '@/components/navigation';
 import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
+import { getCategoryLabel } from '@/lib/utils/categoryLabels';
 import { Category } from '@/types/enums';
 import { PATHS } from '@/routes/paths';
 
@@ -111,10 +112,14 @@ function ChallengeCard({ challenge }: { challenge: ChallengeInfo }) {
           alt={challenge.title}
           className={styles.image}
           onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300?text=No+Image';
+            const target = e.target as HTMLImageElement;
+            // Prevent infinite loop if fallback image also fails
+            if (target.src !== 'https://via.placeholder.com/300?text=No+Image') {
+              target.src = 'https://via.placeholder.com/300?text=No+Image';
+            }
           }}
         />
-        <span className={styles.tag}>{challenge.category}</span>
+        <span className={styles.tag}>{getCategoryLabel(challenge.category)}</span>
       </div>
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{challenge.title}</h3>

@@ -7,7 +7,7 @@ import { PATHS } from '@/routes/paths';
 export function ChallengeGuard() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuthStore();
-  const { onOpen } = useAccessDeniedModalStore();
+  const { onOpen, onClose } = useAccessDeniedModalStore();
   const navigate = useNavigate();
 
   const challengeId = id!;
@@ -19,20 +19,28 @@ export function ChallengeGuard() {
       return;
     }
 
-    // 2. Participation Check
-    const isParticipant = user?.participatingChallengeIds?.includes(challengeId);
+    // 2. Participation Check: Wait for sync to complete (must be an array)
+    if (!user || user.participatingChallengeIds === undefined) return;
 
-    if (!isParticipant) {
-      onOpen(id!); // Open Access Denied Modal using string ID
-      // The modal usually handles navigation on close.
-      // If we render null here, the background is empty.
+    const isParticipant = user.participatingChallengeIds.includes(challengeId);
+    console.log(`🛡️ ChallengeGuard: ID=${challengeId}, Participating=${user.participatingChallengeIds.length}, Allowed=${isParticipant}`);
+
+    if (isParticipant) {
+      onClose();
+    } else {
+      onOpen(id!);
     }
-  }, [challengeId, user, onOpen, navigate, id]);
+  }, [challengeId, user, onOpen, onClose, navigate, id]);
 
-  const isParticipant = user?.participatingChallengeIds?.includes(challengeId);
+  // Block rendering until we're sure
+  if (!user || user.participatingChallengeIds === undefined) {
+    return null;
+  }
+
+  const isParticipant = user.participatingChallengeIds.includes(challengeId);
 
   if (!isParticipant) {
-    return null; // Block access to child routes
+    return null;
   }
 
   return <Outlet />;

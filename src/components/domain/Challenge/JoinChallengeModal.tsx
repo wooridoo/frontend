@@ -11,7 +11,7 @@ import styles from './JoinChallengeModal.module.css';
 export function JoinChallengeModal() {
   const navigate = useNavigate();
   const { isOpen, challengeId, onClose } = useJoinModalStore();
-  const { syncParticipatingChallenges } = useAuthStore();
+  const { syncParticipatingChallenges, updateUser } = useAuthStore();
 
   const [step, setStep] = useState<'confirm' | 'success'>('confirm');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,8 +24,14 @@ export function JoinChallengeModal() {
 
     setIsSubmitting(true);
     try {
+      const { getMyProfile } = await import('@/lib/api/user');
       await joinChallenge(challengeId, depositAmount);
-      await syncParticipatingChallenges(); // Update user's participation list
+
+      // Update User (Balance) & Challenges (Participation)
+      const freshUser = await getMyProfile();
+      updateUser(freshUser);
+      await syncParticipatingChallenges();
+
       setStep('success');
     } catch (error) {
       console.error(error);

@@ -57,6 +57,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({
 const SignupPage = lazy(() => import('./pages/SignupPage').then(module => ({ default: module.SignupPage })));
 const CreateChallengePage = lazy(() => import('./pages/CreateChallengePage').then(module => ({ default: module.CreateChallengePage })));
 const ChallengeDetailPage = lazy(() => import('./pages/ChallengeDetailPage').then(module => ({ default: module.ChallengeDetailPage })));
+const PaymentCallbackPage = lazy(() => import('./pages/PaymentCallbackPage').then(module => ({ default: module.PaymentCallbackPage })));
 
 // Wrapper to pass challengeId param
 function RegularMeetingListWrapper() {
@@ -78,14 +79,22 @@ const queryClient = new QueryClient({
 import { useAuthStore } from '@/store/useAuthStore';
 import { useEffect } from 'react';
 
+import { getMyProfile } from '@/lib/api/user';
+
 function App() {
-  const { isLoggedIn, syncParticipatingChallenges } = useAuthStore();
+  const { isLoggedIn, updateUser, syncParticipatingChallenges } = useAuthStore();
 
   useEffect(() => {
     if (isLoggedIn) {
-      syncParticipatingChallenges();
+      // Refresh user profile to ensure data consistency
+      getMyProfile().then((user) => {
+        updateUser(user);
+        syncParticipatingChallenges();
+      }).catch((error) => {
+        console.error('Failed to sync user profile:', error);
+      });
     }
-  }, [isLoggedIn, syncParticipatingChallenges]);
+  }, [isLoggedIn, updateUser, syncParticipatingChallenges]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -107,6 +116,7 @@ function App() {
                   <Route path={PATHS.MY.SETTINGS} element={<div>설정 준비중</div>} />
                   <Route path={PATHS.MY.ACCOUNT} element={<AccountPage />} />
                   <Route path="/me/account/transactions" element={<TransactionHistoryPage />} />
+                  <Route path={PATHS.WALLET.PAYMENT_CALLBACK} element={<PaymentCallbackPage />} />
                 </Route>
                 <Route path={PATHS.CHALLENGE.INTRO(':id')} element={<ChallengeDetailPage />} />
 
