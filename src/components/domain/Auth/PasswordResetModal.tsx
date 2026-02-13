@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { usePasswordResetModalStore } from '@/store/usePasswordResetModalStore';
+import { usePasswordResetModalStore } from '@/store/modal/useModalStore';
 import { requestPasswordReset } from '@/lib/api/auth';
 import styles from './AuthModal.module.css';
 

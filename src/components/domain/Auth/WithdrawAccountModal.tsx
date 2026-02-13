@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useWithdrawAccountModalStore } from '@/store/useWithdrawAccountModalStore';
+import { useWithdrawAccountModalStore } from '@/store/modal/useModalStore';
 import { useWithdrawAccount } from '@/hooks/useUser';
 import styles from './AuthModal.module.css';
 

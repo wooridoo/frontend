@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useJoinModalStore } from '@/store/useJoinModalStore';
+import { useJoinModalStore } from '@/store/modal/useModalStore';
 import { joinChallenge } from '@/lib/api/challenge';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui'; // Correct import from index

@@ -1,13 +1,18 @@
+import { toChallengeSlug } from '@/lib/utils/challengeRoute';
+
+const toChallengePath = (challengeRef: string | number, challengeTitle?: string): string =>
+  `/${toChallengeSlug(String(challengeRef), challengeTitle)}/challenge`;
+
 export const PATHS = {
   HOME: '/',
   AUTH: {
-    LOGIN: '/login',   // Modal trigger conceptually, or route if implemented
-    SIGNUP: '/signup', // Modal trigger conceptually
+    LOGIN: '/login',
+    SIGNUP: '/signup',
   },
   RECOMMENDED: '/recommended',
   SIGNUP: '/signup',
   EXPLORE: '/explore',
-  FEED: '/feed', // Global shortcut
+  FEED: '/feed',
   NOT_FOUND: '/404',
   WALLET: {
     ROOT: '/wallet',
@@ -16,23 +21,24 @@ export const PATHS = {
     PAYMENT_CALLBACK: '/wallet/payment/callback',
   },
   CHALLENGE: {
-    ROOT: '/challenges',
-    NEW: '/challenges/new',
-    DETAIL: (id: string) => `/challenges/${id}`,
-    INTRO: (id: string) => `/challenges/${id}/intro`, // 비멤버용 소개 페이지
-    FEED: (id: string) => `/challenges/${id}/feed`,
-    MEETINGS: (id: string) => `/challenges/${id}/meetings`,
-    MEMBERS: (id: string | number) => `/challenges/${id}/members`,
-    SETTINGS: (id: string | number) => `/challenges/${id}/settings`,
+    ROOT: '/challenge',
+    LEGACY_ROOT: '/challenges',
+    LEGACY_GROUP_ROOT: '/groups',
+    NEW: '/challenge/new',
+    DETAIL: (id: string | number, challengeTitle?: string) => toChallengePath(id, challengeTitle),
+    INTRO: (id: string | number, challengeTitle?: string) => `${toChallengePath(id, challengeTitle)}/intro`,
+    FEED: (id: string | number, challengeTitle?: string) => `${toChallengePath(id, challengeTitle)}/feed`,
+    MEETINGS: (id: string | number, challengeTitle?: string) => `${toChallengePath(id, challengeTitle)}/meetings`,
+    MEMBERS: (id: string | number, challengeTitle?: string) => `${toChallengePath(id, challengeTitle)}/members`,
+    SETTINGS: (id: string | number, challengeTitle?: string) => `${toChallengePath(id, challengeTitle)}/settings`,
   },
   MY: {
     PROFILE: '/me',
     ACCOUNT: '/me/account',
-    CHALLENGES: '/me/challenges', // Was /my-challenges
-    LEDGER: '/me/ledger',         // Was /ledger
-    SETTINGS: '/me/settings',     // Was /settings
-  }
+    CHALLENGES: '/me/challenges',
+    LEDGER: '/me/ledger',
+    SETTINGS: '/me/settings',
+  },
 } as const;
 
-// Type helper to extract path parameters if needed in the future
 export type AppPaths = typeof PATHS;

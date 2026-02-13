@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, LogOut, UserX, Moon, Bell } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useWithdrawAccountModalStore } from '@/store/useWithdrawAccountModalStore';
+import { useWithdrawAccountModalStore } from '@/store/modal/useModalStore';
 import { Avatar } from '@/components/ui/Avatar';
 
 export function SettingsPage() {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useVerificationModalStore } from '@/store/useVerificationModalStore';
+import { useVerificationModalStore } from '@/store/modal/useModalStore';
 import styles from './VerificationModal.module.css';
 import { Upload, CheckCircle } from 'lucide-react';
 

@@ -62,7 +62,7 @@ export function RecommendedPage() {
             {challenges?.map(challenge => {
               if (!challenge || !challenge.challengeId) return null;
               return (
-                <Link to={CHALLENGE_ROUTES.detail(challenge.challengeId)} key={challenge.challengeId} className={styles.card}>
+                <Link to={CHALLENGE_ROUTES.detailWithTitle(challenge.challengeId, challenge.title)} key={challenge.challengeId} className={styles.card}>
                   <div className={styles.imageWrapper}>
                     <img
                       src={challenge.thumbnailUrl || 'https://via.placeholder.com/120?text=No+Image'}

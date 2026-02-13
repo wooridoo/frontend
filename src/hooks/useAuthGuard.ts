@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 

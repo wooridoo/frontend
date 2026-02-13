@@ -114,7 +114,7 @@ export function SideNav({
                 joinedChallenges.map((challenge) => (
                   <li key={challenge.challengeId}>
                     <NavLink
-                      to={CHALLENGE_ROUTES.feed(challenge.challengeId)}
+                      to={CHALLENGE_ROUTES.feedWithTitle(challenge.challengeId, challenge.title)}
                       className={({ isActive }) =>
                         clsx(styles.navItem, isActive && styles.active)
                       }

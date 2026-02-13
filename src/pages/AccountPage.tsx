@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useMyAccount, useTransactionHistoryInfinite } from '@/hooks/useAccount';
-import { useCreditChargeModalStore } from '@/store/useCreditChargeModalStore';
-import { useWithdrawModalStore } from '@/store/useWithdrawModalStore';
+import { useCreditChargeModalStore } from '@/store/modal/useModalStore';
+import { useWithdrawModalStore } from '@/store/modal/useModalStore';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { formatCurrency } from '@/lib/utils';

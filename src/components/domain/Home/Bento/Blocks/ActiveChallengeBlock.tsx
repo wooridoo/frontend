@@ -63,7 +63,7 @@ export function ActiveChallengeBlock() {
 
   return (
     <div className={styles.container}>
-      <Link to={CHALLENGE_ROUTES.detail(activeChallenge.challengeId)} className={styles.link}>
+      <Link to={CHALLENGE_ROUTES.detailWithTitle(activeChallenge.challengeId, activeChallenge.title)} className={styles.link}>
         <img
           src={activeChallenge.thumbnailUrl || "https://picsum.photos/seed/running/600/400"}
           alt={activeChallenge.title}

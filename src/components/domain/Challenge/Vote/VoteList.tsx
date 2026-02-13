@@ -1,19 +1,20 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useVotes } from '../../../../hooks/useVote';
 import { VoteItem } from './VoteItem';
 import { Button, Loading } from '../../../../components/common';
 import { VoteStatus } from '../../../../types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './VoteList.module.css';
 
 export function VoteList() {
-  const { id } = useParams<{ id: string }>();
+  const { challengeId, challengeRef } = useChallengeRoute();
   const navigate = useNavigate();
   const [tab, setTab] = useState<'IN_PROGRESS' | 'COMPLETED'>('IN_PROGRESS');
 
   const { data: votes, isLoading, error } = useVotes(
-    id!,
+    challengeId,
     tab === 'IN_PROGRESS' ? VoteStatus.PENDING : undefined
   );
 
@@ -29,7 +30,7 @@ export function VoteList() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>투표</h2>
-        <Button onClick={() => navigate(CHALLENGE_ROUTES.voteNew(id || ''))}>
+        <Button onClick={() => navigate(CHALLENGE_ROUTES.voteNew(challengeRef || challengeId))}>
           새 투표 생성
         </Button>
       </div>

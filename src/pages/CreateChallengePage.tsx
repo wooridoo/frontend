@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Upload, FileText, Settings, Wallet, Info } from 'lucide-react';
@@ -44,7 +44,7 @@ export function CreateChallengePage() {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     formState: { errors },
   } = useForm<ChallengeFormValues>({
     resolver: zodResolver(challengeSchema),
@@ -55,8 +55,8 @@ export function CreateChallengePage() {
     },
   });
 
-  const selectedCategory = watch('category');
-  const supportAmount = watch('supportAmount');
+  const selectedCategory = useWatch({ control, name: 'category' });
+  const supportAmount = useWatch({ control, name: 'supportAmount' });
 
   // Auto-sync deposit with support amount (1개월치 고정)
   useEffect(() => {
@@ -74,13 +74,11 @@ export function CreateChallengePage() {
       toast.success('챌린지가 개설되었습니다!');
       // 생성된 챌린지 상세 페이지로 이동
       const newId = result.challengeId;
-      navigate(newId ? CHALLENGE_ROUTES.detail(newId) : PATHS.HOME);
+      navigate(newId ? CHALLENGE_ROUTES.detailWithTitle(newId, data.name) : PATHS.HOME);
     } catch {
       toast.error('챌린지 개설 중 오류가 발생했습니다.');
     }
   };
-
-
 
   return (
     <PageContainer>

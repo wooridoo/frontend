@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import styles from './PostEditor.module.css';
 import { Image, Send } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useCreatePost } from '@/hooks/useFeed';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 
 interface PostEditorProps {
   onSuccess?: () => void;
 }
 
 export function PostEditor({ onSuccess }: PostEditorProps) {
-  const { id: challengeId } = useParams<{ id: string }>();
+  const { challengeId } = useChallengeRoute();
   const { user } = useAuthStore();
   const avatarUrl = user?.profileImage || 'https://ui-avatars.com/api/?name=User&background=random';
 

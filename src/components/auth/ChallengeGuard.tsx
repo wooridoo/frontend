@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useAccessDeniedModalStore } from '@/store/useAccessDeniedModalStore';
+import { useAccessDeniedModalStore } from '@/store/modal/useModalStore';
 import { PATHS } from '@/routes/paths';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';

@@ -1,24 +1,22 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import styles from './FeedBlock.module.css';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import styles from './FeedBlock.module.css';
 
 export function FeedBlock() {
   const [items, setItems] = useState<ChallengeInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-
   const { handleChallengeAction, isParticipant } = useAuthGuard();
 
   useEffect(() => {
     const fetchChallenges = async () => {
       setLoading(true);
       try {
-        // Fetch challenges (using empty query for now to get a list)
-        const challenges = await getChallenges({ category: '전체' });
+        const challenges = await getChallenges();
         setItems(challenges);
       } catch (error) {
         console.error('Failed to fetch challenges:', error);
@@ -31,24 +29,21 @@ export function FeedBlock() {
   }, []);
 
   const scroll = (direction: 'left' | 'right') => {
-    if (containerRef.current) {
-      const scrollAmount = containerRef.current.clientWidth / 2; // Scroll half view
-      containerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth',
-      });
-    }
+    if (!containerRef.current) return;
+
+    const scrollAmount = containerRef.current.clientWidth / 2;
+    containerRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
   };
 
-  // Mock Infinite Scroll (API might not support pagination yet, so we just check scroll)
   const handleScroll = () => {
-    if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      // If we are close to the end (within 100px)
-      if (scrollWidth - (scrollLeft + clientWidth) < 100 && !loading) {
-        // Implement pagination if API supports it later
-        // loadMore(); 
-      }
+    if (!containerRef.current) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+    if (scrollWidth - (scrollLeft + clientWidth) < 100 && !loading) {
+      // Keep placeholder logic until pagination is added to challenge API.
     }
   };
 
@@ -65,14 +60,11 @@ export function FeedBlock() {
           </button>
         </div>
       </div>
-      <div
-        className={styles.grid}
-        ref={containerRef}
-        onScroll={handleScroll}
-      >
+
+      <div className={styles.grid} ref={containerRef} onScroll={handleScroll}>
         {items.map((item) => (
           <div key={item.challengeId} className={styles.card}>
-            <Link to={CHALLENGE_ROUTES.detail(item.challengeId)} className={styles.imageWrapper}>
+            <Link to={CHALLENGE_ROUTES.detailWithTitle(item.challengeId, item.title)} className={styles.imageWrapper}>
               <img
                 src={item.thumbnailUrl || `https://picsum.photos/seed/${item.challengeId}/300/200`}
                 alt={item.title}
@@ -81,7 +73,7 @@ export function FeedBlock() {
             </Link>
             <div className={styles.cardContent}>
               <span className={styles.tag}>{item.category}</span>
-              <Link to={CHALLENGE_ROUTES.detail(item.challengeId)} className={styles.titleLink}>
+              <Link to={CHALLENGE_ROUTES.detailWithTitle(item.challengeId, item.title)} className={styles.titleLink}>
                 <h4 className={styles.cardTitle}>{item.title}</h4>
               </Link>
               <div className={styles.cardFooter}>
@@ -96,8 +88,9 @@ export function FeedBlock() {
             </div>
           </div>
         ))}
+
         {loading && items.length === 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 20 }}>
             <Loader2 className="animate-spin text-gray-400" />
           </div>
         )}

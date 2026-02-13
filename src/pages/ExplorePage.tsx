@@ -114,7 +114,7 @@ export function ExplorePage() {
 
 function ChallengeCard({ challenge }: { challenge: ChallengeInfo }) {
   return (
-    <Link to={CHALLENGE_ROUTES.detail(challenge.challengeId)} className={styles.card}>
+    <Link to={CHALLENGE_ROUTES.detailWithTitle(challenge.challengeId, challenge.title)} className={styles.card}>
       <div className={styles.imageWrapper}>
         <img
           src={challenge.thumbnailUrl || 'https://via.placeholder.com/300?text=No+Image'}

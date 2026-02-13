@@ -1,6 +1,6 @@
 import { Target, LogIn } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { useLoginModalStore } from '@/store/modal/useModalStore';
 import styles from './StatusBlock.module.css';
 
 export function StatusBlock() {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useDelegateLeaderModalStore } from '@/store/useDelegateLeaderModalStore';
+import { useDelegateLeaderModalStore } from '@/store/modal/useModalStore';
 import { getChallengeMembers, delegateLeader } from '@/lib/api/member';
 import type { Member } from '@/types/member';
 import styles from './CreateChallengeModal.module.css';

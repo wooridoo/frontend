@@ -1,9 +1,9 @@
-import { useParams } from 'react-router-dom';
 import { useExpenses } from '@/hooks/useExpense';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { formatCurrency } from '@/utils/format';
 import styles from './ExpenseList.module.css';
 import type { Expense, ExpenseStatus, ExpenseCategory } from '@/lib/api/expense';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 
 const STATUS_LABELS: Record<ExpenseStatus, { text: string; className: string }> = {
     PENDING: { text: '대기 중', className: 'pending' },
@@ -76,7 +76,7 @@ function ExpenseItem({ expense }: ExpenseItemProps) {
 }
 
 export function ExpenseList() {
-    const { id: challengeId } = useParams<{ id: string }>();
+    const { challengeId } = useChallengeRoute();
     const { data, isLoading } = useExpenses(challengeId);
 
     if (isLoading) {

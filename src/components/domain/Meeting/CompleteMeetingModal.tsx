@@ -1,6 +1,6 @@
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useCompleteMeetingModalStore } from '@/store/useCompleteMeetingModalStore';
+import { useCompleteMeetingModalStore } from '@/store/modal/useModalStore';
 import { useCompleteMeeting } from '@/hooks/useMeeting';
 import styles from './MeetingModal.module.css';
 

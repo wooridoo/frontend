@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, MoreVertical, Pin, Trash2 } from 'lucide-react';
 import { type User } from '@/types/user';
 import { Avatar } from '@/components/ui/Avatar';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useToggleLike, useDeletePost } from '@/hooks/useFeed';
 import { ResponsiveOverlay } from '@/components/ui/Overlay/ResponsiveOverlay';
+import { resolveChallengeId } from '@/lib/utils/challengeRoute';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './PostCard.module.css';
 
 interface PostCardProps {
@@ -34,8 +35,8 @@ export function PostCard({
   isNotice,
   isLiked: initialIsLiked
 }: PostCardProps) {
-  const { id: paramChallengeId } = useParams<{ id: string }>();
-  const challengeId = propChallengeId || paramChallengeId || '';
+  const { challengeId: routeChallengeId } = useChallengeRoute();
+  const challengeId = resolveChallengeId(propChallengeId) || routeChallengeId || '';
   const { user } = useAuthStore();
 
   const [isLiked, setIsLiked] = useState(initialIsLiked || false);

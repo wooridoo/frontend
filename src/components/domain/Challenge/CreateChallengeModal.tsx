@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useCreateChallengeModalStore } from '@/store/useCreateChallengeModalStore';
+import { useCreateChallengeModalStore } from '@/store/modal/useModalStore';
 import { Category } from '@/types/enums';
 import { client } from '@/lib/api/client';
 import { PATHS } from '@/routes/paths';

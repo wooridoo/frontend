@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
 import { TrendingUp } from 'lucide-react';
 import { useChallengeAccount } from '@/hooks/useLedger';
 import { formatCurrency, getDDay, formatDate } from '@/utils/format';
 import { Skeleton } from '@/components/feedback';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './ChallengeStats.module.css';
 
 interface ChallengeStatsProps {
@@ -12,8 +12,8 @@ interface ChallengeStatsProps {
 }
 
 export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsProps) {
-  const { id: paramChallengeId } = useParams<{ id: string }>();
-  const challengeId = propChallengeId || paramChallengeId;
+  const { challengeId: routeChallengeId } = useChallengeRoute();
+  const challengeId = propChallengeId || routeChallengeId;
 
   const { data: account, isLoading } = useChallengeAccount(challengeId);
 

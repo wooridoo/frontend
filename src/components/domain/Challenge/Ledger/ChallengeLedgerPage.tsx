@@ -1,13 +1,13 @@
-import { useParams } from 'react-router-dom';
 import { useChallengeAccount } from '@/hooks/useLedger';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { formatCurrency } from '@/utils/format';
 import { ExpenseList } from './ExpenseList';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './ChallengeLedgerPage.module.css';
 
 export function ChallengeLedgerPage() {
-  const { id } = useParams<{ id: string }>();
-  const { data, isLoading } = useChallengeAccount(id);
+  const { challengeId } = useChallengeRoute();
+  const { data, isLoading } = useChallengeAccount(challengeId);
 
   if (isLoading) {
     return (

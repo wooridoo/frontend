@@ -4,13 +4,15 @@ import { Button, Loading } from '../../../../components/common';
 import { VoteStatusBadge } from './VoteStatusBadge';
 import { VoteStatus, type VoteOption } from '../../../../types/domain';
 import { formatCurrency } from '@/utils/format';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './VoteDetail.module.css';
 
 export function VoteDetail() {
-  const { id, voteId } = useParams<{ id: string; voteId: string }>();
+  const { voteId } = useParams<{ voteId: string }>();
+  const { challengeId } = useChallengeRoute();
   const navigate = useNavigate();
   const { data: vote, isLoading } = useVoteDetail(voteId!);
-  const { mutate: castVote, isPending: isCasting } = useCastVote(voteId!, id!);
+  const { mutate: castVote, isPending: isCasting } = useCastVote(voteId!, challengeId);
 
   if (isLoading) return <Loading />;
   if (!vote) return <div>Vote not found</div>;

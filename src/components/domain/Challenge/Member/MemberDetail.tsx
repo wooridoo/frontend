@@ -4,11 +4,12 @@ import { useMember, useDelegateLeader } from '@/hooks/useMember';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Skeleton } from '@/components/feedback';
 import { ChallengeRole } from '@/types/enums';
-import { resolveChallengeId } from '@/lib/utils/challengeRoute';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './MemberDetail.module.css';
 
 export function MemberDetail() {
-    const { id: challengeId, memberId } = useParams<{ id: string; memberId: string }>();
+    const { memberId } = useParams<{ memberId: string }>();
+    const { challengeId } = useChallengeRoute();
     const navigate = useNavigate();
     const { user: currentUser } = useAuthStore();
 
@@ -38,8 +39,7 @@ export function MemberDetail() {
     const { user, role, stats, supportHistory } = member;
 
     // Check if current user is leader (can delegate)
-    const normalizedChallengeId = resolveChallengeId(challengeId);
-    const isCurrentUserLeader = currentUser?.participatingChallengeIds?.includes(normalizedChallengeId);
+    const isCurrentUserLeader = currentUser?.participatingChallengeIds?.includes(challengeId);
     const canDelegate = isCurrentUserLeader && role !== ChallengeRole.LEADER;
 
     const handleDelegate = async () => {

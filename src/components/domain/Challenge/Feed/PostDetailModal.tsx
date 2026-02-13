@@ -1,5 +1,5 @@
 import { Modal } from '@/components/ui/Overlay/Modal';
-import { usePostDetailModalStore } from '@/store/usePostDetailModalStore';
+import { usePostDetailModalStore } from '@/store/modal/useModalStore';
 import { CommentSection } from '@/components/domain/Comment/CommentSection';
 
 export function PostDetailModal() {

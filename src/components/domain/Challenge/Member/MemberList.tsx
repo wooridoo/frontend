@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { useMembers } from '@/hooks/useMember';
 import { MemberCard } from './MemberCard';
 import { Skeleton } from '@/components/feedback';
 import type { MemberStatus } from '@/types/member';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './MemberList.module.css';
 
 type FilterTab = 'ALL' | MemberStatus;
@@ -18,7 +19,7 @@ const TABS: { value: FilterTab; label: string }[] = [
 ];
 
 export function MemberList() {
-    const { id: challengeId } = useParams<{ id: string }>();
+    const { challengeId, challengeRef } = useChallengeRoute();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<FilterTab>('ALL');
 
@@ -39,7 +40,7 @@ export function MemberList() {
     }
 
     const handleMemberClick = (memberId: number) => {
-        navigate(CHALLENGE_ROUTES.memberDetail(challengeId || '', memberId));
+        navigate(CHALLENGE_ROUTES.memberDetail(challengeRef || challengeId, memberId));
     };
 
     return (

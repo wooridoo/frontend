@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useSupportSettingsModalStore } from '@/store/useSupportSettingsModalStore';
+import { useSupportSettingsModalStore } from '@/store/modal/useModalStore';
 import { formatCurrency } from '@/lib/utils';
 import styles from './CreateChallengeModal.module.css';
 

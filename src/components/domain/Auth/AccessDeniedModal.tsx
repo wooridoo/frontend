@@ -5,7 +5,7 @@ import { Lock } from 'lucide-react';
 import styles from './AccessDeniedModal.module.css';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
-import { useAccessDeniedModalStore } from '@/store/useAccessDeniedModalStore';
+import { useAccessDeniedModalStore } from '@/store/modal/useModalStore';
 
 export function AccessDeniedModal() {
   const { isOpen, onClose, challengeId } = useAccessDeniedModalStore();

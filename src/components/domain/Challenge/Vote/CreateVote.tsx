@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useCreateVote } from '../../../../hooks/useVote';
 import { Button, Input } from '../../../../components/common';
 import type { VoteType } from '../../../../types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './CreateVote.module.css';
 
 export function CreateVote() {
-  const { id } = useParams<{ id: string }>();
+  const { challengeId, challengeRef } = useChallengeRoute();
   const navigate = useNavigate();
-  const { mutate: createVote, isPending } = useCreateVote(id!);
+  const { mutate: createVote, isPending } = useCreateVote(challengeId);
 
   const [form, setForm] = useState<{
     type: VoteType;
@@ -36,7 +37,7 @@ export function CreateVote() {
       deadline: new Date(form.deadline).toISOString(),
     }, {
       onSuccess: () => {
-        navigate(CHALLENGE_ROUTES.votes(id || ''));
+        navigate(CHALLENGE_ROUTES.votes(challengeRef || challengeId));
       }
     });
   };

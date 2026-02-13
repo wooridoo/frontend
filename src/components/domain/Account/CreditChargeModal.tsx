@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useCreditChargeModalStore } from '@/store/useCreditChargeModalStore';
+import { useCreditChargeModalStore } from '@/store/modal/useModalStore';
 import { useRequestCreditCharge } from '@/hooks/useAccount';
 import { formatCurrency } from '@/lib/utils';
 import styles from './ChargeWithdrawModal.module.css';

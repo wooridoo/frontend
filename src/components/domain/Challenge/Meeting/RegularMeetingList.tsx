@@ -3,7 +3,7 @@ import { useChallengeMeetings } from '@/hooks/useMeeting';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { Button } from '@/components/ui';
 import { Plus } from 'lucide-react';
-import { useCreateMeetingModalStore } from '@/store/useCreateMeetingModalStore';
+import { useCreateMeetingModalStore } from '@/store/modal/useModalStore';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './RegularMeetingList.module.css';
 

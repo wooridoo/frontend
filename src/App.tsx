@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 
 import { ChallengeDashboardLayout } from './components/domain/Challenge/Layout/ChallengeDashboardLayout';
 import { MainLayout } from './components/layout';
@@ -59,8 +60,8 @@ const PaymentCallbackPage = lazy(() => import('./pages/PaymentCallbackPage').the
 const SettingsPage = lazy(() => import('./pages/SettingsPage').then(module => ({ default: module.SettingsPage })));
 
 function RegularMeetingListWrapper() {
-  const { id } = useParams<{ id: string }>();
-  return <RegularMeetingList challengeId={id} />;
+  const { challengeId } = useChallengeRoute();
+  return <RegularMeetingList challengeId={challengeId} />;
 }
 
 function LegacyChallengeRedirect() {
@@ -142,9 +143,13 @@ function App() {
                   </Route>
                 </Route>
 
+                <Route path={CHALLENGE_ROUTES.ROOT} element={<Navigate to={PATHS.EXPLORE} replace />} />
                 <Route path={CHALLENGE_ROUTES.LEGACY_NEW} element={<Navigate to={CHALLENGE_ROUTES.NEW} replace />} />
+                <Route path={CHALLENGE_ROUTES.LEGACY_GROUP_NEW} element={<Navigate to={CHALLENGE_ROUTES.NEW} replace />} />
                 <Route path={CHALLENGE_ROUTES.LEGACY_DETAIL_PATTERN} element={<LegacyChallengeRedirect />} />
+                <Route path={CHALLENGE_ROUTES.LEGACY_GROUP_DETAIL_PATTERN} element={<LegacyChallengeRedirect />} />
                 <Route path={CHALLENGE_ROUTES.LEGACY_ROOT} element={<Navigate to={PATHS.EXPLORE} replace />} />
+                <Route path={CHALLENGE_ROUTES.LEGACY_GROUP_ROOT} element={<Navigate to={PATHS.EXPLORE} replace />} />
                 <Route path={PATHS.AUTH.LOGIN} element={<Navigate to={PATHS.HOME} replace />} />
                 <Route path={PATHS.FEED} element={<Navigate to={PATHS.EXPLORE} replace />} />
               </Route>

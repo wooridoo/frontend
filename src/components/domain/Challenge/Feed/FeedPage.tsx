@@ -5,7 +5,7 @@ import { PostCard } from './PostCard';
 import { useFeed } from '@/hooks/useFeed';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { VerificationModal } from '../VerificationModal';
-import { useVerificationModalStore } from '@/store/useVerificationModalStore';
+import { useVerificationModalStore } from '@/store/modal/useModalStore';
 import { Button } from '@/components/ui';
 import { Camera } from 'lucide-react';
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { PATHS } from '@/routes/paths';
 
 export function AuthGuard() {

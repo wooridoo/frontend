@@ -1,6 +1,6 @@
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useAttendanceModalStore } from '@/store/useAttendanceModalStore';
+import { useAttendanceModalStore } from '@/store/modal/useModalStore';
 import { useRespondAttendance } from '@/hooks/useMeeting';
 import styles from './MeetingModal.module.css';
 

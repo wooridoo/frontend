@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useEditProfileModalStore } from '@/store/useEditProfileModalStore';
+import { useEditProfileModalStore } from '@/store/modal/useModalStore';
 import { useMyProfile, useUpdateProfile } from '@/hooks/useUser';
 import styles from './AuthModal.module.css';
 

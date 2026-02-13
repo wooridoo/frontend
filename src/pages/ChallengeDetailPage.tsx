@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Button, Badge } from '@/components/ui';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
-import { useJoinModalStore } from '@/store/useJoinModalStore';
+import { useJoinModalStore } from '@/store/modal/useModalStore';
 import { getChallenge } from '@/lib/api/challenge';
 import { getChallengeMembers } from '@/lib/api/member';
 import { isParticipant } from '@/lib/utils/challengeUtils';

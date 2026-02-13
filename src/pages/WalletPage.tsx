@@ -7,8 +7,8 @@ import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PATHS } from '@/routes/paths';
 import { getMyProfile } from '@/lib/api/user';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useCreditChargeModalStore } from '@/store/useCreditChargeModalStore';
-import { useWithdrawModalStore } from '@/store/useWithdrawModalStore';
+import { useCreditChargeModalStore } from '@/store/modal/useModalStore';
+import { useWithdrawModalStore } from '@/store/modal/useModalStore';
 import styles from './WalletPage.module.css';
 
 export function WalletPage() {

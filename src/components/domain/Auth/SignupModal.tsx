@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui';
 import logo from '@/assets/woorido_logo.svg';
 import { Modal } from '@/components/ui/Overlay/Modal';
-import { useSignupModalStore } from '@/store/useSignupModalStore';
-import { useLoginModalStore } from '@/store/useLoginModalStore';
+import { useSignupModalStore } from '@/store/modal/useModalStore';
+import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { MessageCircle, Mail } from 'lucide-react'; // Icons for buttons
 import { PATHS } from '@/routes/paths';
 import styles from './SignupModal.module.css';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useSupportPaymentModalStore } from '@/store/useSupportPaymentModalStore';
+import { useSupportPaymentModalStore } from '@/store/modal/useModalStore';
 import { useMyAccount, useSupportPayment } from '@/hooks/useAccount';
 import { formatCurrency } from '@/lib/utils';
 import { toast } from 'sonner';

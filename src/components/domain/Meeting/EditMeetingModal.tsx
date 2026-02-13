@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useEditMeetingModalStore } from '@/store/useEditMeetingModalStore';
+import { useEditMeetingModalStore } from '@/store/modal/useModalStore';
 import { useUpdateMeeting } from '@/hooks/useMeeting';
 import styles from './MeetingModal.module.css';
 

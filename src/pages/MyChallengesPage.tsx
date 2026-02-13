@@ -6,7 +6,7 @@ import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { getMyChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
-import { useCreateChallengeModalStore } from '@/store/useCreateChallengeModalStore';
+import { useCreateChallengeModalStore } from '@/store/modal/useModalStore';
 import { ChallengeStatus } from '@/types/enums';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './MyChallengesPage.module.css';

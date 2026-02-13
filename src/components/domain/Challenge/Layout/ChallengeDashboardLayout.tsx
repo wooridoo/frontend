@@ -1,13 +1,14 @@
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { ChallengeHero, ChallengeHeroSkeleton } from '../Dashboard/ChallengeHero';
 import { ChallengeStats } from '../Dashboard/ChallengeStats';
 import { ChallengeTabs } from '../Dashboard/ChallengeTabs';
 import { useChallengeDetail } from '@/hooks/useChallenge';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './ChallengeDashboardLayout.module.css';
 
 export function ChallengeDashboardLayout() {
-  const { id } = useParams<{ id: string }>();
-  const { data: challenge, isLoading, error } = useChallengeDetail(id);
+  const { challengeId } = useChallengeRoute();
+  const { data: challenge, isLoading, error } = useChallengeDetail(challengeId);
 
   if (isLoading) {
     return (
@@ -36,7 +37,7 @@ export function ChallengeDashboardLayout() {
       <ChallengeHero challenge={challenge} />
 
       {/* 2. Stats Dashboard */}
-      <ChallengeStats challengeId={id} />
+      <ChallengeStats challengeId={challengeId} />
 
       {/* 3. Sticky Tabs */}
       <ChallengeTabs />

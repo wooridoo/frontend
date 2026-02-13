@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
-import { useLeaveChallengeModalStore } from '@/store/useLeaveChallengeModalStore';
+import { useLeaveChallengeModalStore } from '@/store/modal/useModalStore';
 import { useLeaveChallenge } from '@/hooks/useChallenge';
 import styles from './CreateChallengeModal.module.css';
 
