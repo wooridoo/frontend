@@ -10,11 +10,11 @@ import { Camera } from 'lucide-react';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 
 export function FeedPage() {
-  const { challengeId } = useChallengeRoute();
+  const { challengeId, isResolving } = useChallengeRoute();
   const { data: posts, isLoading, error } = useFeed(challengeId);
   const verificationModal = useVerificationModalStore();
 
-  if (isLoading) {
+  if (isResolving || isLoading) {
     return (
       <div className={styles.feedContainer}>
         <div className="flex flex-col gap-4">

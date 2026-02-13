@@ -11,23 +11,38 @@ export const CHALLENGE_ROUTES = {
   LEGACY_GROUP_NEW: PATHS.CHALLENGE.LEGACY_GROUP_ROOT + '/new',
   LEGACY_ROOT: PATHS.CHALLENGE.LEGACY_ROOT,
   LEGACY_GROUP_ROOT: PATHS.CHALLENGE.LEGACY_GROUP_ROOT,
-  detail: (challengeRef: string | number) => PATHS.CHALLENGE.DETAIL(challengeRef),
+  detail: (challengeRef: string | number, challengeTitle?: string) =>
+    PATHS.CHALLENGE.DETAIL(challengeRef, challengeTitle),
   detailWithTitle: (challengeRef: string | number, challengeTitle: string) =>
     PATHS.CHALLENGE.DETAIL(challengeRef, challengeTitle),
-  intro: (challengeRef: string | number) => PATHS.CHALLENGE.INTRO(challengeRef),
-  feed: (challengeRef: string | number) => PATHS.CHALLENGE.FEED(challengeRef),
+  intro: (challengeRef: string | number, challengeTitle?: string) =>
+    PATHS.CHALLENGE.INTRO(challengeRef, challengeTitle),
+  feed: (challengeRef: string | number, challengeTitle?: string) =>
+    PATHS.CHALLENGE.FEED(challengeRef, challengeTitle),
   feedWithTitle: (challengeRef: string | number, challengeTitle: string) =>
     PATHS.CHALLENGE.FEED(challengeRef, challengeTitle),
-  meetings: (challengeRef: string | number) => PATHS.CHALLENGE.MEETINGS(challengeRef),
-  meetingDetail: (challengeRef: string | number, meetingId: string | number) =>
-    `${PATHS.CHALLENGE.MEETINGS(challengeRef)}/${meetingId}`,
-  ledger: (challengeRef: string | number) => `${PATHS.CHALLENGE.DETAIL(challengeRef)}/ledger`,
-  votes: (challengeRef: string | number) => `${PATHS.CHALLENGE.DETAIL(challengeRef)}/votes`,
-  voteNew: (challengeRef: string | number) => `${PATHS.CHALLENGE.DETAIL(challengeRef)}/votes/new`,
-  voteDetail: (challengeRef: string | number, voteId: string | number) =>
-    `${PATHS.CHALLENGE.DETAIL(challengeRef)}/votes/${voteId}`,
-  members: (challengeRef: string | number) => PATHS.CHALLENGE.MEMBERS(challengeRef),
-  memberDetail: (challengeRef: string | number, memberId: string | number) =>
-    `${PATHS.CHALLENGE.MEMBERS(challengeRef)}/${memberId}`,
-  settings: (challengeRef: string | number) => PATHS.CHALLENGE.SETTINGS(challengeRef),
+  meetings: (challengeRef: string | number, challengeTitle?: string) =>
+    PATHS.CHALLENGE.MEETINGS(challengeRef, challengeTitle),
+  meetingDetail: (
+    challengeRef: string | number,
+    meetingId: string | number,
+    challengeTitle?: string
+  ) => `${PATHS.CHALLENGE.MEETINGS(challengeRef, challengeTitle)}/${meetingId}`,
+  ledger: (challengeRef: string | number, challengeTitle?: string) =>
+    `${PATHS.CHALLENGE.DETAIL(challengeRef, challengeTitle)}/ledger`,
+  votes: (challengeRef: string | number, challengeTitle?: string) =>
+    `${PATHS.CHALLENGE.DETAIL(challengeRef, challengeTitle)}/votes`,
+  voteNew: (challengeRef: string | number, challengeTitle?: string) =>
+    `${PATHS.CHALLENGE.DETAIL(challengeRef, challengeTitle)}/votes/new`,
+  voteDetail: (challengeRef: string | number, voteId: string | number, challengeTitle?: string) =>
+    `${PATHS.CHALLENGE.DETAIL(challengeRef, challengeTitle)}/votes/${voteId}`,
+  members: (challengeRef: string | number, challengeTitle?: string) =>
+    PATHS.CHALLENGE.MEMBERS(challengeRef, challengeTitle),
+  memberDetail: (
+    challengeRef: string | number,
+    memberId: string | number,
+    challengeTitle?: string
+  ) => `${PATHS.CHALLENGE.MEMBERS(challengeRef, challengeTitle)}/${memberId}`,
+  settings: (challengeRef: string | number, challengeTitle?: string) =>
+    PATHS.CHALLENGE.SETTINGS(challengeRef, challengeTitle),
 };

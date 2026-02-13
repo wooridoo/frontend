@@ -71,7 +71,7 @@ export function MyChallengesPage() {
     };
 
     const handleChallengeClick = (challenge: ChallengeInfo) => {
-        navigate(CHALLENGE_ROUTES.detail(challenge.challengeId));
+        navigate(CHALLENGE_ROUTES.detail(challenge.challengeId, challenge.title));
     };
 
     return (

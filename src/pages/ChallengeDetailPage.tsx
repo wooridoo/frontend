@@ -1,41 +1,39 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Calendar, DollarSign, Clock, Info, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Button, Badge } from '@/components/ui';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { useJoinModalStore } from '@/store/modal/useModalStore';
-import { getChallenge } from '@/lib/api/challenge';
+import { useChallengeDetail } from '@/hooks/useChallenge';
 import { getChallengeMembers } from '@/lib/api/member';
 import { isParticipant } from '@/lib/utils/challengeUtils';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
 import { Avatar } from '@/components/ui/Avatar';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { toChallengeSlug } from '@/lib/utils/challengeRoute';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './ChallengeDetailPage.module.css';
 
 import { useAuthStore } from '@/store/useAuthStore';
-import { useMemo } from 'react';
 
 // ...
 
 export function ChallengeDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const { challengeId, challengeRef, isResolving } = useChallengeRoute();
   const navigate = useNavigate();
+  const location = useLocation();
   const { onOpen } = useJoinModalStore();
   const { user } = useAuthStore();
 
-  const { data: challenge, isLoading: isChallengeLoading, error } = useQuery({
-    // ... (keep usage of getChallenge)
-    queryKey: ['challenge', id],
-    queryFn: () => getChallenge(id!),
-    enabled: !!id,
-  });
+  const { data: challenge, isLoading: isChallengeLoading, error } = useChallengeDetail(challengeId);
 
   const { data: membersData, isLoading: isMembersLoading } = useQuery({
-    queryKey: ['challengeMembers', id],
+    queryKey: ['challengeMembers', challengeId],
     queryFn: async () => {
       try {
-        return await getChallengeMembers(id!);
+        return await getChallengeMembers(challengeId);
       } catch (err: unknown) {
         // 비멤버인 경우 403 반환 — 정상 동작이므로 빈 결과 반환
         if (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 403) {
@@ -44,7 +42,7 @@ export function ChallengeDetailPage() {
         throw err;
       }
     },
-    enabled: !!id,
+    enabled: !!challengeId,
     retry: false,
   });
 
@@ -59,6 +57,19 @@ export function ChallengeDetailPage() {
     return false;
   }, [challenge, membersData, user]);
 
+  useEffect(() => {
+    if (!challenge || !challengeRef) return;
+
+    const canonicalRef = toChallengeSlug(String(challenge.challengeId), challenge.title);
+    if (!canonicalRef || canonicalRef === challengeRef) return;
+
+    const oldPrefix = `/${challengeRef}/challenge/intro`;
+    if (!location.pathname.startsWith(oldPrefix)) return;
+
+    const canonicalPath = `/${canonicalRef}/challenge/intro${location.search}${location.hash}`;
+    navigate(canonicalPath, { replace: true });
+  }, [challenge, challengeRef, location.hash, location.pathname, location.search, navigate]);
+
   const handleJoin = () => {
     if (isJoined) return; // Prevent join if already joined
     if (challenge) {
@@ -66,7 +77,7 @@ export function ChallengeDetailPage() {
     }
   };
 
-  const isLoading = isChallengeLoading || isMembersLoading;
+  const isLoading = isResolving || isChallengeLoading || isMembersLoading;
 
   if (isLoading) {
     return (
@@ -177,7 +188,9 @@ export function ChallengeDetailPage() {
         <Button
           size="lg"
           className={styles.joinButton}
-          onClick={isJoined ? () => navigate(CHALLENGE_ROUTES.detail(challenge.challengeId)) : handleJoin}
+          onClick={isJoined
+            ? () => navigate(CHALLENGE_ROUTES.detail(challengeRef || challenge.challengeId, challenge.title))
+            : handleJoin}
           disabled={!isJoined && challenge.status === 'COMPLETED'}
         >
           {isJoined ? '입장하기' : '챌린지 참여하기'}
