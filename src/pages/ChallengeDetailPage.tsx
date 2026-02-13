@@ -33,8 +33,19 @@ export function ChallengeDetailPage() {
 
   const { data: membersData, isLoading: isMembersLoading } = useQuery({
     queryKey: ['challengeMembers', id],
-    queryFn: () => getChallengeMembers(id!),
+    queryFn: async () => {
+      try {
+        return await getChallengeMembers(id!);
+      } catch (err: unknown) {
+        // 비멤버인 경우 403 반환 — 정상 동작이므로 빈 결과 반환
+        if (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 403) {
+          return { members: [], totalCount: 0 };
+        }
+        throw err;
+      }
+    },
     enabled: !!id,
+    retry: false,
   });
 
   const isJoined = useMemo(() => {

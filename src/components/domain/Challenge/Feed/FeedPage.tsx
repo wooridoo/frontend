@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import styles from './FeedPage.module.css';
 import { PostEditor } from './PostEditor';
 import { PostCard } from './PostCard';
@@ -8,10 +7,11 @@ import { VerificationModal } from '../VerificationModal';
 import { useVerificationModalStore } from '@/store/modal/useModalStore';
 import { Button } from '@/components/ui';
 import { Camera } from 'lucide-react';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 
 export function FeedPage() {
-  const { id } = useParams<{ id: string }>();
-  const { data: posts, isLoading, error } = useFeed(id);
+  const { challengeId } = useChallengeRoute();
+  const { data: posts, isLoading, error } = useFeed(challengeId);
   const verificationModal = useVerificationModalStore();
 
   if (isLoading) {

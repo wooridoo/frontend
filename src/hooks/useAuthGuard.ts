@@ -24,14 +24,25 @@ export function useAuthGuard() {
   };
 
   const handleChallengeAction = (challengeId: string | number) => {
-    if (!requireAuth()) return;
-
-    if (isParticipant(challengeId)) {
-      navigate(CHALLENGE_ROUTES.feed(challengeId));
+    console.log('[DEBUG] handleChallengeAction called - challengeId:', challengeId, 'isLoggedIn:', isLoggedIn);
+    if (!requireAuth()) {
+      console.log('[DEBUG] requireAuth failed - showing login modal');
       return;
     }
 
-    navigate(CHALLENGE_ROUTES.detail(challengeId));
+    const participating = isParticipant(challengeId);
+    console.log('[DEBUG] isParticipant:', participating, 'participatingIds:', user?.participatingChallengeIds);
+
+    if (participating) {
+      const feedUrl = CHALLENGE_ROUTES.feed(challengeId);
+      console.log('[DEBUG] navigating to feed:', feedUrl);
+      navigate(feedUrl);
+      return;
+    }
+
+    const detailUrl = CHALLENGE_ROUTES.detail(challengeId);
+    console.log('[DEBUG] navigating to detail:', detailUrl);
+    navigate(detailUrl);
   };
 
   return {
