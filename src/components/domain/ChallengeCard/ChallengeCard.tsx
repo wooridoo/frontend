@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Badge } from '@/components/ui';
+import { Badge, SemanticIcon } from '@/components/ui';
 import { Category } from '@/types/enums';
 import styles from './ChallengeCard.module.css';
 
@@ -46,7 +46,7 @@ export function ChallengeCard({
           <img src={thumbnailUrl} alt={title} />
         ) : (
           <div className={styles.placeholder}>
-            <span>🎯</span>
+            <SemanticIcon name="challenge" size={22} />
           </div>
         )}
         <Badge className={styles.categoryBadge} variant="default" size="sm">
@@ -60,7 +60,7 @@ export function ChallengeCard({
 
         <div className={styles.meta}>
           <span className={styles.participants}>
-            👥 {participantCount}명 참여 중
+            <SemanticIcon animated={false} name="member" size={14} /> {participantCount}명 참여 중
           </span>
         </div>
 

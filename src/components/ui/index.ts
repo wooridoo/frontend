@@ -10,3 +10,12 @@ export { CategoryTabs, type CategoryTabsProps, type Category } from './CategoryT
 export { ProfileMenu } from './Overlay/ProfileMenu';
 export { FAB, type FABProps } from './FAB';
 export { Card, CardHeader, CardBody, CardFooter, CardImage, CardSkeleton, type CardProps } from './Card';
+export {
+  Icon,
+  AnimatedIcon,
+  SemanticIcon,
+  type IconName,
+  type IconProps,
+  type AnimatedIconProps,
+  type SemanticIconName,
+} from './Icon';

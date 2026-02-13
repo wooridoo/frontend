@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
-import { Button } from '@/components/ui';
+import { Button, SemanticIcon } from '@/components/ui';
 import { useLeaveChallengeModalStore } from '@/store/modal/useModalStore';
 import { useLeaveChallenge } from '@/hooks/useChallenge';
 import styles from './CreateChallengeModal.module.css';
@@ -32,7 +32,9 @@ export function LeaveChallengeModal() {
                 <h2 className={styles.title}>챌린지 나가기</h2>
 
                 <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-                    <div style={{ fontSize: '48px', marginBottom: 'var(--spacing-md)' }}>👋</div>
+                    <div style={{ marginBottom: 'var(--spacing-md)' }}>
+                        <SemanticIcon name="warning" size={48} />
+                    </div>
                     <p style={{ fontSize: 'var(--font-size-lg)', fontWeight: 600, marginBottom: 'var(--spacing-sm)' }}>
                         {challengeTitle}
                     </p>

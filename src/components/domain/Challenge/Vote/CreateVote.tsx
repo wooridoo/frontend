@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreateVote } from '../../../../hooks/useVote';
-import { Button, Input } from '../../../../components/common';
+import { Button, Input } from '@/components/ui';
 import type { VoteType } from '../../../../types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';

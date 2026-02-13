@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '@/components/ui';
+import { Button, SemanticIcon } from '@/components/ui';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { getMyChallenges, type ChallengeInfo } from '@/lib/api/challenge';
@@ -10,6 +10,8 @@ import { useCreateChallengeModalStore } from '@/store/modal/useModalStore';
 import { ChallengeStatus } from '@/types/enums';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './MyChallengesPage.module.css';
+
+const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
 
 type TabType = 'all' | 'inProgress' | 'recruiting' | 'completed';
 
@@ -104,7 +106,9 @@ export function MyChallengesPage() {
                 <div className={styles.loading}>로딩 중...</div>
             ) : filteredChallenges.length === 0 ? (
                 <div className={styles.emptyState}>
-                    <div className={styles.emptyIcon}>🏆</div>
+                    <div className={styles.emptyIcon}>
+                        <SemanticIcon animated={false} name="success" size={24} />
+                    </div>
                     <div className={styles.emptyTitle}>
                         {activeTab === 'all' ? '참여 중인 챌린지가 없습니다' : `${TAB_OPTIONS.find(t => t.value === activeTab)?.label} 챌린지가 없습니다`}
                     </div>
@@ -122,9 +126,12 @@ export function MyChallengesPage() {
                             onClick={() => handleChallengeClick(challenge)}
                         >
                             <img
-                                src={challenge.thumbnailUrl || `https://picsum.photos/seed/${challenge.challengeId}/400/200`}
+                                src={challenge.thumbnailUrl || CHALLENGE_FALLBACK_IMAGE}
                                 alt={challenge.title}
                                 className={styles.cardImage}
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).src = CHALLENGE_FALLBACK_IMAGE;
+                                }}
                             />
                             <div className={styles.cardContent}>
                                 <div className={styles.cardCategory}>

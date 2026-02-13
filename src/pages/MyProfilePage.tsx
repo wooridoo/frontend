@@ -43,16 +43,14 @@ export function MyProfilePage() {
             {/* Header */}
             <div className={styles.header}>
                 <img
-                    src={user.profileImage || `https://ui-avatars.com/api/?name=${user.nickname}&background=random`}
+                    src={user.profileImage || '/images/avatar-fallback.svg'}
                     alt={user.nickname}
                     className={styles.avatar}
                 />
                 <div className={styles.userInfo}>
                     <h1 className={styles.nickname}>{user.nickname}</h1>
                     <p className={styles.email}>{user.email}</p>
-                    <div className={styles.brixBadge}>
-                        🍊 Brix {user.brix?.toFixed(1) || '0.0'}
-                    </div>
+                    <div className={styles.brixBadge}>Brix {user.brix?.toFixed(1) || '0.0'}</div>
                 </div>
                 <Button className={styles.editButton} variant="secondary">
                     프로필 수정
@@ -80,7 +78,7 @@ export function MyProfilePage() {
             {/* Account */}
             {displayAccount && (
                 <div className={styles.accountSection}>
-                    <h2 className={styles.sectionTitle}>💰 내 지갑</h2>
+                    <h2 className={styles.sectionTitle}>내 지갑</h2>
                     <div className={styles.balanceRow}>
                         <span className={styles.balanceLabel}>사용 가능</span>
                         <span className={`${styles.balanceValue} ${styles.total}`}>
@@ -100,7 +98,7 @@ export function MyProfilePage() {
                         </span>
                     </div>
                     <div className={styles.accountActions}>
-                        <Button onClick={() => navigate(PATHS.MY.ACCOUNT)}>충전하기</Button>
+                        <Button onClick={() => navigate(PATHS.MY.LEDGER)}>충전하기</Button>
                         <Button variant="secondary">거래 내역</Button>
                     </div>
                 </div>
@@ -109,11 +107,11 @@ export function MyProfilePage() {
             {/* Menu */}
             <div className={styles.menuSection}>
                 <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.CHALLENGES)}>
-                    <span>🏆 내 챌린지</span>
+                    <span>내 챌린지</span>
                     <span className={styles.menuArrow}>›</span>
                 </div>
                 <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.LEDGER)}>
-                    <span>📊 장부 관리</span>
+                    <span>장부 관리</span>
                     <span className={styles.menuArrow}>›</span>
                 </div>
                 <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.SETTINGS)}>

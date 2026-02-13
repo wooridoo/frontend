@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Upload, FileText, Settings, Wallet, Info } from 'lucide-react';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
-import { Button, Input, Card, CardHeader, CardBody } from '@/components/ui';
+import { Button, Input, Card, CardHeader, CardBody, SemanticIcon } from '@/components/ui';
 import { useCreateChallenge } from '@/hooks/useChallenge';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
@@ -28,12 +28,12 @@ const challengeSchema = z.object({
 type ChallengeFormValues = z.infer<typeof challengeSchema>;
 
 const CATEGORIES = [
-  { id: 'CULTURE', label: '생활습관', icon: '☀️' },
-  { id: 'EXERCISE', label: '운동', icon: '💪' },
-  { id: 'STUDY', label: '공부', icon: '📚' },
-  { id: 'HOBBY', label: '취미', icon: '🎨' },
-  { id: 'SAVINGS', label: '재테크', icon: '💰' },
-  { id: 'OTHER', label: '기타', icon: '🎸' },
+  { id: 'CULTURE', label: '생활습관', icon: 'action' as const },
+  { id: 'EXERCISE', label: '운동', icon: 'challenge' as const },
+  { id: 'STUDY', label: '공부', icon: 'feed' as const },
+  { id: 'HOBBY', label: '취미', icon: 'meeting' as const },
+  { id: 'SAVINGS', label: '재테크', icon: 'wallet' as const },
+  { id: 'OTHER', label: '기타', icon: 'default' as const },
 ];
 
 export function CreateChallengePage() {
@@ -115,7 +115,9 @@ export function CreateChallengePage() {
                   className={`${styles.categoryCard} ${selectedCategory === cat.id ? styles.selected : ''}`}
                   onClick={() => setValue('category', cat.id, { shouldValidate: true })}
                 >
-                  <span className={styles.categoryIcon}>{cat.icon}</span>
+                  <span className={styles.categoryIcon}>
+                    <SemanticIcon name={cat.icon} size={18} />
+                  </span>
                   <span className={styles.categoryName}>{cat.label}</span>
                 </div>
               ))}

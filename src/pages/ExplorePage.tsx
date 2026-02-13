@@ -9,6 +9,8 @@ import { getCategoryLabel, CATEGORY_LABELS } from '@/lib/utils/categoryLabels';
 import { Category } from '@/types/enums';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
+const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
+
 const CATEGORIES = ['전체', '건강', '역량', '취미', '자산', '생활'];
 
 // UI Category -> API Category Enum Mapping
@@ -117,14 +119,13 @@ function ChallengeCard({ challenge }: { challenge: ChallengeInfo }) {
     <Link to={CHALLENGE_ROUTES.detailWithTitle(challenge.challengeId, challenge.title)} className={styles.card}>
       <div className={styles.imageWrapper}>
         <img
-          src={challenge.thumbnailUrl || 'https://via.placeholder.com/300?text=No+Image'}
+          src={challenge.thumbnailUrl || CHALLENGE_FALLBACK_IMAGE}
           alt={challenge.title}
           className={styles.image}
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            // Prevent infinite loop if fallback image also fails
-            if (target.src !== 'https://via.placeholder.com/300?text=No+Image') {
-              target.src = 'https://via.placeholder.com/300?text=No+Image';
+            if (target.src !== CHALLENGE_FALLBACK_IMAGE) {
+              target.src = CHALLENGE_FALLBACK_IMAGE;
             }
           }}
         />

@@ -6,31 +6,33 @@ import styles from './AccessDeniedModal.module.css';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useAccessDeniedModalStore } from '@/store/modal/useModalStore';
+import { getChallenge } from '@/lib/api/challenge';
 
 export function AccessDeniedModal() {
   const { isOpen, onClose, challengeId } = useAccessDeniedModalStore();
   const navigate = useNavigate();
 
-  const handleAction = () => {
+  const navigateToChallenge = async () => {
     onClose();
-    if (challengeId) {
-      navigate(CHALLENGE_ROUTES.detail(challengeId));
-    } else {
+    if (!challengeId) {
       navigate(PATHS.HOME);
+      return;
+    }
+
+    try {
+      const challenge = await getChallenge(challengeId);
+      navigate(CHALLENGE_ROUTES.detail(challengeId, challenge.title));
+    } catch {
+      navigate(PATHS.EXPLORE);
     }
   };
 
+  const handleAction = () => {
+    void navigateToChallenge();
+  };
+
   const handleClose = () => {
-    onClose();
-    // Optional: Redirect to home if they close the modal without action?
-    // For now, let's keep them on the current page (which is likely empty/broken) 
-    // OR strictly redirect to intro as well.
-    // Let's redirect to intro to be safe.
-    if (challengeId) {
-      navigate(CHALLENGE_ROUTES.detail(challengeId));
-    } else {
-      navigate(PATHS.HOME);
-    }
+    void navigateToChallenge();
   };
 
   return (

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Suspense } from 'react';
+import { Calendar, MapPin, UserRound } from 'lucide-react';
 import styles from './RegularMeetingDetail.module.css';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { useMeeting, useAttendMeeting } from '@/hooks/useMeeting';
@@ -45,14 +46,14 @@ function RegularMeetingContent({ id }: { id?: string }) {
         <h2 className={styles.meetingTitle}>{data.title}</h2>
 
         <div className={styles.infoRow}>
-          <span>📅</span>
+          <span><Calendar size={16} /></span>
           <span>{new Date(data.meetingDate).toLocaleString('ko-KR', {
             month: 'long', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit'
           })}</span>
         </div>
 
         <div className={styles.infoRow}>
-          <span>📍</span>
+          <span><MapPin size={16} /></span>
           <span>{data.isOnline ? '온라인 모임' : data.location}</span>
         </div>
       </section>
@@ -80,7 +81,7 @@ function RegularMeetingContent({ id }: { id?: string }) {
                     justifyContent: 'center',
                     fontSize: '18px',
                   }}>
-                    👤
+                    <UserRound size={16} />
                   </div>
                 )}
                 <span className={styles.memberName}>{member.nickname}</span>

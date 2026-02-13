@@ -74,7 +74,7 @@ export function PaymentCallbackPage() {
             <div className={styles.actions}>
               <Button
                 variant="secondary"
-                onClick={() => navigate(PATHS.MY.ACCOUNT)}
+                onClick={() => navigate(PATHS.MY.LEDGER)}
               >
                 지갑으로 이동
               </Button>
@@ -100,7 +100,7 @@ export function PaymentCallbackPage() {
             <div className={styles.actions}>
               <Button
                 variant="secondary"
-                onClick={() => navigate(PATHS.MY.ACCOUNT)}
+                onClick={() => navigate(PATHS.MY.LEDGER)}
               >
                 지갑으로 돌아가기
               </Button>

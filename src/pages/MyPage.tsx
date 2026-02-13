@@ -16,11 +16,13 @@ import { PATHS } from '@/routes/paths';
 import { getMyProfile } from '@/lib/api/user';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Avatar } from '@/components/ui/Avatar';
+import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './MyPage.module.css';
 
 export function MyPage() {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
+  const { confirm } = useConfirmDialog();
 
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['myProfile'],
@@ -28,11 +30,16 @@ export function MyPage() {
     retry: 1,
   });
 
-  const handleLogout = () => {
-    if (confirm('로그아웃 하시겠습니까?')) {
-      logout();
-      navigate(PATHS.HOME);
-    }
+  const handleLogout = async () => {
+    const isConfirmed = await confirm({
+      title: '로그아웃 하시겠습니까?',
+      confirmText: '로그아웃',
+      cancelText: '취소',
+    });
+
+    if (!isConfirmed) return;
+    logout();
+    navigate(PATHS.HOME);
   };
 
   if (isLoading) {
@@ -130,7 +137,7 @@ export function MyPage() {
       <div className={styles.menuSection} style={{ marginTop: '24px' }}>
         <h3 className={styles.menuTitle}>계정</h3>
         <div className={styles.menuList}>
-          <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.ACCOUNT)}>
+          <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.LEDGER)}>
             <div className={styles.menuIcon}><User size={20} /></div>
             <span className={styles.menuText}>계정 관리</span>
             <ChevronRight size={18} className={styles.chevron} />

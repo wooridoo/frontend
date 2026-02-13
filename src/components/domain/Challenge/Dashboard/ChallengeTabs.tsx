@@ -1,13 +1,20 @@
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
-import { Layout, Calendar, CreditCard, Vote, Users } from 'lucide-react';
+import { Layout, Calendar, CreditCard, Vote, Users, type LucideIcon } from 'lucide-react';
 import styles from './ChallengeTabs.module.css';
 
-const TABS = [
+interface TabItem {
+  path: string;
+  label: string;
+  icon: LucideIcon;
+  count?: number;
+}
+
+const TABS: TabItem[] = [
   { path: 'feed', label: '피드', icon: Layout },
   { path: 'meetings', label: '정기모임', icon: Calendar },
   { path: 'ledger', label: '장부', icon: CreditCard },
-  { path: 'votes', label: '투표', icon: Vote, count: 2 },
+  { path: 'votes', label: '투표', icon: Vote },
   { path: 'members', label: '멤버', icon: Users },
 ];
 

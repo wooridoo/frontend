@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { Heart, MessageCircle, Share2, MoreVertical, Pin, Trash2 } from 'lucide-react';
+import { Heart, MessageCircle, MoreVertical, Pin, Share2, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { type User } from '@/types/user';
 import { Avatar } from '@/components/ui/Avatar';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -8,6 +9,7 @@ import { useToggleLike, useDeletePost } from '@/hooks/useFeed';
 import { ResponsiveOverlay } from '@/components/ui/Overlay/ResponsiveOverlay';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './PostCard.module.css';
 
 interface PostCardProps {
@@ -33,9 +35,10 @@ export function PostCard({
   likeCount: initialLikeCount,
   commentCount,
   isNotice,
-  isLiked: initialIsLiked
+  isLiked: initialIsLiked,
 }: PostCardProps) {
   const { challengeId: routeChallengeId } = useChallengeRoute();
+  const { confirm } = useConfirmDialog();
   const challengeId = resolveChallengeId(propChallengeId) || routeChallengeId || '';
   const { user } = useAuthStore();
 
@@ -46,57 +49,54 @@ export function PostCard({
   const toggleLike = useToggleLike(challengeId);
   const deletePost = useDeletePost(challengeId);
 
-  // Determine author name safely
   const author = createdBy || { nickname: '알 수 없음', profileImage: undefined, userId: 'unknown' };
   const authorName = author.nickname;
   const isAuthor = user?.userId === author.userId;
 
   const handleLike = () => {
-    if (!user) return; // Login required check usually handled globally or here
+    if (!user) return;
 
-    // Optimistic update
     const previousIsLiked = isLiked;
     const previousLikeCount = likeCount;
 
     setIsLiked(!isLiked);
-    setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
+    setLikeCount(prev => (isLiked ? prev - 1 : prev + 1));
 
     toggleLike.mutate(id, {
       onError: () => {
-        // Revert on error
         setIsLiked(previousIsLiked);
         setLikeCount(previousLikeCount);
-      }
+      },
     });
   };
 
-  const handleDelete = () => {
-    if (!window.confirm('게시글을 삭제하시겠습니까?')) return;
+  const handleDelete = async () => {
+    const isConfirmed = await confirm({
+      title: '게시글을 삭제하시겠습니까?',
+      confirmText: '삭제',
+      cancelText: '취소',
+      variant: 'danger',
+    });
+    if (!isConfirmed) return;
 
     deletePost.mutate(id, {
       onSuccess: () => {
         setIsMenuOpen(false);
-      }
+        toast.success('게시글이 삭제되었습니다.');
+      },
+      onError: () => {
+        toast.error('게시글 삭제에 실패했습니다.');
+      },
     });
   };
 
-  const MenuContent = (
+  const menuContent = (
     <div className="flex flex-col p-1 min-w-[150px] bg-white rounded-md shadow-lg border border-gray-100">
-      {/* 
-      <button 
-        className="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 w-full text-left"
-        onClick={() => {
-           alert('수정 기능 준비 중입니다.');
-           setIsMenuOpen(false);
-        }}
-      >
-        <Edit2 size={16} />
-        수정하기
-      </button> 
-      */}
       <button
         className="flex items-center gap-2 px-4 py-3 text-sm text-red-600 hover:bg-red-50 w-full text-left rounded-md"
-        onClick={handleDelete}
+        onClick={() => {
+          void handleDelete();
+        }}
       >
         <Trash2 size={16} />
         삭제하기
@@ -106,63 +106,55 @@ export function PostCard({
 
   return (
     <div className={clsx(styles.card, isNotice && styles.noticeCard)}>
-      {/* Header */}
       <div className={styles.header}>
         <div className={styles.authorInfo}>
-          <Avatar
-            src={author.profileImage}
-            name={authorName}
-            size="md"
-            className={styles.avatar}
-          />
+          <Avatar className={styles.avatar} name={authorName} size="md" src={author.profileImage} />
           <div className={styles.metaData}>
             <div className={styles.nameRow}>
               <span className={styles.name}>{authorName}</span>
-              {/* Role badge handling might need extra prop if not in User */}
-              {isNotice && <span className={styles.noticeBadge}>📢 필독</span>}
+              {isNotice ? <span className={styles.noticeBadge}>공지</span> : null}
             </div>
             <span className={styles.time}>{createdAt}</span>
           </div>
         </div>
 
-        {isAuthor && (
+        {isAuthor ? (
           <ResponsiveOverlay
+            align="end"
+            onOpenChange={setIsMenuOpen}
+            open={isMenuOpen}
+            title="게시글 메뉴"
             trigger={
               <button className={styles.moreButton}>
                 <MoreVertical size={18} />
               </button>
             }
-            open={isMenuOpen}
-            onOpenChange={setIsMenuOpen}
-            title="게시글 메뉴"
-            align="end"
           >
-            {MenuContent}
+            {menuContent}
           </ResponsiveOverlay>
-        )}
+        ) : null}
       </div>
 
-      {/* Content */}
       <div className={styles.content}>
-        {isNotice && <div className={styles.pinIcon}><Pin size={14} fill="currentColor" /></div>}
+        {isNotice ? (
+          <div className={styles.pinIcon}>
+            <Pin fill="currentColor" size={14} />
+          </div>
+        ) : null}
         <p className={styles.text}>{content}</p>
 
-        {images && images.length > 0 && (
+        {images && images.length > 0 ? (
           <div className={clsx(styles.imageGrid, styles[`grid${Math.min(images.length, 4)}`])}>
             {images.map((img, idx) => (
-              <img key={idx} src={img} alt="Post attachment" className={styles.postImage} />
+              <img key={idx} alt="Post attachment" className={styles.postImage} src={img} />
             ))}
           </div>
-        )}
+        ) : null}
       </div>
 
-      {/* Footer / Actions */}
       <div className={styles.footer}>
-        <button
-          className={clsx(styles.actionButton, isLiked && "text-red-500")}
-          onClick={handleLike}
-        >
-          <Heart size={18} fill={isLiked ? "currentColor" : "none"} />
+        <button className={clsx(styles.actionButton, isLiked && 'text-red-500')} onClick={handleLike}>
+          <Heart fill={isLiked ? 'currentColor' : 'none'} size={18} />
           <span>{likeCount}</span>
         </button>
         <button className={styles.actionButton}>

@@ -6,6 +6,8 @@ import { ChallengeStatus } from '@/types/enums';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './ActiveChallengeBlock.module.css';
 
+const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
+
 export function ActiveChallengeBlock() {
   const { user } = useAuthStore();
   const [activeChallenge, setActiveChallenge] = useState<ChallengeInfo | null>(null);
@@ -46,7 +48,7 @@ export function ActiveChallengeBlock() {
       <div className={styles.container}>
         <Link to={CHALLENGE_ROUTES.ROOT} className={styles.link}>
           <img
-            src="https://picsum.photos/seed/new_challenge/600/400"
+            src={CHALLENGE_FALLBACK_IMAGE}
             alt="Join a Challenge"
             className={styles.image}
           />
@@ -65,9 +67,12 @@ export function ActiveChallengeBlock() {
     <div className={styles.container}>
       <Link to={CHALLENGE_ROUTES.detailWithTitle(activeChallenge.challengeId, activeChallenge.title)} className={styles.link}>
         <img
-          src={activeChallenge.thumbnailUrl || "https://picsum.photos/seed/running/600/400"}
+          src={activeChallenge.thumbnailUrl || CHALLENGE_FALLBACK_IMAGE}
           alt={activeChallenge.title}
           className={styles.image}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = CHALLENGE_FALLBACK_IMAGE;
+          }}
         />
         <div className={styles.overlay}>
           <div className={styles.content}>

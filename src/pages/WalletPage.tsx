@@ -1,36 +1,49 @@
-import { useEffect } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Download, Plus, Loader2 } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { Loader2, ChevronRight } from 'lucide-react';
+import { useMyAccount, useTransactionHistoryInfinite } from '@/hooks/useAccount';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PATHS } from '@/routes/paths';
-import { getMyProfile } from '@/lib/api/user';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useCreditChargeModalStore } from '@/store/modal/useModalStore';
-import { useWithdrawModalStore } from '@/store/modal/useModalStore';
+import { useCreditChargeModalStore, useWithdrawModalStore } from '@/store/modal/useModalStore';
+import { formatCurrency } from '@/lib/utils';
+import { formatUtcDateLabel } from '@/lib/utils/dateTime';
+import { SemanticIcon } from '@/components/ui';
+import type { Transaction } from '@/types/account';
 import styles from './WalletPage.module.css';
+
+const positiveTypes: Transaction['type'][] = ['CHARGE', 'DEPOSIT', 'REFUND'];
+
+function getTransactionMeta(type: Transaction['type']) {
+  if (positiveTypes.includes(type)) {
+    return { icon: 'charge' as const, positive: true };
+  }
+
+  if (type === 'WITHDRAW') {
+    return { icon: 'withdraw' as const, positive: false };
+  }
+
+  if (type === 'SUPPORT' || type === 'SUPPORT_AUTO' || type === 'PAYMENT') {
+    return { icon: 'ledger' as const, positive: false };
+  }
+
+  return { icon: 'action' as const, positive: false };
+}
 
 export function WalletPage() {
   const navigate = useNavigate();
   const { onOpen: openChargeModal } = useCreditChargeModalStore();
   const { onOpen: openWithdrawModal } = useWithdrawModalStore();
 
-  const { data: user, isLoading, error } = useQuery({
-    queryKey: ['myProfile'],
-    queryFn: getMyProfile,
-  });
+  const { data: account, isLoading: accountLoading, error: accountError } = useMyAccount();
+  const { data: transactionPages, isLoading: txLoading } = useTransactionHistoryInfinite({ size: 10 });
 
-  const { updateUser } = useAuthStore();
+  const transactions = useMemo(
+    () => transactionPages?.pages.flatMap(page => page.transactions).slice(0, 5) ?? [],
+    [transactionPages?.pages]
+  );
 
-  // 최신 지갑 데이터를 전역 스토어와 동기화 (상단 네비게이션 잔액 표시용)
-  useEffect(() => {
-    if (user) {
-      updateUser(user);
-    }
-  }, [user, updateUser]);
-
-  if (isLoading) {
+  if (accountLoading || txLoading) {
     return (
       <PageContainer>
         <PageHeader title="나의 지갑" showBack />
@@ -41,16 +54,13 @@ export function WalletPage() {
     );
   }
 
-  if (error || !user) {
+  if (accountError || !account) {
     return (
       <PageContainer>
         <PageHeader title="나의 지갑" showBack />
         <div className={styles.centerContainer}>
-          <div className={styles.errorText}>지갑 정보를 불러올 수 없습니다.</div>
-          <button
-            className={styles.loginButton}
-            onClick={() => navigate(PATHS.AUTH.LOGIN)}
-          >
+          <div className={styles.errorText}>지갑 정보를 불러오지 못했습니다.</div>
+          <button className={styles.loginButton} onClick={() => navigate(PATHS.AUTH.LOGIN)}>
             로그인 하러 가기
           </button>
         </div>
@@ -58,65 +68,76 @@ export function WalletPage() {
     );
   }
 
-  // TODO: 개인 지갑 거래 내역 조회를 위한 별도 API 추가 필요
-  interface Transaction {
-    id: string;
-    type: string;
-    date: string;
-    isPlus: boolean;
-    amount: number;
-  }
-  const history: Transaction[] = [];
-
   return (
     <PageContainer>
       <PageHeader title="나의 지갑" showBack />
 
       <div className={styles.balanceCard}>
-        <span className={styles.balanceLabel}>보유 잔액</span>
+        <span className={styles.balanceLabel}>사용 가능 금액</span>
         <div className={styles.balanceAmount}>
-          {(user.account?.balance || 0).toLocaleString()}
-          <span className={styles.currency}>Brix</span>
+          {formatCurrency(account.availableBalance)}
+          <span className={styles.currency}>KRW</span>
         </div>
+        <span className={styles.balanceLabel}>총 잔액 {formatCurrency(account.balance)}</span>
+        <span className={styles.balanceLabel}>락업 금액 {formatCurrency(account.lockedBalance)}</span>
       </div>
 
       <div className={styles.actionGrid}>
-        <button
-          className={styles.actionButton}
-          onClick={openChargeModal}
-        >
-          <div className={styles.actionIcon}><Plus size={24} /></div>
+        <button className={styles.actionButton} onClick={openChargeModal}>
+          <div className={styles.actionIcon}>
+            <SemanticIcon name="charge" size={28} />
+          </div>
           <span className={styles.actionLabel}>충전하기</span>
         </button>
-        <button
-          className={styles.actionButton}
-          onClick={openWithdrawModal}
-        >
-          <div className={styles.actionIcon}><Download size={24} /></div>
+        <button className={styles.actionButton} onClick={openWithdrawModal}>
+          <div className={styles.actionIcon}>
+            <SemanticIcon name="withdraw" size={28} />
+          </div>
           <span className={styles.actionLabel}>출금하기</span>
         </button>
       </div>
 
       <div className={styles.historySection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>최근 내역</h2>
+          <h2 className={styles.sectionTitle}>최근 거래</h2>
+          <button className={styles.viewAllButton} onClick={() => navigate('/me/ledger/transactions')}>
+            전체보기
+            <ChevronRight size={14} />
+          </button>
         </div>
 
         <div className={styles.historyList}>
-          {history.length > 0 ? (
-            history.map((item) => (
-              <div key={item.id} className={styles.historyItem}>
-                <div className={styles.historyInfo}>
-                  <span className={styles.historyType}>{item.type}</span>
-                  <span className={styles.historyDate}>{item.date}</span>
+          {transactions.length > 0 ? (
+            transactions.map(item => {
+              const meta = getTransactionMeta(item.type);
+              const amount = Math.abs(item.amount);
+
+              return (
+                <div key={item.transactionId} className={styles.historyItem}>
+                  <div className={styles.historyInfo}>
+                    <div className={styles.historyTypeRow}>
+                      <SemanticIcon
+                        animated={false}
+                        className={styles.historyTypeIcon}
+                        name={meta.icon}
+                        size={16}
+                      />
+                      <span className={styles.historyType}>{item.description || item.type}</span>
+                    </div>
+                    <span className={styles.historyDate}>{formatUtcDateLabel(item.createdAt)}</span>
+                  </div>
+                  <span className={`${styles.historyAmount} ${meta.positive ? styles.plus : styles.minus}`}>
+                    {meta.positive ? '+' : '-'}
+                    {formatCurrency(amount)}
+                  </span>
                 </div>
-                <span className={`${styles.historyAmount} ${item.isPlus ? styles.plus : styles.minus}`}>
-                  {item.isPlus ? '+' : ''}{item.amount.toLocaleString()}
-                </span>
-              </div>
-            ))
+              );
+            })
           ) : (
-            <div className={styles.emptyState}>거래 내역이 없습니다.</div>
+            <div className={styles.emptyState}>
+              <SemanticIcon animated={false} name="empty" size={20} />
+              거래 내역이 없습니다.
+            </div>
           )}
         </div>
       </div>

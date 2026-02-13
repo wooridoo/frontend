@@ -1,26 +1,35 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVoteDetail, useCastVote } from '../../../../hooks/useVote';
-import { Button, Loading } from '../../../../components/common';
+import { Button } from '@/components/ui';
+import { Loading } from '@/components/common';
 import { VoteStatusBadge } from './VoteStatusBadge';
 import { VoteStatus, type VoteOption } from '../../../../types/domain';
 import { formatCurrency } from '@/utils/format';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './VoteDetail.module.css';
 
 export function VoteDetail() {
   const { voteId } = useParams<{ voteId: string }>();
   const { challengeId } = useChallengeRoute();
   const navigate = useNavigate();
+  const { confirm } = useConfirmDialog();
   const { data: vote, isLoading } = useVoteDetail(voteId!);
   const { mutate: castVote, isPending: isCasting } = useCastVote(voteId!, challengeId);
 
   if (isLoading) return <Loading />;
   if (!vote) return <div>Vote not found</div>;
 
-  const handleVote = (option: VoteOption) => {
-    if (confirm(`${option === 'AGREE' ? '찬성' : option === 'DISAGREE' ? '반대' : '기권'}하시겠습니까?`)) {
-      castVote(option);
-    }
+  const handleVote = async (option: VoteOption) => {
+    const optionLabel = option === 'AGREE' ? '찬성' : option === 'DISAGREE' ? '반대' : '기권';
+    const isConfirmed = await confirm({
+      title: `${optionLabel}에 투표하시겠습니까?`,
+      confirmText: '투표하기',
+      cancelText: '취소',
+    });
+
+    if (!isConfirmed) return;
+    castVote(option);
   };
 
   const isEnded = vote.status !== VoteStatus.PENDING;
@@ -115,7 +124,9 @@ export function VoteDetail() {
             <div className={styles.buttonGroup}>
               <Button
                 className={styles.voteBtn}
-                onClick={() => handleVote('AGREE')}
+                onClick={() => {
+                  void handleVote('AGREE');
+                }}
                 disabled={isCasting}
               >
                 찬성
@@ -123,15 +134,19 @@ export function VoteDetail() {
               <Button
                 className={styles.voteBtn}
                 variant="danger" // Assuming danger variant exists or similar
-                onClick={() => handleVote('DISAGREE')}
+                onClick={() => {
+                  void handleVote('DISAGREE');
+                }}
                 disabled={isCasting}
               >
                 반대
               </Button>
               <Button
                 className={styles.voteBtn}
-                variant="outline"
-                onClick={() => handleVote('ABSTAIN')}
+                variant="secondary"
+                onClick={() => {
+                  void handleVote('ABSTAIN');
+                }}
                 disabled={isCasting}
               >
                 기권

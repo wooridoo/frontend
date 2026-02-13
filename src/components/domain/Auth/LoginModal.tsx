@@ -9,6 +9,7 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { useSignupModalStore } from '@/store/modal/useModalStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import { toast } from 'sonner';
 import styles from './LoginModal.module.css';
 
 // Login form validation schema
@@ -65,7 +66,6 @@ export function LoginModal() {
       onClose();
     } catch (error) {
       console.error('Login failed:', error);
-      // alert('로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.');
     } finally {
       setIsLoading(false);
     }
@@ -152,7 +152,7 @@ export function LoginModal() {
           <div className="flex justify-center gap-4 text-sm text-gray-500 mb-2">
             <button
               type="button"
-              onClick={() => alert('비밀번호 찾기 기능은 준비 중입니다.')}
+              onClick={() => toast.info('비밀번호 찾기 기능은 준비 중입니다.')}
               className="hover:text-gray-900 transition-colors"
             >
               비밀번호 찾기

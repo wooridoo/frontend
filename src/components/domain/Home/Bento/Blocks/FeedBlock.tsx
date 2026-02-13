@@ -6,6 +6,8 @@ import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './FeedBlock.module.css';
 
+const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
+
 export function FeedBlock() {
   const [items, setItems] = useState<ChallengeInfo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -50,7 +52,7 @@ export function FeedBlock() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3 className={styles.title}>오늘의 추천 챌린지 🔥</h3>
+        <h3 className={styles.title}>오늘의 추천 챌린지</h3>
         <div className={styles.controls}>
           <button onClick={() => scroll('left')} className={styles.controlBtn} aria-label="Previous">
             <ChevronLeft size={20} />
@@ -66,9 +68,12 @@ export function FeedBlock() {
           <div key={item.challengeId} className={styles.card}>
             <Link to={CHALLENGE_ROUTES.detailWithTitle(item.challengeId, item.title)} className={styles.imageWrapper}>
               <img
-                src={item.thumbnailUrl || `https://picsum.photos/seed/${item.challengeId}/300/200`}
+                src={item.thumbnailUrl || CHALLENGE_FALLBACK_IMAGE}
                 alt={item.title}
                 className={styles.image}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = CHALLENGE_FALLBACK_IMAGE;
+                }}
               />
             </Link>
             <div className={styles.cardContent}>

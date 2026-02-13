@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '@/routes/paths';
 import { signup, login as apiLogin } from '@/lib/api/auth';
 import { useAuthStore } from '@/store/useAuthStore';
-import { Button, Input } from '@/components/common';
+import { Button, Input } from '@/components/ui';
 
 
 // Zod Schema
@@ -85,7 +85,7 @@ export function SignupPage() {
         name: data.name,
         phone: data.phone,
         birthDate: data.birthDate || undefined,
-        profileImage: `https://ui-avatars.com/api/?name=${data.nickname}&background=random`,
+        profileImage: '/images/avatar-fallback.svg',
         termsAgreed: data.termsOfService,
         privacyAgreed: data.privacyPolicy,
         marketingAgreed: false // Default to false

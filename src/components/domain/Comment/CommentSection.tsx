@@ -7,6 +7,7 @@ import { Send, Trash2, X, CornerDownRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from '@/lib/utils';
 import type { Comment } from '@/types/comment';
+import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './CommentSection.module.css';
 
 interface CommentSectionProps {
@@ -23,6 +24,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
   const createMutation = useCreateComment(postId);
   const deleteMutation = useDeleteComment(postId);
   const { user } = useAuthStore();
+  const { confirm } = useConfirmDialog();
 
   const [newComment, setNewComment] = useState('');
   const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
@@ -45,7 +47,14 @@ export function CommentSection({ postId }: CommentSectionProps) {
   };
 
   const handleDelete = async (commentId: string) => {
-    if (!window.confirm('댓글을 삭제하시겠습니까?')) return;
+    const isConfirmed = await confirm({
+      title: '댓글을 삭제하시겠습니까?',
+      confirmText: '삭제',
+      cancelText: '취소',
+      variant: 'danger',
+    });
+    if (!isConfirmed) return;
+
     try {
       await deleteMutation.mutateAsync(commentId);
       toast.success('댓글이 삭제되었습니다.');

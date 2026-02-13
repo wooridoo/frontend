@@ -1,6 +1,7 @@
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { usePostDetailModalStore } from '@/store/modal/useModalStore';
 import { CommentSection } from '@/components/domain/Comment/CommentSection';
+import { Heart, MessageCircle } from 'lucide-react';
 
 export function PostDetailModal() {
     const { isOpen, post, onClose } = usePostDetailModalStore();
@@ -24,7 +25,7 @@ export function PostDetailModal() {
                 {/* Header */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-lg)' }}>
                     <img
-                        src={post.createdBy.profileImage || `https://ui-avatars.com/api/?name=${post.createdBy.nickname}&background=random`}
+                        src={post.createdBy.profileImage || '/images/avatar-fallback.svg'}
                         alt={post.createdBy.nickname}
                         style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }}
                     />
@@ -78,8 +79,12 @@ export function PostDetailModal() {
                     color: 'var(--color-text-secondary)',
                     fontSize: 'var(--font-size-sm)',
                 }}>
-                    <span>❤️ {post.likeCount}</span>
-                    <span>💬 {post.commentCount}</span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                        <Heart size={14} /> {post.likeCount}
+                    </span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                        <MessageCircle size={14} /> {post.commentCount}
+                    </span>
                 </div>
 
                 {/* Comments */}

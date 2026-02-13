@@ -1,6 +1,8 @@
 export const CHALLENGE_SLUG_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CHALLENGE_SEGMENT_SEPARATOR = '--';
 const CHALLENGE_ROUTE_MAP_STORAGE_KEY = 'challenge-route-map-v1';
+const CHALLENGE_FALLBACK_SLUG_PREFIX = 'challenge';
+const CHALLENGE_FALLBACK_HASH_LENGTH = 8;
 
 const fromBase64Url = (value: string): string => {
   if (typeof atob !== 'function') return value;
@@ -61,16 +63,34 @@ const resolveLegacyChallengeId = (value: string): string => {
   return raw;
 };
 
-const findSlugById = (challengeId: string): string | null => {
-  const routeMap = readRouteMap();
-  for (const [slug, mappedId] of Object.entries(routeMap)) {
-    if (mappedId === challengeId) return slug;
+const hashChallengeId = (value: string): string => {
+  let hash = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
   }
-  return null;
+  return hash.toString(36).padStart(CHALLENGE_FALLBACK_HASH_LENGTH, '0').slice(0, CHALLENGE_FALLBACK_HASH_LENGTH);
+};
+
+const createFallbackSlug = (challengeId: string, routeMap: Record<string, string>): string => {
+  const baseSlug = `${CHALLENGE_FALLBACK_SLUG_PREFIX}-${hashChallengeId(challengeId)}`;
+  let slug = baseSlug;
+  let collisionIndex = 1;
+
+  while (routeMap[slug] && routeMap[slug] !== challengeId) {
+    slug = `${baseSlug}-${collisionIndex}`;
+    collisionIndex += 1;
+  }
+
+  routeMap[slug] = challengeId;
+  return slug;
 };
 
 export function toChallengeTitleSlug(title: string | undefined | null): string {
-  const raw = String(title || '').trim().toLowerCase();
+  const rawTitle = String(title || '').trim().toLowerCase();
+  const raw = rawTitle.includes(CHALLENGE_SEGMENT_SEPARATOR)
+    ? rawTitle.split(CHALLENGE_SEGMENT_SEPARATOR)[0]
+    : rawTitle;
+
   if (!raw) return '';
 
   return raw
@@ -120,9 +140,14 @@ export function toChallengeSlug(challengeRef: string, challengeTitle?: string): 
 
   // If only challengeId is available, reuse remembered slug if possible.
   if (isChallengeId(legacyResolved)) {
-    const rememberedSlug = findSlugById(legacyResolved);
-    if (rememberedSlug) return rememberedSlug;
-    return legacyResolved;
+    const routeMap = readRouteMap();
+    for (const [slug, mappedId] of Object.entries(routeMap)) {
+      if (mappedId === legacyResolved) return slug;
+    }
+
+    const fallbackSlug = createFallbackSlug(legacyResolved, routeMap);
+    writeRouteMap(routeMap);
+    return fallbackSlug;
   }
 
   return raw;

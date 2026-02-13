@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from '@/components/ui/Overlay/Modal';
-import { Button } from '@/components/ui';
+import { Button, SemanticIcon } from '@/components/ui';
 import { useCreateChallengeModalStore } from '@/store/modal/useModalStore';
 import { Category } from '@/types/enums';
 import { client } from '@/lib/api/client';
@@ -316,7 +316,9 @@ export function CreateChallengeModal() {
 
                 {step === 'success' && (
                     <div className={styles.successContent}>
-                        <div className={styles.successIcon}>🎉</div>
+                        <div className={styles.successIcon}>
+                            <SemanticIcon name="success" size={48} />
+                        </div>
                         <p className={styles.successMessage}>
                             챌린지가 생성되었습니다!<br />
                             멤버를 모집해보세요.

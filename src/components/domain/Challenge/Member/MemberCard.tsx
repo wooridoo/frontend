@@ -29,7 +29,7 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
             {/* Avatar */}
             <div className={styles.avatar}>
                 <img
-                    src={user.profileImage || `https://i.pravatar.cc/150?u=${user.userId}`}
+                    src={user.profileImage || '/images/avatar-fallback.svg'}
                     alt={user.nickname}
                     className={styles.avatarImage}
                 />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
-import { Button } from '@/components/ui';
+import { Button, SemanticIcon } from '@/components/ui';
 import { usePasswordResetModalStore } from '@/store/modal/useModalStore';
 import { requestPasswordReset } from '@/lib/api/auth';
 import styles from './AuthModal.module.css';
@@ -82,7 +82,9 @@ export function PasswordResetModal() {
 
                 {step === 'sent' && (
                     <div className={styles.success}>
-                        <div className={styles.successIcon}>📧</div>
+                        <div className={styles.successIcon}>
+                            <SemanticIcon name="notification" size={36} />
+                        </div>
                         <p style={{ marginBottom: 'var(--spacing-sm)' }}>
                             비밀번호 재설정 이메일을 보냈습니다!
                         </p>

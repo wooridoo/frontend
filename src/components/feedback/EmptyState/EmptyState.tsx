@@ -1,10 +1,12 @@
+import type { ReactNode } from 'react';
 import clsx from 'clsx';
+import { Button, SemanticIcon, type SemanticIconName } from '@/components/ui';
 import styles from './EmptyState.module.css';
-import { Button } from '@/components/ui';
 
 interface EmptyStateProps {
   className?: string;
-  icon?: string;
+  icon?: ReactNode;
+  iconName?: SemanticIconName;
   title: string;
   description?: string;
   actionLabel?: string;
@@ -13,7 +15,8 @@ interface EmptyStateProps {
 
 export function EmptyState({
   className,
-  icon = '📭',
+  icon,
+  iconName = 'empty',
   title,
   description,
   actionLabel,
@@ -21,19 +24,14 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className={clsx(styles.container, className)}>
-      <div className={styles.icon}>{icon}</div>
+      <div className={styles.icon}>{icon ?? <SemanticIcon animated={false} name={iconName} size={24} />}</div>
       <h3 className={styles.title}>{title}</h3>
-      {description && <p className={styles.description}>{description}</p>}
-      {actionLabel && onAction && (
-        <Button
-          variant="primary"
-          size="md"
-          onClick={onAction}
-          className={styles.action}
-        >
+      {description ? <p className={styles.description}>{description}</p> : null}
+      {actionLabel && onAction ? (
+        <Button className={styles.action} onClick={onAction} size="md" variant="primary">
           {actionLabel}
         </Button>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -1,10 +1,13 @@
 import { Suspense, lazy, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { CHALLENGE_SLUG_REGEX } from '@/lib/utils/challengeRoute';
 
 import { ChallengeDashboardLayout } from './components/domain/Challenge/Layout/ChallengeDashboardLayout';
 import { MainLayout } from './components/layout';
@@ -31,6 +34,7 @@ import { SupportPaymentModal } from './components/domain/Challenge/SupportPaymen
 import { PostDetailModal } from './components/domain/Challenge/Feed/PostDetailModal';
 import { AuthGuard } from './components/auth/AuthGuard';
 import { ChallengeGuard } from './components/auth/ChallengeGuard';
+import { ConfirmDialog } from './components/ui/Overlay/ConfirmDialog';
 import { ErrorBoundary, Loading } from './components/common';
 import { RegularMeetingDetail } from './components/domain/Challenge/Meeting/RegularMeetingDetail';
 import { RegularMeetingList } from './components/domain/Challenge/Meeting/RegularMeetingList';
@@ -40,6 +44,7 @@ import { VoteDetail } from './components/domain/Challenge/Vote/VoteDetail';
 import { MemberList } from './components/domain/Challenge/Member/MemberList';
 import { MemberDetail } from './components/domain/Challenge/Member/MemberDetail';
 import { useAuthStore } from '@/store/useAuthStore';
+import { getChallenge } from '@/lib/api/challenge';
 import { getMyProfile } from '@/lib/api/user';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
@@ -48,7 +53,6 @@ const RecommendedPage = lazy(() => import('./pages/RecommendedPage').then(module
 const MyPage = lazy(() => import('./pages/MyPage').then(module => ({ default: module.MyPage })));
 const MyChallengesPage = lazy(() => import('./pages/MyChallengesPage').then(module => ({ default: module.MyChallengesPage })));
 const WalletPage = lazy(() => import('./pages/WalletPage').then(module => ({ default: module.WalletPage })));
-const AccountPage = lazy(() => import('./pages/AccountPage').then(module => ({ default: module.AccountPage })));
 const TransactionHistoryPage = lazy(() => import('./pages/TransactionHistoryPage').then(module => ({ default: module.TransactionHistoryPage })));
 const FeedPage = lazy(() => import('./components/domain/Challenge/Feed/FeedPage').then(module => ({ default: module.FeedPage })));
 const ChallengeLedgerPage = lazy(() => import('./components/domain/Challenge/Ledger/ChallengeLedgerPage').then(module => ({ default: module.ChallengeLedgerPage })));
@@ -60,20 +64,41 @@ const PaymentCallbackPage = lazy(() => import('./pages/PaymentCallbackPage').the
 const SettingsPage = lazy(() => import('./pages/SettingsPage').then(module => ({ default: module.SettingsPage })));
 
 function RegularMeetingListWrapper() {
-  const { challengeId } = useChallengeRoute();
-  return <RegularMeetingList challengeId={challengeId} />;
+  const { challengeId, challengeRef } = useChallengeRoute();
+  return <RegularMeetingList challengeId={challengeId} challengeRef={challengeRef} />;
 }
 
 function LegacyChallengeRedirect() {
   const { id, '*': rest } = useParams<{ id: string; '*': string }>();
   const location = useLocation();
+  const isId = Boolean(id && (CHALLENGE_SLUG_REGEX.test(id) || /^\d+$/.test(id)));
+  const { data: challengeTitle, isLoading } = useQuery({
+    queryKey: ['legacy-challenge-title', id],
+    enabled: Boolean(id) && isId,
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      if (!id) return undefined;
+      const challenge = await getChallenge(id);
+      return challenge.title;
+    },
+  });
 
   if (!id) {
     return <Navigate to={PATHS.EXPLORE} replace />;
   }
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   const suffix = rest ? `/${rest}` : '';
-  return <Navigate to={`${CHALLENGE_ROUTES.detail(id)}${suffix}${location.search}${location.hash}`} replace />;
+  return (
+    <Navigate
+      to={`${CHALLENGE_ROUTES.detail(id, challengeTitle)}${suffix}${location.search}${location.hash}`}
+      replace
+    />
+  );
 }
 
 const queryClient = new QueryClient({
@@ -120,8 +145,9 @@ function App() {
                   <Route path={PATHS.MY.CHALLENGES} element={<MyChallengesPage />} />
                   <Route path={PATHS.MY.LEDGER} element={<WalletPage />} />
                   <Route path={PATHS.MY.SETTINGS} element={<SettingsPage />} />
-                  <Route path={PATHS.MY.ACCOUNT} element={<AccountPage />} />
-                  <Route path="/me/account/transactions" element={<TransactionHistoryPage />} />
+                  <Route path={PATHS.MY.ACCOUNT} element={<Navigate replace to={PATHS.MY.LEDGER} />} />
+                  <Route path="/me/ledger/transactions" element={<TransactionHistoryPage />} />
+                  <Route path="/me/account/transactions" element={<Navigate replace to="/me/ledger/transactions" />} />
                   <Route path={PATHS.WALLET.PAYMENT_CALLBACK} element={<PaymentCallbackPage />} />
                 </Route>
 
@@ -178,6 +204,8 @@ function App() {
             <LeaveChallengeModal />
             <SupportPaymentModal />
             <PostDetailModal />
+            <ConfirmDialog />
+            <Toaster position="top-center" richColors />
           </BrowserRouter>
         </Suspense>
       </ErrorBoundary>

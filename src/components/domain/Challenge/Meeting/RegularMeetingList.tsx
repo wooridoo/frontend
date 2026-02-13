@@ -2,12 +2,17 @@ import { Link } from 'react-router-dom';
 import { useChallengeMeetings } from '@/hooks/useMeeting';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { Button } from '@/components/ui';
-import { Plus } from 'lucide-react';
+import { Plus, Calendar, MapPin } from 'lucide-react';
 import { useCreateMeetingModalStore } from '@/store/modal/useModalStore';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './RegularMeetingList.module.css';
 
-export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
+interface RegularMeetingListProps {
+  challengeId?: string;
+  challengeRef?: string;
+}
+
+export function RegularMeetingList({ challengeId, challengeRef }: RegularMeetingListProps) {
   const { data, isLoading } = useChallengeMeetings(challengeId);
   const { onOpen } = useCreateMeetingModalStore();
 
@@ -51,7 +56,7 @@ export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
         {data.map(meeting => (
           <Link
             key={meeting.meetingId}
-            to={CHALLENGE_ROUTES.meetingDetail(challengeId || '', meeting.meetingId)}
+            to={CHALLENGE_ROUTES.meetingDetail(challengeRef || challengeId || '', meeting.meetingId)}
             className={styles.meetingItem}
           >
             <div className={styles.meetingHeader}>
@@ -61,8 +66,12 @@ export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
               </span>
             </div>
             <div className={styles.meetingInfo}>
-              <span>📅 {new Date(meeting.meetingDate).toLocaleDateString()}</span>
-              <span>📍 {meeting.isOnline ? '온라인' : meeting.location}</span>
+              <span>
+                <Calendar size={14} /> {new Date(meeting.meetingDate).toLocaleDateString()}
+              </span>
+              <span>
+                <MapPin size={14} /> {meeting.isOnline ? '온라인' : meeting.location}
+              </span>
             </div>
           </Link>
         ))}

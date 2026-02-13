@@ -3,24 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { toast } from 'sonner';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
 import { useAuthStore } from '@/store/useAuthStore';
 import { requestWithdraw } from '@/lib/api/account';
+import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './WithdrawPage.module.css';
 
 export function WithdrawPage() {
   const navigate = useNavigate();
   const { user, refreshUser } = useAuthStore();
+  const { confirm } = useConfirmDialog();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 사용자 잔액에 기반한 동적 유효성 검사 스키마
   const withdrawSchema = z.object({
     bank: z.string().min(1, '은행을 선택해주세요'),
     accountNumber: z.string().min(10, '계좌번호를 입력해주세요').regex(/^\d+$/, '숫자만 입력해주세요'),
-    amount: z.number()
+    amount: z
+      .number()
       .min(1000, '최소 1,000원부터 출금 가능합니다')
       .max(user?.account?.availableBalance || 0, '출금 가능 금액을 초과했습니다'),
     password: z.string().min(4, '비밀번호를 입력해주세요'),
@@ -41,31 +44,38 @@ export function WithdrawPage() {
   });
 
   const onSubmit = async (data: WithdrawFormValues) => {
-    if (confirm(`${data.amount.toLocaleString()}원을 출금하시겠습니까?`)) {
-      setIsSubmitting(true);
-      try {
-        await requestWithdraw({
-          amount: data.amount,
-          bankCode: data.bank,
-          accountNumber: data.accountNumber,
-        });
-        alert('출금 신청이 완료되었습니다.');
-        // 사용자 데이터 갱신
-        await refreshUser();
-        navigate(PATHS.WALLET.ROOT);
-      } catch (error) {
-        console.error(error);
-        alert('출금 신청 중 오류가 발생했습니다.');
-      } finally {
-        setIsSubmitting(false);
-      }
+    const isConfirmed = await confirm({
+      title: `${data.amount.toLocaleString()}원을 출금하시겠습니까?`,
+      description: '출금 요청 후 처리까지 영업일 1~2일이 소요될 수 있습니다.',
+      confirmText: '출금 요청',
+      cancelText: '취소',
+      variant: 'danger',
+    });
+
+    if (!isConfirmed) return;
+
+    setIsSubmitting(true);
+    try {
+      await requestWithdraw({
+        amount: data.amount,
+        bankCode: data.bank,
+        accountNumber: data.accountNumber,
+      });
+
+      toast.success('출금 신청이 완료되었습니다.');
+      await refreshUser();
+      navigate(PATHS.WALLET.ROOT);
+    } catch (error) {
+      console.error(error);
+      toast.error('출금 신청 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleMaxAmount = () => {
-    if (user?.account?.availableBalance) {
-      setValue('amount', user.account.availableBalance, { shouldValidate: true });
-    }
+    if (!user?.account?.availableBalance) return;
+    setValue('amount', user.account.availableBalance, { shouldValidate: true });
   };
 
   return (
@@ -92,17 +102,13 @@ export function WithdrawPage() {
             <option value="kakao">카카오뱅크</option>
             <option value="toss">토스뱅크</option>
           </select>
-          {errors.bank && <p className={styles.error}>{errors.bank.message}</p>}
+          {errors.bank ? <p className={styles.error}>{errors.bank.message}</p> : null}
         </div>
 
         <div className={styles.formGroup}>
           <label className={styles.label}>계좌번호</label>
-          <input
-            className={styles.input}
-            placeholder="- 없이 숫자만 입력"
-            {...register('accountNumber')}
-          />
-          {errors.accountNumber && <p className={styles.error}>{errors.accountNumber.message}</p>}
+          <input className={styles.input} placeholder="- 없이 숫자만 입력" {...register('accountNumber')} />
+          {errors.accountNumber ? <p className={styles.error}>{errors.accountNumber.message}</p> : null}
         </div>
 
         <div className={styles.formGroup}>
@@ -118,23 +124,19 @@ export function WithdrawPage() {
               전액
             </button>
           </div>
-          {errors.amount && <p className={styles.error}>{errors.amount.message}</p>}
+          {errors.amount ? <p className={styles.error}>{errors.amount.message}</p> : null}
         </div>
 
         <div className={styles.formGroup}>
           <label className={styles.label}>비밀번호</label>
-          <input
-            type="password"
-            className={styles.input}
-            placeholder="비밀번호 입력"
-            {...register('password')}
-          />
-          {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+          <input type="password" className={styles.input} placeholder="비밀번호 입력" {...register('password')} />
+          {errors.password ? <p className={styles.error}>{errors.password.message}</p> : null}
         </div>
 
         <div className={styles.infoBox}>
-          • 출금 신청 후 처리까지 영업일 기준 1-2일이 소요될 수 있습니다.<br />
-          • 부정확한 계좌 정보로 인한 책임은 본인에게 있습니다.
+          출금 요청 후 처리까지 영업일 기준 1~2일이 소요될 수 있습니다.
+          <br />
+          부정확한 계좌 정보로 인한 책임은 본인에게 있습니다.
         </div>
 
         <div className={styles.bottomAction}>

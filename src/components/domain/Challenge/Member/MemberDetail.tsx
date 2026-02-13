@@ -5,6 +5,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { Skeleton } from '@/components/feedback';
 import { ChallengeRole } from '@/types/enums';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
+import { toast } from 'sonner';
 import styles from './MemberDetail.module.css';
 
 export function MemberDetail() {
@@ -12,6 +14,7 @@ export function MemberDetail() {
     const { challengeId } = useChallengeRoute();
     const navigate = useNavigate();
     const { user: currentUser } = useAuthStore();
+    const { confirm } = useConfirmDialog();
 
     const { data: member, isLoading } = useMember(challengeId, Number(memberId));
     const delegateMutation = useDelegateLeader(challengeId!);
@@ -43,16 +46,22 @@ export function MemberDetail() {
     const canDelegate = isCurrentUserLeader && role !== ChallengeRole.LEADER;
 
     const handleDelegate = async () => {
-        if (!window.confirm(`${user.nickname}님에게 리더 권한을 위임하시겠습니까?`)) {
+        const isConfirmed = await confirm({
+            title: `${user.nickname}님에게 리더 권한을 위임하시겠습니까?`,
+            confirmText: '위임하기',
+            cancelText: '취소',
+        });
+
+        if (!isConfirmed) {
             return;
         }
 
         try {
             await delegateMutation.mutateAsync(member.memberId);
-            alert('리더 권한이 위임되었습니다.');
+            toast.success('리더 권한이 위임되었습니다.');
             navigate(-1);
         } catch {
-            alert('위임에 실패했습니다.');
+            toast.error('위임에 실패했습니다.');
         }
     };
 
@@ -71,7 +80,7 @@ export function MemberDetail() {
             <div className={styles.profile}>
                 <div className={styles.avatarWrapper}>
                     <img
-                        src={user.profileImage || `https://i.pravatar.cc/150?u=${user.userId}`}
+                        src={user.profileImage || '/images/avatar-fallback.svg'}
                         alt={user.nickname}
                         className={styles.avatar}
                     />

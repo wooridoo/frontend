@@ -6,6 +6,7 @@ import { useSignupModalStore } from '@/store/modal/useModalStore';
 import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { MessageCircle, Mail } from 'lucide-react'; // Icons for buttons
 import { PATHS } from '@/routes/paths';
+import { toast } from 'sonner';
 import styles from './SignupModal.module.css';
 
 export function SignupModal() {
@@ -24,11 +25,11 @@ export function SignupModal() {
     };
 
     const handleKakaoLogin = () => {
-        alert('카카오 로그인은 준비 중입니다.');
+        toast.info('카카오 로그인은 준비 중입니다.');
     };
 
     const handleGoogleLogin = () => {
-        alert('구글 로그인은 준비 중입니다.');
+        toast.info('구글 로그인은 준비 중입니다.');
     };
 
     return (

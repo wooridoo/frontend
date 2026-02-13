@@ -54,7 +54,7 @@ export function EditProfileModal() {
                     {/* Avatar Preview */}
                     <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-md)' }}>
                         <img
-                            src={profileImage || `https://ui-avatars.com/api/?name=${nickname}&background=random`}
+                            src={profileImage || '/images/avatar-fallback.svg'}
                             alt={nickname}
                             style={{
                                 width: 80,

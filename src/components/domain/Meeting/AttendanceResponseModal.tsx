@@ -2,6 +2,7 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useAttendanceModalStore } from '@/store/modal/useModalStore';
 import { useRespondAttendance } from '@/hooks/useMeeting';
+import { Calendar, MapPin } from 'lucide-react';
 import styles from './MeetingModal.module.css';
 
 export function AttendanceResponseModal() {
@@ -44,11 +45,11 @@ export function AttendanceResponseModal() {
                             <h3 style={{ margin: '0 0 var(--spacing-sm)', fontSize: 'var(--font-size-lg)' }}>
                                 {meeting.title}
                             </h3>
-                            <p style={{ color: 'var(--color-text-secondary)', margin: 0 }}>
-                                📅 {formatDate(meeting.meetingDate)}
+                            <p style={{ color: 'var(--color-text-secondary)', margin: 0, display: 'inline-flex', gap: 6, alignItems: 'center' }}>
+                                <Calendar size={14} /> {formatDate(meeting.meetingDate)}
                             </p>
-                            <p style={{ color: 'var(--color-text-secondary)', margin: 'var(--spacing-xs) 0 0' }}>
-                                📍 {meeting.location}
+                            <p style={{ color: 'var(--color-text-secondary)', margin: 'var(--spacing-xs) 0 0', display: 'inline-flex', gap: 6, alignItems: 'center' }}>
+                                <MapPin size={14} /> {meeting.location}
                             </p>
                         </div>
 
@@ -65,7 +66,7 @@ export function AttendanceResponseModal() {
                                 disabled={respondMutation.isPending}
                                 variant="secondary"
                             >
-                                🤔 미정
+                                미정
                             </Button>
                             <Button
                                 onClick={() => handleResponse('DISAGREE')}

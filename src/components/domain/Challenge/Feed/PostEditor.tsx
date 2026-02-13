@@ -12,7 +12,7 @@ interface PostEditorProps {
 export function PostEditor({ onSuccess }: PostEditorProps) {
   const { challengeId } = useChallengeRoute();
   const { user } = useAuthStore();
-  const avatarUrl = user?.profileImage || 'https://ui-avatars.com/api/?name=User&background=random';
+  const avatarUrl = user?.profileImage || '/images/avatar-fallback.svg';
 
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);

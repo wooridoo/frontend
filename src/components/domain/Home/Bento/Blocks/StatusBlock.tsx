@@ -41,7 +41,7 @@ export function StatusBlock() {
         {/* <div className={styles.progressTrack}>
           <div className={styles.progressBar} style={{ width: `${progress}%` }}></div>
         </div> */}
-        <p className={styles.subtext}>반가워요! 오늘도 힘내세요 💪</p>
+        <p className={styles.subtext}>반가워요! 오늘도 힘내세요.</p>
       </div>
     </div>
   );
