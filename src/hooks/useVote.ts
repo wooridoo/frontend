@@ -27,6 +27,7 @@ export function useCreateVote(challengeId: string) {
       title: string;
       description?: string;
       targetId?: string;
+      meetingId?: string;
       deadline: string;
     }) => createVote(challengeId, data),
     onSuccess: () => {

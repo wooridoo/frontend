@@ -50,8 +50,26 @@
   border-color: var(--color-primary);
 }
 
+.select:disabled {
+  background: var(--color-gray-50);
+  color: var(--color-gray-500);
+  cursor: not-allowed;
+}
+
 .textarea {
   resize: vertical;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-gray-600);
+}
+
+.errorMessage {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #dc2626;
 }
 
 .actions {
