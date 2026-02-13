@@ -5,6 +5,7 @@ import { useMembers } from '@/hooks/useMember';
 import { MemberCard } from './MemberCard';
 import { Skeleton } from '@/components/feedback';
 import type { MemberStatus } from '@/types/member';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './MemberList.module.css';
 
 type FilterTab = 'ALL' | MemberStatus;
@@ -38,7 +39,7 @@ export function MemberList() {
     }
 
     const handleMemberClick = (memberId: number) => {
-        navigate(`/challenges/${challengeId}/members/${memberId}`);
+        navigate(CHALLENGE_ROUTES.memberDetail(challengeId || '', memberId));
     };
 
     return (

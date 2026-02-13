@@ -9,6 +9,7 @@ import logo from '@/assets/woorido_logo.svg';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { getMyChallenges } from '@/lib/api/challenge';
 import { PATHS } from '@/routes/paths';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 interface SideNavProps {
   className?: string;
@@ -113,7 +114,7 @@ export function SideNav({
                 joinedChallenges.map((challenge) => (
                   <li key={challenge.challengeId}>
                     <NavLink
-                      to={PATHS.CHALLENGE.FEED(String(challenge.challengeId))}
+                      to={CHALLENGE_ROUTES.feed(challenge.challengeId)}
                       className={({ isActive }) =>
                         clsx(styles.navItem, isActive && styles.active)
                       }

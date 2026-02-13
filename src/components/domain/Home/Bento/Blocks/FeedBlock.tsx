@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styles from './FeedBlock.module.css';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 export function FeedBlock() {
   const [items, setItems] = useState<ChallengeInfo[]>([]);
@@ -71,7 +72,7 @@ export function FeedBlock() {
       >
         {items.map((item) => (
           <div key={item.challengeId} className={styles.card}>
-            <Link to={`/challenges/${item.challengeId}`} className={styles.imageWrapper}>
+            <Link to={CHALLENGE_ROUTES.detail(item.challengeId)} className={styles.imageWrapper}>
               <img
                 src={item.thumbnailUrl || `https://picsum.photos/seed/${item.challengeId}/300/200`}
                 alt={item.title}
@@ -80,7 +81,7 @@ export function FeedBlock() {
             </Link>
             <div className={styles.cardContent}>
               <span className={styles.tag}>{item.category}</span>
-              <Link to={`/challenges/${item.challengeId}`} className={styles.titleLink}>
+              <Link to={CHALLENGE_ROUTES.detail(item.challengeId)} className={styles.titleLink}>
                 <h4 className={styles.cardTitle}>{item.title}</h4>
               </Link>
               <div className={styles.cardFooter}>

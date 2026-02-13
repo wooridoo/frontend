@@ -1,5 +1,6 @@
 import type { Meeting } from '@/types/meeting';
 import { client } from './client';
+import { toApiChallengeId } from './challengeId';
 
 // Default to MOCK if not explicitly disabled
 // const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false'; // REMOVED
@@ -17,7 +18,8 @@ interface MeetingResponse {
 }
 
 export async function getChallengeMeetings(challengeId: string): Promise<Meeting[]> {
-  const response = await client.get<Meeting[] | MeetingResponse>(`/challenges/${challengeId}/meetings`);
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  const response = await client.get<Meeting[] | MeetingResponse>(`/challenges/${normalizedChallengeId}/meetings`);
 
   if (Array.isArray(response)) {
     return response;
@@ -52,7 +54,8 @@ export interface UpdateMeetingRequest {
 }
 
 export async function createMeeting(data: CreateMeetingRequest): Promise<Meeting> {
-  return client.post<Meeting>(`/challenges/${data.challengeId}/meetings`, data);
+  const normalizedChallengeId = toApiChallengeId(data.challengeId);
+  return client.post<Meeting>(`/challenges/${normalizedChallengeId}/meetings`, data);
 }
 
 export async function updateMeeting(data: UpdateMeetingRequest): Promise<Meeting> {

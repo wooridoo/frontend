@@ -7,14 +7,14 @@ import { CategoryBlock } from '@/components/domain/Home/Bento/Blocks/CategoryBlo
 import { FeedBlock } from '@/components/domain/Home/Bento/Blocks/FeedBlock';
 import { PageContainer } from '@/components/layout';
 import { FAB } from '@/components/ui';
-import { PATHS } from '@/routes/paths';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './HomePage.module.css';
 
 export function HomePage() {
   const navigate = useNavigate();
 
   const handleCreateChallenge = () => {
-    navigate(PATHS.CHALLENGE.NEW);
+    navigate(CHALLENGE_ROUTES.NEW);
   };
 
   return (

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getChallenge, type ChallengeInfo } from '@/lib/api/challenge';
 import { useAuthStore } from '@/store/useAuthStore';
 import { ChallengeStatus } from '@/types/enums';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './ActiveChallengeBlock.module.css';
 
 export function ActiveChallengeBlock() {
@@ -43,7 +44,7 @@ export function ActiveChallengeBlock() {
   if (!activeChallenge) {
     return (
       <div className={styles.container}>
-        <Link to="/challenges" className={styles.link}>
+        <Link to={CHALLENGE_ROUTES.ROOT} className={styles.link}>
           <img
             src="https://picsum.photos/seed/new_challenge/600/400"
             alt="Join a Challenge"
@@ -62,7 +63,7 @@ export function ActiveChallengeBlock() {
 
   return (
     <div className={styles.container}>
-      <Link to={`/challenges/${activeChallenge.challengeId}`} className={styles.link}>
+      <Link to={CHALLENGE_ROUTES.detail(activeChallenge.challengeId)} className={styles.link}>
         <img
           src={activeChallenge.thumbnailUrl || "https://picsum.photos/seed/running/600/400"}
           alt={activeChallenge.title}

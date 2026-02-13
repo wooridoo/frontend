@@ -3,6 +3,7 @@
  * API 정의서 032-034 기반
  */
 import { client } from './client';
+import { toApiChallengeId } from './challengeId';
 import type {
   MemberDetail,
   MemberStatus,
@@ -21,8 +22,9 @@ export async function getChallengeMembers(
   challengeId: string,
   status?: MemberStatus
 ): Promise<MembersResponse> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
   return client.get<MembersResponse>(
-    `/challenges/${challengeId}/members`,
+    `/challenges/${normalizedChallengeId}/members`,
     { params: { status } }
   );
 }
@@ -34,8 +36,9 @@ export async function getMember(
   challengeId: string,
   memberId: number
 ): Promise<MemberDetail> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
   return client.get<MemberDetail>(
-    `/challenges/${challengeId}/members/${memberId}`
+    `/challenges/${normalizedChallengeId}/members/${memberId}`
   );
 }
 
@@ -46,8 +49,9 @@ export async function delegateLeader(
   challengeId: string,
   targetMemberId: number
 ): Promise<DelegateResponse> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
   return client.post<DelegateResponse>(
-    `/challenges/${challengeId}/delegate`,
+    `/challenges/${normalizedChallengeId}/delegate`,
     { targetMemberId }
   );
 }

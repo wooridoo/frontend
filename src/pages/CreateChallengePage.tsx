@@ -9,6 +9,7 @@ import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button, Input, Card, CardHeader, CardBody } from '@/components/ui';
 import { useCreateChallenge } from '@/hooks/useChallenge';
 import { PATHS } from '@/routes/paths';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { toast } from 'sonner';
 import styles from './CreateChallengePage.module.css';
 
@@ -73,7 +74,7 @@ export function CreateChallengePage() {
       toast.success('챌린지가 개설되었습니다!');
       // 생성된 챌린지 상세 페이지로 이동
       const newId = result.challengeId;
-      navigate(newId ? PATHS.CHALLENGE.DETAIL(newId) : PATHS.HOME);
+      navigate(newId ? CHALLENGE_ROUTES.detail(newId) : PATHS.HOME);
     } catch {
       toast.error('챌린지 개설 중 오류가 발생했습니다.');
     }

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 import styles from './AccessDeniedModal.module.css';
 import { PATHS } from '@/routes/paths';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useAccessDeniedModalStore } from '@/store/useAccessDeniedModalStore';
 
 export function AccessDeniedModal() {
@@ -13,7 +14,7 @@ export function AccessDeniedModal() {
   const handleAction = () => {
     onClose();
     if (challengeId) {
-      navigate(PATHS.CHALLENGE.DETAIL(challengeId));
+      navigate(CHALLENGE_ROUTES.detail(challengeId));
     } else {
       navigate(PATHS.HOME);
     }
@@ -26,7 +27,7 @@ export function AccessDeniedModal() {
     // OR strictly redirect to intro as well.
     // Let's redirect to intro to be safe.
     if (challengeId) {
-      navigate(PATHS.CHALLENGE.DETAIL(challengeId));
+      navigate(CHALLENGE_ROUTES.detail(challengeId));
     } else {
       navigate(PATHS.HOME);
     }

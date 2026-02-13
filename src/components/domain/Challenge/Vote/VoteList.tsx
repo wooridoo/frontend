@@ -4,6 +4,7 @@ import { useVotes } from '../../../../hooks/useVote';
 import { VoteItem } from './VoteItem';
 import { Button, Loading } from '../../../../components/common';
 import { VoteStatus } from '../../../../types/domain';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './VoteList.module.css';
 
 export function VoteList() {
@@ -28,7 +29,7 @@ export function VoteList() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>투표</h2>
-        <Button onClick={() => navigate(`/challenges/${id}/votes/new`)}>
+        <Button onClick={() => navigate(CHALLENGE_ROUTES.voteNew(id || ''))}>
           새 투표 생성
         </Button>
       </div>

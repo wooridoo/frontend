@@ -8,7 +8,7 @@ import { getMyChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
 import { useCreateChallengeModalStore } from '@/store/useCreateChallengeModalStore';
 import { ChallengeStatus } from '@/types/enums';
-import { PATHS } from '@/routes/paths';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './MyChallengesPage.module.css';
 
 type TabType = 'all' | 'inProgress' | 'recruiting' | 'completed';
@@ -71,7 +71,7 @@ export function MyChallengesPage() {
     };
 
     const handleChallengeClick = (challenge: ChallengeInfo) => {
-        navigate(PATHS.CHALLENGE.DETAIL(challenge.challengeId));
+        navigate(CHALLENGE_ROUTES.detail(challenge.challengeId));
     };
 
     return (

@@ -10,7 +10,7 @@ import { getChallengeMembers } from '@/lib/api/member';
 import { isParticipant } from '@/lib/utils/challengeUtils';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
 import { Avatar } from '@/components/ui/Avatar';
-import { PATHS } from '@/routes/paths'; // Added PATHS import
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './ChallengeDetailPage.module.css';
 
 import { useAuthStore } from '@/store/useAuthStore';
@@ -166,7 +166,7 @@ export function ChallengeDetailPage() {
         <Button
           size="lg"
           className={styles.joinButton}
-          onClick={isJoined ? () => navigate(PATHS.CHALLENGE.DETAIL(challenge.challengeId)) : handleJoin}
+          onClick={isJoined ? () => navigate(CHALLENGE_ROUTES.detail(challenge.challengeId)) : handleJoin}
           disabled={!isJoined && challenge.status === 'COMPLETED'}
         >
           {isJoined ? '입장하기' : '챌린지 참여하기'}

@@ -2,6 +2,7 @@ import styles from './VoteItem.module.css';
 import type { Vote } from '../../../../types/domain';
 import { VoteStatusBadge } from './VoteStatusBadge';
 import { useNavigate } from 'react-router-dom';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 interface VoteItemProps {
   vote: Vote;
@@ -11,7 +12,7 @@ export function VoteItem({ vote }: VoteItemProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/challenges/${vote.challengeId}/votes/${vote.voteId}`);
+    navigate(CHALLENGE_ROUTES.voteDetail(vote.challengeId, vote.voteId));
   };
 
   const getDeadlineText = (deadline: string) => {

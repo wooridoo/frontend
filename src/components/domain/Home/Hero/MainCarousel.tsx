@@ -5,6 +5,7 @@ import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './MainCarousel.module.css';
 import { Link } from 'react-router-dom';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 const SLIDES = [
   {
@@ -14,7 +15,7 @@ const SLIDES = [
     description: '원하는 목표를 설정하고\n친구들과 함께 달성해보세요.',
     emoji: '✨',
     action: '챌린지 만들기',
-    link: '/challenges/new',
+    link: CHALLENGE_ROUTES.NEW,
     bgClass: 'bg-primary-50'
   },
   {

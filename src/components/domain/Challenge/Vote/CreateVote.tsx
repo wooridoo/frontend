@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useCreateVote } from '../../../../hooks/useVote';
 import { Button, Input } from '../../../../components/common';
 import type { VoteType } from '../../../../types/domain';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './CreateVote.module.css';
 
 export function CreateVote() {
@@ -35,7 +36,7 @@ export function CreateVote() {
       deadline: new Date(form.deadline).toISOString(),
     }, {
       onSuccess: () => {
-        navigate(`/challenges/${id}/votes`);
+        navigate(CHALLENGE_ROUTES.votes(id || ''));
       }
     });
   };

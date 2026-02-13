@@ -1,5 +1,6 @@
 import { type Vote, type VoteOption, type VoteType, VoteStatus } from '../../types/domain';
 import { client } from './client';
+import { toApiChallengeId } from './challengeId';
 
 
 interface VoteResponse {
@@ -11,10 +12,11 @@ export async function getChallengeVotes(
   challengeId: string,
   status?: VoteStatus
 ): Promise<Vote[]> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
   const params: Record<string, string> = {};
   if (status) params.status = status;
 
-  const response = await client.get<Vote[] | VoteResponse>(`/challenges/${challengeId}/votes`, { params });
+  const response = await client.get<Vote[] | VoteResponse>(`/challenges/${normalizedChallengeId}/votes`, { params });
 
   if (Array.isArray(response)) {
     return response;
@@ -38,7 +40,8 @@ export async function createVote(
     meetingId?: string; // Added meetingId support
   }
 ): Promise<Vote> {
-  return client.post<Vote>(`/challenges/${challengeId}/votes`, data);
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  return client.post<Vote>(`/challenges/${normalizedChallengeId}/votes`, data);
 }
 
 export async function castVote(voteId: string, choice: VoteOption): Promise<Vote> {

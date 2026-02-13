@@ -4,6 +4,7 @@ import { useMember, useDelegateLeader } from '@/hooks/useMember';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Skeleton } from '@/components/feedback';
 import { ChallengeRole } from '@/types/enums';
+import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import styles from './MemberDetail.module.css';
 
 export function MemberDetail() {
@@ -37,7 +38,8 @@ export function MemberDetail() {
     const { user, role, stats, supportHistory } = member;
 
     // Check if current user is leader (can delegate)
-    const isCurrentUserLeader = currentUser?.participatingChallengeIds?.includes(challengeId!);
+    const normalizedChallengeId = resolveChallengeId(challengeId);
+    const isCurrentUserLeader = currentUser?.participatingChallengeIds?.includes(normalizedChallengeId);
     const canDelegate = isCurrentUserLeader && role !== ChallengeRole.LEADER;
 
     const handleDelegate = async () => {

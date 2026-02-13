@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { useParams, Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useAccessDeniedModalStore } from '@/store/useAccessDeniedModalStore';
 import { PATHS } from '@/routes/paths';
+import { resolveChallengeId } from '@/lib/utils/challengeRoute';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 export function ChallengeGuard() {
   const { id } = useParams<{ id: string }>();
@@ -10,7 +12,7 @@ export function ChallengeGuard() {
   const { onClose } = useAccessDeniedModalStore();
   const navigate = useNavigate();
 
-  const challengeId = id!;
+  const challengeId = resolveChallengeId(id);
 
   useEffect(() => {
     // 1. 유효하지 않은 ID 체크
@@ -29,16 +31,16 @@ export function ChallengeGuard() {
       onClose();
     } else {
       // 3. 비회원은 소개 페이지로 리다이렉트 (모달 대신)
-      navigate(PATHS.CHALLENGE.INTRO(challengeId), { replace: true });
+      navigate(CHALLENGE_ROUTES.intro(challengeId), { replace: true });
     }
-  }, [challengeId, user, onClose, navigate, id]);
+  }, [challengeId, user, onClose, navigate]);
 
   // 확인될 때까지 렌더링 차단 (로딩 상태)
   if (!user || user.participatingChallengeIds === undefined) {
     return null;
   }
 
-  const isParticipant = user.participatingChallengeIds.includes(challengeId);
+  const isParticipant = Boolean(challengeId) && user.participatingChallengeIds.includes(challengeId);
 
   // 리다이렉트 중에는 아무것도 렌더링하지 않음
   if (!isParticipant) {

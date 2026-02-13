@@ -7,7 +7,7 @@ import { PageHeader } from '@/components/navigation';
 import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { getCategoryLabel, CATEGORY_LABELS } from '@/lib/utils/categoryLabels';
 import { Category } from '@/types/enums';
-import { PATHS } from '@/routes/paths';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 const CATEGORIES = ['전체', '건강', '역량', '취미', '자산', '생활'];
 
@@ -114,7 +114,7 @@ export function ExplorePage() {
 
 function ChallengeCard({ challenge }: { challenge: ChallengeInfo }) {
   return (
-    <Link to={PATHS.CHALLENGE.DETAIL(String(challenge.challengeId))} className={styles.card}>
+    <Link to={CHALLENGE_ROUTES.detail(challenge.challengeId)} className={styles.card}>
       <div className={styles.imageWrapper}>
         <img
           src={challenge.thumbnailUrl || 'https://via.placeholder.com/300?text=No+Image'}

@@ -4,6 +4,7 @@ import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { Button } from '@/components/ui';
 import { Plus } from 'lucide-react';
 import { useCreateMeetingModalStore } from '@/store/useCreateMeetingModalStore';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './RegularMeetingList.module.css';
 
 export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
@@ -48,7 +49,11 @@ export function RegularMeetingList({ challengeId }: { challengeId?: string }) {
       </div>
       <div className={styles.meetingList}>
         {data.map(meeting => (
-          <Link key={meeting.meetingId} to={`/challenges/${challengeId}/meetings/${meeting.meetingId}`} className={styles.meetingItem}>
+          <Link
+            key={meeting.meetingId}
+            to={CHALLENGE_ROUTES.meetingDetail(challengeId || '', meeting.meetingId)}
+            className={styles.meetingItem}
+          >
             <div className={styles.meetingHeader}>
               <span className={styles.meetingTitle}>{meeting.title}</span>
               <span className={styles.meetingStatus}>

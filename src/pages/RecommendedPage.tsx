@@ -8,7 +8,7 @@ import { Button } from '@/components/ui';
 import { Loader2 } from 'lucide-react';
 import { getChallenges } from '@/lib/api/challenge';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
-import { PATHS } from '@/routes/paths';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 export function RecommendedPage() {
   const { isLoggedIn, user, requireAuth } = useAuthGuard();
@@ -62,7 +62,7 @@ export function RecommendedPage() {
             {challenges?.map(challenge => {
               if (!challenge || !challenge.challengeId) return null;
               return (
-                <Link to={PATHS.CHALLENGE.DETAIL(String(challenge.challengeId))} key={challenge.challengeId} className={styles.card}>
+                <Link to={CHALLENGE_ROUTES.detail(challenge.challengeId)} key={challenge.challengeId} className={styles.card}>
                   <div className={styles.imageWrapper}>
                     <img
                       src={challenge.thumbnailUrl || 'https://via.placeholder.com/120?text=No+Image'}

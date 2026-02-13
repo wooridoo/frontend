@@ -41,7 +41,7 @@ export function EditMeetingModal() {
             meetingTime: dateTime.toTimeString().slice(0, 5),
             locationType: (meeting.isOnline ? 'ONLINE' : 'OFFLINE') as LocationType,
             location: meeting.location,
-            maxParticipants: meeting.maxMembers,
+            maxParticipants: meeting.maxMembers ?? defaultFormData.maxParticipants,
         };
     }, [meeting]);
 

@@ -5,6 +5,7 @@
  * Mock ↔ Spring 전환 가능 구조
  */
 import { client } from './client';
+import { toApiChallengeId } from './challengeId';
 
 import type { ChallengeInfo } from '@/types/challenge';
 export type { ChallengeInfo };
@@ -26,8 +27,9 @@ import { normalizeChallenge } from '@/lib/utils/dataMappers';
  * 챌린지 상세 조회 (024)
  */
 export async function getChallenge(challengeId: string): Promise<ChallengeInfo> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
   // client.get returns the unwrapped data (ChallengeInfo)
-  const challenge = await client.get<ChallengeInfo>(`/challenges/${challengeId}`);
+  const challenge = await client.get<ChallengeInfo>(`/challenges/${normalizedChallengeId}`);
   return normalizeChallenge(challenge);
 }
 
@@ -78,19 +80,23 @@ export interface UpdateChallengeRequest {
 }
 
 export async function updateChallenge(data: UpdateChallengeRequest): Promise<ChallengeInfo> {
-  return client.put<ChallengeInfo>(`/challenges/${data.challengeId}`, data);
+  const normalizedChallengeId = toApiChallengeId(data.challengeId);
+  return client.put<ChallengeInfo>(`/challenges/${normalizedChallengeId}`, data);
 }
 
 export async function deleteChallenge(challengeId: string): Promise<void> {
-  await client.delete(`/challenges/${challengeId}`);
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  await client.delete(`/challenges/${normalizedChallengeId}`);
 }
 
 export async function leaveChallenge(challengeId: string): Promise<void> {
-  await client.delete(`/challenges/${challengeId}/leave`);
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  await client.delete(`/challenges/${normalizedChallengeId}/leave`);
 }
 
 export async function joinChallenge(challengeId: string, depositAmount: number): Promise<void> {
-  await client.post(`/challenges/${challengeId}/join`, { depositAmount });
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  await client.post(`/challenges/${normalizedChallengeId}/join`, { depositAmount });
 }
 
 /**

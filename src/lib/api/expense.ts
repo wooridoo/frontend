@@ -3,6 +3,7 @@
  * API 정의서 046-051번 기반 — 실제 백엔드 연동
  */
 import { client } from './client';
+import { toApiChallengeId } from './challengeId';
 
 // =====================
 // Types (API 정의서 기반)
@@ -67,8 +68,9 @@ export async function getChallengeExpenses(
         size?: number;
     }
 ): Promise<{ expenses: Expense[]; totalAmount: number }> {
+    const normalizedChallengeId = toApiChallengeId(challengeId);
     const response = await client.get<Expense[] | ExpenseResponse>(
-        `/challenges/${challengeId}/expenses`,
+        `/challenges/${normalizedChallengeId}/expenses`,
         { params: options }
     );
 
@@ -86,14 +88,16 @@ export async function getChallengeExpenses(
  * 지출 내역 상세 조회 (047)
  */
 export async function getExpense(challengeId: string, expenseId: string): Promise<Expense> {
-    return client.get<Expense>(`/challenges/${challengeId}/expenses/${expenseId}`);
+    const normalizedChallengeId = toApiChallengeId(challengeId);
+    return client.get<Expense>(`/challenges/${normalizedChallengeId}/expenses/${expenseId}`);
 }
 
 /**
  * 지출 내역 등록 (048)
  */
 export async function createExpense(challengeId: string, data: CreateExpenseInput): Promise<Expense> {
-    return client.post<Expense>(`/challenges/${challengeId}/expenses`, data);
+    const normalizedChallengeId = toApiChallengeId(challengeId);
+    return client.post<Expense>(`/challenges/${normalizedChallengeId}/expenses`, data);
 }
 
 /**
@@ -105,8 +109,9 @@ export async function approveExpense(
     approved: boolean,
     reason?: string
 ): Promise<Expense> {
+    const normalizedChallengeId = toApiChallengeId(challengeId);
     return client.put<Expense>(
-        `/challenges/${challengeId}/expenses/${expenseId}/approve`,
+        `/challenges/${normalizedChallengeId}/expenses/${expenseId}/approve`,
         { approved, reason }
     );
 }
@@ -119,8 +124,9 @@ export async function updateExpense(
     expenseId: string,
     data: Partial<CreateExpenseInput>
 ): Promise<Expense> {
+    const normalizedChallengeId = toApiChallengeId(challengeId);
     return client.put<Expense>(
-        `/challenges/${challengeId}/expenses/${expenseId}`,
+        `/challenges/${normalizedChallengeId}/expenses/${expenseId}`,
         data
     );
 }
@@ -129,5 +135,6 @@ export async function updateExpense(
  * 지출 삭제 (051)
  */
 export async function deleteExpense(challengeId: string, expenseId: string): Promise<void> {
-    await client.delete(`/challenges/${challengeId}/expenses/${expenseId}`);
+    const normalizedChallengeId = toApiChallengeId(challengeId);
+    await client.delete(`/challenges/${normalizedChallengeId}/expenses/${expenseId}`);
 }

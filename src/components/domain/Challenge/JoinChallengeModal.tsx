@@ -6,6 +6,7 @@ import { joinChallenge } from '@/lib/api/challenge';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui'; // Correct import from index
 import { toast } from 'sonner';
+import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './JoinChallengeModal.module.css';
 
 export function JoinChallengeModal() {
@@ -49,7 +50,7 @@ export function JoinChallengeModal() {
   const handleGoToChallenge = () => {
     handleClose();
     if (challengeId) {
-      navigate(`/challenge/${challengeId}`);
+      navigate(CHALLENGE_ROUTES.detail(challengeId));
     }
   };
 
