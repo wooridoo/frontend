@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,12 +28,12 @@ const challengeSchema = z.object({
 type ChallengeFormValues = z.infer<typeof challengeSchema>;
 
 const CATEGORIES = [
-  { id: 'LIFE', label: '생활습관', icon: '☀️' },
+  { id: 'CULTURE', label: '생활습관', icon: '☀️' },
   { id: 'EXERCISE', label: '운동', icon: '💪' },
   { id: 'STUDY', label: '공부', icon: '📚' },
   { id: 'HOBBY', label: '취미', icon: '🎨' },
-  { id: 'ASSET', label: '재테크', icon: '💰' },
-  { id: 'ETC', label: '기타', icon: '🎸' },
+  { id: 'SAVINGS', label: '재테크', icon: '💰' },
+  { id: 'OTHER', label: '기타', icon: '🎸' },
 ];
 
 export function CreateChallengePage() {
@@ -65,26 +65,45 @@ export function CreateChallengePage() {
     }
   }, [supportAmount, setValue]);
 
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+
   const onSubmit = async (data: ChallengeFormValues) => {
+    setFormErrors([]);
     try {
       const result = await createChallengeMutation.mutateAsync({
         ...data,
         supportDay: 1, // 매월 1일 고정
       });
       toast.success('챌린지가 개설되었습니다!');
-      // 생성된 챌린지 상세 페이지로 이동
       const newId = result.challengeId;
       navigate(newId ? CHALLENGE_ROUTES.detailWithTitle(newId, data.name) : PATHS.HOME);
-    } catch {
-      toast.error('챌린지 개설 중 오류가 발생했습니다.');
+    } catch (err: unknown) {
+      let message = err && typeof err === 'object' && 'message' in err
+        ? (err as { message: string }).message
+        : '챌린지 개설 중 오류가 발생했습니다.';
+      // 에러 코드 제거 (예: "VALIDATION_001: 시작일은..." → "시작일은...")
+      message = message.replace(/^[A-Z_]+_?\d*:\s*/i, '');
+      setFormErrors([`❌ ${message}`]);
     }
+  };
+
+  // 유효성 검사 실패 시 구체적 에러 메시지 표시
+  const onFormError = () => {
+    const msgs: string[] = [];
+    if (errors.category) msgs.push('❌ 카테고리를 선택해주세요');
+    if (errors.name) msgs.push(`❌ ${errors.name.message || '제목을 확인해주세요'}`);
+    if (errors.description) msgs.push(`❌ ${errors.description.message || '소개글을 확인해주세요'}`);
+    if (errors.startDate) msgs.push('❌ 시작일을 선택해주세요');
+    if (errors.maxMembers) msgs.push(`❌ ${errors.maxMembers.message || '모집 인원을 확인해주세요'}`);
+    if (errors.supportAmount) msgs.push(`❌ ${errors.supportAmount.message || '서포트 금액을 확인해주세요'}`);
+    setFormErrors(msgs.length > 0 ? msgs : ['❌ 입력 정보를 확인해주세요']);
   };
 
   return (
     <PageContainer>
       <PageHeader title="챌린지 개설" showBack />
 
-      <form id="create-challenge-form" onSubmit={handleSubmit(onSubmit)}>
+      <form id="create-challenge-form" onSubmit={handleSubmit(onSubmit, onFormError)}>
         <div className={styles.container}>
           {/* 1. 카테고리 */}
           <section className={styles.categorySection}>
@@ -147,6 +166,7 @@ export function CreateChallengePage() {
                     label="시작일"
                     type="date"
                     error={errors.startDate?.message}
+                    onKeyDown={(e: React.KeyboardEvent) => e.preventDefault()}
                     {...register('startDate')}
                   />
                 </div>
@@ -201,6 +221,17 @@ export function CreateChallengePage() {
               </div>
             </CardBody>
           </Card>
+
+          {formErrors.length > 0 && (
+            <div className={styles.errorSummary}>
+              <p className={styles.errorSummaryTitle}>아래 항목을 확인해주세요</p>
+              <ul className={styles.errorList}>
+                {formErrors.map((msg, i) => (
+                  <li key={i}>{msg}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className={styles.bottomAction}>
             <Button

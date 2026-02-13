@@ -41,6 +41,25 @@ export function CreateMeetingModal() {
     };
 
     const handleChange = (field: keyof FormData, value: string | number) => {
+        // 날짜 입력 시 즉시 유효성 검사
+        if (field === 'meetingDate' && typeof value === 'string' && value) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const minAllowedDate = new Date();
+            minAllowedDate.setDate(minAllowedDate.getDate() + 2);
+            minAllowedDate.setHours(0, 0, 0, 0);
+
+            const selectedDate = new Date(value + 'T00:00:00');
+
+            if (selectedDate < today) {
+                setError('과거 날짜에는 모임을 생성할 수 없습니다');
+                return; // 값 변경 자체를 차단
+            }
+            if (selectedDate < minAllowedDate) {
+                setError('모임은 최소 24시간 이후여야 합니다. 내일 이후 날짜를 선택해주세요.');
+                return; // 값 변경 자체를 차단
+            }
+        }
         setFormData(prev => ({ ...prev, [field]: value }));
         setError(null);
     };
@@ -64,8 +83,21 @@ export function CreateMeetingModal() {
             return;
         }
 
+        // 날짜/시간 유효성 검사: 최소 24시간 이후
+        const dateTime = `${formData.meetingDate}T${formData.meetingTime}:00`;
+        const meetingDateTime = new Date(dateTime);
+        const minAllowed = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+        if (meetingDateTime < new Date()) {
+            setError('과거 날짜에는 모임을 생성할 수 없습니다');
+            return;
+        }
+        if (meetingDateTime < minAllowed) {
+            setError('모임은 최소 24시간 이후여야 합니다');
+            return;
+        }
+
         try {
-            const dateTime = `${formData.meetingDate}T${formData.meetingTime}:00`;
             await createMutation.mutateAsync({
                 challengeId: challengeId!,
                 title: formData.title,
@@ -76,8 +108,12 @@ export function CreateMeetingModal() {
                 maxParticipants: formData.maxParticipants,
             });
             handleClose();
-        } catch {
-            setError('모임 생성에 실패했습니다');
+        } catch (err: unknown) {
+            // 백엔드 에러 메시지 표시
+            const message = err && typeof err === 'object' && 'message' in err
+                ? (err as { message: string }).message
+                : '모임 생성에 실패했습니다';
+            setError(message);
         }
     };
 
@@ -124,6 +160,7 @@ export function CreateMeetingModal() {
                                 className={styles.input}
                                 value={formData.meetingDate}
                                 min={minDate}
+                                onKeyDown={(e) => e.preventDefault()}
                                 onChange={(e) => handleChange('meetingDate', e.target.value)}
                             />
                         </div>
