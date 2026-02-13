@@ -3,6 +3,8 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useCreditChargeModalStore } from '@/store/modal/useModalStore';
 import { useRequestCreditCharge } from '@/hooks/useAccount';
+import { useAuthStore } from '@/store/useAuthStore';
+import { chargeCallback } from '@/lib/api/account';
 import { formatCurrency } from '@/lib/utils';
 import styles from './ChargeWithdrawModal.module.css';
 
@@ -12,6 +14,7 @@ export function CreditChargeModal() {
     const { isOpen, onClose } = useCreditChargeModalStore();
     const [amount, setAmount] = useState<number>(50000);
     const [step, setStep] = useState<'select' | 'success'>('select');
+    const refreshUser = useAuthStore((s) => s.refreshUser);
 
     const chargeMutation = useRequestCreditCharge();
 
@@ -27,10 +30,24 @@ export function CreditChargeModal() {
 
     const handleCharge = async () => {
         try {
-            await chargeMutation.mutateAsync({ amount, paymentMethod: 'CARD' });
+            // 1. 충전 요청 (세션 생성)
+            const chargeResponse = await chargeMutation.mutateAsync({ amount, paymentMethod: 'CARD' });
+            console.log('[CHARGE] 충전 요청 성공:', chargeResponse);
+
+            // 2. 콜백 호출 (실제 잔액 반영)
+            const callbackResponse = await chargeCallback({
+                orderId: chargeResponse.orderId,
+                paymentKey: `PK_${chargeResponse.orderId}`,
+                amount,
+                status: 'SUCCESS',
+            });
+            console.log('[CALLBACK] 콜백 성공:', callbackResponse);
+
             setStep('success');
-        } catch {
-            // Error handled by mutation
+            // 3. 유저 프로필 갱신 (상단 네비 보유금 반영)
+            await refreshUser();
+        } catch (err) {
+            console.error('[CHARGE] 충전 실패:', err);
         }
     };
 

@@ -4,6 +4,7 @@ import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { Button } from '@/components/ui';
 import { useChargeCallback } from '@/hooks/useAccount';
+import { useAuthStore } from '@/store/useAuthStore';
 import { formatCurrency } from '@/lib/utils';
 import { PATHS } from '@/routes/paths';
 import styles from './PaymentCallbackPage.module.css';
@@ -14,6 +15,7 @@ export function PaymentCallbackPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const chargeCallbackMutation = useChargeCallback();
+  const refreshUser = useAuthStore((s) => s.refreshUser);
   const [status, setStatus] = useState<CallbackStatus>('processing');
   const [chargedAmount, setChargedAmount] = useState(0);
 
@@ -28,11 +30,13 @@ export function PaymentCallbackPage() {
     }
 
     chargeCallbackMutation.mutate(
-      { orderId, paymentKey, amount },
+      { orderId, paymentKey, amount, status: 'SUCCESS' },
       {
         onSuccess: (data) => {
           setChargedAmount(data.amount);
           setStatus('success');
+          // 충전 후 유저 프로필 갱신 (상단 네비 보유금 반영)
+          refreshUser();
         },
         onError: () => {
           setStatus('failed');

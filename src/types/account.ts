@@ -90,6 +90,7 @@ export interface ChargeCallbackRequest {
     orderId: string;
     paymentKey: string;
     amount: number;
+    status: string;
 }
 
 export interface ChargeCallbackResponse {

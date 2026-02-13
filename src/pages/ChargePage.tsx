@@ -37,6 +37,7 @@ export function ChargePage() {
         const response = await requestCreditCharge({
           amount,
           paymentMethod: 'CARD', // 기본 결제 수단: 카드
+          returnUrl: `${window.location.origin}/wallet/payment/callback`,
         });
 
         // API가 결제 URL을 반환하면 (PG 연동), 해당 URL로 리다이렉트
