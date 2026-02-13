@@ -67,14 +67,27 @@ function RegularMeetingContent({ id }: { id?: string }) {
           참석자 ({data.attendance?.confirmed || 0}/{data.attendance?.total || 0})
         </h3>
         <div className={styles.memberList}>
-          {data.members?.map(member => (
-            <div key={member.userId} className={styles.memberItem}>
-              <img src={member.profileImage} alt={member.nickname} className={styles.memberAvatar} />
-              <span className={styles.memberName}>{member.nickname}</span>
-            </div>
-          ))}
-          {data.currentMembers === 0 && (
-            <div className="text-gray-400 text-sm">아직 참석자가 없습니다.</div>
+          {data.members && data.members.length > 0 ? (
+            data.members.map(member => (
+              <div key={member.userId} className={styles.memberItem}>
+                {member.profileImage ? (
+                  <img src={member.profileImage} alt={member.nickname} className={styles.memberAvatar} />
+                ) : (
+                  <div className={styles.memberAvatar} style={{
+                    backgroundColor: '#f3f4f6',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '18px',
+                  }}>
+                    👤
+                  </div>
+                )}
+                <span className={styles.memberName}>{member.nickname}</span>
+              </div>
+            ))
+          ) : (
+            <div style={{ color: '#9ca3af', fontSize: '14px' }}>아직 참석자가 없습니다.</div>
           )}
         </div>
       </section>
