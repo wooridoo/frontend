@@ -3,6 +3,7 @@ import type { User } from '@/types/user';
 import type { ChallengeInfo } from '@/types/challenge';
 import type { Post } from '@/types/feed';
 import type { ChallengeAccount } from '@/types/ledger';
+import { rememberChallengeRoute } from '@/lib/utils/challengeRoute';
 
 /**
  * API Response Normalizers
@@ -68,13 +69,16 @@ export function normalizeUser(data: any): User {
 export function normalizeChallenge(data: any): ChallengeInfo {
   if (!data) return {} as ChallengeInfo;
 
-  return {
+  const normalized = {
     ...data,
     title: data.title || data.name || 'Untitled Challenge',
     thumbnailUrl: data.thumbnailUrl || data.thumbnail || data.image,
     // Ensure status is present or default
     status: data.status || 'RECRUITING',
   };
+
+  rememberChallengeRoute(String(normalized.challengeId || ''), normalized.title);
+  return normalized;
 }
 
 export function normalizePost(data: any): Post {

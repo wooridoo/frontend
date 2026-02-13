@@ -23,15 +23,15 @@ export function useAuthGuard() {
     return !!user?.participatingChallengeIds?.includes(normalizedChallengeId);
   };
 
-  const handleChallengeAction = (challengeId: string | number) => {
+  const handleChallengeAction = (challengeId: string | number, challengeTitle?: string) => {
     if (!requireAuth()) return;
 
     if (isParticipant(challengeId)) {
-      navigate(CHALLENGE_ROUTES.feed(challengeId));
+      navigate(CHALLENGE_ROUTES.feed(challengeId, challengeTitle));
       return;
     }
 
-    navigate(CHALLENGE_ROUTES.detail(challengeId));
+    navigate(CHALLENGE_ROUTES.detail(challengeId, challengeTitle));
   };
 
   return {

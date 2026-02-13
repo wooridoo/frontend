@@ -80,7 +80,7 @@ export function FeedBlock() {
                 <span className={styles.participants}>{item.memberCount.current}명 참여</span>
                 <button
                   className={styles.joinBtn}
-                  onClick={() => handleChallengeAction(item.challengeId)}
+                  onClick={() => handleChallengeAction(item.challengeId, item.title)}
                 >
                   {isParticipant(item.challengeId) ? '이동' : '참여'}
                 </button>

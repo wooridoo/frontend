@@ -1,14 +1,32 @@
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { ChallengeHero, ChallengeHeroSkeleton } from '../Dashboard/ChallengeHero';
 import { ChallengeStats } from '../Dashboard/ChallengeStats';
 import { ChallengeTabs } from '../Dashboard/ChallengeTabs';
 import { useChallengeDetail } from '@/hooks/useChallenge';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { toChallengeSlug } from '@/lib/utils/challengeRoute';
 import styles from './ChallengeDashboardLayout.module.css';
 
 export function ChallengeDashboardLayout() {
-  const { challengeId } = useChallengeRoute();
+  const { challengeId, challengeRef } = useChallengeRoute();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { data: challenge, isLoading, error } = useChallengeDetail(challengeId);
+
+  useEffect(() => {
+    if (!challenge || !challengeRef) return;
+
+    const canonicalRef = toChallengeSlug(String(challenge.challengeId), challenge.title);
+    if (!canonicalRef || canonicalRef === challengeRef) return;
+
+    const oldPrefix = `/${challengeRef}/challenge`;
+    if (!location.pathname.startsWith(oldPrefix)) return;
+
+    const suffix = location.pathname.slice(oldPrefix.length);
+    const canonicalPath = `/${canonicalRef}/challenge${suffix}${location.search}${location.hash}`;
+    navigate(canonicalPath, { replace: true });
+  }, [challenge, challengeRef, location.hash, location.pathname, location.search, navigate]);
 
   if (isLoading) {
     return (
