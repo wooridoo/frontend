@@ -2,11 +2,17 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { usePostDetailModalStore } from '@/store/modal/useModalStore';
 import { CommentSection } from '@/components/domain/Comment/CommentSection';
 import { Heart, MessageCircle } from 'lucide-react';
+import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 
 export function PostDetailModal() {
     const { isOpen, post, onClose } = usePostDetailModalStore();
+    const { challengeId: routeChallengeId } = useChallengeRoute();
 
     if (!post) return null;
+
+    const challengeId = resolveChallengeId(post.challengeId) || routeChallengeId;
+    if (!challengeId) return null;
 
     const formatDate = (dateStr: string) => {
         const date = new Date(dateStr);
@@ -88,7 +94,7 @@ export function PostDetailModal() {
                 </div>
 
                 {/* Comments */}
-                <CommentSection postId={post.id} />
+                <CommentSection challengeId={challengeId} postId={post.id} />
             </div>
         </Modal>
     );

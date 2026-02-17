@@ -15,13 +15,15 @@ export function normalizeChallengeAccount(data: any): ChallengeAccount {
   if (!data) return {} as ChallengeAccount;
 
   const stats = data.stats || {};
-  const monthlyAverage = stats.monthlyAverage || {};
-
   const supportStatus = data.supportStatus || {};
-  const thisMonth = supportStatus.thisMonth || {};
+  const monthlyAverage = Number(stats.monthlyAverage || 0);
+  const paid = Number(supportStatus.paid || 0);
+  const unpaid = Number(supportStatus.unpaid || 0);
+  const total = Number(supportStatus.total || 0);
 
   return {
     ...data,
+    challengeId: String(data.challengeId || ''),
     balance: data.balance || 0,
     lockedDeposits: data.lockedDeposits || 0,
     availableBalance: data.availableBalance || 0,
@@ -29,19 +31,18 @@ export function normalizeChallengeAccount(data: any): ChallengeAccount {
       totalSupport: stats.totalSupport || 0,
       totalExpense: stats.totalExpense || 0,
       totalFee: stats.totalFee || 0,
-      monthlyAverage: {
-        support: monthlyAverage.support || 0,
-        expense: monthlyAverage.expense || 0,
-      },
+      monthlyAverage,
     },
     supportStatus: {
-      thisMonth: {
-        paid: thisMonth.paid || 0,
-        unpaid: thisMonth.unpaid || 0,
-        total: thisMonth.total || 0,
-      },
+      paid,
+      unpaid,
+      total,
     },
-    recentTransactions: data.recentTransactions || [],
+    recentTransactions: (data.recentTransactions || []).map((tx: any) => ({
+      ...tx,
+      transactionId: String(tx.transactionId || ''),
+      amount: Number(tx.amount || 0),
+    })),
   };
 }
 

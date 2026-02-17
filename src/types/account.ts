@@ -35,7 +35,18 @@ export interface Account {
 
 export interface Transaction {
     transactionId: string;
-    type: 'DEPOSIT' | 'WITHDRAW' | 'TRANSFER' | 'PAYMENT' | 'REFUND' | 'CHARGE' | 'SUPPORT' | 'SUPPORT_AUTO';
+    type:
+        | 'CHARGE'
+        | 'WITHDRAW'
+        | 'LOCK'
+        | 'UNLOCK'
+        | 'SUPPORT'
+        | 'ENTRY_FEE'
+        | 'REFUND'
+        | 'DEPOSIT'
+        | 'TRANSFER'
+        | 'PAYMENT'
+        | 'SUPPORT_AUTO';
     amount: number;
     balanceAfter: number;
     description: string;
@@ -48,6 +59,14 @@ export interface TransactionHistoryResponse {
     totalCount: number;
     totalPages: number;
     currentPage: number;
+    summary?: {
+        totalIncome: number;
+        totalExpense: number;
+        period?: {
+            startDate?: string;
+            endDate?: string;
+        };
+    };
 }
 
 // --- Request/Response DTOs ---
@@ -104,12 +123,16 @@ export interface ChargeCallbackResponse {
 
 export interface SupportPaymentRequest {
     challengeId: string;
-    amount: number;
+    amount?: number;
 }
 
 export interface SupportPaymentResponse {
     transactionId: string;
+    challengeId: string;
+    challengeName?: string;
     amount: number;
     balanceAfter: number;
-    status: 'SUCCESS' | 'FAILED';
+    challengeBalanceAfter?: number;
+    isFirstSupport?: boolean;
+    createdAt?: string;
 }

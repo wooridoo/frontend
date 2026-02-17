@@ -1,36 +1,31 @@
 /**
  * Ledger Domain Types
  */
-export type TransactionType = 'SUPPORT' | 'EXPENSE' | 'FEE' | 'DEPOSIT' | 'REFUND';
+export type TransactionType = 'SUPPORT' | 'EXPENSE' | 'FEE' | 'DEPOSIT' | 'REFUND' | 'ENTRY_FEE' | string;
 
 export interface Transaction {
-    transactionId: number;
+    transactionId: string;
     type: TransactionType;
     amount: number;
     description: string;
-    createdAt: string; // ISO Date
+    createdAt: string;
 }
 
 export interface ChallengeAccountStats {
     totalSupport: number;
     totalExpense: number;
     totalFee: number;
-    monthlyAverage: {
-        support: number;
-        expense: number;
-    };
+    monthlyAverage: number;
 }
 
 export interface SupportStatus {
-    thisMonth: {
-        paid: number;
-        unpaid: number;
-        total: number;
-    };
+    paid: number;
+    unpaid: number;
+    total: number;
 }
 
 export interface ChallengeAccount {
-    challengeId: number;
+    challengeId: string;
     balance: number;
     lockedDeposits: number;
     availableBalance: number;

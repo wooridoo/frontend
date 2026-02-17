@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useDelegateLeaderModalStore } from '@/store/modal/useModalStore';
@@ -20,7 +20,7 @@ export function DelegateLeaderModal() {
                 try {
                     const response = await getChallengeMembers(challengeId, 'ACTIVE');
                     // Filter out current leader
-                    const requestLeaderId = Number(currentLeaderId);
+                    const requestLeaderId = currentLeaderId || '';
                     const filtered = response.members.filter(m => m.memberId !== requestLeaderId);
                     setMembers(filtered);
                 } catch (error) {
@@ -45,7 +45,7 @@ export function DelegateLeaderModal() {
 
         setIsSubmitting(true);
         try {
-            await delegateLeader(challengeId, Number(selectedMember));
+            await delegateLeader(challengeId, selectedMember);
             handleClose();
             // Optional: Refresh challenge data or notify success
         } catch (error) {
@@ -58,15 +58,15 @@ export function DelegateLeaderModal() {
     return (
         <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
             <div className={styles.container}>
-                <h2 className={styles.title}>리더 위임</h2>
+                <h2 className={styles.title}>由щ뜑 ?꾩엫</h2>
 
                 <p style={{ color: 'var(--color-text-secondary)', textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-                    챌린지 리더 권한을 다른 멤버에게 위임합니다.<br />
-                    위임 후에는 일반 멤버로 변경됩니다.
+                    梨뚮┛吏 由щ뜑 沅뚰븳???ㅻⅨ 硫ㅻ쾭?먭쾶 ?꾩엫?⑸땲??<br />
+                    ?꾩엫 ?꾩뿉???쇰컲 硫ㅻ쾭濡?蹂寃쎈맗?덈떎.
                 </p>
 
                 {loading ? (
-                    <div style={{ textAlign: 'center', padding: '20px' }}>로딩 중...</div>
+                    <div style={{ textAlign: 'center', padding: '20px' }}>濡쒕뵫 以?..</div>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)', marginBottom: 'var(--spacing-lg)', maxHeight: '300px', overflowY: 'auto' }}>
                         {members.length > 0 ? members.map((member) => (
@@ -94,12 +94,12 @@ export function DelegateLeaderModal() {
                                     {member.user.nickname}
                                 </span>
                                 {selectedMember === String(member.memberId) && (
-                                    <span style={{ marginLeft: 'auto', color: 'var(--color-primary)' }}>✓</span>
+                                    <span style={{ marginLeft: 'auto', color: 'var(--color-primary)' }}>v</span>
                                 )}
                             </button>
                         )) : (
                             <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-tertiary)' }}>
-                                위임할 수 있는 멤버가 없습니다.
+                                ?꾩엫?????덈뒗 硫ㅻ쾭媛 ?놁뒿?덈떎.
                             </div>
                         )}
                     </div>
@@ -107,14 +107,14 @@ export function DelegateLeaderModal() {
 
                 <div className={styles.actions}>
                     <Button onClick={handleClose} className={styles.cancelButton}>
-                        취소
+                        痍⑥냼
                     </Button>
                     <Button
                         onClick={handleDelegate}
                         className={styles.submitButton}
                         disabled={!selectedMember || isSubmitting}
                     >
-                        {isSubmitting ? '처리 중...' : '위임하기'}
+                        {isSubmitting ? '泥섎━ 以?..' : '?꾩엫?섍린'}
                     </Button>
                 </div>
             </div>

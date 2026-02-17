@@ -1,45 +1,94 @@
 /**
- * Comment API Module
- * 게시글 댓글 CRUD
+ * Comment API module
  */
 import { client } from './client';
-import type { Comment, CreateCommentInput, UpdateCommentInput } from '@/types/comment';
+import { toApiChallengeId } from './challengeId';
+import type { Comment, CommentAuthor, CreateCommentInput, UpdateCommentInput } from '@/types/comment';
 
+interface BackendComment {
+  id: string;
+  content: string;
+  author?: CommentAuthor;
+  likeCount?: number;
+  createdAt: string;
+  updatedAt?: string;
+  parentId?: string;
+  replies?: BackendComment[];
+}
 
 interface CommentResponse {
-  comments?: Comment[];
-  content?: Comment[];
+  comments?: BackendComment[];
+  content?: BackendComment[];
 }
 
-/**
- * 댓글 목록 조회
- */
-export async function getComments(postId: string): Promise<Comment[]> {
-  const response = await client.get<Comment[] | CommentResponse>(`/posts/${postId}/comments`);
-
-  if (Array.isArray(response)) {
-    return response;
-  }
-  return response.comments || response.content || [];
+interface CreateCommentResponse {
+  commentId: string;
 }
 
-/**
- * 댓글 작성
- */
-export async function createComment(postId: string, data: CreateCommentInput): Promise<Comment> {
-  return client.post<Comment>(`/posts/${postId}/comments`, data);
+interface UpdateCommentResponse {
+  commentId: string;
+  content: string;
+  updatedAt?: string;
 }
 
-/**
- * 댓글 수정
- */
-export async function updateComment(postId: string, commentId: string, data: UpdateCommentInput): Promise<Comment> {
-  return client.put<Comment>(`/posts/${postId}/comments/${commentId}`, data);
+const normalizeComment = (comment: BackendComment): Comment => ({
+  id: comment.id,
+  createdBy: {
+    userId: comment.author?.userId ?? 'unknown',
+    nickname: comment.author?.nickname ?? 'Unknown',
+    profileImage: comment.author?.profileImage,
+  },
+  content: comment.content,
+  parentId: comment.parentId,
+  likeCount: comment.likeCount ?? 0,
+  createdAt: comment.createdAt,
+  updatedAt: comment.updatedAt,
+  replies: comment.replies?.map(normalizeComment),
+});
+
+export async function getComments(challengeId: string, postId: string): Promise<Comment[]> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  const response = await client.get<BackendComment[] | CommentResponse>(
+    `/challenges/${normalizedChallengeId}/posts/${postId}/comments`
+  );
+
+  const list = Array.isArray(response)
+    ? response
+    : (response.comments || response.content || []);
+
+  return list.map(normalizeComment);
 }
 
-/**
- * 댓글 삭제
- */
-export async function deleteComment(postId: string, commentId: string): Promise<void> {
-  await client.delete(`/posts/${postId}/comments/${commentId}`);
+export async function createComment(
+  challengeId: string,
+  postId: string,
+  data: CreateCommentInput
+): Promise<CreateCommentResponse> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  return client.post<CreateCommentResponse>(
+    `/challenges/${normalizedChallengeId}/posts/${postId}/comments`,
+    data
+  );
+}
+
+export async function updateComment(
+  challengeId: string,
+  postId: string,
+  commentId: string,
+  data: UpdateCommentInput
+): Promise<UpdateCommentResponse> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  return client.put<UpdateCommentResponse>(
+    `/challenges/${normalizedChallengeId}/posts/${postId}/comments/${commentId}`,
+    data
+  );
+}
+
+export async function deleteComment(
+  challengeId: string,
+  postId: string,
+  commentId: string
+): Promise<void> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  await client.delete(`/challenges/${normalizedChallengeId}/posts/${postId}/comments/${commentId}`);
 }

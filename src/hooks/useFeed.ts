@@ -24,11 +24,11 @@ export function useFeed(challengeId: string | undefined) {
 /**
  * 게시글 상세 조회 훅
  */
-export function usePost(postId: string | undefined) {
+export function usePost(challengeId: string | undefined, postId: string | undefined) {
     return useQuery({
-        queryKey: ['post', postId],
-        queryFn: () => getPost(postId!),
-        enabled: !!postId,
+        queryKey: ['post', challengeId, postId],
+        queryFn: () => getPost(challengeId!, postId!),
+        enabled: !!challengeId && !!postId,
     });
 }
 
@@ -60,7 +60,7 @@ export function useUpdatePost(challengeId: string) {
             // 피드 목록 갱신
             queryClient.invalidateQueries({ queryKey: ['feed', challengeId] });
             // 개별 게시글 캐시 업데이트
-            queryClient.setQueryData(['post', updatedPost.id], updatedPost);
+            queryClient.setQueryData(['post', challengeId, updatedPost.id], updatedPost);
         },
     });
 }

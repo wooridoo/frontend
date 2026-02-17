@@ -114,7 +114,6 @@ export function MyPage() {
           <span className={styles.statValue}>{user.participatingChallengeIds?.length || 0}</span>
           <span className={styles.statLabel}>참여중</span>
         </div>
-        {/* 달성률 Mock 제거 */}
       </div>
 
       <div className={styles.menuSection}>

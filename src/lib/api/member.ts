@@ -34,7 +34,7 @@ export async function getChallengeMembers(
  */
 export async function getMember(
   challengeId: string,
-  memberId: number
+  memberId: string
 ): Promise<MemberDetail> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
   return client.get<MemberDetail>(
@@ -47,7 +47,7 @@ export async function getMember(
  */
 export async function delegateLeader(
   challengeId: string,
-  targetMemberId: number
+  targetMemberId: string
 ): Promise<DelegateResponse> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
   return client.post<DelegateResponse>(

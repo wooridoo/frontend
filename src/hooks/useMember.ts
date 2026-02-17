@@ -29,7 +29,7 @@ export function useMembers(
  */
 export function useMember(
     challengeId: string | undefined,
-    memberId: number | undefined
+    memberId: string | undefined
 ) {
     return useQuery({
         queryKey: ['member', challengeId, memberId],
@@ -45,7 +45,7 @@ export function useDelegateLeader(challengeId: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (targetMemberId: number) =>
+        mutationFn: (targetMemberId: string) =>
             delegateLeader(challengeId, targetMemberId),
         onSuccess: () => {
             // 멤버 목록 갱신 (역할 변경 반영)

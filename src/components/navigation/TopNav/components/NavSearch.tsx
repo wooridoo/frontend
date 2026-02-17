@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { SearchIcon } from '@/components/ui/Icons';
+import { PATHS } from '@/routes/paths';
 import styles from './NavSearch.module.css';
 
 interface NavSearchProps {
@@ -21,7 +22,12 @@ export function NavSearch({ className }: NavSearchProps) {
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               const target = e.target as HTMLInputElement;
-              navigate(`/explore?q=${target.value}`);
+              const query = target.value.trim();
+              if (!query) {
+                navigate(PATHS.EXPLORE);
+                return;
+              }
+              navigate(`${PATHS.EXPLORE}?q=${encodeURIComponent(query)}`);
             }
           }}
         />

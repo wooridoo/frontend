@@ -2,7 +2,6 @@
  * Challenge API Module
  * 챌린지 관련 핵심 API (Feed는 feed.ts로 분리됨)
  * 
- * Mock ↔ Spring 전환 가능 구조
  */
 import { client } from './client';
 import { toApiChallengeId } from './challengeId';
@@ -39,17 +38,50 @@ interface ChallengeResponse {
   content?: ChallengeInfo[];
 }
 
+export interface GetChallengesParams {
+  query?: string;
+  category?: string;
+  sort?: string;
+  size?: number;
+}
+
+const toSearchable = (value: string | undefined) => (value || '').trim().toLowerCase();
+
+const matchesChallengeQuery = (challenge: ChallengeInfo, query: string) => {
+  const normalizedQuery = toSearchable(query);
+  if (!normalizedQuery) return true;
+
+  return (
+    toSearchable(challenge.title).includes(normalizedQuery) ||
+    toSearchable(challenge.description).includes(normalizedQuery) ||
+    toSearchable(challenge.category).includes(normalizedQuery)
+  );
+};
+
 /**
  * 챌린지 목록 조회 (검색/탐색용)
  */
-export async function getChallenges(params?: { query?: string; category?: string; sort?: string; size?: number }): Promise<ChallengeInfo[]> {
-  const response = await client.get<ChallengeInfo[] | ChallengeResponse>('/challenges', { params });
+export async function getChallenges(params?: GetChallengesParams): Promise<ChallengeInfo[]> {
+  const { query, ...apiParams } = params || {};
+  const filteredApiParams = Object.fromEntries(
+    Object.entries(apiParams).filter(([, value]) => value !== undefined && value !== null && value !== '')
+  );
+
+  const response = await client.get<ChallengeInfo[] | ChallengeResponse>('/challenges', {
+    params: filteredApiParams,
+  });
 
   const list = Array.isArray(response)
     ? response
     : (response.challenges || response.content || []);
 
-  return list.map(normalizeChallenge);
+  const normalizedChallenges = list.map(normalizeChallenge);
+
+  if (!query) {
+    return normalizedChallenges;
+  }
+
+  return normalizedChallenges.filter((challenge) => matchesChallengeQuery(challenge, query));
 }
 
 /**
@@ -110,7 +142,7 @@ export interface CreateChallengeRequest {
   maxMembers: number;
   supportAmount: number;
   depositAmount: number;
-  supportDay: number;
+  supportDay?: number;
   rules?: string;
 }
 

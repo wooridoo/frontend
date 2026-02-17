@@ -31,6 +31,18 @@ export function MainLayout() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (!isMobileOpen) {
+      document.body.style.removeProperty('overflow');
+      return;
+    }
+
+    document.body.style.setProperty('overflow', 'hidden');
+    return () => {
+      document.body.style.removeProperty('overflow');
+    };
+  }, [isMobileOpen]);
+
   const toggleSidebar = () => {
     if (window.innerWidth < 768) {
       setIsMobileOpen(!isMobileOpen);
@@ -60,8 +72,6 @@ export function MainLayout() {
       <div className={styles.body}>
         {/* Fixed Sidebar */}
         <SideNav
-          isLoggedIn={!!user}
-          user={user || undefined}
           isCollapsed={!isSidebarOpen} // Desktop functionality
           isOpen={isMobileOpen} // Mobile functionality
           onClose={() => setIsMobileOpen(false)}

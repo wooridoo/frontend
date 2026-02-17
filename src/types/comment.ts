@@ -1,18 +1,22 @@
-import type { User } from './user';
-
 /**
- * 댓글 (Comment) Domain Types
+ * Comment domain types
  */
+export interface CommentAuthor {
+  userId: string;
+  nickname: string;
+  profileImage?: string;
+}
+
 export interface Comment {
   id: string;
-  postId: string;
-  createdBy: User;
+  postId?: string;
+  createdBy: CommentAuthor;
   content: string;
-  parentId?: string;     // 대댓글용
+  parentId?: string;
   likeCount: number;
   createdAt: string;
   updatedAt?: string;
-  replies?: Comment[];   // 서버에서 nested 제공 시
+  replies?: Comment[];
 }
 
 export interface CreateCommentInput {

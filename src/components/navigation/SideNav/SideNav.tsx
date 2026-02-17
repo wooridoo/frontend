@@ -13,15 +13,9 @@ import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 interface SideNavProps {
   className?: string;
-  isLoggedIn?: boolean;
   isCollapsed?: boolean;
   isOpen?: boolean; // Controlled state for mobile
   onClose?: () => void;
-  onToggle?: () => void;
-  user?: {
-    name: string;
-    avatar?: string;
-  };
 }
 
 interface NavItem {
@@ -35,7 +29,7 @@ interface NavItem {
 const mainItems: NavItem[] = [
   { label: '홈', path: PATHS.HOME, iconType: 'home' },
   { label: '탐색', path: PATHS.EXPLORE, iconType: 'explore' },
-  { label: '추천', path: '/recommended', iconType: 'recommended' },
+  { label: '추천', path: PATHS.RECOMMENDED, iconType: 'recommended' },
 ];
 
 
@@ -44,7 +38,7 @@ export function SideNav({
   isCollapsed = false,
   isOpen = false, // Controlled state for mobile
   onClose,
-}: SideNavProps & { isOpen?: boolean; onClose?: () => void }) {
+}: SideNavProps) {
 
   const handleNavClick = () => {
     onClose?.();

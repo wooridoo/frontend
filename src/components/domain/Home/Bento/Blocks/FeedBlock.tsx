@@ -40,15 +40,6 @@ export function FeedBlock() {
     });
   };
 
-  const handleScroll = () => {
-    if (!containerRef.current) return;
-
-    const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-    if (scrollWidth - (scrollLeft + clientWidth) < 100 && !loading) {
-      // Keep placeholder logic until pagination is added to challenge API.
-    }
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -63,7 +54,7 @@ export function FeedBlock() {
         </div>
       </div>
 
-      <div className={styles.grid} ref={containerRef} onScroll={handleScroll}>
+      <div className={styles.grid} ref={containerRef}>
         {items.map((item) => (
           <div key={item.challengeId} className={styles.card}>
             <Link to={CHALLENGE_ROUTES.detailWithTitle(item.challengeId, item.title)} className={styles.imageWrapper}>

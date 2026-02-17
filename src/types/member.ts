@@ -1,39 +1,23 @@
-/**
- * Member Types
- * API 정의서 032-034 기반
- */
 import type { ChallengeRole } from './enums';
 
-// =====================
-// Member Status (032)
-// =====================
-export type MemberStatus = 'ACTIVE' | 'OVERDUE' | 'GRACE_PERIOD';
+export type MemberStatus = 'ACTIVE' | 'OVERDUE' | 'GRACE_PERIOD' | 'LEFT';
 export type SupportPaymentStatus = 'PAID' | 'UNPAID';
 
-// =====================
-// User Info (공통)
-// =====================
 export interface MemberUserInfo {
-    userId: number;
+    userId: string;
     nickname: string;
     profileImage?: string;
-    brix?: number;  // 신뢰 지수
+    brix?: number;
 }
 
-// =====================
-// Support Status (032, 033)
-// =====================
 export interface MemberSupportStatus {
     thisMonth: SupportPaymentStatus;
     consecutivePaid: number;
     overdueCount?: number;
 }
 
-// =====================
-// Member (032: 목록용)
-// =====================
 export interface Member {
-    memberId: number;
+    memberId: string;
     user: MemberUserInfo;
     role: ChallengeRole;
     status: MemberStatus;
@@ -42,9 +26,6 @@ export interface Member {
     joinedAt: string;
 }
 
-// =====================
-// Member Stats (033: 상세용)
-// =====================
 export interface MemberStats {
     totalSupport: number;
     supportRate: number;
@@ -59,17 +40,11 @@ export interface SupportHistoryRecord {
     paidAt: string;
 }
 
-// =====================
-// Member Detail (033)
-// =====================
 export interface MemberDetail extends Member {
     stats: MemberStats;
     supportHistory: SupportHistoryRecord[];
 }
 
-// =====================
-// Member Summary (032)
-// =====================
 export interface MemberSummary {
     total: number;
     active: number;
@@ -77,30 +52,24 @@ export interface MemberSummary {
     gracePeriod: number;
 }
 
-// =====================
-// API Response Types
-// =====================
 export interface MembersResponse {
     members: Member[];
     summary: MemberSummary;
 }
 
-// =====================
-// Delegate Response (034)
-// =====================
 export interface DelegateResponse {
-    challengeId: number;
+    challengeId: string;
     previousLeader: {
-        memberId: number;
-        userId: number;
+        memberId: string;
+        userId: string;
         nickname: string;
-        newRole: ChallengeRole;
+        newRole: ChallengeRole | string;
     };
     newLeader: {
-        memberId: number;
-        userId: number;
+        memberId: string;
+        userId: string;
         nickname: string;
-        newRole: ChallengeRole;
+        newRole: ChallengeRole | string;
     };
     delegatedAt: string;
 }

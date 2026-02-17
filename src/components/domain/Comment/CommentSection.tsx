@@ -11,6 +11,7 @@ import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './CommentSection.module.css';
 
 interface CommentSectionProps {
+  challengeId: string;
   postId: string;
 }
 
@@ -19,10 +20,10 @@ interface ReplyTarget {
   name: string;
 }
 
-export function CommentSection({ postId }: CommentSectionProps) {
-  const { data: comments = [], isLoading } = useComments(postId);
-  const createMutation = useCreateComment(postId);
-  const deleteMutation = useDeleteComment(postId);
+export function CommentSection({ challengeId, postId }: CommentSectionProps) {
+  const { data: comments = [], isLoading } = useComments(challengeId, postId);
+  const createMutation = useCreateComment(challengeId, postId);
+  const deleteMutation = useDeleteComment(challengeId, postId);
   const { user } = useAuthStore();
   const { confirm } = useConfirmDialog();
 
@@ -37,7 +38,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
     try {
       await createMutation.mutateAsync({
         content: trimmed,
-        parentId: replyTarget?.id
+        parentId: replyTarget?.id,
       });
       setNewComment('');
       setReplyTarget(null);
@@ -57,7 +58,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
 
     try {
       await deleteMutation.mutateAsync(commentId);
-      toast.success('댓글이 삭제되었습니다.');
+      toast.success('댓글을 삭제했습니다.');
     } catch {
       toast.error('댓글 삭제에 실패했습니다.');
     }
@@ -65,7 +66,6 @@ export function CommentSection({ postId }: CommentSectionProps) {
 
   const handleReply = (commentId: string, authorName: string) => {
     setReplyTarget({ id: commentId, name: authorName });
-    // Focus input? (optional, straightforward if ref used)
   };
 
   if (isLoading) {
@@ -77,6 +77,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
   }
 
   const CommentItem = ({ comment, depth = 0 }: { comment: Comment; depth?: number }) => {
+    const authorName = comment.createdBy?.nickname || '익명';
     const isAuthor = user?.userId === comment.createdBy?.userId;
     const hasReplies = comment.replies && comment.replies.length > 0;
 
@@ -85,13 +86,11 @@ export function CommentSection({ postId }: CommentSectionProps) {
         <div className={clsx(styles.item, depth > 0 && styles.replyItem)} style={{ marginLeft: depth * 24 }}>
           {depth > 0 && <CornerDownRight className={styles.replyIcon} size={16} />}
           <div className={styles.itemAvatar}>
-            {comment.createdBy?.name?.charAt(0) || '?'}
+            {authorName.charAt(0) || '?'}
           </div>
           <div className={styles.itemBody}>
             <div className={styles.itemHeader}>
-              <span className={styles.itemAuthor}>
-                {comment.createdBy?.name || '익명'}
-              </span>
+              <span className={styles.itemAuthor}>{authorName}</span>
               <span className={styles.itemTime}>
                 {formatDistanceToNow(comment.createdAt)}
               </span>
@@ -102,7 +101,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
               {user && (
                 <button
                   className={styles.replyBtn}
-                  onClick={() => handleReply(comment.id, comment.createdBy?.name || '익명')}
+                  onClick={() => handleReply(comment.id, authorName)}
                 >
                   답글달기
                 </button>
@@ -136,7 +135,6 @@ export function CommentSection({ postId }: CommentSectionProps) {
         댓글 <span className={styles.count}>{comments.length}</span>
       </h3>
 
-      {/* Comment Input */}
       {user && (
         <form className={styles.inputArea} onSubmit={handleSubmit}>
           {replyTarget && (
@@ -158,7 +156,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
             <div className="flex-1 flex flex-col gap-2">
               <input
                 className={styles.input}
-                placeholder={replyTarget ? `@${replyTarget.name}님에게 답글 남기기...` : "댓글을 입력하세요..."}
+                placeholder={replyTarget ? `@${replyTarget.name}에게 답글 남기기...` : '댓글을 입력하세요...'}
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 maxLength={500}
@@ -176,12 +174,11 @@ export function CommentSection({ postId }: CommentSectionProps) {
         </form>
       )}
 
-      {/* Comment List */}
       <div className={styles.list}>
         {comments.length === 0 ? (
-          <p className={styles.empty}>아직 댓글이 없습니다. 첫 댓글을 달아보세요!</p>
+          <p className={styles.empty}>아직 댓글이 없습니다. 첫 댓글을 남겨보세요.</p>
         ) : (
-          comments.map((comment) => (
+          comments.map(comment => (
             <CommentItem key={comment.id} comment={comment} />
           ))
         )}

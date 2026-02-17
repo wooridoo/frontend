@@ -48,8 +48,9 @@ export async function getFeed(challengeId: string): Promise<Post[]> {
 /**
  * 게시글 상세 조회
  */
-export async function getPost(postId: string): Promise<Post> {
-    const post = await client.get<Post>(`/posts/${postId}`);
+export async function getPost(challengeId: string, postId: string): Promise<Post> {
+    const normalizedChallengeId = toApiChallengeId(challengeId);
+    const post = await client.get<Post>(`/challenges/${normalizedChallengeId}/posts/${postId}`);
     return normalizePost(post);
 }
 
@@ -66,9 +67,6 @@ export async function createPost(challengeId: string, data: CreatePostInput): Pr
  */
 export async function updatePost(challengeId: string, postId: string, data: Partial<CreatePostInput>): Promise<Post> {
     const normalizedChallengeId = toApiChallengeId(challengeId);
-    // Signature change from (postId, data) to (challengeId, postId, data) to match likely URL structure?
-    // Previous mock: updatePost(postId, data)
-    // Backend likely: PUT /challenges/{id}/posts/{id}
     return client.put<Post>(`/challenges/${normalizedChallengeId}/posts/${postId}`, data);
 }
 

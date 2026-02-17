@@ -1,7 +1,6 @@
 /**
  * Ledger (Challenge Account) API Module
  * 
- * Mock ↔ Spring 전환 가능 구조
  * API 정의서 028번: 챌린지 어카운트 조회
  */
 import { client } from './client';

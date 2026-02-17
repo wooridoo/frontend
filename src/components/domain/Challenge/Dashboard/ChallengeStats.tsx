@@ -14,7 +14,6 @@ interface ChallengeStatsProps {
 export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsProps) {
   const { challengeId: routeChallengeId } = useChallengeRoute();
   const challengeId = propChallengeId || routeChallengeId;
-
   const { data: account, isLoading } = useChallengeAccount(challengeId);
 
   if (isLoading) {
@@ -36,8 +35,9 @@ export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsP
   if (!account) return null;
 
   const balance = account.balance ?? 0;
-  const monthlyAverage = account.stats?.monthlyAverage ?? { support: 0, expense: 0 };
-  const supportTotal = account.supportStatus?.thisMonth?.total ?? 0;
+  const monthlySupport = account.stats?.monthlyAverage ?? 0;
+  const totalExpense = account.stats?.totalExpense ?? 0;
+  const supportTotal = account.supportStatus?.total ?? 0;
 
   const today = new Date();
   const nextMonth = new Date(today.getUTCFullYear(), today.getUTCMonth() + 1, 1);
@@ -57,24 +57,24 @@ export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsP
 
       <div className={styles.card}>
         <div className={styles.statRow}>
-          <span className={styles.statLabel}>이번 달 수입</span>
-          <span className={styles.income}>+{formatCurrency(monthlyAverage.support)}</span>
+          <span className={styles.statLabel}>이번 달 납입</span>
+          <span className={styles.income}>+{formatCurrency(monthlySupport)}</span>
         </div>
-        <div className={styles.statSub}>{supportTotal}명 서포트 예정</div>
+        <div className={styles.statSub}>{supportTotal}명 납입 대상</div>
 
         <div className={styles.divider} />
 
         <div className={styles.statRow}>
-          <span className={styles.statLabel}>이번 달 지출</span>
-          <span className={styles.expense}>-{formatCurrency(monthlyAverage.expense)}</span>
+          <span className={styles.statLabel}>누적 지출</span>
+          <span className={styles.expense}>-{formatCurrency(totalExpense)}</span>
         </div>
-        <div className={styles.statSub}>예상치 포함</div>
+        <div className={styles.statSub}>전체 누적 기준</div>
       </div>
 
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <span className={styles.label}>
-            <SemanticIcon animated={false} name="meeting" size={14} /> 다음 서포트일
+            <SemanticIcon animated={false} name="meeting" size={14} /> 다음 납입일
           </span>
         </div>
         <div className={styles.dday}>{getDDay(nextSupportDateStr)}</div>

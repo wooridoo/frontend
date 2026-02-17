@@ -21,7 +21,7 @@ function mapCategoryToEnum(uiCategory: string): string | undefined {
     case '역량': return Category.STUDY;
     case '자산': return Category.SAVINGS;
     case '취미': return Category.HOBBY;
-    case '생활': return Category.OTHER; // 생활은 매핑이 모호하므로 OTHER로 (Legacy 로직 참고)
+    case '생활': return Category.OTHER; // Keep mapped to OTHER for current backend enums.
     default: return undefined;
   }
 }

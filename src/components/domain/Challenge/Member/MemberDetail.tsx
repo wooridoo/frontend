@@ -16,7 +16,7 @@ export function MemberDetail() {
     const { user: currentUser } = useAuthStore();
     const { confirm } = useConfirmDialog();
 
-    const { data: member, isLoading } = useMember(challengeId, Number(memberId));
+    const { data: member, isLoading } = useMember(challengeId, memberId);
     const delegateMutation = useDelegateLeader(challengeId!);
 
     if (isLoading) {
