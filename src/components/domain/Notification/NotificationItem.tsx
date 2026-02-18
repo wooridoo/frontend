@@ -1,10 +1,8 @@
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { Calendar, CreditCard, MessageCircle, Info } from 'lucide-react';
+import { Calendar, CreditCard, Info, MessageCircle } from 'lucide-react';
 import clsx from 'clsx';
 import type { Notification } from '@/types/notification';
-// import { useVoteMeeting, useApprovePayment } from '@/lib/api/notification';
-import { formatCurrency } from '@/utils/format';
 import styles from './NotificationItem.module.css';
 
 interface NotificationItemProps {
@@ -13,32 +11,24 @@ interface NotificationItemProps {
 }
 
 export function NotificationItem({ notification, onClick }: NotificationItemProps) {
-  // const { mutate: voteMeeting } = useVoteMeeting();
-  // const { mutate: approvePayment } = useApprovePayment();
-
-  const handleVote = (vote: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (notification.data.targetId) {
-      console.log('Vote:', vote);
-      // voteMeeting({ meetingId: notification.data.targetId, vote });
+  const handleClick = () => {
+    onClick?.();
+    const linkUrl = notification.data?.linkUrl;
+    if (linkUrl && typeof linkUrl === 'string') {
+      window.location.href = linkUrl;
     }
   };
 
-  const handlePayment = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (notification.data.targetId) {
-      console.log('Approve Payment');
-      // approvePayment(notification.data.targetId);
-    }
-  };
-
-  // Icon Logic
   const getIcon = () => {
     switch (notification.type) {
-      case 'CHALLENGE': return <Calendar size={18} />;
-      case 'PAYMENT': return <CreditCard size={18} />;
-      case 'SOCIAL': return <MessageCircle size={18} />;
-      default: return <Info size={18} />;
+      case 'CHALLENGE':
+        return <Calendar size={18} />;
+      case 'PAYMENT':
+        return <CreditCard size={18} />;
+      case 'SOCIAL':
+        return <MessageCircle size={18} />;
+      default:
+        return <Info size={18} />;
     }
   };
 
@@ -48,51 +38,16 @@ export function NotificationItem({ notification, onClick }: NotificationItemProp
   });
 
   return (
-    <div
-      className={clsx(styles.item, { [styles.unread]: !notification.isRead })}
-      onClick={onClick}
-    >
-      {!notification.isRead && <span className={styles.dot} />}
-
+    <div className={clsx(styles.item, { [styles.unread]: !notification.isRead })} onClick={handleClick}>
+      {!notification.isRead ? <span className={styles.dot} /> : null}
       <div className={styles.header}>
-        <div className={styles.iconWrapper}>
-          {getIcon()}
-        </div>
+        <div className={styles.iconWrapper}>{getIcon()}</div>
         <div className={styles.content}>
           <span className={styles.title}>{notification.title}</span>
           <p className={styles.message}>{notification.message}</p>
           <span className={styles.time}>{timeAgo}</span>
         </div>
       </div>
-
-      {/* Action Buttons */}
-      {notification.data.subType === 'MEETING_VOTE' && (
-        <div className={styles.actions}>
-          <button
-            className={clsx(styles.actionBtn, styles.primary)}
-            onClick={(e) => handleVote('ATTEND', e)}
-          >
-            참석
-          </button>
-          <button
-            className={styles.actionBtn}
-            onClick={(e) => handleVote('ABSENT', e)}
-          >
-            불참
-          </button>
-        </div>
-      )}
-
-      {notification.type === 'PAYMENT' && notification.data.amount && (
-        <div className={styles.actions}>
-          <button
-            className={clsx(styles.actionBtn, styles.primary)}
-            onClick={handlePayment}
-          >
-            {formatCurrency(notification.data.amount)} 결제 승인
-          </button>
-        </div>
-      )}
     </div>
   );
 }

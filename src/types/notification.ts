@@ -1,27 +1,39 @@
-// Notification Types
 export type NotificationType = 'CHALLENGE' | 'PAYMENT' | 'SOCIAL' | 'SYSTEM';
-export type NotificationSubType = 'MEETING_VOTE' | 'COMMENT' | 'LIKE';
 
 export interface NotificationData {
-    subType?: NotificationSubType;
-    targetId?: string; // paymentId, challengeId etc
-    amount?: number;
-    voteOptions?: string[]; // ['참석', '불참']
+  subType?: string;
+  targetId?: string;
+  amount?: number;
+  linkUrl?: string;
 }
 
 export interface Notification {
-    notificationId: string;
-    type: NotificationType;
-    title: string;
-    message: string;
-    isRead: boolean;
-    data: NotificationData;
-    createdAt: string; // ISO Date string
+  notificationId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  isRead: boolean;
+  data: NotificationData;
+  createdAt: string;
 }
 
-export interface NotificationResponse {
-    content: Notification[];
-    totalElements: number;
-    totalPages: number;
-    unreadCount: number;
+export interface NotificationListResponse {
+  content: Notification[];
+  totalElements: number;
+  totalPages: number;
+  unreadCount: number;
+}
+
+export interface NotificationSettings {
+  pushEnabled: boolean;
+  emailEnabled: boolean;
+  smsEnabled: boolean;
+  voteNotification: boolean;
+  meetingNotification: boolean;
+  expenseNotification: boolean;
+  snsNotification: boolean;
+  systemNotification: boolean;
+  quietHoursEnabled: boolean;
+  quietHoursStart?: string;
+  quietHoursEnd?: string;
 }

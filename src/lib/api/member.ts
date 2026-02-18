@@ -47,12 +47,12 @@ export async function getMember(
  */
 export async function delegateLeader(
   challengeId: string,
-  targetMemberId: string
+  targetUserId: string
 ): Promise<DelegateResponse> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
   return client.post<DelegateResponse>(
     `/challenges/${normalizedChallengeId}/delegate`,
-    { targetMemberId }
+    { targetUserId }
   );
 }
 

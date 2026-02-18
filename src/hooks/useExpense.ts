@@ -13,7 +13,6 @@ import {
 } from '@/lib/api/expense';
 import type {
     ExpenseStatus,
-    ExpenseCategory,
     CreateExpenseInput,
 } from '@/lib/api/expense';
 
@@ -24,7 +23,8 @@ export function useExpenses(
     challengeId: string | undefined,
     options?: {
         status?: ExpenseStatus;
-        category?: ExpenseCategory;
+        page?: number;
+        size?: number;
     }
 ) {
     return useQuery({

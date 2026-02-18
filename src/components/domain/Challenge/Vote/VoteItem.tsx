@@ -2,6 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import type { Vote } from '../../../../types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { VoteStatusBadge } from './VoteStatusBadge';
+import { VoteStatus } from '@/types/domain';
+import { useVoteResult } from '@/hooks/useVote';
+import { capabilities } from '@/lib/api/capabilities';
 import styles from './VoteItem.module.css';
 
 interface VoteItemProps {
@@ -11,6 +14,8 @@ interface VoteItemProps {
 
 export function VoteItem({ vote, challengeRef }: VoteItemProps) {
   const navigate = useNavigate();
+  const shouldLoadResult = capabilities.voteResult && vote.status !== VoteStatus.PENDING;
+  const { data: voteResult } = useVoteResult(vote.voteId, shouldLoadResult);
 
   const handleClick = () => {
     navigate(CHALLENGE_ROUTES.voteDetail(challengeRef || vote.challengeId, vote.voteId));
@@ -29,7 +34,7 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
 
   const totalVotes = vote.voteCount.total || 0;
   const agreeVotes = vote.voteCount.agree || 0;
-  const participationCount = totalVotes - (vote.voteCount.notVoted || 0);
+  const participationCount = vote.voteCount.agree + vote.voteCount.disagree;
   const participationRate = totalVotes > 0 ? (agreeVotes / totalVotes) * 100 : 0;
 
   return (
@@ -45,7 +50,9 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
         <span className={styles.voters}>
           Participated {participationCount}/{vote.eligibleVoters}
         </span>
-        <span className={styles.author}>By {vote.createdBy.nickname}</span>
+        <span className={styles.author}>
+          {voteResult ? `${voteResult.passed ? 'Passed' : 'Rejected'} ${voteResult.approvalRate.toFixed(0)}%` : `By ${vote.createdBy.nickname}`}
+        </span>
       </div>
 
       <div className={styles.progressBar}>

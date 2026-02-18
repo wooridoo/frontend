@@ -57,7 +57,7 @@ export function MemberDetail() {
         }
 
         try {
-            await delegateMutation.mutateAsync(member.memberId);
+            await delegateMutation.mutateAsync(member.user.userId);
             toast.success('리더 권한이 위임되었습니다.');
             navigate(-1);
         } catch {

@@ -87,8 +87,20 @@ export async function getChallenges(params?: GetChallengesParams): Promise<Chall
 /**
  * 내 챌린지 목록 조회 (027)
  */
-export async function getMyChallenges(status?: 'participating' | 'completed'): Promise<ChallengeInfo[]> {
-  const response = await client.get<ChallengeInfo[] | ChallengeResponse>('/challenges/me', { params: { status } });
+type MyChallengeStatus = 'ACTIVE' | 'CLOSED' | 'participating' | 'completed';
+
+const normalizeMyChallengeStatus = (status?: MyChallengeStatus): 'ACTIVE' | 'CLOSED' | undefined => {
+  if (!status) return undefined;
+  if (status === 'participating') return 'ACTIVE';
+  if (status === 'completed') return 'CLOSED';
+  return status;
+};
+
+export async function getMyChallenges(status?: MyChallengeStatus): Promise<ChallengeInfo[]> {
+  const normalizedStatus = normalizeMyChallengeStatus(status);
+  const response = await client.get<ChallengeInfo[] | ChallengeResponse>('/challenges/me', {
+    params: { status: normalizedStatus },
+  });
 
   const list = Array.isArray(response)
     ? response
@@ -106,14 +118,22 @@ export interface UpdateChallengeRequest {
   challengeId: string;
   name: string;
   description?: string;
-  category: string;
+  category?: string;
+  thumbnailImage?: string;
   thumbnailUrl?: string;
-  maxMembers: number;
+  maxMembers?: number;
+  rules?: string;
 }
 
 export async function updateChallenge(data: UpdateChallengeRequest): Promise<ChallengeInfo> {
   const normalizedChallengeId = toApiChallengeId(data.challengeId);
-  return client.put<ChallengeInfo>(`/challenges/${normalizedChallengeId}`, data);
+  return client.put<ChallengeInfo>(`/challenges/${normalizedChallengeId}`, {
+    name: data.name,
+    description: data.description,
+    thumbnailImage: data.thumbnailImage ?? data.thumbnailUrl,
+    maxMembers: data.maxMembers,
+    rules: data.rules,
+  });
 }
 
 export async function deleteChallenge(challengeId: string): Promise<void> {
@@ -126,9 +146,9 @@ export async function leaveChallenge(challengeId: string): Promise<void> {
   await client.delete(`/challenges/${normalizedChallengeId}/leave`);
 }
 
-export async function joinChallenge(challengeId: string, depositAmount: number): Promise<void> {
+export async function joinChallenge(challengeId: string, _depositAmount?: number): Promise<void> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
-  await client.post(`/challenges/${normalizedChallengeId}/join`, { depositAmount });
+  await client.post(`/challenges/${normalizedChallengeId}/join`);
 }
 
 /**

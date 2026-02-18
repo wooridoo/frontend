@@ -11,30 +11,9 @@ import { CHALLENGE_SLUG_REGEX } from '@/lib/utils/challengeRoute';
 
 import { ChallengeDashboardLayout } from './components/domain/Challenge/Layout/ChallengeDashboardLayout';
 import { MainLayout } from './components/layout';
-import { LoginModal } from './components/domain/Auth/LoginModal';
-import { SignupModal } from './components/domain/Auth/SignupModal';
-import { JoinChallengeModal } from './components/domain/Challenge/JoinChallengeModal';
-import { CreateChallengeModal } from './components/domain/Challenge/CreateChallengeModal';
-import { CreditChargeModal } from './components/domain/Account/CreditChargeModal';
-import { WithdrawModal } from './components/domain/Account/WithdrawModal';
-import { AccessDeniedModal } from './components/domain/Auth/AccessDeniedModal';
-import { PasswordResetModal } from './components/domain/Auth/PasswordResetModal';
-import { EditProfileModal } from './components/domain/Auth/EditProfileModal';
-import { WithdrawAccountModal } from './components/domain/Auth/WithdrawAccountModal';
-import { CreateMeetingModal } from './components/domain/Meeting/CreateMeetingModal';
-import { EditMeetingModal } from './components/domain/Meeting/EditMeetingModal';
-import { AttendanceResponseModal } from './components/domain/Meeting/AttendanceResponseModal';
-import { CompleteMeetingModal } from './components/domain/Meeting/CompleteMeetingModal';
-import { EditChallengeModal } from './components/domain/Challenge/EditChallengeModal';
-import { SupportSettingsModal } from './components/domain/Challenge/SupportSettingsModal';
-import { DelegateLeaderModal } from './components/domain/Challenge/DelegateLeaderModal';
-import { DeleteChallengeModal } from './components/domain/Challenge/DeleteChallengeModal';
-import { LeaveChallengeModal } from './components/domain/Challenge/LeaveChallengeModal';
-import { SupportPaymentModal } from './components/domain/Challenge/SupportPaymentModal';
-import { PostDetailModal } from './components/domain/Challenge/Feed/PostDetailModal';
 import { AuthGuard } from './components/auth/AuthGuard';
 import { ChallengeGuard } from './components/auth/ChallengeGuard';
-import { ConfirmDialog } from './components/ui/Overlay/ConfirmDialog';
+import { ModalHost } from './components/ui/Overlay/ModalHost';
 import { ErrorBoundary, Loading } from './components/common';
 import { RegularMeetingDetail } from './components/domain/Challenge/Meeting/RegularMeetingDetail';
 import { RegularMeetingList } from './components/domain/Challenge/Meeting/RegularMeetingList';
@@ -183,28 +162,7 @@ function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
 
-            <LoginModal />
-            <SignupModal />
-            <JoinChallengeModal />
-            <CreateChallengeModal />
-            <CreditChargeModal />
-            <WithdrawModal />
-            <AccessDeniedModal />
-            <PasswordResetModal />
-            <EditProfileModal />
-            <WithdrawAccountModal />
-            <CreateMeetingModal />
-            <EditMeetingModal />
-            <AttendanceResponseModal />
-            <CompleteMeetingModal />
-            <EditChallengeModal />
-            <SupportSettingsModal />
-            <DelegateLeaderModal />
-            <DeleteChallengeModal />
-            <LeaveChallengeModal />
-            <SupportPaymentModal />
-            <PostDetailModal />
-            <ConfirmDialog />
+            <ModalHost />
             <Toaster position="top-center" richColors />
           </BrowserRouter>
         </Suspense>

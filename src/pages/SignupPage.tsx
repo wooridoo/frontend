@@ -93,7 +93,7 @@ export function SignupPage() {
 
       // 2. Auto Login
       const loginResponse = await apiLogin({ email: data.email, password: data.password });
-      login(loginResponse.user, loginResponse.accessToken);
+      login(loginResponse.user, loginResponse.accessToken, loginResponse.refreshToken);
 
       setStep(3);
     } catch (error) {

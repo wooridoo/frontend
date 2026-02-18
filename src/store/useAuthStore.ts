@@ -9,7 +9,8 @@ interface AuthState {
   isLoggedIn: boolean;
   user: User | null;
   accessToken: string | null;
-  login: (userData?: User, token?: string) => void;
+  refreshToken: string | null;
+  login: (userData?: User, accessToken?: string, refreshToken?: string) => void;
   updateUser: (userData: User) => void;
   logout: () => Promise<void>;
   syncParticipatingChallenges: () => Promise<void>;
@@ -22,12 +23,14 @@ export const useAuthStore = create<AuthState>()(
       isLoggedIn: false,
       user: null,
       accessToken: null,
+      refreshToken: null,
 
-      login: (userData, token) =>
+      login: (userData, accessToken, refreshToken) =>
         set({
           isLoggedIn: true,
           user: userData ? normalizeUser(userData) : null,
-          accessToken: token || null,
+          accessToken: accessToken || null,
+          refreshToken: refreshToken || null,
         }),
 
       updateUser: userData =>
@@ -36,8 +39,11 @@ export const useAuthStore = create<AuthState>()(
         }),
 
       logout: async () => {
+        const { refreshToken } = get();
         try {
-          await client.post('/auth/logout');
+          if (refreshToken) {
+            await client.post('/auth/logout', { refreshToken });
+          }
         } catch {
           // Ignore API failure and clear local auth state anyway.
         }
@@ -46,6 +52,7 @@ export const useAuthStore = create<AuthState>()(
           isLoggedIn: false,
           user: null,
           accessToken: null,
+          refreshToken: null,
         });
       },
 

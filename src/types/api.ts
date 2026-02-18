@@ -8,14 +8,9 @@ export type UUID = string;
 // Generic API Response Wrapper
 export interface ApiResponse<T = unknown> {
   success: boolean;
-  message: string;
-  data: T;
-  timestamp: string; // ISO 8601
-  error?: {
-    code: string;
-    message: string;
-    details?: Record<string, unknown>;
-  };
+  data: T | null;
+  message: string | null;
+  timestamp: string;
 }
 
 // Pagination Response Wrapper

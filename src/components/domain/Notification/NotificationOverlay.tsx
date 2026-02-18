@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Bell } from 'lucide-react';
-import { useNotifications, useMarkAsRead } from '@/lib/api/notification';
+import { useNotifications, useMarkAsRead, useMarkAllAsRead } from '@/lib/api/notification';
 import { ResponsiveOverlay } from '@/components/ui/Overlay/ResponsiveOverlay';
 import { NotificationList } from './NotificationList';
 import styles from './NotificationOverlay.module.css';
@@ -13,6 +13,7 @@ export function NotificationOverlay({ children }: NotificationOverlayProps) {
   const [open, setOpen] = useState(false);
   const { data, isLoading } = useNotifications();
   const { mutate: markAsRead } = useMarkAsRead();
+  const { mutate: markAllAsRead } = useMarkAllAsRead();
 
   const unreadCount = data?.unreadCount || 0;
   const notifications = data?.content || [];
@@ -40,6 +41,7 @@ export function NotificationOverlay({ children }: NotificationOverlayProps) {
         notifications={notifications}
         isLoading={isLoading}
         onItemClick={handleItemClick}
+        onMarkAllRead={() => markAllAsRead()}
       />
     </ResponsiveOverlay>
   );

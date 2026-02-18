@@ -1,38 +1,43 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { client } from './client';
-import type { NotificationResponse } from '@/types/notification';
+import { useAuthStore } from '@/store/useAuthStore';
+import type {
+  Notification,
+  NotificationListResponse,
+  NotificationSettings,
+} from '@/types/notification';
 
-// =====================
-// API Functions
-// =====================
-
-/**
- * 1. 알림 목록 조회 (GET /notifications)
- */
-const getNotifications = async (): Promise<NotificationResponse> => {
-  try {
-    const response = await client.get<NotificationResponse>('/notifications');
-    return response;
-  } catch (error) {
-    console.error('❌ failed to fetch notifications:', error);
-    throw error;
-  }
+const getNotifications = async (): Promise<NotificationListResponse> => {
+  return client.get<NotificationListResponse>('/notifications');
 };
 
-/**
- * 2. 알림 읽음 처리 (PUT /notifications/{id}/read)
- */
+const getNotification = async (notificationId: string): Promise<Notification> => {
+  return client.get<Notification>(`/notifications/${notificationId}`);
+};
+
 const markAsRead = async (notificationId: string): Promise<void> => {
-  return client.put(`/notifications/${notificationId}/read`);
+  await client.put(`/notifications/${notificationId}/read`);
 };
 
-// =====================
-// React Query Hooks
-// =====================
+const markAllAsRead = async (): Promise<void> => {
+  await client.put('/notifications/read-all');
+};
+
+const getNotificationSettings = async (): Promise<NotificationSettings> => {
+  return client.get<NotificationSettings>('/notifications/settings');
+};
+
+const updateNotificationSettings = async (
+  payload: Partial<NotificationSettings>,
+): Promise<NotificationSettings> => {
+  return client.put<NotificationSettings>('/notifications/settings', payload);
+};
+
 export const NOTIFICATION_KEYS = {
   all: ['notifications'] as const,
   list: () => [...NOTIFICATION_KEYS.all, 'list'] as const,
+  detail: (notificationId: string) => [...NOTIFICATION_KEYS.all, 'detail', notificationId] as const,
+  settings: () => [...NOTIFICATION_KEYS.all, 'settings'] as const,
 };
 
 export function useNotifications() {
@@ -40,19 +45,57 @@ export function useNotifications() {
   return useQuery({
     queryKey: NOTIFICATION_KEYS.list(),
     queryFn: getNotifications,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
     refetchInterval: 1000 * 60 * 5,
     enabled: isLoggedIn && !!accessToken,
   });
 }
 
+export function useNotificationDetail(notificationId?: string) {
+  const { isLoggedIn, accessToken } = useAuthStore();
+  return useQuery({
+    queryKey: NOTIFICATION_KEYS.detail(notificationId || ''),
+    queryFn: () => getNotification(notificationId || ''),
+    enabled: isLoggedIn && !!accessToken && !!notificationId,
+  });
+}
+
 export function useMarkAsRead() {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: markAsRead,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.list() });
-    }
+    },
+  });
+}
+
+export function useMarkAllAsRead() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: markAllAsRead,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.list() });
+    },
+  });
+}
+
+export function useNotificationSettings() {
+  const { isLoggedIn, accessToken } = useAuthStore();
+  return useQuery({
+    queryKey: NOTIFICATION_KEYS.settings(),
+    queryFn: getNotificationSettings,
+    enabled: isLoggedIn && !!accessToken,
+  });
+}
+
+export function useUpdateNotificationSettings() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateNotificationSettings,
+    onSuccess: (updatedSettings) => {
+      queryClient.setQueryData(NOTIFICATION_KEYS.settings(), updatedSettings);
+      queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.settings() });
+    },
   });
 }

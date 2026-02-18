@@ -1,25 +1,29 @@
 import axios, { AxiosError } from 'axios';
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 import type { ApiResponse } from '@/types/api';
 import { toast } from 'sonner';
-
-// --- Error Handling ---
+import { normalizeApiError } from './errorNormalizer';
 
 export class ApiError extends Error {
   status: number;
   code?: string;
   details?: unknown;
+  rawMessage?: string;
 
-  constructor(message: string, status: number, code?: string, details?: unknown) {
+  constructor(message: string, status: number, code?: string, details?: unknown, rawMessage?: string) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.code = code;
     this.details = details;
+    this.rawMessage = rawMessage;
   }
 }
-
-// --- Client Configuration ---
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
@@ -31,7 +35,6 @@ const axiosInstance: AxiosInstance = axios.create({
   },
 });
 
-// --- Token Refresh State ---
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (token: string) => void;
@@ -49,76 +52,81 @@ function processQueue(error: unknown, token: string | null) {
   failedQueue = [];
 }
 
+function getAuthStorage(): Record<string, unknown> | null {
+  try {
+    const storageStr = localStorage.getItem('auth-storage');
+    return storageStr ? JSON.parse(storageStr) : null;
+  } catch {
+    return null;
+  }
+}
+
+function updateStoredTokens(accessToken: string, refreshToken?: string) {
+  const storage = getAuthStorage();
+  if (!storage || typeof storage !== 'object') return;
+
+  const state = (storage as { state?: Record<string, unknown> }).state;
+  if (!state) return;
+
+  state.accessToken = accessToken;
+  if (refreshToken) {
+    state.refreshToken = refreshToken;
+  }
+  localStorage.setItem('auth-storage', JSON.stringify(storage));
+}
+
 function clearAuthAndRedirect() {
   try {
     localStorage.removeItem('auth-storage');
-  } catch { /* ignore */ }
+  } catch {
+    // ignore
+  }
+
   if (!window.location.pathname.includes('/login')) {
     window.location.href = '/login';
   }
 }
 
-// --- Interceptors ---
-
-// Request: Attach Token from LocalStorage (Avoiding Circular Dependency)
 axiosInstance.interceptors.request.use(
   (config) => {
-    try {
-      const storageStr = localStorage.getItem('auth-storage');
-      if (storageStr) {
-        const storage = JSON.parse(storageStr);
-        const accessToken = storage.state?.accessToken;
-        if (accessToken && config.headers) {
-          config.headers.Authorization = `Bearer ${accessToken}`;
-        }
-      }
-    } catch (e) {
-      console.warn('Failed to parse auth token from storage', e);
+    const storage = getAuthStorage() as { state?: { accessToken?: string } } | null;
+    const accessToken = storage?.state?.accessToken;
+    if (accessToken && config.headers) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
-// Response: Unwrapping & Error Handling
 axiosInstance.interceptors.response.use(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (response: AxiosResponse<ApiResponse<any>>) => {
-    const responseBody = response.data;
-
-    if (responseBody && typeof responseBody === 'object' && 'success' in responseBody) {
-      if (!responseBody.success) {
-        throw new ApiError(
-          responseBody.message || 'Unknown API Error',
-          response.status,
-          responseBody.error?.code,
-          responseBody.error?.details
-        );
+  (response: AxiosResponse<ApiResponse<unknown>>) => {
+    const body = response.data;
+    if (body && typeof body === 'object' && 'success' in body) {
+      if (!body.success) {
+        const normalized = normalizeApiError(body.message);
+        throw new ApiError(normalized.userMessage, response.status, normalized.code, undefined, normalized.rawMessage);
       }
-      return responseBody.data;
+      return body.data as any;
     }
-
-    return responseBody;
+    return body as any;
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async (error: AxiosError<ApiResponse<any>>) => {
+  async (error: AxiosError<ApiResponse<unknown>>) => {
     const status = error.response?.status || 500;
     const responseBody = error.response?.data;
-    const message = responseBody?.message || error.message || 'Network Error';
-    const code = responseBody?.error?.code;
-    const details = responseBody?.error?.details;
+    const rawMessage = responseBody?.message || error.message || 'Network Error';
+    const normalized = normalizeApiError(rawMessage);
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-    // 401 Unauthorized → 토큰 갱신 시도 후 실패 시 로그아웃
     if (status === 401 && originalRequest && !originalRequest._retry) {
-      // refresh 요청 자체가 401이면 순환 방지
       if (originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login')) {
         clearAuthAndRedirect();
-        return Promise.reject(new ApiError(message, status, code, details));
+        return Promise.reject(
+          new ApiError(normalized.userMessage, status, normalized.code, undefined, normalized.rawMessage),
+        );
       }
 
       if (isRefreshing) {
-        // 이미 갱신 중이면 큐에 추가하여 갱신 완료 후 재시도
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then((token) => {
@@ -133,36 +141,28 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const storageStr = localStorage.getItem('auth-storage');
-        const storage = storageStr ? JSON.parse(storageStr) : null;
-        const refreshTokenValue = storage?.state?.refreshToken;
-
-        if (!refreshTokenValue) {
+        const storage = getAuthStorage() as { state?: { refreshToken?: string } } | null;
+        const refreshToken = storage?.state?.refreshToken;
+        if (!refreshToken) {
           throw new Error('No refresh token available');
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const response = await axios.post<any>(
+        const refreshResponse = await axios.post<ApiResponse<{ accessToken: string; refreshToken?: string }>>(
           `${API_BASE_URL}/auth/refresh`,
-          { refreshToken: refreshTokenValue }
+          { refreshToken },
         );
-
-        const respData = response.data?.data ?? response.data;
-        const newAccessToken = respData?.accessToken;
+        const refreshBody = refreshResponse.data;
+        const refreshed = refreshBody?.data || (refreshResponse.data as unknown as { accessToken?: string; refreshToken?: string });
+        const newAccessToken = refreshed?.accessToken;
+        const newRefreshToken = refreshed?.refreshToken;
 
         if (!newAccessToken) {
           throw new Error('No access token in refresh response');
         }
 
-        // localStorage의 auth-storage 갱신
-        if (storage) {
-          storage.state.accessToken = newAccessToken;
-          localStorage.setItem('auth-storage', JSON.stringify(storage));
-        }
-
+        updateStoredTokens(newAccessToken, newRefreshToken);
         processQueue(null, newAccessToken);
 
-        // 원래 요청 재시도
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         }
@@ -170,36 +170,35 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         clearAuthAndRedirect();
-        return Promise.reject(new ApiError('세션이 만료되었습니다. 다시 로그인해주세요.', 401));
+        return Promise.reject(
+          new ApiError('세션이 만료되었습니다. 다시 로그인해 주세요.', 401, normalized.code, undefined, normalized.rawMessage),
+        );
       } finally {
         isRefreshing = false;
       }
     }
 
-    // 401 but already retried → force logout
     if (status === 401) {
       clearAuthAndRedirect();
     }
 
-    // Detailed Error Logging
-    console.error('❌ API Error Details:', {
+    console.error('API Error', {
       url: error.config?.url,
       method: error.config?.method,
       status,
-      message,
-      responseBody: responseBody,
+      rawMessage: normalized.rawMessage,
+      code: normalized.code,
     });
 
-    // Global Error Notification (except 401/403)
     if (status !== 401 && status !== 403) {
-      toast.error(message);
+      toast.error(normalized.userMessage);
     }
 
-    return Promise.reject(new ApiError(message, status, code, details));
-  }
+    return Promise.reject(
+      new ApiError(normalized.userMessage, status, normalized.code, undefined, normalized.rawMessage),
+    );
+  },
 );
-
-// --- Typed API Methods ---
 
 export const client = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>

@@ -5,6 +5,9 @@ import type { Post } from '@/types/feed';
 import type { Meeting } from '@/types/meeting';
 
 interface ModalStore {
+  expenseCreate: { isOpen: boolean; challengeId: string | null };
+  expenseDetail: { isOpen: boolean; challengeId: string | null; expenseId: string | null };
+  expenseApprove: { isOpen: boolean; challengeId: string | null; expenseId: string | null };
   accessDenied: { isOpen: boolean; challengeId: string | null };
   attendance: { isOpen: boolean; meeting: Meeting | null };
   completeMeeting: { isOpen: boolean; meeting: Meeting | null };
@@ -28,6 +31,12 @@ interface ModalStore {
   withdraw: { isOpen: boolean };
   withdrawAccount: { isOpen: boolean };
 
+  openExpenseCreate: (challengeId: string) => void;
+  closeExpenseCreate: () => void;
+  openExpenseDetail: (challengeId: string, expenseId: string) => void;
+  closeExpenseDetail: () => void;
+  openExpenseApprove: (challengeId: string, expenseId: string) => void;
+  closeExpenseApprove: () => void;
   openAccessDenied: (challengeId: string) => void;
   closeAccessDenied: () => void;
   openAttendance: (meeting: Meeting) => void;
@@ -75,6 +84,9 @@ interface ModalStore {
 }
 
 export const useModalStore = create<ModalStore>(set => ({
+  expenseCreate: { isOpen: false, challengeId: null },
+  expenseDetail: { isOpen: false, challengeId: null, expenseId: null },
+  expenseApprove: { isOpen: false, challengeId: null, expenseId: null },
   accessDenied: { isOpen: false, challengeId: null },
   attendance: { isOpen: false, meeting: null },
   completeMeeting: { isOpen: false, meeting: null },
@@ -98,6 +110,12 @@ export const useModalStore = create<ModalStore>(set => ({
   withdraw: { isOpen: false },
   withdrawAccount: { isOpen: false },
 
+  openExpenseCreate: challengeId => set({ expenseCreate: { isOpen: true, challengeId } }),
+  closeExpenseCreate: () => set({ expenseCreate: { isOpen: false, challengeId: null } }),
+  openExpenseDetail: (challengeId, expenseId) => set({ expenseDetail: { isOpen: true, challengeId, expenseId } }),
+  closeExpenseDetail: () => set({ expenseDetail: { isOpen: false, challengeId: null, expenseId: null } }),
+  openExpenseApprove: (challengeId, expenseId) => set({ expenseApprove: { isOpen: true, challengeId, expenseId } }),
+  closeExpenseApprove: () => set({ expenseApprove: { isOpen: false, challengeId: null, expenseId: null } }),
   openAccessDenied: challengeId => set({ accessDenied: { isOpen: true, challengeId } }),
   closeAccessDenied: () => set({ accessDenied: { isOpen: false, challengeId: null } }),
   openAttendance: meeting => set({ attendance: { isOpen: true, meeting } }),
@@ -164,6 +182,32 @@ export const useAccessDeniedModalStore = () =>
     challengeId: state.accessDenied.challengeId,
     onOpen: state.openAccessDenied,
     onClose: state.closeAccessDenied,
+  })));
+
+export const useExpenseCreateModalStore = () =>
+  useModalStore(useShallow(state => ({
+    isOpen: state.expenseCreate.isOpen,
+    challengeId: state.expenseCreate.challengeId,
+    onOpen: state.openExpenseCreate,
+    onClose: state.closeExpenseCreate,
+  })));
+
+export const useExpenseDetailModalStore = () =>
+  useModalStore(useShallow(state => ({
+    isOpen: state.expenseDetail.isOpen,
+    challengeId: state.expenseDetail.challengeId,
+    expenseId: state.expenseDetail.expenseId,
+    onOpen: state.openExpenseDetail,
+    onClose: state.closeExpenseDetail,
+  })));
+
+export const useExpenseApproveModalStore = () =>
+  useModalStore(useShallow(state => ({
+    isOpen: state.expenseApprove.isOpen,
+    challengeId: state.expenseApprove.challengeId,
+    expenseId: state.expenseApprove.expenseId,
+    onOpen: state.openExpenseApprove,
+    onClose: state.closeExpenseApprove,
   })));
 
 export const useAttendanceModalStore = () =>

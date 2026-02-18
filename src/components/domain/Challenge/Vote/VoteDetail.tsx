@@ -1,52 +1,59 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useVoteDetail, useCastVote } from '../../../../hooks/useVote';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui';
 import { Loading } from '@/components/common';
 import { VoteStatusBadge } from './VoteStatusBadge';
-import { VoteStatus, type VoteOption } from '../../../../types/domain';
-import { formatCurrency } from '@/utils/format';
+import { useVoteDetail, useVoteResult, useCastVote } from '@/hooks/useVote';
+import type { VoteOption } from '@/types/domain';
+import { VoteStatus } from '@/types/domain';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
+import { capabilities } from '@/lib/api/capabilities';
+import { formatCurrency } from '@/utils/format';
 import styles from './VoteDetail.module.css';
+
+const VOTE_LABEL: Record<VoteOption, string> = {
+  AGREE: '찬성',
+  DISAGREE: '반대',
+};
 
 export function VoteDetail() {
   const { voteId } = useParams<{ voteId: string }>();
   const { challengeId } = useChallengeRoute();
   const navigate = useNavigate();
   const { confirm } = useConfirmDialog();
-  const { data: vote, isLoading } = useVoteDetail(voteId!);
-  const { mutate: castVote, isPending: isCasting } = useCastVote(voteId!, challengeId);
+  const { data: vote, isLoading } = useVoteDetail(voteId || '');
+  const { data: result } = useVoteResult(voteId || '', capabilities.voteResult);
+  const { mutate: castVote, isPending: isCasting } = useCastVote(voteId || '', challengeId);
 
   if (isLoading) return <Loading />;
   if (!vote) return <div>Vote not found</div>;
 
   const handleVote = async (option: VoteOption) => {
-    const optionLabel = option === 'AGREE' ? '찬성' : option === 'DISAGREE' ? '반대' : '기권';
     const isConfirmed = await confirm({
-      title: `${optionLabel}에 투표하시겠습니까?`,
+      title: `${VOTE_LABEL[option]}으로 투표하시겠습니까?`,
       confirmText: '투표하기',
       cancelText: '취소',
     });
-
     if (!isConfirmed) return;
     castVote(option);
   };
 
   const isEnded = vote.status !== VoteStatus.PENDING;
   const hasVoted = !!vote.myVote;
-  const showResults = isEnded || hasVoted;
-
-  const totalVotes = vote.result ? vote.result.total : vote.voteCount.total - vote.voteCount.notVoted;
+  const canShowResult = capabilities.voteResult && !!result;
+  const totalVotes = Math.max(vote.voteCount.total || 0, vote.voteCount.agree + vote.voteCount.disagree);
 
   const getPercentage = (count: number) => {
-    if (totalVotes === 0) return 0;
+    if (totalVotes <= 0) return 0;
     return Math.round((count / totalVotes) * 100);
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.navigation}>
-        <Button variant="ghost" onClick={() => navigate(-1)}>← 목록으로</Button>
+        <Button variant="ghost" onClick={() => navigate(-1)}>
+          목록으로
+        </Button>
       </div>
 
       <div className={styles.header}>
@@ -55,37 +62,36 @@ export function VoteDetail() {
           <span className={styles.date}>{new Date(vote.createdAt).toLocaleDateString()}</span>
         </div>
         <h1 className={styles.title}>{vote.title}</h1>
-        <div className={styles.author}>
-          작성자: {vote.createdBy.nickname}
-        </div>
+        <div className={styles.author}>작성자: {vote.createdBy.nickname}</div>
       </div>
 
       <div className={styles.content}>
-        <p className={styles.description}>{vote.description}</p>
-
-        {vote.targetInfo && (
+        {vote.description ? <p className={styles.description}>{vote.description}</p> : null}
+        {vote.type === 'EXPENSE' && typeof vote.targetInfo?.amount === 'number' ? (
           <div className={styles.targetInfo}>
-            <span className={styles.targetLabel}>관련 항목:</span>
-            {vote.type === 'EXPENSE' ? `${formatCurrency(vote.targetInfo.amount ?? 0, { withSuffix: true })} 지출` : '멤버 강퇴'}
+            <span className={styles.targetLabel}>지출 금액:</span>{' '}
+            {formatCurrency(vote.targetInfo.amount, { withSuffix: true })}
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className={styles.votingSection}>
-        {showResults ? (
+        {isEnded || hasVoted ? (
           <div className={styles.results}>
             <h3>투표 결과</h3>
-            {isEnded && vote.result && (
-              <div className={`${styles.resultBanner} ${vote.result.passed ? styles.passed : styles.failed}`}>
-                {vote.result.passed ? '가결되었습니다' : '부결되었습니다'}
-                (찬성률 {vote.result.approvalRate}%)
+
+            {canShowResult ? (
+              <div className={`${styles.resultBanner} ${result.passed ? styles.passed : styles.failed}`}>
+                {result.passed ? '가결되었습니다' : '부결되었습니다'} ({result.approvalRate.toFixed(1)}%)
               </div>
-            )}
+            ) : null}
 
             <div className={styles.resultItem}>
               <div className={styles.resultLabel}>
                 <span>찬성</span>
-                <span>{vote.voteCount.agree}명 ({getPercentage(vote.voteCount.agree)}%)</span>
+                <span>
+                  {vote.voteCount.agree}명 ({getPercentage(vote.voteCount.agree)}%)
+                </span>
               </div>
               <div className={styles.progressBar}>
                 <div className={styles.progressFill} style={{ width: `${getPercentage(vote.voteCount.agree)}%` }} />
@@ -95,66 +101,41 @@ export function VoteDetail() {
             <div className={styles.resultItem}>
               <div className={styles.resultLabel}>
                 <span>반대</span>
-                <span>{vote.voteCount.disagree}명 ({getPercentage(vote.voteCount.disagree)}%)</span>
+                <span>
+                  {vote.voteCount.disagree}명 ({getPercentage(vote.voteCount.disagree)}%)
+                </span>
               </div>
               <div className={styles.progressBar}>
-                <div className={`${styles.progressFill} ${styles.danger}`} style={{ width: `${getPercentage(vote.voteCount.disagree)}%` }} />
+                <div
+                  className={`${styles.progressFill} ${styles.danger}`}
+                  style={{ width: `${getPercentage(vote.voteCount.disagree)}%` }}
+                />
               </div>
             </div>
 
-            <div className={styles.resultItem}>
-              <div className={styles.resultLabel}>
-                <span>기권</span>
-                <span>{vote.voteCount.abstain}명 ({getPercentage(vote.voteCount.abstain)}%)</span>
-              </div>
-              <div className={styles.progressBar}>
-                <div className={`${styles.progressFill} ${styles.neutral}`} style={{ width: `${getPercentage(vote.voteCount.abstain)}%` }} />
-              </div>
-            </div>
-
-            {hasVoted && (
+            {hasVoted ? (
               <div className={styles.myVote}>
-                내 투표: <span className={styles.myVoteValue}>{vote.myVote}</span>
+                내 투표: <span className={styles.myVoteValue}>{vote.myVote === 'AGREE' ? '찬성' : '반대'}</span>
               </div>
-            )}
+            ) : null}
           </div>
         ) : (
           <div className={styles.actions}>
             <h3>투표하기</h3>
             <div className={styles.buttonGroup}>
-              <Button
-                className={styles.voteBtn}
-                onClick={() => {
-                  void handleVote('AGREE');
-                }}
-                disabled={isCasting}
-              >
+              <Button className={styles.voteBtn} onClick={() => void handleVote('AGREE')} disabled={isCasting}>
                 찬성
               </Button>
               <Button
                 className={styles.voteBtn}
-                variant="danger" // Assuming danger variant exists or similar
-                onClick={() => {
-                  void handleVote('DISAGREE');
-                }}
+                variant="danger"
+                onClick={() => void handleVote('DISAGREE')}
                 disabled={isCasting}
               >
                 반대
               </Button>
-              <Button
-                className={styles.voteBtn}
-                variant="secondary"
-                onClick={() => {
-                  void handleVote('ABSTAIN');
-                }}
-                disabled={isCasting}
-              >
-                기권
-              </Button>
             </div>
-            <p className={styles.deadlineInfo}>
-              마감일: {new Date(vote.deadline).toLocaleString()}
-            </p>
+            <p className={styles.deadlineInfo}>마감: {new Date(vote.deadline).toLocaleString()}</p>
           </div>
         )}
       </div>

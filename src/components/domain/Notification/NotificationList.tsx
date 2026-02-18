@@ -1,12 +1,11 @@
 import { BellOff } from 'lucide-react';
 import { NotificationItem } from './NotificationItem';
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type NotificationType = any;
+import type { Notification } from '@/types/notification';
 
 import styles from './NotificationOverlay.module.css';
 
 interface NotificationListProps {
-    notifications: NotificationType[];
+    notifications: Notification[];
     isLoading: boolean;
     onItemClick: (id: string) => void;
     onMarkAllRead?: () => void;

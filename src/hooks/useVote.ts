@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getChallengeVotes, getVoteDetail, createVote, castVote } from '../lib/api/vote';
-import type { VoteStatus, VoteOption } from '../types/domain';
+import { getChallengeVotes, getVoteDetail, getVoteResult, createVote, castVote } from '../lib/api/vote';
+import type { VoteStatus, VoteOption, VoteType } from '../types/domain';
 
 export function useVotes(challengeId: string, status?: VoteStatus) {
   return useQuery({
@@ -18,16 +18,27 @@ export function useVoteDetail(voteId: string) {
   });
 }
 
+export function useVoteResult(voteId: string, enabled = true) {
+  return useQuery({
+    queryKey: ['vote', voteId, 'result'],
+    queryFn: () => getVoteResult(voteId),
+    enabled: !!voteId && enabled,
+  });
+}
+
 export function useCreateVote(challengeId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: {
-      type: 'EXPENSE' | 'KICK' | 'LEADER_KICK' | 'DISSOLVE';
+      type: VoteType;
       title: string;
       description?: string;
       targetId?: string;
       deadline: string;
+      meetingId?: string;
+      amount?: number;
+      receiptUrl?: string;
     }) => createVote(challengeId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['votes', challengeId] });

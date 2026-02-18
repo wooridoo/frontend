@@ -35,8 +35,8 @@ export async function checkEmail(email: string): Promise<{ available: boolean }>
  * 로그아웃
  * POST /auth/logout — 서버 측 토큰 무효화
  */
-export async function logout(): Promise<void> {
-  return client.post<void>('/auth/logout');
+export async function logout(refreshToken: string): Promise<void> {
+  return client.post<void>('/auth/logout', { refreshToken });
 }
 
 /**

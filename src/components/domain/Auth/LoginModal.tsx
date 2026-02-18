@@ -62,7 +62,7 @@ export function LoginModal() {
       console.log('Login success:', response);
 
       // Store token and user data
-      login(response.user, response.accessToken);
+      login(response.user, response.accessToken, response.refreshToken);
       onClose();
     } catch (error) {
       console.error('Login failed:', error);
