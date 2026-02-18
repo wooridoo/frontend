@@ -34,6 +34,7 @@ export function ExpenseDetailModal() {
           <div className="text-base font-semibold">
             {formatCurrency(expense.amount, { withSuffix: true })}
           </div>
+          <div className="text-sm text-gray-500">투표 ID: {expense.voteId}</div>
           {expense.description ? <p className="text-sm text-gray-700">{expense.description}</p> : null}
           <div className="text-sm text-gray-500">요청자: {expense.requestedBy.nickname}</div>
           {expense.receiptUrl ? (
@@ -51,7 +52,7 @@ export function ExpenseDetailModal() {
                 승인/거절
               </Button>
             ) : null}
-            {capabilities.expenseActions && ['VOTING', 'REJECTED'].includes(expense.status) ? (
+            {capabilities.expenseCrud && capabilities.legacyExpenseApi && ['VOTING', 'REJECTED'].includes(expense.status) ? (
               <Button variant="danger" onClick={() => void handleDelete()} disabled={deleteExpense.isPending}>
                 삭제
               </Button>

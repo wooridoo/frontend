@@ -8,19 +8,20 @@ import styles from './AuthModal.module.css';
 export function WithdrawAccountModal() {
     const { isOpen, onClose } = useWithdrawAccountModalStore();
     const [confirmText, setConfirmText] = useState('');
+    const [password, setPassword] = useState('');
     const withdrawMutation = useWithdrawAccount();
 
     const handleClose = () => {
         setConfirmText('');
+        setPassword('');
         onClose();
     };
 
     const handleWithdraw = async () => {
-        if (confirmText !== '탈퇴') return;
+        if (confirmText !== '탈퇴' || !password.trim()) return;
 
         try {
-            // TODO: 실제로는 비밀번호 확인 절차가 필요함
-            await withdrawMutation.mutateAsync({ password: 'confirm-from-modal', reason: 'USER_REQUEST' });
+            await withdrawMutation.mutateAsync({ password: password.trim(), reason: 'USER_REQUEST' });
             // Redirect to home or login page after withdrawal
             window.location.href = '/';
         } catch {
@@ -71,6 +72,16 @@ export function WithdrawAccountModal() {
                         placeholder="탈퇴"
                     />
                 </div>
+                <div className={styles.fieldGroup}>
+                    <label className={styles.label}>비밀번호</label>
+                    <input
+                        type="password"
+                        className={styles.input}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="비밀번호를 입력해주세요"
+                    />
+                </div>
 
                 <div className={styles.actions}>
                     <Button onClick={handleClose} variant="secondary">
@@ -78,7 +89,7 @@ export function WithdrawAccountModal() {
                     </Button>
                     <Button
                         onClick={handleWithdraw}
-                        disabled={confirmText !== '탈퇴' || withdrawMutation.isPending}
+                        disabled={confirmText !== '탈퇴' || !password.trim() || withdrawMutation.isPending}
                         style={{ background: 'var(--color-error)' }}
                     >
                         {withdrawMutation.isPending ? '처리 중...' : '탈퇴하기'}

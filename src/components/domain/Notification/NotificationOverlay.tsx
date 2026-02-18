@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Bell } from 'lucide-react';
 import { useNotifications, useMarkAsRead, useMarkAllAsRead } from '@/lib/api/notification';
+import { capabilities } from '@/lib/api/capabilities';
 import { ResponsiveOverlay } from '@/components/ui/Overlay/ResponsiveOverlay';
 import { NotificationList } from './NotificationList';
 import styles from './NotificationOverlay.module.css';
@@ -41,7 +42,7 @@ export function NotificationOverlay({ children }: NotificationOverlayProps) {
         notifications={notifications}
         isLoading={isLoading}
         onItemClick={handleItemClick}
-        onMarkAllRead={() => markAllAsRead()}
+        onMarkAllRead={capabilities.notificationReadAll ? () => markAllAsRead() : undefined}
       />
     </ResponsiveOverlay>
   );

@@ -22,6 +22,8 @@ interface VoteListItemResponse {
   status: string;
   createdBy: VoteCreator;
   voteCount: VoteCountResponse;
+  eligibleVoters?: number;
+  requiredApproval?: number;
   deadline: string;
   createdAt: string;
 }
@@ -41,8 +43,8 @@ interface VoteDetailResponse {
   targetInfo?: Record<string, unknown>;
   voteCount: VoteCountResponse;
   myVote?: VoteOption;
-  eligibleVoters: number;
-  requiredApproval: number;
+  eligibleVoters?: number;
+  requiredApproval?: number;
   deadline: string;
   createdAt: string;
 }
@@ -64,6 +66,17 @@ interface CastVoteResponse {
   voteCount: VoteCountResponse;
   votedAt: string;
   message?: string;
+}
+
+export interface CreateVotePayload {
+  type: VoteType;
+  title: string;
+  description?: string;
+  targetId?: string;
+  deadline: string;
+  meetingId?: string;
+  amount?: number;
+  receiptUrl?: string;
 }
 
 const normalizeVoteStatus = (status: string): VoteStatus => {
@@ -88,6 +101,72 @@ const toVoteCount = (voteCount?: VoteCountResponse): VoteCount => {
   };
 };
 
+const formatLocalDateTime = (date: Date): string => {
+  const pad = (value: number) => String(value).padStart(2, '0');
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+};
+
+export const toLocalDateTimeString = (input: string | Date): string => {
+  if (input instanceof Date) {
+    return formatLocalDateTime(input);
+  }
+
+  const trimmed = String(input || '').trim();
+  if (!trimmed) return trimmed;
+
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(trimmed)) {
+    return `${trimmed}:00`;
+  }
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(trimmed)) {
+    return trimmed;
+  }
+
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) {
+    return trimmed;
+  }
+  return formatLocalDateTime(parsed);
+};
+
+const validateCreatePayload = (data: CreateVotePayload): CreateVotePayload => {
+  const normalized: CreateVotePayload = {
+    ...data,
+    title: data.title.trim(),
+    description: data.description?.trim(),
+    targetId: data.targetId?.trim(),
+    meetingId: data.meetingId?.trim(),
+    receiptUrl: data.receiptUrl?.trim(),
+    deadline: toLocalDateTimeString(data.deadline),
+  };
+
+  if (!normalized.title) {
+    throw new Error('VOTE_004:투표 제목이 필요합니다.');
+  }
+  if (!normalized.deadline) {
+    throw new Error('VOTE_002:마감 일시가 필요합니다.');
+  }
+
+  if (normalized.type === 'EXPENSE') {
+    if (!normalized.meetingId) {
+      throw new Error('VOTE_004:지출 투표는 모임 선택이 필요합니다.');
+    }
+    if (!normalized.amount || normalized.amount <= 0) {
+      throw new Error('VOTE_004:지출 금액이 필요합니다.');
+    }
+  }
+  if (normalized.type === 'KICK' && !normalized.targetId) {
+    throw new Error('VOTE_004:강퇴 대상이 필요합니다.');
+  }
+
+  return normalized;
+};
+
 const mapListItem = (challengeId: string, item: VoteListItemResponse): Vote => ({
   voteId: item.voteId,
   challengeId,
@@ -96,8 +175,9 @@ const mapListItem = (challengeId: string, item: VoteListItemResponse): Vote => (
   status: normalizeVoteStatus(item.status),
   createdBy: item.createdBy,
   voteCount: toVoteCount(item.voteCount),
-  eligibleVoters: Number(item.voteCount?.total || 0),
-  requiredApproval: 0,
+  // eligibleVoters is not returned by current list API in main branch.
+  eligibleVoters: Number(item.eligibleVoters || 0),
+  requiredApproval: Number(item.requiredApproval || 0),
   deadline: item.deadline,
   createdAt: item.createdAt,
 });
@@ -126,10 +206,11 @@ const mapResult = (result: VoteResultResponse): VoteResult => ({
   approvalRate: Number(result.approvalRate || 0),
 });
 
-export async function getChallengeVotes(challengeId: string, status?: VoteStatus): Promise<Vote[]> {
+export async function getChallengeVotes(challengeId: string, status?: VoteStatus, type?: VoteType): Promise<Vote[]> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
   const params: Record<string, string> = {};
   if (status) params.status = status;
+  if (type) params.type = type;
 
   const response = await client.get<VoteListResponse>(`/challenges/${normalizedChallengeId}/votes`, { params });
   const content = response?.content || [];
@@ -146,21 +227,10 @@ export async function getVoteResult(voteId: string): Promise<VoteResult> {
   return mapResult(response);
 }
 
-export async function createVote(
-  challengeId: string,
-  data: {
-    type: VoteType;
-    title: string;
-    description?: string;
-    targetId?: string;
-    deadline: string;
-    meetingId?: string;
-    amount?: number;
-    receiptUrl?: string;
-  },
-): Promise<Vote> {
+export async function createVote(challengeId: string, data: CreateVotePayload): Promise<Vote> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
-  const response = await client.post<VoteListItemResponse>(`/challenges/${normalizedChallengeId}/votes`, data);
+  const payload = validateCreatePayload(data);
+  const response = await client.post<VoteListItemResponse>(`/challenges/${normalizedChallengeId}/votes`, payload);
   return mapListItem(normalizedChallengeId, response);
 }
 

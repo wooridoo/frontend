@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { client } from './client';
 import { useAuthStore } from '@/store/useAuthStore';
+import { capabilities } from './capabilities';
 import type {
   Notification,
   NotificationListResponse,
@@ -20,16 +21,35 @@ const markAsRead = async (notificationId: string): Promise<void> => {
 };
 
 const markAllAsRead = async (): Promise<void> => {
+  if (!capabilities.notificationReadAll) return;
   await client.put('/notifications/read-all');
 };
 
+const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
+  pushEnabled: false,
+  emailEnabled: false,
+  smsEnabled: false,
+  voteNotification: false,
+  meetingNotification: false,
+  expenseNotification: false,
+  snsNotification: false,
+  systemNotification: false,
+  quietHoursEnabled: false,
+  quietHoursStart: undefined,
+  quietHoursEnd: undefined,
+};
+
 const getNotificationSettings = async (): Promise<NotificationSettings> => {
+  if (!capabilities.notificationSettings) return DEFAULT_NOTIFICATION_SETTINGS;
   return client.get<NotificationSettings>('/notifications/settings');
 };
 
 const updateNotificationSettings = async (
   payload: Partial<NotificationSettings>,
 ): Promise<NotificationSettings> => {
+  if (!capabilities.notificationSettings) {
+    return { ...DEFAULT_NOTIFICATION_SETTINGS, ...payload };
+  }
   return client.put<NotificationSettings>('/notifications/settings', payload);
 };
 
@@ -56,7 +76,7 @@ export function useNotificationDetail(notificationId?: string) {
   return useQuery({
     queryKey: NOTIFICATION_KEYS.detail(notificationId || ''),
     queryFn: () => getNotification(notificationId || ''),
-    enabled: isLoggedIn && !!accessToken && !!notificationId,
+    enabled: capabilities.notificationDetail && isLoggedIn && !!accessToken && !!notificationId,
   });
 }
 
@@ -85,7 +105,7 @@ export function useNotificationSettings() {
   return useQuery({
     queryKey: NOTIFICATION_KEYS.settings(),
     queryFn: getNotificationSettings,
-    enabled: isLoggedIn && !!accessToken,
+    enabled: capabilities.notificationSettings && isLoggedIn && !!accessToken,
   });
 }
 

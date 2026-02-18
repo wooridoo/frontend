@@ -4,7 +4,7 @@ import { PostCard } from './PostCard';
 import { useFeed } from '@/hooks/useFeed';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { VerificationModal } from '../VerificationModal';
-import { useVerificationModalStore } from '@/store/modal/useModalStore';
+import { useVerificationModalStore, usePostDetailModalStore } from '@/store/modal/useModalStore';
 import { Button } from '@/components/ui';
 import { Camera } from 'lucide-react';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
@@ -13,6 +13,7 @@ export function FeedPage() {
   const { challengeId, isResolving } = useChallengeRoute();
   const { data: posts, isLoading, error } = useFeed(challengeId);
   const verificationModal = useVerificationModalStore();
+  const { onOpen: openPostDetail } = usePostDetailModalStore();
 
   if (isResolving || isLoading) {
     return (
@@ -59,7 +60,7 @@ export function FeedPage() {
           </div>
         ) : (
           posts?.map((post, index) => (
-            <PostCard key={post.id || index} {...post} />
+            <PostCard key={post.id || index} {...post} onOpenDetail={() => openPostDetail(post)} />
           ))
         )}
       </div>

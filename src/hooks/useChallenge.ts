@@ -8,6 +8,7 @@ import {
     updateChallenge,
     deleteChallenge,
     leaveChallenge,
+    updateSupportSettings,
     createChallenge,
     type UpdateChallengeRequest,
     type CreateChallengeRequest,
@@ -79,6 +80,18 @@ export function useLeaveChallenge() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['challenges'] });
             queryClient.invalidateQueries({ queryKey: ['user'] });
+        },
+    });
+}
+
+export function useUpdateSupportSettings(challengeId: string) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (payload: { autoPayEnabled: boolean }) => updateSupportSettings(challengeId, payload),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'detail'] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account'] });
         },
     });
 }

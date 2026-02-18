@@ -23,6 +23,7 @@ interface PostCardProps {
   commentCount: number;
   isNotice?: boolean;
   isLiked?: boolean;
+  onOpenDetail?: () => void;
 }
 
 export function PostCard({
@@ -36,6 +37,7 @@ export function PostCard({
   commentCount,
   isNotice,
   isLiked: initialIsLiked,
+  onOpenDetail,
 }: PostCardProps) {
   const { challengeId: routeChallengeId } = useChallengeRoute();
   const { confirm } = useConfirmDialog();
@@ -90,6 +92,10 @@ export function PostCard({
     });
   };
 
+  const handleOpenDetail = () => {
+    onOpenDetail?.();
+  };
+
   const menuContent = (
     <div className="flex flex-col p-1 min-w-[150px] bg-white rounded-md shadow-lg border border-gray-100">
       <button
@@ -135,7 +141,7 @@ export function PostCard({
         ) : null}
       </div>
 
-      <div className={styles.content}>
+      <div className={styles.content} onClick={handleOpenDetail}>
         {isNotice ? (
           <div className={styles.pinIcon}>
             <Pin fill="currentColor" size={14} />
@@ -157,7 +163,7 @@ export function PostCard({
           <Heart fill={isLiked ? 'currentColor' : 'none'} size={18} />
           <span>{likeCount}</span>
         </button>
-        <button className={styles.actionButton}>
+        <button className={styles.actionButton} onClick={handleOpenDetail}>
           <MessageCircle size={18} />
           <span>{commentCount}</span>
         </button>

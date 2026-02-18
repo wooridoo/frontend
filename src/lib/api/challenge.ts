@@ -169,3 +169,21 @@ export interface CreateChallengeRequest {
 export async function createChallenge(data: CreateChallengeRequest): Promise<ChallengeInfo> {
   return client.post<ChallengeInfo>('/challenges', data);
 }
+
+export interface UpdateSupportSettingsResponse {
+  challengeId: string;
+  autoPayEnabled: boolean;
+  nextPaymentDate: string;
+  amount: number;
+}
+
+export async function updateSupportSettings(
+  challengeId: string,
+  payload: { autoPayEnabled: boolean },
+): Promise<UpdateSupportSettingsResponse> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  return client.put<UpdateSupportSettingsResponse>(
+    `/challenges/${normalizedChallengeId}/support/settings`,
+    payload,
+  );
+}

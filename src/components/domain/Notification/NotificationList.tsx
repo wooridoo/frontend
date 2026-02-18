@@ -16,7 +16,9 @@ export function NotificationList({ notifications, isLoading, onItemClick, onMark
         <>
             <div className={styles.header}>
                 <span className={styles.title}>알림</span>
-                <button className={styles.markReadBtn} onClick={onMarkAllRead}>모두 읽음</button>
+                {onMarkAllRead ? (
+                    <button className={styles.markReadBtn} onClick={onMarkAllRead}>모두 읽음</button>
+                ) : null}
             </div>
 
             <div className={styles.list}>

@@ -27,8 +27,16 @@ export interface ChallengeInfo {
         max: number;
     };
     supportAmount: number;
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
+    startedAt?: string;
+    createdAt?: string;
+    myMembership?: {
+        memberId: string;
+        role: string;
+        joinedAt: string;
+        status: string;
+    };
     thumbnailUrl?: string; // API 스펙과 맞춤 (legacy: thumbnailUrl)
     certificationRate?: number; // Legacy 호환용
     leader: {

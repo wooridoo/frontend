@@ -32,10 +32,9 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
     return `${days} day(s) left`;
   };
 
-  const totalVotes = vote.voteCount.total || 0;
-  const agreeVotes = vote.voteCount.agree || 0;
   const participationCount = vote.voteCount.agree + vote.voteCount.disagree;
-  const participationRate = totalVotes > 0 ? (agreeVotes / totalVotes) * 100 : 0;
+  const eligibleVoters = vote.eligibleVoters > 0 ? vote.eligibleVoters : undefined;
+  const participationRate = eligibleVoters ? (participationCount / eligibleVoters) * 100 : 0;
 
   return (
     <div className={styles.container} onClick={handleClick}>
@@ -48,7 +47,7 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
 
       <div className={styles.footer}>
         <span className={styles.voters}>
-          Participated {participationCount}/{vote.eligibleVoters}
+          Participated {participationCount}/{eligibleVoters ?? '-'}
         </span>
         <span className={styles.author}>
           {voteResult ? `${voteResult.passed ? 'Passed' : 'Rejected'} ${voteResult.approvalRate.toFixed(0)}%` : `By ${vote.createdBy.nickname}`}

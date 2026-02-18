@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { Button } from '@/components/ui';
 import { useChallengeAccount } from '@/hooks/useLedger';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
-import { useExpenseCreateModalStore } from '@/store/modal/useModalStore';
+import { useExpenseCreateModalStore, useSupportSettingsModalStore } from '@/store/modal/useModalStore';
 import { formatCurrency } from '@/utils/format';
 import { ExpenseList } from './ExpenseList';
 import { capabilities } from '@/lib/api/capabilities';
@@ -14,6 +14,7 @@ export function ChallengeLedgerPage() {
   const { challengeId } = useChallengeRoute();
   const { data, isLoading } = useChallengeAccount(challengeId);
   const { onOpen: openExpenseCreate } = useExpenseCreateModalStore();
+  const { onOpen: openSupportSettings } = useSupportSettingsModalStore();
 
   if (isLoading) {
     return (
@@ -92,9 +93,14 @@ export function ChallengeLedgerPage() {
       <section className={styles.expenseSection}>
         <div className={styles.statusHeader}>
           <h3 className={styles.sectionTitle}>지출 관리</h3>
-          {capabilities.expenseActions ? (
-            <Button onClick={() => challengeId && openExpenseCreate(challengeId)}>지출 등록</Button>
-          ) : null}
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={() => challengeId && openSupportSettings(challengeId)}>
+              서포트 설정
+            </Button>
+            {capabilities.expenseActions ? (
+              <Button onClick={() => challengeId && openExpenseCreate(challengeId)}>지출 등록</Button>
+            ) : null}
+          </div>
         </div>
         <ExpenseList />
       </section>

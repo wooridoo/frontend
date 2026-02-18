@@ -21,7 +21,7 @@ export function DelegateLeaderModal() {
                     const response = await getChallengeMembers(challengeId, 'ACTIVE');
                     // Filter out current leader
                     const requestLeaderId = currentLeaderId || '';
-                    const filtered = response.members.filter(m => m.memberId !== requestLeaderId);
+                    const filtered = response.members.filter(m => m.user.userId !== requestLeaderId);
                     setMembers(filtered);
                 } catch (error) {
                     console.error('Failed to fetch members:', error);
@@ -72,15 +72,15 @@ export function DelegateLeaderModal() {
                         {members.length > 0 ? members.map((member) => (
                             <button
                                 key={member.memberId}
-                                onClick={() => setSelectedMember(String(member.memberId))}
+                                onClick={() => setSelectedMember(String(member.user.userId))}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: 'var(--spacing-md)',
                                     padding: 'var(--spacing-md)',
-                                    border: selectedMember === String(member.memberId) ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                                    border: selectedMember === String(member.user.userId) ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
                                     borderRadius: 'var(--radius-md)',
-                                    background: selectedMember === String(member.memberId) ? 'rgba(var(--color-primary-rgb), 0.05)' : 'var(--color-surface)',
+                                    background: selectedMember === String(member.user.userId) ? 'rgba(var(--color-primary-rgb), 0.05)' : 'var(--color-surface)',
                                     cursor: 'pointer',
                                     textAlign: 'left',
                                 }}
@@ -93,8 +93,8 @@ export function DelegateLeaderModal() {
                                 <span style={{ fontSize: 'var(--font-size-md)', fontWeight: 500 }}>
                                     {member.user.nickname}
                                 </span>
-                                {selectedMember === String(member.memberId) && (
-                                    <span style={{ marginLeft: 'auto', color: 'var(--color-primary)' }}>v</span>
+                                {selectedMember === String(member.user.userId) && (
+                                    <span style={{ marginLeft: 'auto', color: 'var(--color-primary)' }}>✓</span>
                                 )}
                             </button>
                         )) : (

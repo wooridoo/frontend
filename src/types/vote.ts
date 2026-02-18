@@ -38,6 +38,11 @@ export interface Vote {
     category?: string;
     meetingId?: string;
     receiptUrl?: string;
+    expenseRequestStatus?: string;
+    barcodeId?: string;
+    barcodeNumber?: string;
+    barcodeStatus?: string;
+    barcodeExpiresAt?: string;
   };
   voteCount: VoteCount;
   myVote?: VoteOption;

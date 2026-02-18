@@ -54,6 +54,20 @@
   resize: vertical;
 }
 
+.helper {
+  font-size: 0.85rem;
+  color: var(--color-gray-600);
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.error {
+  font-size: 0.85rem;
+  color: var(--color-error);
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;

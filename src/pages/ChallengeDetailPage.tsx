@@ -103,8 +103,26 @@ export function ChallengeDetailPage() {
   }
 
   // 데이터 매핑 (API -> UI)
-  const frequency = '매일'; // API에 없으면 기본값 또는 추가 필드 필요
-  const duration = `${(new Date(challenge.endDate).getTime() - new Date(challenge.startDate).getTime()) / (1000 * 60 * 60 * 24)}일`;
+  const frequency = '매일';
+  const startedAt = challenge.startedAt || challenge.startDate || challenge.createdAt;
+  const endedAt = challenge.endDate;
+  const duration = (() => {
+    if (startedAt && endedAt) {
+      const start = new Date(startedAt);
+      const end = new Date(endedAt);
+      if (!Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime()) && end >= start) {
+        const diffDays = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+        return `${diffDays}일`;
+      }
+    }
+    if (startedAt) {
+      const start = new Date(startedAt);
+      if (!Number.isNaN(start.getTime())) {
+        return `${start.toLocaleDateString()} 시작`;
+      }
+    }
+    return '진행 중';
+  })();
 
   const memberList = membersData?.members?.slice(0, 4) || [];
 

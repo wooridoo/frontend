@@ -25,13 +25,6 @@ export async function signup(data: SignupRequest): Promise<void> {
 }
 
 /**
- * 이메일 중복 확인
- */
-export async function checkEmail(email: string): Promise<{ available: boolean }> {
-  return client.get<{ available: boolean }>('/auth/check-email', { params: { email } });
-}
-
-/**
  * 로그아웃
  * POST /auth/logout — 서버 측 토큰 무효화
  */

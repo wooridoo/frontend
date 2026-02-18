@@ -31,8 +31,10 @@ export function ActiveChallengeBlock() {
     fetchChallenge();
   }, [user]);
 
-  const calculateDDay = (endDate: string) => {
+  const calculateDDay = (endDate?: string) => {
+    if (!endDate) return '진행 중';
     const end = new Date(endDate);
+    if (Number.isNaN(end.getTime())) return '진행 중';
     const now = new Date();
     const diff = end.getTime() - now.getTime();
     const days = Math.ceil(diff / (1000 * 3600 * 24));
