@@ -4,20 +4,22 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { capabilities } from './capabilities';
 import type {
   Notification,
+  NotificationMarkReadResponse,
+  NotificationQuery,
   NotificationListResponse,
   NotificationSettings,
 } from '@/types/notification';
 
-const getNotifications = async (): Promise<NotificationListResponse> => {
-  return client.get<NotificationListResponse>('/notifications');
+const getNotifications = async (params?: NotificationQuery): Promise<NotificationListResponse> => {
+  return client.get<NotificationListResponse>('/notifications', { params });
 };
 
 const getNotification = async (notificationId: string): Promise<Notification> => {
   return client.get<Notification>(`/notifications/${notificationId}`);
 };
 
-const markAsRead = async (notificationId: string): Promise<void> => {
-  await client.put(`/notifications/${notificationId}/read`);
+const markAsRead = async (notificationId: string): Promise<NotificationMarkReadResponse> => {
+  return client.put<NotificationMarkReadResponse>(`/notifications/${notificationId}/read`);
 };
 
 const markAllAsRead = async (): Promise<void> => {
@@ -55,16 +57,16 @@ const updateNotificationSettings = async (
 
 export const NOTIFICATION_KEYS = {
   all: ['notifications'] as const,
-  list: () => [...NOTIFICATION_KEYS.all, 'list'] as const,
+  list: (params?: NotificationQuery) => [...NOTIFICATION_KEYS.all, 'list', params || {}] as const,
   detail: (notificationId: string) => [...NOTIFICATION_KEYS.all, 'detail', notificationId] as const,
   settings: () => [...NOTIFICATION_KEYS.all, 'settings'] as const,
 };
 
-export function useNotifications() {
+export function useNotifications(params?: NotificationQuery) {
   const { isLoggedIn, accessToken } = useAuthStore();
   return useQuery({
-    queryKey: NOTIFICATION_KEYS.list(),
-    queryFn: getNotifications,
+    queryKey: NOTIFICATION_KEYS.list(params),
+    queryFn: () => getNotifications(params),
     staleTime: 1000 * 60 * 5,
     refetchInterval: 1000 * 60 * 5,
     enabled: isLoggedIn && !!accessToken,
@@ -85,7 +87,7 @@ export function useMarkAsRead() {
   return useMutation({
     mutationFn: markAsRead,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.list() });
+      queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.all });
     },
   });
 }
@@ -95,7 +97,7 @@ export function useMarkAllAsRead() {
   return useMutation({
     mutationFn: markAllAsRead,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.list() });
+      queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.all });
     },
   });
 }

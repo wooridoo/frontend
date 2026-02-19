@@ -5,10 +5,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getComments, createComment, updateComment, deleteComment } from '@/lib/api/comment';
 import type { CreateCommentInput, UpdateCommentInput } from '@/types/comment';
 
-export function useComments(challengeId: string | undefined, postId: string | undefined) {
+export function useComments(
+  challengeId: string | undefined,
+  postId: string | undefined,
+  page = 0,
+  size = 50,
+) {
   return useQuery({
-    queryKey: ['comments', challengeId, postId],
-    queryFn: () => getComments(challengeId!, postId!),
+    queryKey: ['comments', challengeId, postId, page, size],
+    queryFn: () => getComments(challengeId!, postId!, page, size),
     enabled: !!challengeId && !!postId,
   });
 }

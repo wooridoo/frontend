@@ -1,237 +1,94 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-}
-
-.title {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    margin: 0 0 var(--spacing-xs);
-}
-
-.subtitle {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-}
-
-/* Balance Card */
-.balanceCard {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-brix-grape));
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
-    color: white;
-    margin-bottom: var(--spacing-xl);
-    position: relative;
-    overflow: hidden;
-}
-
-.balanceCard::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, var(--color-overlay-light) 0%, transparent 70%);
-}
-
-.balanceLabel {
-    font-size: var(--font-size-sm);
-    opacity: 0.9;
-    margin-bottom: var(--spacing-xs);
-}
-
-.balanceAmount {
-    font-size: var(--font-size-3xl);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-lg);
-}
-
-.balanceDetails {
-    display: flex;
-    gap: var(--spacing-xl);
-    font-size: var(--font-size-sm);
-}
-
-.balanceItem {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.balanceItemLabel {
-    opacity: 0.8;
-}
-
-.balanceItemValue {
-    font-weight: var(--font-weight-semibold);
-}
-
-/* Action Buttons */
-.actions {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-xl);
-}
-
-.actionButton {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-lg);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.actionButton:hover {
-    background: var(--color-surface-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.actionIcon {
-    font-size: 28px;
-}
-
-.actionLabel {
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-primary);
-}
-
-/* Recent Transactions */
 .section {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-}
-
-.sectionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-bottom: 1px solid var(--color-border);
+  background: var(--color-white);
+  border: 1px solid var(--color-grey-200);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .sectionTitle {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
-    margin: 0;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
 }
 
-.viewAllLink {
-    font-size: var(--font-size-sm);
-    color: var(--color-primary);
-    text-decoration: none;
-    cursor: pointer;
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--color-grey-700);
 }
 
-.viewAllLink:hover {
-    text-decoration: underline;
+.row strong {
+  color: var(--color-grey-900);
 }
 
-/* Transaction List */
-.transactionList {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.transactionItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-bottom: 1px solid var(--color-border);
+.input {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--color-grey-300);
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
 }
 
-.transactionItem:last-child {
-    border-bottom: none;
+.buttonRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.transactionInfo {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
+.primaryButton,
+.secondaryButton,
+.dangerButton {
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.transactionIcon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
+.primaryButton {
+  background: var(--color-primary);
+  color: var(--color-white);
 }
 
-.transactionIcon.deposit {
-    background: var(--color-success-alpha);
+.secondaryButton {
+  background: var(--color-grey-100);
+  color: var(--color-grey-900);
 }
 
-.transactionIcon.withdraw {
-    background: var(--color-error-alpha);
+.dangerButton {
+  background: #fff1f1;
+  color: #b91c1c;
+  border-color: #fecaca;
 }
 
-.transactionIcon.support {
-    background: var(--color-support-alpha);
+.helpText {
+  margin: 0;
+  color: var(--color-grey-600);
+  font-size: 13px;
 }
 
-.transactionDetails {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.transactionType {
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-primary);
-}
-
-.transactionDate {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-tertiary);
-}
-
-.transactionAmount {
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
-}
-
-.transactionAmount.positive {
-    color: var(--color-success);
-}
-
-.transactionAmount.negative {
-    color: var(--color-error);
-}
-
-/* Empty & Loading */
 .empty {
-    text-align: center;
-    padding: var(--spacing-xl);
-    color: var(--color-text-secondary);
-}
-
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 300px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-600);
 }

@@ -31,6 +31,28 @@ export async function updateMyProfile(data: UpdateProfileRequest): Promise<User>
     return client.put<User>('/users/me', data);
 }
 
+export interface ChangePasswordRequest {
+    currentPassword: string;
+    newPassword: string;
+    newPasswordConfirm: string;
+}
+
+export async function changeMyPassword(data: ChangePasswordRequest): Promise<{ passwordChanged: boolean }> {
+    return client.put<{ passwordChanged: boolean }>('/users/me/password', data);
+}
+
+export async function getUserProfile(userId: string): Promise<{
+    userId: string;
+    nickname: string;
+    profileImage?: string;
+}> {
+    return client.get<{
+        userId: string;
+        nickname: string;
+        profileImage?: string;
+    }>(`/users/${userId}`);
+}
+
 /**
  * 닉네임 중복 확인
  */

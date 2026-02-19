@@ -1,4 +1,4 @@
-001 POST /auth/signup										
+﻿001 POST /auth/signup										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
 Request URI			/auth/signup			Request Name			회원가입	
@@ -18,7 +18,7 @@ privacyAgreed			Boolean		Y, 개인정보 처리방침 동의
 marketingAgreed			Boolean		N, 마케팅 수신 동의					
 Return										
 key			Type		비고					
-data.userId			Long		사용자 ID					
+data.userId			String		사용자 ID					
 data.email			String		이메일					
 data.nickname			String		닉네임					
 data.status			String		상태 (ACTIVE)					
@@ -51,7 +51,7 @@ data.accessToken			String		액세스 토큰 (1시간 유효)
 data.refreshToken			String		리프레시 토큰 (14일 유효)					
 data.tokenType			String		토큰 타입 (Bearer)					
 data.expiresIn			Integer		만료 시간 (초)					
-data.user.userId			Long		사용자 ID					
+data.user.userId			String		사용자 ID					
 data.user.email			String		이메일					
 data.user.nickname			String		닉네임					
 data.user.profileImage			String		프로필 이미지 URL					
@@ -111,57 +111,46 @@ Request 예시
 Response 예시 (200 OK)										
 {"success": true, "data": {"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", "tokenType": "Bearer", "expiresIn": 3600}, "timestamp": "2026-01-14T10:30:00Z"}										
 										
-005 POST /auth/email/verify										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/auth/email/verify			Request Name			인증 코드 발송	
-작성자						작성일				
-인증			불필요			Response			Spring	
-설명			인증 코드 발송			우선순위			P1	
-Parameters										
-key			Type		비고					
-email			String		Y, 이메일 형식, 이메일 주소					
-type			String		Y, SIGNUP | PASSWORD_RESET, 발송 목적					
-Return										
-key			Type		비고					
-data.email			String		이메일					
-data.expiresIn			Integer		인증 코드 유효 시간 (초, 5분)					
-data.retryAfter			Integer		재발송 가능 시간 (초, 1분)					
-Errors										
-HTTP			코드		메시지					
-400			AUTH_007		잠시 후 다시 시도해주세요					
-409			USER_002		이미 존재하는 이메일입니다					
-Request 예시										
-{"email": "user@example.com", "type": "SIGNUP"}										
-Response 예시 (200 OK)										
-{"success": true, "data": {"email": "user@example.com", "expiresIn": 300, "retryAfter": 60}, "message": "인증 코드가 발송되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-										
-006 POST /auth/email/confirm										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/auth/email/confirm			Request Name			인증 코드 확인	
-작성자						작성일				
-인증			불필요			Response			Spring	
-설명			인증 코드 확인			우선순위			P1	
-Parameters										
-key			Type		비고					
-email			String		Y, 이메일 형식, 이메일 주소					
-code			String		Y, 6자리 숫자, 인증 코드					
-Return										
-key			Type		비고					
-data.email			String		이메일					
-data.verified			Boolean		인증 여부					
-data.verificationToken			String		회원가입/재설정용 임시 토큰					
-Errors										
-HTTP			코드		메시지					
-400			AUTH_006		인증 코드가 일치하지 않습니다					
-400			AUTH_008		인증 코드가 만료되었습니다					
-Request 예시										
-{"email": "user@example.com", "code": "123456"}										
-Response 예시 (200 OK)										
-{"success": true, "data": {"email": "user@example.com", "verified": true, "verificationToken": "temp_token_for_signup_or_reset"}, "message": "이메일이 인증되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-										
-007 POST /auth/password/reset (구현 X)										
+005 POST /auth/email/verify
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/auth/email/verify			Request Name			?? ?? ??
+???						???				
+??			???			Response			Spring
+??			??? ?? ??? ?????.			????			P1
+Parameters
+key			Type		??
+email			String		Y, ??? ??
+Return
+key			Type		??
+data.email			String		?? ?? ???
+data.expiresIn			Integer		?? ?? ?? ??(?)
+Errors
+HTTP			??		???
+400			VALIDATION_001		??? ??? ???? ????
+Response ?? (200 OK)
+{"success": true, "data": {"email": "user@example.com", "expiresIn": 600}, "message": "?? ??? ??????", "timestamp": "2026-02-18T10:30:00Z"}
+006 POST /auth/email/confirm
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/auth/email/confirm			Request Name			?? ?? ??
+???						???				
+??			???			Response			Spring
+??			??? ?? ??? ?????.			????			P1
+Parameters
+key			Type		??
+email			String		Y, ??? ??
+code			String		Y, ?? ??
+Return
+key			Type		??
+data.verificationToken			String		?? ?? ??
+data.expiresIn			Integer		?? ?? ?? ??(?)
+Errors
+HTTP			??		???
+400			AUTH_007		?? ??? ?????? ???? ????
+Response ?? (200 OK)
+{"success": true, "data": {"verificationToken": "f3d1f5f5-6e07-4f8a-9cb2-61e2f94833d1", "expiresIn": 1800}, "message": "??? ???????", "timestamp": "2026-02-18T10:30:00Z"}
+007 POST /auth/password/reset										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
 Request URI			/auth/password/reset			Request Name			비밀번호 재설정 요청	
@@ -183,7 +172,7 @@ Request 예시
 Response 예시 (200 OK)										
 {"success": true, "data": {"email": "user@example.com", "expiresIn": 1800}, "message": "비밀번호 재설정 링크가 발송되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
 										
-008 PUT /auth/password/reset (구현 X)										
+008 PUT /auth/password/reset										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
 Request URI			/auth/password/reset			Request Name			비밀번호 재설정 실행	
@@ -217,7 +206,7 @@ Parameters
 없음										
 Return										
 key			Type		비고					
-data.userId			Long		사용자 ID					
+data.userId			String		사용자 ID					
 data.email			String		이메일					
 data.nickname			String		닉네임					
 data.phone			String		휴대폰 번호					
@@ -225,7 +214,7 @@ data.birthDate			String		생년월일
 data.profileImage			String		프로필 이미지 URL					
 data.status			String		상태 (UserStatus)					
 data.brix			Double		당도 점수 (0-100)					
-data.account.accountId			Long		어카운트 ID					
+data.account.accountId			String		어카운트 ID					
 data.account.balance			Long		총 잔액					
 data.account.availableBalance			Long		사용 가능 잔액					
 data.account.lockedBalance			Long		보증금 잠금 금액					
@@ -254,7 +243,7 @@ phone			String		N, 010-XXXX-XXXX, 휴대폰 번호
 profileImage			String		N, URL 형식, 프로필 이미지 URL					
 Return										
 key			Type		비고					
-data.userId			Long		사용자 ID					
+data.userId			String		사용자 ID					
 data.nickname			String		닉네임					
 data.phone			String		휴대폰 번호					
 data.profileImage			String		프로필 이미지 URL					
@@ -268,29 +257,27 @@ Request 예시
 Response 예시 (200 OK)										
 {"success": true, "data": {"userId": 1, "nickname": "새닉네임", "phone": "010-1234-5678", "profileImage": "https://cdn.woorido.com/profiles/new.jpg", "updatedAt": "2026-01-14T10:30:00Z"}, "message": "정보가 수정되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
 										
-011 PUT /users/me/password										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/users/me/password			Request Name			비밀번호 변경	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			비밀번호 변경			우선순위			P1	
-Parameters										
-key			Type		비고					
-currentPassword			String		Y, 현재 비밀번호					
-newPassword			String		Y, 8-20자, 영문+숫자+특수문자, 새 비밀번호					
-Return										
-key			Type		비고					
-data.passwordChanged			Boolean		비밀번호 변경 성공 여부					
-Errors										
-HTTP			코드		메시지					
-400			USER_003		현재 비밀번호가 일치하지 않습니다					
-400			VALIDATION_001		비밀번호 형식이 올바르지 않습니다					
-Request 예시										
-{"currentPassword": "Password123!", "newPassword": "NewPassword456!", "newPasswordConfirm": "NewPassword456!"}										
-Response 예시 (200 OK)										
-{"success": true, "data": {"passwordChanged": true}, "message": "비밀번호가 변경되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-										
+011 PUT /users/me/password
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/users/me/password			Request Name			???? ??
+???						???				
+??			??			Response			Spring
+??			??? ???? ????? ?????.			????			P1
+Parameters
+key			Type		??
+currentPassword			String		Y, ?? ????
+newPassword			String		Y, ? ????
+newPasswordConfirm			String		Y, ? ???? ??
+Return
+key			Type		??
+data.passwordChanged			Boolean		?? ?? ??
+Errors
+HTTP			??		???
+400			USER_003		?? ????? ???? ????
+400			VALIDATION_001		???? ??? ??????
+Response ?? (200 OK)
+{"success": true, "data": {"passwordChanged": true}, "message": "????? ???????", "timestamp": "2026-02-18T10:30:00Z"}
 012 DELETE /users/me										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
@@ -304,7 +291,7 @@ password			String		Y, 비밀번호 확인
 reason			String		N, 탈퇴 사유					
 Return										
 key			Type		비고					
-data.userId			Long		사용자 ID					
+data.userId			String		사용자 ID					
 data.status			String		상태 (WITHDRAWN)					
 data.withdrawnAt			String		탈퇴일시					
 data.dataDeletedAt			String		데이터 삭제 예정일					
@@ -322,33 +309,32 @@ Response 예시 (200 OK)
 미정산 크레딧이 있는 경우 출금 또는 환불 필요										
 30일간 Soft Delete 상태 유지 후 완전 삭제										
 										
-013 GET /users/{userId}										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/users/{userId}			Request Name			사용자 조회	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			사용자 조회			우선순위			P1	
-Path Parameters										
-key			Type		비고					
-userId			Long		Y, 사용자 ID					
-Return										
-key			Type		비고					
-data.userId			Long		사용자 ID					
-data.nickname			String		닉네임					
-data.profileImage			String		프로필 이미지 URL					
-data.brix			Double		당도 점수					
-data.stats.completedChallenges			Integer		완주 챌린지 수					
-data.stats.totalMeetings			Integer		총 모임 참여 수					
-data.commonChallenges			Array		공통 챌린지 목록					
-data.isVerified			Boolean		인증 여부					
-data.createdAt			String		가입일					
-Errors										
-HTTP			코드		메시지					
-404			USER_001		사용자를 찾을 수 없습니다					
-Response 예시 (200 OK)										
-{"success": true, "data": {"userId": 2, "nickname": "김철수", "profileImage": "https://cdn.woorido.com/profiles/2.jpg", "brix": 78.5, "stats": {"completedChallenges": 5, "totalMeetings": 30}, "commonChallenges": [{"challengeId": 1, "name": "책벌레들"}], "isVerified": true, "createdAt": "2025-03-15T10:00:00Z"}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
+013 GET /users/{userId}
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/users/{userId}			Request Name			??? ??
+???						???				
+??			??			Response			Spring
+??			??? ?? ???? ?????.			????			P1
+Path Parameters
+key			Type		??
+userId			String		Y, ??? ID
+Return
+key			Type		??
+data.userId			String		??? ID
+data.nickname			String		???
+data.profileImage			String		??? ??? URL
+data.brix			Double		??? ??
+data.stats.completedChallenges			Integer		?? ??? ?
+data.stats.totalMeetings			Integer		? ?? ?? ?
+data.commonChallenges			Array		?? ??? ??
+data.isVerified			Boolean		?? ??
+data.createdAt			String		???
+Errors
+HTTP			??		???
+404			USER_001		???? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"userId": "usr_2", "nickname": "???", "profileImage": "https://cdn.woorido.com/profiles/usr_2.jpg", "brix": 0.0, "stats": {"completedChallenges": 5, "totalMeetings": 0}, "commonChallenges": [], "isVerified": true, "createdAt": "2025-03-15T10:00:00"}, "timestamp": "2026-02-18T10:30:00Z"}
 014 GET /users/check-nickname										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
@@ -382,8 +368,8 @@ Parameters
 없음										
 Return										
 key			Type		비고					
-data.accountId			Long		어카운트 ID					
-data.userId			Long		사용자 ID					
+data.accountId			String		어카운트 ID					
+data.userId			String		사용자 ID					
 data.balance			Long		총 잔액					
 data.availableBalance			Long		출금 가능 잔액					
 data.lockedBalance			Long		보증금 잠금 금액					
@@ -416,7 +402,7 @@ size			Integer		N, 기본값 20, 페이지 크기
 Return										
 key			Type		비고					
 data.content			Array		거래 내역 목록					
-data.content[].transactionId			Long		거래 ID					
+data.content[].transactionId			String		거래 ID					
 data.content[].type			String		거래 유형					
 data.content[].amount			Long		거래 금액					
 data.content[].balance			Long		거래 후 잔액					
@@ -477,7 +463,7 @@ amount			Long		Y, 결제 금액
 status			String		Y, SUCCESS | FAILED					
 Return										
 key			Type		비고					
-data.transactionId			Long		거래 ID					
+data.transactionId			String		거래 ID					
 data.orderId			String		주문 ID					
 data.amount			Long		충전 금액					
 data.newBalance			Long		충전 후 잔액					
@@ -500,7 +486,7 @@ accountNumber			String		Y, 계좌 번호
 accountHolder			String		Y, 예금주명					
 Return										
 key			Type		비고					
-data.withdrawId			Long		출금 ID					
+data.withdrawId			String		출금 ID					
 data.amount			Long		출금 금액					
 data.fee			Long		수수료 (P-007 정책)					
 data.netAmount			Long		실 수령액					
@@ -530,11 +516,11 @@ Request URI			/accounts/support			Request Name			서포트 수동 납입
 설명			서포트 수동 납입			우선순위			P0	
 Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.transactionId			Long		거래 ID					
-data.challengeId			Long		챌린지 ID					
+data.transactionId			String		거래 ID					
+data.challengeId			String		챌린지 ID					
 data.challengeName			String		챌린지 이름					
 data.amount			Long		납입 금액					
 data.newBalance			Long		납입 후 잔액					
@@ -587,14 +573,13 @@ description			String		Y, 최대 500자, 챌린지 설명
 category			String		Y, ChallengeCategory Enum, 카테고리					
 maxMembers			Integer		Y, 3-30명, 최대 인원					
 supportAmount			Long		Y, 10,000원 이상, 10,000원 단위, 월 서포트 금액					
-depositAmount			Long		Y, 서포트 금액의 1-3배, 보증금					
-supportDay			Integer		Y, 1-28, 월 납입일					
+depositAmount			Long		Y, 서포트 금액과 동일, 보증금					
 startDate			String		Y, YYYY-MM-DD, 최소 7일 후, 시작 예정일					
 thumbnailImage			String		N, URL 형식, 썸네일 이미지					
 rules			String		N, 최대 1000자, 챌린지 규칙					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.name			String		챌린지 이름					
 data.status			String		상태 (RECRUITING)					
 data.memberCount.current			Integer		현재 인원					
@@ -631,7 +616,7 @@ size			Integer		N, 기본값 20, 페이지 크기
 Return										
 key			Type		비고					
 data.content			Array		챌린지 목록					
-data.content[].challengeId			Long		챌린지 ID					
+data.content[].challengeId			String		챌린지 ID					
 data.content[].name			String		챌린지 이름					
 data.content[].description			String		챌린지 설명					
 data.content[].category			String		카테고리					
@@ -655,10 +640,10 @@ Request URI			/challenges/{challengeId}			Request Name			챌린지 상세 조회
 설명			챌린지 상세 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.name			String		챌린지 이름					
 data.description			String		챌린지 설명					
 data.category			String		카테고리					
@@ -692,7 +677,7 @@ Request URI			/challenges/{challengeId}			Request Name			챌린지 수정 (리�
 설명			챌린지 수정 (리더만)			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters										
 key			Type		비고					
 name			String		N, 2-50자, 챌린지 이름					
@@ -702,7 +687,7 @@ rules			String		N, 최대 1000자, 챌린지 규칙
 maxMembers			Integer		N, 현재 인원 이상, 최대 인원 (증가만 가능)					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.name			String		챌린지 이름					
 data.description			String		챌린지 설명					
 data.maxMembers			Integer		최대 인원					
@@ -727,10 +712,10 @@ Request URI			/challenges/{challengeId}			Request Name			챌린지 삭제 (모�
 설명			챌린지 삭제 (모집 중 상태에서만)			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.deleted			Boolean		삭제 성공 여부					
 Errors										
 HTTP			코드		메시지					
@@ -754,7 +739,7 @@ status			String		N, ACTIVE | CLOSED
 Return										
 key			Type		비고					
 data.challenges			Array		챌린지 목록					
-data.challenges[].challengeId			Long		챌린지 ID					
+data.challenges[].challengeId			String		챌린지 ID					
 data.challenges[].name			String		챌린지 이름					
 data.challenges[].status			String		상태					
 data.challenges[].myRole			String		내 역할					
@@ -777,10 +762,10 @@ Request URI			/challenges/{challengeId}/account			Request Name			챌린지 어�
 설명			챌린지 어카운트 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.balance			Long		잔액					
 data.lockedDeposits			Long		잠금 보증금					
 data.availableBalance			Long		사용 가능 잔액					
@@ -803,13 +788,13 @@ Request URI			/challenges/{challengeId}/support/settings			Request Name			자동
 설명			자동 납입 설정			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters										
 key			Type		비고					
 autoPayEnabled			Boolean		Y, 자동 납입 활성화 여부					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.autoPayEnabled			Boolean		자동 납입 활성화 여부					
 data.nextPaymentDate			String		다음 납입일					
 data.amount			Long		납입 금액					
@@ -831,11 +816,11 @@ Request URI			/challenges/{challengeId}/join			Request Name			챌린지 가입
 설명			챌린지 가입			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.memberId			Long		멤버 ID					
-data.challengeId			Long		챌린지 ID					
+data.memberId			String		멤버 ID					
+data.challengeId			String		챌린지 ID					
 data.challengeName			String		챌린지 이름					
 data.role			String		역할 (FOLLOWER)					
 data.status			String		상태 (ACTIVE)					
@@ -869,10 +854,10 @@ Request URI			/challenges/{challengeId}/leave			Request Name			챌린지 탈퇴
 설명			챌린지 탈퇴			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.challengeName			String		챌린지 이름					
 data.refund.deposit			Long		원래 보증금					
 data.refund.deducted			Long		미납으로 차감된 금액					
@@ -896,14 +881,14 @@ Request URI			/challenges/{challengeId}/members			Request Name			멤버 목록 �
 설명			멤버 목록 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Query Parameters										
 key			Type		비고					
 status			String		N, ACTIVE | OVERDUE | GRACE_PERIOD					
 Return										
 key			Type		비고					
 data.members			Array		멤버 목록					
-data.members[].memberId			Long		멤버 ID					
+data.members[].memberId			String		멤버 ID					
 data.members[].user			Object		사용자 정보					
 data.members[].role			String		역할					
 data.members[].status			String		상태					
@@ -927,11 +912,11 @@ Request URI			/challenges/{challengeId}/members/{memberId}			Request Name			멤�
 설명			멤버 상세 조회			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-memberId			Long		Y, 멤버 ID					
+challengeId			String		Y, 챌린지 ID					
+memberId			String		Y, 멤버 ID					
 Return										
 key			Type		비고					
-data.memberId			Long		멤버 ID					
+data.memberId			String		멤버 ID					
 data.user			Object		사용자 정보					
 data.role			String		역할					
 data.status			String		상태					
@@ -954,13 +939,13 @@ Request URI			/challenges/{challengeId}/delegate			Request Name			리더 위임
 설명			리더 위임			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters										
 key			Type		비고					
-targetMemberId			Long		Y, 위임받을 멤버 ID					
+targetMemberId			String		Y, 위임받을 멤버의 userID					
 Parameters										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.previousLeader			Object		이전 리더 정보					
 data.newLeader			Object		새 리더 정보					
 data.delegatedAt			String		위임일시					
@@ -984,7 +969,7 @@ Request URI			/challenges/{challengeId}/meetings			Request Name			모임 목록 
 설명			모임 목록 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Query Parameters										
 key			Type		비고					
 status			String		N, MeetingStatus Enum					
@@ -993,14 +978,13 @@ size			Integer		N, 기본값 20, 페이지 크기
 Return										
 key			Type		비고					
 data.content			Array		모임 목록					
-data.content[].meetingId			Long		모임 ID					
+data.content[].meetingId			String		모임 ID					
 data.content[].title			String		모임 제목					
 data.content[].description			String		모임 설명					
 data.content[].status			String		상태					
-data.content[].scheduledAt			String		예정 일시					
+data.content[].meetingDate			String		모임 일시					
 data.content[].location			String		장소					
 data.content[].attendance			Object		참석 정보					
-data.content[].beneficiary			Object		베네핏 수령자 정보					
 data.content[].createdAt			String		생성일					
 data.page			Object		페이지 정보					
 Errors										
@@ -1008,7 +992,33 @@ HTTP			코드		메시지
 403			CHALLENGE_003		챌린지 멤버가 아닙니다					
 404			CHALLENGE_001		챌린지를 찾을 수 없습니다					
 Response 예시 (200 OK)										
-{"success": true, "data": {"content": [{"meetingId": 1, "title": "1월 정기모임", "description": "신년 계획 공유", "status": "COMPLETED", "scheduledAt": "2026-01-15T14:00:00Z", "location": "강남역 스타벅스", "attendance": {"confirmed": 8, "total": 10}, "beneficiary": {"userId": 3, "nickname": "박영수"}, "createdAt": "2026-01-01T10:00:00Z"}], "page": {"number": 0, "size": 20, "totalElements": 12, "totalPages": 1}}, "timestamp": "2026-01-14T10:30:00Z"}										
+{
+   "success": true,
+   "data": {
+     "content": [
+       {
+         "meetingId": 1,
+         "title": "1월 정기모임",
+         "description": "신년 계획 공유",
+         "status": "COMPLETED",
+         "meetingDate": "2026-01-15T14:00:00Z",
+         "location": "강남역 스타벅스",
+         "attendance": {
+           "confirmed": 8,
+           "total": 10
+         },
+         "createdAt": "2026-01-01T10:00:00Z"
+       }
+     ],
+     "page": {
+       "number": 0,
+       "size": 20,
+       "totalElements": 12,
+       "totalPages": 1
+     }
+   },
+   "timestamp": "2026-01-14T10:30:00Z"
+ }										
 										
 036 GET /meetings/{meetingId}										
 Document No :				Version :		1.0.0		Date :		2026-01-15
@@ -1019,22 +1029,19 @@ Request URI			/meetings/{meetingId}			Request Name			모임 상세 조회
 설명			모임 상세 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-meetingId			Long		Y, 모임 ID					
+meetingId			String		Y, 모임 ID					
 Return										
 key			Type		비고					
-data.meetingId			Long		모임 ID					
-data.challengeId			Long		챌린지 ID					
+data.meetingId			String		모임 ID					
+data.challengeId			String		챌린지 ID					
 data.title			String		모임 제목					
 data.description			String		모임 설명					
 data.status			String		상태					
-data.scheduledAt			String		예정 일시					
+data.meetingDate			String		예정 일시					
 data.location			String		장소					
 data.locationDetail			String		상세 위치					
-data.agenda			String		안건					
 data.attendance			Object		참석 정보					
-data.myAttendance			Object		내 참석 정보					
-data.beneficiary			Object		베네핏 수령자 정보					
-data.benefitAmount			Long		베네핏 금액					
+data.myAttendance			Object		내 참석 정보 (없으면 null)					
 data.createdBy			Object		생성자 정보					
 data.createdAt			String		생성일					
 Errors										
@@ -1042,7 +1049,7 @@ HTTP			코드		메시지
 403			CHALLENGE_003		챌린지 멤버가 아닙니다					
 404			MEETING_001		모임을 찾을 수 없습니다					
 Response 예시 (200 OK)										
-{"success": true, "data": {"meetingId": 1, "challengeId": 1, "title": "1월 정기모임", "description": "신년 계획 공유 및 독서 목표 설정", "status": "SCHEDULED", "scheduledAt": "2026-01-15T14:00:00Z", "location": "강남역 스타벅스", "locationDetail": "2층 세미나룸", "agenda": "1. 신년 인사\n2. 독서 목표 공유\n3. 다음 모임 일정", "attendance": {"confirmed": 8, "declined": 1, "pending": 1, "total": 10}, "myAttendance": {"status": "CONFIRMED", "respondedAt": "2026-01-10T10:00:00Z"}, "beneficiary": {"userId": 3, "nickname": "박영수", "order": 3}, "benefitAmount": 500000, "createdBy": {"userId": 1, "nickname": "홍길동"}, "createdAt": "2026-01-01T10:00:00Z"}, "timestamp": "2026-01-14T10:30:00Z"}										
+{   "success": true,   "data": {     "meetingId": 1,     "challengeId": 1,     "title": "1월 정기모임",     "description": "신년 계획 공유 및 독서 목표 설정",     "status": "SCHEDULED",     "meetingDate": "2026-01-15T14:00:00Z",     "location": "강남역 스타벅스",     "locationDetail": "2층 세미나룸",     "attendance": {       "confirmed": 8,       "declined": 1,       "pending": 1,       "total": 10     },     "myAttendance": {       "status": "CONFIRMED",       "respondedAt": "2026-01-10T10:00:00Z"     },     "createdBy": {       "userId": 1,       "nickname": "홍길동"     },     "createdAt": "2026-01-01T10:00:00Z"   },   "timestamp": "2026-01-14T10:30:00Z" }										
 										
 037 POST /challenges/{challengeId}/meetings										
 Document No :				Version :		1.0.0		Date :		2026-01-15
@@ -1053,22 +1060,20 @@ Request URI			/challenges/{challengeId}/meetings			Request Name			모임 생성 
 설명			모임 생성 (리더만)			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters										
 key			Type		비고					
 title			String		Y, 최대 100자, 모임 제목					
 description			String		N, 최대 500자, 모임 설명					
-scheduledAt			String		Y, ISO 8601, 최소 24시간 후, 예정 일시					
+meetingDate			String		Y, ISO 8601, 최소 24시간 후, 예정 일시					
 location			String		Y, 최대 200자, 장소					
 locationDetail			String		N, 최대 200자, 상세 위치					
-agenda			String		N, 최대 1000자, 안건					
 Return										
 key			Type		비고					
-data.meetingId			Long		모임 ID					
+data.meetingId			String		모임 ID					
 data.title			String		모임 제목					
 data.status			String		상태					
-data.scheduledAt			String		예정 일시					
-data.beneficiary			Object		베네핏 수령자 정보					
+data.meetingDate			String		예정 일시					
 data.createdAt			String		생성일시					
 Errors										
 HTTP			코드		메시지					
@@ -1076,11 +1081,23 @@ HTTP			코드		메시지
 403			CHALLENGE_004		리더만 모임을 생성할 수 있습니다					
 404			CHALLENGE_001		챌린지를 찾을 수 없습니다					
 Request 예시										
-{"title": "2월 정기모임", "description": "2월 독서 결산 및 공유", "scheduledAt": "2026-02-15T14:00:00Z", "location": "강남역 스타벅스", "locationDetail": "2층 세미나룸", "agenda": "1. 2월 독서 결산\n2. 베스트 도서 선정\n3. 3월 계획"}										
+{"title": "2월 정기모임", "description": "2월 독서 결산 및 공유", "meetingDate": "2026-02-15T14:00:00Z", "location": "강남역 스타벅스", "locationDetail": "2층 세미나룸"}										
 Response 예시 (201 Created)										
-{"success": true, "data": {"meetingId": 2, "title": "2월 정기모임", "status": "SCHEDULED", "scheduledAt": "2026-02-15T14:00:00Z", "beneficiary": {"userId": 4, "nickname": "최민수", "order": 4}, "createdAt": "2026-01-14T10:30:00Z"}, "message": "모임이 생성되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
+{
+   "success": true,
+   "data": {
+     "meetingId": 2,
+     "title": "2월 정기모임",
+     "status": "SCHEDULED",
+     "meetingDate": "2026-02-15T14:00:00Z",
+     "location": "강남역 스타벅스",
+     "locationDetail": "2층 세미나룸",
+     "createdAt": "2026-01-14T10:30:00Z"
+   },
+   "message": "모임이 생성되었습니다",
+   "timestamp": "2026-01-14T10:30:00Z"
+ }										
 비고										
-베네핏 수령자는 순번에 따라 자동 지정										
 모임 생성 시 참석 투표가 자동 시작										
 										
 038 PUT /meetings/{meetingId}										
@@ -1092,20 +1109,21 @@ Request URI			/meetings/{meetingId}			Request Name			모임 수정 (리더만)
 설명			모임 수정 (리더만)			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-meetingId			Long		Y, 모임 ID					
+meetingId			String		Y, 모임 ID					
 Parameters										
 key			Type		비고					
 title			String		N, 모임 제목					
 description			String		N, 모임 설명					
-scheduledAt			String		N, 예정 일시					
+meetingDate			String		N, 예정 일시 (구 scheduledAt)					
 location			String		N, 장소					
 locationDetail			String		N, 상세 위치					
-agenda			String		N, 안건					
 Return										
 key			Type		비고					
-data.meetingId			Long		모임 ID					
+data.meetingId			String		모임 ID					
 data.title			String		모임 제목					
-data.scheduledAt			String		예정 일시					
+data.meetingDate			String		예정 일시					
+data.location			String		장소					
+data.locationDetail			String		상세 위치					
 data.updatedAt			String		수정일시					
 Errors										
 HTTP			코드		메시지					
@@ -1113,7 +1131,19 @@ HTTP			코드		메시지
 403			CHALLENGE_004		리더만 모임을 수정할 수 있습니다					
 404			MEETING_001		모임을 찾을 수 없습니다					
 Response 예시 (200 OK)										
-{"success": true, "data": {"meetingId": 2, "title": "2월 정기모임 (수정)", "scheduledAt": "2026-02-16T14:00:00Z", "updatedAt": "2026-01-14T10:30:00Z"}, "message": "모임 정보가 수정되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
+{
+   "success": true,
+   "data": {
+     "meetingId": 2,
+     "title": "2월 정기모임 (수정)",
+     "meetingDate": "2026-02-16T14:00:00Z",
+     "location": "강남역 스타벅스",
+     "locationDetail": "3층 회의실",
+     "updatedAt": "2026-01-14T10:30:00Z"
+   },
+   "message": "모임 정보가 수정되었습니다",
+   "timestamp": "2026-01-14T10:30:00Z"
+ }										
 										
 039 POST /meetings/{meetingId}/attendance										
 Document No :				Version :		1.0.0		Date :		2026-01-15
@@ -1124,14 +1154,14 @@ Request URI			/meetings/{meetingId}/attendance			Request Name			참석 의사 �
 설명			참석 의사 표시			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-meetingId			Long		Y, 모임 ID					
+meetingId			String		Y, 모임 ID					
 Parameters										
 key			Type		비고					
 status			String		Y, CONFIRMED | DECLINED, 참석 여부					
 reason			String		N, 최대 200자, 불참 사유 (불참 시)					
 Return										
 key			Type		비고					
-data.meetingId			Long		모임 ID					
+data.meetingId			String		모임 ID					
 data.myAttendance			Object		내 참석 정보					
 data.attendance			Object		전체 참석 정보					
 Errors										
@@ -1153,17 +1183,15 @@ Request URI			/meetings/{meetingId}/complete			Request Name			모임 완료 처�
 설명			모임 완료 처리 (리더만)			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-meetingId			Long		Y, 모임 ID					
+meetingId			String		Y, 모임 ID					
 Parameters										
 key			Type		비고					
-actualAttendees			Long[]		Y, 실제 참석자 userId 배열					
-notes			String		N, 모임 메모					
+actualAttendees			Array (String[])		Y, 실제 참석자 userId 배열					
 Return										
 key			Type		비고					
-data.meetingId			Long		모임 ID					
-data.status			String		상태					
-data.attendance			Object		참석 정보					
-data.benefit			Object		베네핏 정보					
+data.meetingId			String		모임 ID					
+data.status			String		상태 (COMPLETED)					
+data.attendance			Object		참석 통계 (actual, total, rate)					
 data.completedAt			String		완료일시					
 Errors										
 HTTP			코드		메시지					
@@ -1172,9 +1200,23 @@ HTTP			코드		메시지
 403			CHALLENGE_004		리더만 완료 처리할 수 있습니다					
 404			MEETING_001		모임을 찾을 수 없습니다					
 Request 예시										
-{"actualAttendees": [1, 2, 3, 4, 5, 6, 7, 8], "notes": "성공적인 모임이었습니다."}										
+{"actualAttendees": [1, 2, 3, 4, 5, 6, 7, 8]}										
 Response 예시 (200 OK)										
-{"success": true, "data": {"meetingId": 1, "status": "COMPLETED", "attendance": {"actual": 8, "total": 10, "rate": 80.0}, "benefit": {"beneficiary": {"userId": 3, "nickname": "박영수"}, "amount": 500000, "transferredAt": "2026-01-14T10:30:00Z"}, "completedAt": "2026-01-14T10:30:00Z"}, "message": "모임이 완료 처리되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
+{
+   "success": true,
+   "data": {
+     "meetingId": 1,
+     "status": "COMPLETED",
+     "attendance": {
+       "actual": 8,
+       "total": 10,
+       "rate": 80.0
+     },
+     "completedAt": "2026-01-14T10:30:00Z"
+   },
+   "message": "모임이 완료 처리되었습니다",
+   "timestamp": "2026-01-14T10:30:00Z"
+ }										
 										
 041 GET /challenges/{challengeId}/votes										
 Document No :				Version :		1.0.0		Date :		2026-01-15
@@ -1185,7 +1227,7 @@ Request URI			/challenges/{challengeId}/votes			Request Name			투표 목록 조
 설명			투표 목록 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Query Parameters										
 key			Type		비고					
 status			String		N, VoteStatus Enum					
@@ -1195,7 +1237,7 @@ size			Integer		N, 기본값 20, 페이지 크기
 Return										
 key			Type		비고					
 data.content			Array		투표 목록					
-data.content[].voteId			Long		투표 ID					
+data.content[].voteId			String		투표 ID					
 data.content[].type			String		투표 유형					
 data.content[].title			String		투표 제목					
 data.content[].status			String		상태					
@@ -1220,11 +1262,11 @@ Request URI			/votes/{voteId}			Request Name			투표 상세 조회
 설명			투표 상세 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-voteId			Long		Y, 투표 ID					
+voteId			String		Y, 투표 ID					
 Return										
 key			Type		비고					
-data.voteId			Long		투표 ID					
-data.challengeId			Long		챌린지 ID					
+data.voteId			String		투표 ID					
+data.challengeId			String		챌린지 ID					
 data.type			String		투표 유형 (VoteType)					
 data.title			String		투표 제목					
 data.description			String		투표 설명					
@@ -1253,17 +1295,17 @@ Request URI			/challenges/{challengeId}/votes			Request Name			투표 생성
 설명			투표 생성			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters										
 key			Type		비고					
 type			String		Y, VoteType Enum, 투표 유형					
 title			String		Y, 최대 100자, 투표 제목					
 description			String		N, 최대 500자, 투표 설명					
-targetId			Long		N, 대상 ID (지출ID/멤버ID)					
+targetId			String		N, 대상 ID (지출ID/멤버ID)					
 deadline			String		Y, ISO 8601, 최소 24시간 후, 마감 시간					
 Return										
 key			Type		비고					
-data.voteId			Long		투표 ID					
+data.voteId			String		투표 ID					
 data.type			String		투표 유형					
 data.title			String		투표 제목					
 data.status			String		상태					
@@ -1291,13 +1333,13 @@ Request URI			/votes/{voteId}/cast			Request Name			투표하기
 설명			투표하기			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-voteId			Long		Y, 투표 ID					
+voteId			String		Y, 투표 ID					
 Parameters										
 key			Type		비고					
 choice			String		Y, AGREE | DISAGREE | ABSTAIN, 투표 선택					
 Return										
 key			Type		비고					
-data.voteId			Long		투표 ID					
+data.voteId			String		투표 ID					
 data.myVote			String		내 투표 선택					
 data.voteCount			Object		투표 현황					
 data.votedAt			String		투표일시					
@@ -1313,33 +1355,35 @@ Request 예시
 Response 예시 (200 OK)										
 {"success": true, "data": {"voteId": 1, "myVote": "AGREE", "voteCount": {"agree": 6, "disagree": 2, "abstain": 1, "notVoted": 1, "total": 10}, "votedAt": "2026-01-14T10:30:00Z"}, "message": "투표가 완료되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
 										
-045 GET /votes/{voteId}/result										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/votes/{voteId}/result			Request Name			투표 결과 조회	
-작성자						작성일				
-인증			필요 (멤버)			Response			Spring	
-설명			투표 결과 조회			우선순위			P1	
-Path Parameters										
-key			Type		비고					
-voteId			Long		Y, 투표 ID					
-Return										
-key			Type		비고					
-data.voteId			Long		투표 ID					
-data.type			String		투표 유형					
-data.title			String		투표 제목					
-data.status			String		상태					
-data.result			Object		투표 결과 정보					
-data.voters			Array		투표자 목록					
-data.completedAt			String		완료일시					
-Errors										
-HTTP			코드		메시지					
-400			VOTE_007		아직 진행 중인 투표입니다					
-403			VOTE_003		투표 조회 권한이 없습니다					
-404			VOTE_001		투표를 찾을 수 없습니다					
-Response 예시 (200 OK)										
-{"success": true, "data": {"voteId": 1, "type": "EXPENSE", "title": "회식비 30만원 지출 승인", "status": "APPROVED", "result": {"passed": true, "agree": 8, "disagree": 1, "abstain": 1, "notVoted": 0, "total": 10, "requiredApproval": 7, "approvalRate": 80.0}, "voters": [{"userId": 1, "nickname": "홍길동", "choice": "AGREE", "votedAt": "2026-01-14T11:00:00Z"}], "completedAt": "2026-01-15T23:59:59Z"}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
+045 GET /votes/{voteId}/result
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/votes/{voteId}/result			Request Name			?? ?? ??
+???						???				
+??			?? (??)			Response			Spring
+??			??? ??? ??? ?????.			????			P1
+Path Parameters
+key			Type		??
+voteId			String		Y, ?? ID
+Return
+key			Type		??
+data.voteId			String		?? ID
+data.type			String		?? ??
+data.status			String		?? ??
+data.voteCount.agree			Integer		?? ?
+data.voteCount.disagree			Integer		?? ?
+data.voteCount.total			Integer		? ?? ?
+data.eligibleVoters			Integer		?? ?? ??
+data.requiredApproval			Integer		?? ???
+data.passed			Boolean		?? ??
+data.approvalRate			Double		???
+Errors
+HTTP			??		???
+400			VOTE_007		?? ?? ?? ?????
+403			VOTE_003		?? ?? ??? ????
+404			VOTE_001		??? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"voteId": "vote_1", "type": "EXPENSE", "status": "APPROVED", "voteCount": {"agree": 8, "disagree": 1, "total": 9}, "eligibleVoters": 10, "requiredApproval": 7, "passed": true, "approvalRate": 88.8889}, "timestamp": "2026-02-18T10:30:00Z"}
 046 GET /challenges/{challengeId}/expenses										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
@@ -1349,7 +1393,7 @@ Request URI			/challenges/{challengeId}/expenses			Request Name			지출 내역 
 설명			지출 내역 목록 조회			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Query Parameters										
 key			Type		비고					
 page			Integer		N, 기본값 0, 페이지 번호					
@@ -1361,7 +1405,7 @@ endDate			String		N, 조회 종료일 (YYYY-MM-DD)
 Return										
 key			Type		비고					
 data.content			Array		지출 내역 목록					
-data.content[].expenseId			Long		지출 ID					
+data.content[].expenseId			String		지출 ID					
 data.content[].title			String		지출 제목					
 data.content[].amount			Long		지출 금액					
 data.content[].category			String		카테고리					
@@ -1388,11 +1432,11 @@ Request URI			/challenges/{challengeId}/expenses/{expenseId}			Request Name			�
 설명			지출 내역 상세 조회			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-expenseId			Long		Y, 지출 ID					
+challengeId			String		Y, 챌린지 ID					
+expenseId			String		Y, 지출 ID					
 Return										
 key			Type		비고					
-data.expenseId			Long		지출 ID					
+data.expenseId			String		지출 ID					
 data.title			String		지출 제목					
 data.description			String		지출 설명					
 data.amount			Long		지출 금액					
@@ -1421,7 +1465,7 @@ Request URI			/challenges/{challengeId}/expenses			Request Name			지출 내역 
 설명			지출 내역 등록			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters										
 key			Type		비고					
 title			String		Y, 2~100자, 지출 제목					
@@ -1431,7 +1475,7 @@ category			String		Y, MEETING|FOOD|SUPPLIES|OTHER, 카테고리
 receiptUrl			String		N, URL 형식, 영수증 이미지 URL					
 Return										
 key			Type		비고					
-data.expenseId			Long		지출 ID					
+data.expenseId			String		지출 ID					
 data.title			String		지출 제목					
 data.amount			Long		지출 금액					
 data.category			String		카테고리					
@@ -1457,15 +1501,15 @@ Request URI			/challenges/{challengeId}/expenses/{expenseId}/approve			Request N
 설명			지출 승인/거절			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-expenseId			Long		Y, 지출 ID					
+challengeId			String		Y, 챌린지 ID					
+expenseId			String		Y, 지출 ID					
 Parameters										
 key			Type		비고					
 approved			Boolean		Y, 승인/거절 여부					
 reason			String		조건부, 최대 500자, 거절 시 필수					
 Return										
 key			Type		비고					
-data.expenseId			Long		지출 ID					
+data.expenseId			String		지출 ID					
 data.status			String		상태					
 data.processedBy			Object		처리자 정보					
 data.processedAt			String		처리일시					
@@ -1491,8 +1535,8 @@ Request URI			/challenges/{challengeId}/expenses/{expenseId}			Request Name			�
 설명			지출 수정			우선순위			P2	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-expenseId			Long		Y, 지출 ID					
+challengeId			String		Y, 챌린지 ID					
+expenseId			String		Y, 지출 ID					
 Parameters										
 key			Type		비고					
 title			String		N, 2~100자, 지출 제목					
@@ -1502,7 +1546,7 @@ category			String		N, 유효한 카테고리, 카테고리
 receiptUrl			String		N, URL 형식, 영수증 URL					
 Return										
 key			Type		비고					
-data.expenseId			Long		지출 ID					
+data.expenseId			String		지출 ID					
 data.title			String		지출 제목					
 data.amount			Long		지출 금액					
 data.description			String		지출 설명					
@@ -1527,11 +1571,11 @@ Request URI			/challenges/{challengeId}/expenses/{expenseId}			Request Name			�
 설명			지출 삭제			우선순위			P2	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-expenseId			Long		Y, 지출 ID					
+challengeId			String		Y, 챌린지 ID					
+expenseId			String		Y, 지출 ID					
 Return										
 key			Type		비고					
-data.expenseId			Long		지출 ID					
+data.expenseId			String		지출 ID					
 data.deletedAt			String		삭제일시					
 Errors										
 HTTP			코드		메시지					
@@ -1550,7 +1594,7 @@ Request URI			/challenges/{challengeId}/ledger			Request Name			장부 조회
 설명			장부 조회			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Query Parameters										
 key			Type		비고					
 page			Integer		N, 기본값 0, 페이지 번호					
@@ -1566,7 +1610,7 @@ data.summary.totalExpense			Long		총 지출
 data.summary.balance			Long		잔액					
 data.summary.memberCount			Integer		멤버 수					
 data.entries			Array		장부 항목 목록					
-data.entries[].entryId			Long		항목 ID					
+data.entries[].entryId			String		항목 ID					
 data.entries[].type			String		유형 (INCOME/EXPENSE)					
 data.entries[].category			String		카테고리					
 data.entries[].amount			Long		금액					
@@ -1591,7 +1635,7 @@ Request URI			/challenges/{challengeId}/ledger/export			Request Name			장부 �
 설명			장부 내보내기			우선순위			P2	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Query Parameters										
 key			Type		비고					
 format			String		N, 기본값 CSV, CSV | EXCEL | PDF					
@@ -1619,7 +1663,7 @@ Request URI			/challenges/{challengeId}/posts			Request Name			게시글 목록 
 설명			게시글 목록 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Query Parameters										
 key			Type		비고					
 page			Integer		N, 기본값 0, 페이지 번호					
@@ -1630,7 +1674,7 @@ order			String		N, 기본값 DESC, DESC | ASC
 Return										
 key			Type		비고					
 data.content			Array		게시글 목록					
-data.content[].postId			Long		게시글 ID					
+data.content[].postId			String		게시글 ID					
 data.content[].title			String		제목					
 data.content[].content			String		내용					
 data.content[].category			String		카테고리					
@@ -1658,11 +1702,11 @@ Request URI			/challenges/{challengeId}/posts/{postId}			Request Name			게시�
 설명			게시글 상세 조회			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
 Return										
 key			Type		비고					
-data.postId			Long		게시글 ID					
+data.postId			String		게시글 ID					
 data.title			String		제목					
 data.content			String		내용					
 data.category			String		카테고리					
@@ -1691,7 +1735,7 @@ Request URI			/challenges/{challengeId}/posts			Request Name			게시글 작성
 설명			게시글 작성			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters										
 key			Type		비고					
 title			String		Y, 2~100자, 게시글 제목					
@@ -1700,7 +1744,7 @@ category			String		Y, NOTICE|GENERAL|QUESTION, 카테고리
 attachmentIds			Array		N, 최대 10개, 첨부파일 ID 목록					
 Return										
 key			Type		비고					
-data.postId			Long		게시글 ID					
+data.postId			String		게시글 ID					
 data.title			String		제목					
 data.category			String		카테고리					
 data.author			Object		작성자 정보					
@@ -1724,8 +1768,8 @@ Request URI			/challenges/{challengeId}/posts/{postId}			Request Name			게시�
 설명			게시글 수정			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
 Parameters										
 key			Type		비고					
 title			String		N, 2~100자, 게시글 제목					
@@ -1734,7 +1778,7 @@ category			String		N, GENERAL|QUESTION, 카테고리
 attachmentIds			Array		N, 최대 10개, 첨부파일 ID 목록					
 Return										
 key			Type		비고					
-data.postId			Long		게시글 ID					
+data.postId			String		게시글 ID					
 data.title			String		제목					
 data.content			String		내용					
 data.updatedAt			String		수정일시					
@@ -1756,11 +1800,11 @@ Request URI			/challenges/{challengeId}/posts/{postId}			Request Name			게시�
 설명			게시글 삭제			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
 Return										
 key			Type		비고					
-data.postId			Long		게시글 ID					
+data.postId			String		게시글 ID					
 data.deletedAt			String		삭제일시					
 Errors										
 HTTP			코드		메시지					
@@ -1778,11 +1822,11 @@ Request URI			/challenges/{challengeId}/posts/{postId}/like			Request Name			게
 설명			게시글 좋아요			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
 Return										
 key			Type		비고					
-data.postId			Long		게시글 ID					
+data.postId			String		게시글 ID					
 data.liked			Boolean		좋아요 상태					
 data.likeCount			Integer		좋아요 수					
 Errors										
@@ -1804,14 +1848,14 @@ Request URI			/challenges/{challengeId}/posts/{postId}/pin			Request Name			게�
 설명			게시글 상단 고정/해제			우선순위			P2	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
 Parameters										
 key			Type		비고					
 pinned			Boolean		Y, 고정/해제 여부					
 Return										
 key			Type		비고					
-data.postId			Long		게시글 ID					
+data.postId			String		게시글 ID					
 data.isPinned			Boolean		고정 상태					
 data.pinnedAt			String		고정일시					
 Errors										
@@ -1833,13 +1877,13 @@ Request URI			/challenges/{challengeId}/posts/upload			Request Name			파일 업
 설명			파일 업로드			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Parameters (multipart/form-data)										
 key			Type		비고					
 file			File		Y, 최대 10MB, 업로드할 파일					
 Return										
 key			Type		비고					
-data.fileId			Long		파일 ID					
+data.fileId			String		파일 ID					
 data.fileName			String		파일명					
 data.fileUrl			String		파일 URL					
 data.fileSize			Long		파일 크기 (bytes)					
@@ -1865,12 +1909,12 @@ Query Parameters
 key			Type		비고					
 page			Integer		N, 기본값 0, 페이지 번호					
 size			Integer		N, 기본값 20, 페이지 크기					
-challengeId			Long		N, 특정 챌린지 필터					
+challengeId			String		N, 특정 챌린지 필터					
 Return										
 key			Type		비고					
 data.content			Array		게시글 목록					
-data.content[].postId			Long		게시글 ID					
-data.content[].challengeId			Long		챌린지 ID					
+data.content[].postId			String		게시글 ID					
+data.content[].challengeId			String		챌린지 ID					
 data.content[].challengeTitle			String		챌린지 제목					
 data.content[].title			String		게시글 제목					
 data.content[].likeCount			Integer		좋아요 수					
@@ -1881,43 +1925,36 @@ data.totalPages			Integer		전체 페이지 수
 Response 예시 (200 OK)										
 {"success": true, "data": {"content": [{"postId": 24, "challengeId": 1, "challengeTitle": "2026 저축 챌린지", "title": "저축 꿀팁 공유합니다!", "likeCount": 5, "commentCount": 3, "createdAt": "2026-01-14T10:30:00Z"}], "totalElements": 8, "totalPages": 1, "number": 0, "size": 20}, "timestamp": "2026-01-14T10:30:00Z"}										
 										
-063 GET /challenges/{challengeId}/posts/{postId}/comments										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/challenges/{challengeId}/posts/{postId}/comments			Request Name			댓글 목록 조회	
-작성자						작성일				
-인증			필요 (멤버)			Response			Spring	
-설명			댓글 목록 조회			우선순위			P0	
-Path Parameters										
-key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
-Query Parameters										
-key			Type		비고					
-page			Integer		N, 기본값 0, 페이지 번호					
-size			Integer		N, 기본값 50, 페이지 크기					
-Return										
-key			Type		비고					
-data.content			Array		댓글 목록					
-data.content[].commentId			Long		댓글 ID					
-data.content[].content			String		댓글 내용					
-data.content[].author			Object		작성자 정보					
-data.content[].likeCount			Integer		좋아요 수					
-data.content[].isLiked			Boolean		내 좋아요 여부					
-data.content[].replies			Array		대댓글 목록					
-data.content[].replyCount			Integer		대댓글 수					
-data.content[].createdAt			String		작성일					
-data.content[].updatedAt			String		수정일					
-data.content[].isDeleted			Boolean		삭제 여부					
-data.totalElements			Integer		전체 개수					
-data.totalPages			Integer		전체 페이지 수					
-Errors										
-HTTP			코드		메시지					
-403			MEMBER_001		챌린지에 참여하지 않았습니다					
-404			POST_001		게시글을 찾을 수 없습니다					
-Response 예시 (200 OK)										
-{"success": true, "data": {"content": [{"commentId": 1, "content": "좋은 정보 감사합니다!", "author": {"userId": 2, "nickname": "김모임", "profileImage": "https://cdn.woorido.com/profiles/2.jpg"}, "likeCount": 2, "isLiked": false, "replies": [{"commentId": 3, "content": "저도 동의해요~", "author": {"userId": 4, "nickname": "이절약"}, "likeCount": 0, "isLiked": false, "createdAt": "2026-01-14T11:00:00Z"}], "replyCount": 1, "createdAt": "2026-01-14T10:35:00Z", "updatedAt": "2026-01-14T10:35:00Z", "isDeleted": false}], "totalElements": 5, "totalPages": 1, "number": 0, "size": 50}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
+063 GET /challenges/{challengeId}/posts/{postId}/comments
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/challenges/{challengeId}/posts/{postId}/comments			Request Name			?? ?? ??
+???						???				
+??			?? (??)			Response			Spring
+??			?? ??? ????? (?? ?? page/size ??).			????			P1
+Path Parameters
+key			Type		??
+challengeId			String		Y, ??? ID
+postId			String		Y, ??? ID
+Query Parameters
+key			Type		??
+page			Integer		N, ??? 0
+size			Integer		N, ??? 50
+Return
+key			Type		??
+data			Array		?? ??
+data[].id			String		?? ID
+data[].content			String		?? ??
+data[].author			Object		??? ??
+data[].likeCount			Integer		??? ?
+data[].parentId			String		?? ?? ID
+data[].replies			Array		??? ??
+Errors
+HTTP			??		???
+403			MEMBER_001		???? ???? ?????
+404			POST_001		???? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": [{"id": "cmt_1", "content": "?? ?? ?????", "author": {"userId": "usr_2", "nickname": "???"}, "likeCount": 2, "parentId": null, "replies": []}], "timestamp": "2026-02-18T10:30:00Z"}
 064 POST /challenges/{challengeId}/posts/{postId}/comments										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
@@ -1927,18 +1964,18 @@ Request URI			/challenges/{challengeId}/posts/{postId}/comments			Request Name		
 설명			댓글 작성			우선순위			P0	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
 Parameters										
 key			Type		비고					
 content			String		Y, 1~1000자, 댓글 내용					
-parentCommentId			Long		N, 대댓글인 경우 부모 댓글 ID					
+parentCommentId			String		N, 대댓글인 경우 부모 댓글 ID					
 Return										
 key			Type		비고					
-data.commentId			Long		댓글 ID					
+data.commentId			String		댓글 ID					
 data.content			String		댓글 내용					
 data.author			Object		작성자 정보					
-data.parentCommentId			Long		부모 댓글 ID					
+data.parentCommentId			String		부모 댓글 ID					
 data.createdAt			String		작성일시					
 Errors										
 HTTP			코드		메시지					
@@ -1961,15 +1998,15 @@ Request URI			/challenges/{challengeId}/posts/{postId}/comments/{commentId}			Re
 설명			댓글 수정			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
-commentId			Long		Y, 댓글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
+commentId			String		Y, 댓글 ID					
 Parameters										
 key			Type		비고					
 content			String		Y, 1~1000자, 수정할 내용					
 Return										
 key			Type		비고					
-data.commentId			Long		댓글 ID					
+data.commentId			String		댓글 ID					
 data.content			String		댓글 내용					
 data.updatedAt			String		수정일시					
 Errors										
@@ -1990,12 +2027,12 @@ Request URI			/challenges/{challengeId}/posts/{postId}/comments/{commentId}			Re
 설명			댓글 삭제			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
-commentId			Long		Y, 댓글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
+commentId			String		Y, 댓글 ID					
 Return										
 key			Type		비고					
-data.commentId			Long		댓글 ID					
+data.commentId			String		댓글 ID					
 data.deletedAt			String		삭제일시					
 Errors										
 HTTP			코드		메시지					
@@ -2016,12 +2053,12 @@ Request URI			/challenges/{challengeId}/posts/{postId}/comments/{commentId}/like
 설명			댓글 좋아요			우선순위			P2	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-postId			Long		Y, 게시글 ID					
-commentId			Long		Y, 댓글 ID					
+challengeId			String		Y, 챌린지 ID					
+postId			String		Y, 게시글 ID					
+commentId			String		Y, 댓글 ID					
 Return										
 key			Type		비고					
-data.commentId			Long		댓글 ID					
+data.commentId			String		댓글 ID					
 data.liked			Boolean		좋아요 상태					
 data.likeCount			Integer		좋아요 수					
 Errors										
@@ -2045,11 +2082,11 @@ size			Integer		N, 기본값 20, 페이지 크기
 Return										
 key			Type		비고					
 data.content			Array		댓글 목록					
-data.content[].commentId			Long		댓글 ID					
+data.content[].commentId			String		댓글 ID					
 data.content[].content			String		댓글 내용					
-data.content[].postId			Long		게시글 ID					
+data.content[].postId			String		게시글 ID					
 data.content[].postTitle			String		게시글 제목					
-data.content[].challengeId			Long		챌린지 ID					
+data.content[].challengeId			String		챌린지 ID					
 data.content[].challengeTitle			String		챌린지 제목					
 data.content[].likeCount			Integer		좋아요 수					
 data.content[].createdAt			String		작성일					
@@ -2068,15 +2105,15 @@ Request URI			/reports			Request Name			신고하기
 Parameters										
 key			Type		비고					
 targetType			String		Y, USER|POST|COMMENT, 신고 대상 유형					
-targetId			Long		Y, 신고 대상 ID					
+targetId			String		Y, 신고 대상 ID					
 reason			String		Y, SPAM|ABUSE|FRAUD|INAPPROPRIATE|OTHER, 신고 사유					
 description			String		Y, 10~1000자, 상세 설명					
 evidenceUrls			Array		N, 최대 5개, 증거 이미지 URL 목록					
 Return										
 key			Type		비고					
-data.reportId			Long		신고 ID					
+data.reportId			String		신고 ID					
 data.targetType			String		신고 대상 유형					
-data.targetId			Long		신고 대상 ID					
+data.targetId			String		신고 대상 ID					
 data.status			String		상태					
 data.createdAt			String		신고일시					
 Errors										
@@ -2104,7 +2141,7 @@ status			String		N, ALL | PENDING | REVIEWED | RESOLVED
 Return										
 key			Type		비고					
 data.content			Array		신고 목록					
-data.content[].reportId			Long		신고 ID					
+data.content[].reportId			String		신고 ID					
 data.content[].targetType			String		신고 대상 유형					
 data.content[].reason			String		신고 사유					
 data.content[].status			String		상태					
@@ -2116,187 +2153,122 @@ data.totalPages			Integer		전체 페이지 수
 Response 예시 (200 OK)										
 {"success": true, "data": {"content": [{"reportId": 5, "targetType": "COMMENT", "reason": "ABUSE", "status": "RESOLVED", "result": "해당 댓글이 삭제 처리되었습니다", "createdAt": "2026-01-14T10:30:00Z", "resolvedAt": "2026-01-15T14:00:00Z"}], "totalElements": 3, "totalPages": 1, "number": 0, "size": 20}, "timestamp": "2026-01-14T10:30:00Z"}										
 										
-071 GET /notifications										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/notifications			Request Name			알림 목록 조회	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			알림 목록 조회			우선순위			P0	
-Query Parameters										
-key			Type		비고					
-page			Integer		N, 기본값 0, 페이지 번호					
-size			Integer		N, 기본값 20, 페이지 크기					
-type			String		N, ALL|CHALLENGE|PAYMENT|SOCIAL|SYSTEM					
-isRead			Boolean		N, 읽음 여부 필터					
-Return										
-key			Type		비고					
-data.content			Array		알림 목록					
-data.content[].notificationId			Long		알림 ID					
-data.content[].type			String		알림 유형					
-data.content[].title			String		알림 제목					
-data.content[].message			String		알림 메시지					
-data.content[].isRead			Boolean		읽음 여부					
-data.content[].data			Object		추가 데이터					
-data.content[].createdAt			String		생성일					
-data.totalElements			Integer		전체 개수					
-data.totalPages			Integer		전체 페이지 수					
-data.unreadCount			Integer		읽지 않은 알림 수					
-Response 예시 (200 OK)										
-{"success": true, "data": {"content": [{"notificationId": 101, "type": "PAYMENT", "title": "납입일 알림", "message": "내일은 '2026 저축 챌린지'의 납입일입니다. 잔액을 확인해주세요.", "isRead": false, "data": {"challengeId": 1, "actionUrl": "/challenges/1"}, "createdAt": "2026-01-14T09:00:00Z"}, {"notificationId": 100, "type": "SOCIAL", "title": "새 댓글", "message": "김모임님이 회원님의 게시글에 댓글을 남겼습니다.", "isRead": true, "data": {"postId": 24, "commentId": 6, "actionUrl": "/challenges/1/posts/24"}, "createdAt": "2026-01-13T15:00:00Z"}], "totalElements": 45, "totalPages": 3, "number": 0, "size": 20, "unreadCount": 12}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
-072 GET /notifications/{notificationId}										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/notifications/{notificationId}			Request Name			알림 상세 조회	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			알림 상세 조회			우선순위			P1	
-Path Parameters										
-key			Type		비고					
-notificationId			Long		Y, 알림 ID					
-Return										
-key			Type		비고					
-data.notificationId			Long		알림 ID					
-data.type			String		알림 유형					
-data.title			String		알림 제목					
-data.message			String		알림 메시지					
-data.isRead			Boolean		읽음 여부					
-data.data			Object		추가 데이터					
-data.createdAt			String		생성일					
-data.readAt			String		읽은 시간					
-Errors										
-HTTP			코드		메시지					
-404			NOTIFICATION_001		알림을 찾을 수 없습니다					
-Response 예시 (200 OK)										
-{"success": true, "data": {"notificationId": 101, "type": "PAYMENT", "title": "납입일 알림", "message": "내일은 '2026 저축 챌린지'의 납입일입니다. 잔액을 확인해주세요.", "isRead": true, "data": {"challengeId": 1, "challengeTitle": "2026 저축 챌린지", "paymentAmount": 50000, "paymentDate": "2026-01-15", "actionUrl": "/challenges/1"}, "createdAt": "2026-01-14T09:00:00Z", "readAt": "2026-01-14T10:30:00Z"}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
-073 PUT /notifications/{notificationId}/read										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/notifications/{notificationId}/read			Request Name			알림 읽음 처리	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			알림 읽음 처리			우선순위			P0	
-Path Parameters										
-key			Type		비고					
-notificationId			Long		Y, 알림 ID					
-Return										
-key			Type		비고					
-data.notificationId			Long		알림 ID					
-data.isRead			Boolean		읽음 상태					
-data.readAt			String		읽은 시간					
-Errors										
-HTTP			코드		메시지					
-404			NOTIFICATION_001		알림을 찾을 수 없습니다					
-Response 예시 (200 OK)										
-{"success": true, "data": {"notificationId": 101, "isRead": true, "readAt": "2026-01-14T10:30:00Z"}, "message": "알림을 읽음 처리했습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-										
-074 PUT /notifications/read-all										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/notifications/read-all			Request Name			전체 알림 읽음 처리	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			전체 알림 읽음 처리			우선순위			P1	
-Parameters										
-없음										
-Return										
-key			Type		비고					
-data.readCount			Integer		읽음 처리된 알림 수					
-Response 예시 (200 OK)										
-{"success": true, "data": {"readCount": 12}, "message": "12개의 알림을 읽음 처리했습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-										
-075-1 GET /notifications/settings										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/notifications/settings			Request Name			알림 설정 조회	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			알림 설정 조회			우선순위			P2	
-Parameters										
-없음										
-Return										
-key			Type		비고					
-data.pushEnabled			Boolean		푸시 알림 활성화					
-data.emailEnabled			Boolean		이메일 알림 활성화					
-data.challengeAlerts			Boolean		챌린지 관련 알림					
-data.paymentAlerts			Boolean		결제 관련 알림					
-data.socialAlerts			Boolean		소셜 활동 알림					
-data.marketingAlerts			Boolean		마케팅 알림					
-Errors										
-HTTP			코드		메시지					
-401			AUTH_001		인증이 필요합니다					
-Response 예시 (200 OK)										
-{"success": true, "data": {"pushEnabled": true, "emailEnabled": true, "challengeAlerts": true, "paymentAlerts": true, "socialAlerts": true, "marketingAlerts": false}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
-075-2 PUT /notifications/settings										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/notifications/settings			Request Name			알림 설정 수정	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			알림 설정 수정			우선순위			P2	
-Parameters										
-key			Type		비고					
-pushEnabled			Boolean		N, 푸시 알림 활성화					
-emailEnabled			Boolean		N, 이메일 알림 활성화					
-challengeAlerts			Boolean		N, 챌린지 관련 알림					
-paymentAlerts			Boolean		N, 결제 관련 알림					
-socialAlerts			Boolean		N, 소셜 활동 알림					
-marketingAlerts			Boolean		N, 마케팅 알림					
-Return										
-key			Type		비고					
-data.pushEnabled			Boolean		푸시 알림 활성화					
-data.emailEnabled			Boolean		이메일 알림 활성화					
-data.challengeAlerts			Boolean		챌린지 관련 알림					
-data.paymentAlerts			Boolean		결제 관련 알림					
-data.socialAlerts			Boolean		소셜 활동 알림					
-data.marketingAlerts			Boolean		마케팅 알림					
-Errors										
-HTTP			코드		메시지					
-401			AUTH_001		인증이 필요합니다					
-Request 예시										
-{"pushEnabled": true, "emailEnabled": false, "marketingAlerts": false}										
-Response 예시 (200 OK)										
-{"success": true, "data": {"pushEnabled": true, "emailEnabled": false, "challengeAlerts": true, "paymentAlerts": true, "socialAlerts": true, "marketingAlerts": false}, "message": "알림 설정이 변경되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-										
-076 POST /refunds										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/refunds			Request Name			환불 요청	
-작성자						작성일				
-인증			필요			Response			Spring	
-설명			환불 요청			우선순위			P1	
-Parameters										
-key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-reason			String		Y, 10~500자, 환불 사유					
-amount			Long		N, 부분 환불 금액 (미입력 시 전액)					
-Return										
-key			Type		비고					
-data.refundId			Long		환불 ID					
-data.challengeId			Long		챌린지 ID					
-data.requestedAmount			Long		요청 금액					
-data.estimatedAmount			Long		예상 환불 금액					
-data.fee			Long		수수료					
-data.status			String		상태					
-data.reason			String		환불 사유					
-data.createdAt			String		요청일시					
-Errors										
-HTTP			코드		메시지					
-400			REFUND_001		현재 상태에서는 환불이 불가합니다					
-400			REFUND_002		환불 금액이 납입 금액을 초과합니다					
-404			CHALLENGE_001		챌린지를 찾을 수 없습니다					
-Request 예시										
-{"challengeId": 1, "reason": "개인 사정으로 인해 챌린지에 더 이상 참여하기 어렵습니다."}										
-Response 예시 (200 OK)										
-{"success": true, "data": {"refundId": 10, "challengeId": 1, "requestedAmount": 50000, "estimatedAmount": 50000, "fee": 0, "status": "PENDING", "reason": "개인 사정으로 인해 챌린지에 더 이상 참여하기 어렵습니다.", "createdAt": "2026-01-14T10:30:00Z"}, "message": "환불 요청이 접수되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-비고										
-모집 중 탈퇴: 입회비 전액 환불										
-진행 중: 환불 불가 (탈퇴 불가 정책)										
-완료 후: 정산 후 자동 환급 (별도 환불 요청 불필요)										
-										
+071 GET /notifications
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/notifications			Request Name			?? ?? ??
+???						???				
+??			??			Response			Spring
+??			?? ??? ???/??? ?????.			????			P0
+Query Parameters
+key			Type		??
+page			Integer		N, ??? 0
+size			Integer		N, ??? 20
+type			String		N, ALL|CHALLENGE|PAYMENT|SOCIAL|SYSTEM
+isRead			Boolean		N, ?? ?? ??
+Return
+key			Type		??
+data.content			Array		?? ??
+data.content[].notificationId			String		?? ID
+data.content[].type			String		?? ??
+data.content[].title			String		?? ??
+data.content[].message			String		?? ???
+data.content[].isRead			Boolean		?? ??
+data.content[].data			Object		?? ???
+data.content[].createdAt			String		???
+data.content[].readAt			String		?? ??
+data.totalElements			Integer		?? ??
+data.totalPages			Integer		?? ??? ?
+data.number			Integer		?? ???
+data.size			Integer		??? ??
+data.unreadCount			Integer		?? ?? ?? ?
+Response ?? (200 OK)
+{"success": true, "data": {"content": [{"notificationId": "noti_101", "type": "PAYMENT", "title": "??? ??", "message": "??? ??????", "isRead": false, "data": {"targetId": "challenge_1"}, "createdAt": "2026-02-18T09:00:00", "readAt": null}], "totalElements": 45, "totalPages": 3, "number": 0, "size": 20, "unreadCount": 12}, "timestamp": "2026-02-18T10:30:00Z"}
+072 GET /notifications/{notificationId}
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/notifications/{notificationId}			Request Name			?? ?? ??
+???						???				
+??			??			Response			Spring
+??			?? ?? ??? ?????.			????			P1
+Path Parameters
+key			Type		??
+notificationId			String		Y, ?? ID
+Return
+key			Type		??
+data.notificationId			String		?? ID
+data.type			String		?? ??
+data.title			String		?? ??
+data.message			String		?? ???
+data.isRead			Boolean		?? ??
+data.data			Object		?? ???
+data.createdAt			String		???
+data.readAt			String		?? ??
+Errors
+HTTP			??		???
+404			NOTIFICATION_001		??? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"notificationId": "noti_101", "type": "PAYMENT", "title": "??? ??", "message": "??? ??????", "isRead": true, "data": {"targetId": "challenge_1"}, "createdAt": "2026-02-18T09:00:00", "readAt": "2026-02-18T10:30:00"}, "timestamp": "2026-02-18T10:30:00Z"}
+073 PUT /notifications/{notificationId}/read
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/notifications/{notificationId}/read			Request Name			?? ?? ??
+???						???				
+??			??			Response			Spring
+??			?? ??? ?? ?????.			????			P0
+Path Parameters
+key			Type		??
+notificationId			String		Y, ?? ID
+Return
+key			Type		??
+data.notificationId			String		?? ID
+data.isRead			Boolean		?? ??
+data.readAt			String		?? ??
+Errors
+HTTP			??		???
+404			NOTIFICATION_001		??? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"notificationId": "noti_101", "isRead": true, "readAt": "2026-02-18T10:30:00"}, "message": "??? ?? ??????", "timestamp": "2026-02-18T10:30:00Z"}
+074 PUT /notifications/read-all
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/notifications/read-all			Request Name			?? ?? ?? ??
+???						???				
+??			??			Response			Spring
+??			?? ?? ?? ??? ?? ?????.			????			P1
+Parameters
+??
+Return
+key			Type		??
+data.readCount			Integer		?? ??? ?? ?
+Response ?? (200 OK)
+{"success": true, "data": {"readCount": 12}, "message": "12?? ??? ?? ??????", "timestamp": "2026-02-18T10:30:00Z"}
+076 POST /refunds
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/refunds			Request Name			?? ??
+???						???				
+??			??			Response			Spring
+??			?? ??? ?????.			????			P1
+Parameters
+key			Type		??
+challengeId			String		Y, ??? ID
+reason			String		N, ?? ??
+amount			Long		N, ?? ??
+Return
+key			Type		??
+data.refundId			String		?? ID
+data.challengeId			String		??? ID
+data.requestedAmount			Long		?? ??
+data.estimatedAmount			Long		?? ?? ??
+data.fee			Long		???
+data.status			String		??
+data.createdAt			String		????
+Errors
+HTTP			??		???
+404			CHALLENGE_001		???? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"refundId": "refund_10", "challengeId": "challenge_1", "requestedAmount": 50000, "estimatedAmount": 50000, "fee": 0, "status": "PENDING", "createdAt": "2026-02-18T10:30:00"}, "message": "?? ??? ???????", "timestamp": "2026-02-18T10:30:00Z"}
 077 GET /refunds/{refundId}										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
@@ -2306,11 +2278,11 @@ Request URI			/refunds/{refundId}			Request Name			환불 상태 조회
 설명			환불 상태 조회			우선순위			P2	
 Path Parameters										
 key			Type		비고					
-refundId			Long		Y, 환불 요청 ID					
+refundId			String		Y, 환불 요청 ID					
 Return										
 key			Type		비고					
-data.refundId			Long		환불 ID					
-data.challengeId			Long		챌린지 ID					
+data.refundId			String		환불 ID					
+data.challengeId			String		챌린지 ID					
 data.challengeTitle			String		챌린지 제목					
 data.requestedAmount			Long		요청 금액					
 data.approvedAmount			Long		승인 금액					
@@ -2336,11 +2308,11 @@ Request URI			/challenges/{challengeId}/settlement			Request Name			정산 내�
 설명			정산 내역 조회			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.settlementId			Long		정산 ID					
-data.challengeId			Long		챌린지 ID					
+data.settlementId			String		정산 ID					
+data.challengeId			String		챌린지 ID					
 data.challengeTitle			String		챌린지 제목					
 data.status			String		정산 상태					
 data.totalPool			Long		총 적립금					
@@ -2367,11 +2339,11 @@ Request URI			/challenges/{challengeId}/settlement/process			Request Name			정�
 설명			정산 실행 (시스템/관리자)			우선순위			P1	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.settlementId			Long		정산 ID					
-data.challengeId			Long		챌린지 ID					
+data.settlementId			String		정산 ID					
+data.challengeId			String		챌린지 ID					
 data.status			String		상태					
 data.totalPool			Long		총 적립금					
 data.memberCount			Integer		멤버 수					
@@ -2387,70 +2359,40 @@ Response 예시 (200 OK)
 비고										
 정산 규칙: 챌린지 완료 후 자동 정산 시작, 기본 배분: 납입 비율에 따른 배분, 패널티 적용: 미납 시 패널티율만큼 차감, 지출 차감: 승인된 지출 금액 차감, 수수료 적용: 정산 금액의 수수료 차감 (P-007 정책), 계좌 입금: 최종 금액 사용자 계좌 입금										
 										
-080 GET /search										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/search			Request Name			통합 검색	
-작성자						작성일				
-인증			필요			Response			Django	
-설명			통합 검색			우선순위			P1	
-Query Parameters										
-key			Type		비고					
-q			String		Y, 2자 이상, 검색어					
-type			String		N, ALL | CHALLENGE | POST | USER					
-page			Integer		N, 기본값 0, 페이지 번호					
-size			Integer		N, 기본값 20, 페이지 크기					
-Return										
-key			Type		비고					
-data.query			String		검색어					
-data.totalResults			Integer		총 결과 수					
-data.challenges			Object		챌린지 검색 결과					
-data.posts			Object		게시글 검색 결과					
-data.users			Object		사용자 검색 결과					
-Errors										
-HTTP			코드		메시지					
-400			SEARCH_001		검색어는 2자 이상 입력해주세요					
-Response 예시 (200 OK)										
-{"success": true, "data": {"query": "저축", "totalResults": 35, "challenges": {"items": [{"challengeId": 1, "title": "2026 저축 챌린지", "description": "함께 저축하는 모임입니다...", "status": "IN_PROGRESS", "currentMembers": 10}], "total": 5}, "posts": {"items": [{"postId": 24, "title": "저축 꿀팁 공유합니다!", "challengeTitle": "2026 저축 챌린지", "author": "박저축"}], "total": 25}, "users": {"items": [{"userId": 3, "nickname": "박저축", "profileImage": "https://cdn.woorido.com/profiles/3.jpg"}], "total": 5}}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
-081 GET /search/challenges										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/search/challenges			Request Name			챌린지 검색	
-작성자						작성일				
-인증			필요			Response			Django	
-설명			챌린지 검색			우선순위			P1	
-Query Parameters										
-key			Type		비고					
-q			String		Y, 검색어					
-category			String		N, SAVING|INVESTMENT|EXPENSE_CUT|CUSTOM					
-status			String		N, RECRUITING|IN_PROGRESS|COMPLETED					
-minDeposit			Long		N, 최소 월 납입금					
-maxDeposit			Long		N, 최대 월 납입금					
-minMembers			Integer		N, 최소 인원					
-maxMembers			Integer		N, 최대 인원					
-page			Integer		N, 기본값 0, 페이지 번호					
-size			Integer		N, 기본값 20, 페이지 크기					
-Return										
-key			Type		비고					
-data.content			Array		챌린지 목록					
-data.content[].challengeId			Long		챌린지 ID					
-data.content[].title			String		챌린지 제목					
-data.content[].description			String		챌린지 설명					
-data.content[].category			String		카테고리					
-data.content[].status			String		상태					
-data.content[].leaderNickname			String		리더 닉네임					
-data.content[].currentMembers			Integer		현재 인원					
-data.content[].maxMembers			Integer		최대 인원					
-data.content[].monthlyDeposit			Long		월 납입금					
-data.content[].startDate			String		시작일					
-data.content[].endDate			String		종료일					
-data.content[].relevanceScore			Double		관련도 점수					
-data.totalElements			Integer		전체 개수					
-data.totalPages			Integer		전체 페이지 수					
-Response 예시 (200 OK)										
-{"success": true, "data": {"content": [{"challengeId": 1, "title": "2026 저축 챌린지", "description": "함께 저축하는 모임입니다. 매달 5만원씩 저축해요!", "category": "SAVING", "status": "IN_PROGRESS", "leaderNickname": "홍길동", "currentMembers": 10, "maxMembers": 20, "monthlyDeposit": 50000, "startDate": "2026-01-01", "endDate": "2026-12-31", "relevanceScore": 95.5}], "totalElements": 12, "totalPages": 1, "number": 0, "size": 20}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
+080 GET /search
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/search			Request Name			?? ??
+???						???				
+??			??			Response			Spring
+??			?? ?????(?? Django ?? ??? 503 ??).			????			P1
+Query Parameters
+key			Type		??
+q			String		N, ???
+page			Integer		N, ??? 0
+size			Integer		N, ??? 20
+Errors
+HTTP			??		???
+503			SEARCH_001		Django ?? ???? ???? ?????
+Response ?? (503 Service Unavailable)
+{"success": false, "error": "SEARCH_001:Django ?? ???? ???? ?????", "timestamp": "2026-02-18T10:30:00Z"}
+081 GET /search/challenges
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/search/challenges			Request Name			??? ??
+???						???				
+??			??			Response			Spring
+??			??? ?? ?????(?? Django ?? ??? 503 ??).			????			P1
+Query Parameters
+key			Type		??
+q			String		N, ???
+page			Integer		N, ??? 0
+size			Integer		N, ??? 20
+Errors
+HTTP			??		???
+503			SEARCH_001		Django ?? ???? ???? ?????
+Response ?? (503 Service Unavailable)
+{"success": false, "error": "SEARCH_001:Django ?? ???? ???? ?????", "timestamp": "2026-02-18T10:30:00Z"}
 082 GET /search/autocomplete										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
@@ -2468,7 +2410,7 @@ key			Type		비고
 data.suggestions			Array		자동완성 제안 목록					
 data.suggestions[].text			String		제안 텍스트					
 data.suggestions[].type			String		유형					
-data.suggestions[].id			Long		대상 ID					
+data.suggestions[].id			String		대상 ID					
 data.suggestions[].score			Double		점수					
 Response 예시 (200 OK)										
 {"success": true, "data": {"suggestions": [{"text": "저축 챌린지", "type": "CHALLENGE", "id": 1, "score": 98.5}, {"text": "저축 꿀팁", "type": "POST", "id": 24, "score": 85.2}, {"text": "박저축", "type": "USER", "id": 3, "score": 72.0}]}, "timestamp": "2026-01-14T10:30:00Z"}										
@@ -2485,7 +2427,7 @@ key			Type		비고
 period			String		N, 기본값 MONTH, WEEK | MONTH | YEAR					
 Return										
 key			Type		비고					
-data.userId			Long		사용자 ID					
+data.userId			String		사용자 ID					
 data.period			String		기간					
 data.summary			Object		요약 정보					
 data.dailyTrend			Array		일별 추이					
@@ -2502,10 +2444,10 @@ Request URI			/analytics/challenge/{challengeId}			Request Name			챌린지 분�
 설명			챌린지 분석			우선순위			P2	
 Path Parameters										
 key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
+challengeId			String		Y, 챌린지 ID					
 Return										
 key			Type		비고					
-data.challengeId			Long		챌린지 ID					
+data.challengeId			String		챌린지 ID					
 data.overview			Object		개요 정보					
 data.trends			Object		추이 정보					
 data.memberAnalysis			Array		멤버 분석					
@@ -2573,7 +2515,7 @@ limit			Integer		N, 기본값 10, 최대 20, 결과 수
 Return										
 key			Type		비고					
 data.recommendations			Array		추천 챌린지 목록					
-data.recommendations[].challengeId			Long		챌린지 ID					
+data.recommendations[].challengeId			String		챌린지 ID					
 data.recommendations[].title			String		챌린지 제목					
 data.recommendations[].category			String		카테고리					
 data.recommendations[].matchScore			Double		매칭 점수					
@@ -2613,110 +2555,129 @@ data.analysis			Object		분석 정보
 Response 예시 (200 OK)										
 {"success": true, "data": {"plans": [{"planId": "PLAN_A", "name": "안정형 저축 플랜", "description": "낮은 리스크로 꾸준히 저축하는 플랜입니다", "monthlyDeposit": 50000, "expectedReturn": 630000, "duration": 12, "riskLevel": "LOW", "matchedChallenges": [{"challengeId": 1, "title": "2026 저축 챌린지", "monthlyDeposit": 50000}]}, {"planId": "PLAN_B", "name": "적극형 저축 플랜", "description": "더 높은 목표를 위한 적극적인 저축 플랜입니다", "monthlyDeposit": 100000, "expectedReturn": 1320000, "duration": 12, "riskLevel": "MEDIUM", "matchedChallenges": [{"challengeId": 8, "title": "2026 여행 저축 모임", "monthlyDeposit": 100000}]}], "analysis": {"currentSavingRate": 15.5, "recommendedRate": 20.0, "projectedGoal": 1200000}}, "timestamp": "2026-01-14T10:30:00Z"}										
 										
-089 GET /challenges/{challengeId}/ledger/summary										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/challenges/{challengeId}/ledger/summary			Request Name			장부 요약	
-작성자						작성일				
-인증			필요 (멤버)			Response			Spring	
-설명			장부 요약			우선순위			P1	
-Path Parameters										
-key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-Query Parameters										
-key			Type		비고					
-period			String		N, 기본값 MONTH, WEEK | MONTH | YEAR | ALL					
-Return										
-key			Type		비고					
-data.challengeId			Long		챌린지 ID					
-data.period			String		기간					
-data.periodRange			Object		기간 범위					
-data.balance			Object		잔액 정보					
-data.summary			Object		요약 정보					
-data.breakdown			Object		상세 내역					
-data.memberStats			Object		멤버 통계					
-data.trends			Object		추이 정보					
-Errors										
-HTTP 코드			코드		메시지					
-403			CHALLENGE_003		챌린지 멤버가 아닙니다					
-404			CHALLENGE_001		챌린지를 찾을 수 없습니다					
-Response 예시 (200 OK)										
-{"success": true, "data": {"challengeId": 1, "period": "MONTH", "periodRange": {"start": "2026-01-01", "end": "2026-01-31"}, "balance": {"current": 850000, "lockedDeposit": 200000, "available": 650000}, "summary": {"totalIncome": 1000000, "totalExpense": 150000, "netAmount": 850000}, "breakdown": {"income": {"support": 900000, "entryFee": 100000, "other": 0}, "expense": {"meeting": 80000, "food": 50000, "supplies": 20000, "other": 0}}, "memberStats": {"paidCount": 9, "unpaidCount": 1, "totalMembers": 10, "paymentRate": 90.0}, "trends": {"incomeChange": 5.5, "expenseChange": -2.3}}, "timestamp": "2026-01-14T10:30:00Z"}										
-										
-090 POST /challenges/{challengeId}/ledger										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/challenges/{challengeId}/ledger			Request Name			장부 등록	
-작성자						작성일				
-인증			필요 (리더)			Response			Spring	
-설명			장부 등록			우선순위			P1	
-Path Parameters										
-key			Type		비고					
-challengeId			Long		Y, 챌린지 ID					
-Parameters										
-key			Type		비고					
-type			String		Y, INCOME|EXPENSE, 장부 유형					
-category			String		Y, LedgerCategory, 카테고리					
-amount			Long		Y, 1원 이상, 금액					
-description			String		Y, 최대 200자, 설명					
-transactionDate			String		N, YYYY-MM-DD, 거래일 (미입력 시 오늘)					
-Return										
-key			Type		비고					
-data.entryId			Long		항목 ID					
-data.type			String		유형					
-data.category			String		카테고리					
-data.amount			Long		금액					
-data.description			String		설명					
-data.newBalance			Long		새 잔액					
-data.createdBy			Object		생성자 정보					
-data.createdAt			String		생성일시					
-Errors										
-HTTP 코드			코드		메시지					
-400			LEDGER_001		금액은 1원 이상이어야 합니다					
-400			LEDGER_002		챌린지 잔액이 부족합니다 (지출 시)					
-403			CHALLENGE_004		리더만 장부를 등록할 수 있습니다					
-404			CHALLENGE_001		챌린지를 찾을 수 없습니다					
-Request 예시										
-{"type": "EXPENSE", "category": "MEETING", "amount": 50000, "description": "2월 모임 장소 대여비", "transactionDate": "2026-02-15"}										
-Response 예시 (201 Created)										
-{"success": true, "data": {"entryId": 51, "type": "EXPENSE", "category": "MEETING", "amount": 50000, "description": "2월 모임 장소 대여비", "newBalance": 800000, "createdBy": {"userId": 1, "nickname": "홍길동"}, "createdAt": "2026-01-14T10:30:00Z"}, "message": "장부가 등록되었습니다", "timestamp": "2026-01-14T10:30:00Z"}										
-										
-091 PUT /ledger/{entryId}										
-Document No :				Version :		1.0.0		Date :		2026-01-15
-Project Name			WOORIDO			version			1.0.0	
-Request URI			/ledger/{entryId}			Request Name			장부 수정	
-작성자						작성일				
-인증			필요 (리더)			Response			Spring	
-설명			장부 수정			우선순위			P1	
-Path Parameters										
-key			Type		비고					
-entryId			Long		Y, 장부 항목 ID					
-Parameters										
-key			Type		비고					
-category			String		N, LedgerCategory, 카테고리					
-amount			Long		N, 1원 이상, 금액					
-description			String		N, 최대 200자, 설명					
-transactionDate			String		N, YYYY-MM-DD, 거래일					
-Return										
-key			Type		비고					
-data.entryId			Long		항목 ID					
-data.type			String		유형					
-data.category			String		카테고리					
-data.amount			Long		금액					
-data.description			String		설명					
-data.previousAmount			Long		이전 금액					
-data.amountDiff			Long		금액 차이					
-data.newBalance			Long		새 잔액					
-data.updatedBy			Object		수정자 정보					
-data.updatedAt			String		수정일시					
-Errors										
-HTTP 코드			코드		메시지					
-400			LEDGER_001		금액은 1원 이상이어야 합니다					
-400			LEDGER_002		챌린지 잔액이 부족합니다					
-400			LEDGER_003		정산 완료된 항목은 수정할 수 없습니다					
-403			CHALLENGE_004		리더만 장부를 수정할 수 있습니다					
-404			LEDGER_004		장부 항목을 찾을 수 없습니다					
-Request 예시										
-{"category": "FOOD", "amount": 45000, "description": "2월 모임 다과비 (수정)"}										
-Response 예시 (200 OK)										
-{"success": true, "data": {"entryId": 51, "type": "EXPENSE", "category": "FOOD", "amount": 45000, "description": "2월 모임 다과비 (수정)", "previousAmount": 50000, "amountDiff": -5000, "newBalance": 805000, "updatedBy": {"userId": 1, "nickname": "홍길동"}, "updatedAt": "2026-01-14T11:00:00Z"}, "message": "장부가 수정되었습니다", "timestamp": "2026-01-14T11:00:00Z"}										
+089 GET /challenges/{challengeId}/ledger/summary
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/challenges/{challengeId}/ledger/summary			Request Name			?? ??
+???						???				
+??			?? (??)			Response			Spring
+??			?? ?? ?? ??? ?????.			????			P1
+Path Parameters
+key			Type		??
+challengeId			String		Y, ??? ID
+Return
+key			Type		??
+data.challengeId			String		??? ID
+data.totalIncome			Long		? ??
+data.totalExpense			Long		? ??
+data.balance			Long		??
+data.entryCount			Long		?? ?
+Errors
+HTTP			??		???
+403			CHALLENGE_003		??? ??? ????
+404			CHALLENGE_001		???? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"challengeId": "challenge_1", "totalIncome": 1000000, "totalExpense": 150000, "balance": 850000, "entryCount": 20}, "timestamp": "2026-02-18T10:30:00Z"}
+090 POST /challenges/{challengeId}/ledger
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/challenges/{challengeId}/ledger			Request Name			?? ??
+???						???				
+??			?? (??)			Response			Spring
+??			?? ??? ?????.			????			P1
+Path Parameters
+key			Type		??
+challengeId			String		Y, ??? ID
+Parameters
+key			Type		??
+type			String		Y, SUPPORT|ENTRY_FEE|REFUND|EXPENSE
+amount			Long		Y, ??
+description			String		N, ??
+memo			String		N, ??
+Return
+key			Type		??
+data.entryId			String		?? ID
+data.challengeId			String		??? ID
+data.type			String		??
+data.amount			Long		??
+data.description			String		??
+data.memo			String		??
+data.createdAt			String		?? ??
+data.updatedAt			String		?? ??
+Errors
+HTTP			??		???
+400			LEDGER_002		???? ?? ?? ?????
+403			CHALLENGE_003		??? ??? ????
+404			CHALLENGE_001		???? ?? ? ????
+Response ?? (201 Created)
+{"success": true, "data": {"entryId": "led_51", "challengeId": "challenge_1", "type": "EXPENSE", "amount": 50000, "description": "2? ?? ?? ???", "memo": "????", "createdAt": "2026-02-18T10:30:00", "updatedAt": null}, "message": "?? ??? ???????", "timestamp": "2026-02-18T10:30:00Z"}
+091 PUT /ledger/{entryId}
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/ledger/{entryId}			Request Name			?? ??
+???						???				
+??			?? (??)			Response			Spring
+??			?? ??? ??/??? ?????.			????			P1
+Path Parameters
+key			Type		??
+entryId			String		Y, ?? ?? ID
+Parameters
+key			Type		??
+description			String		N, ??
+memo			String		N, ??
+Return
+key			Type		??
+data.entryId			String		?? ID
+data.challengeId			String		??? ID
+data.type			String		??
+data.amount			Long		??
+data.description			String		??
+data.memo			String		??
+data.createdAt			String		?? ??
+data.updatedAt			String		?? ??
+Errors
+HTTP			??		???
+404			LEDGER_001		?? ??? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"entryId": "led_51", "challengeId": "challenge_1", "type": "EXPENSE", "amount": 50000, "description": "2? ?? ???(??)", "memo": "??? ??", "createdAt": "2026-02-18T10:30:00", "updatedAt": "2026-02-18T11:00:00"}, "message": "?? ??? ???????", "timestamp": "2026-02-18T11:00:00Z"}
+
+092 DELETE /meetings/{meetingId}
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/meetings/{meetingId}			Request Name			?? ??
+???						???				
+??			??			Response			Spring
+??			??? ?????.			????			P1
+Path Parameters
+key			Type		??
+meetingId			String		Y, ?? ID
+Return
+key			Type		??
+data.meetingId			String		??? ?? ID
+data.deletedAt			String		?? ??
+Errors
+HTTP			??		???
+404			MEETING_001		??? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"meetingId": "meeting_10", "deletedAt": "2026-02-18T10:30:00"}, "message": "??? ???????", "timestamp": "2026-02-18T10:30:00Z"}
+093 DELETE /meetings/{meetingId}/attendance
+Document No :				Version :		1.0.1		Date :		2026-02-18
+Project Name			WOORIDO			version			1.0.0
+Request URI			/meetings/{meetingId}/attendance			Request Name			?? ??
+???						???				
+??			??			Response			Spring
+??			? ?? ??? ?????.			????			P1
+Path Parameters
+key			Type		??
+meetingId			String		Y, ?? ID
+Return
+key			Type		??
+data.meetingId			String		?? ID
+data.myAttendance			Object		?? ? ? ?? ??(null)
+data.attendance			Object		?? ??
+data.cancelledAt			String		?? ??
+Errors
+HTTP			??		???
+404			MEETING_001		??? ?? ? ????
+Response ?? (200 OK)
+{"success": true, "data": {"meetingId": "meeting_10", "myAttendance": null, "attendance": {"confirmed": 4, "declined": 1, "pending": 5, "total": 10}, "cancelledAt": "2026-02-18T10:30:00"}, "message": "?? ??? ???????", "timestamp": "2026-02-18T10:30:00Z"}

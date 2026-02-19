@@ -1,5 +1,12 @@
 export type NotificationType = 'CHALLENGE' | 'PAYMENT' | 'SOCIAL' | 'SYSTEM';
 
+export interface NotificationQuery {
+  page?: number;
+  size?: number;
+  type?: NotificationType | 'ALL';
+  isRead?: boolean;
+}
+
 export interface NotificationData {
   subType?: string;
   targetId?: string;
@@ -15,13 +22,22 @@ export interface Notification {
   isRead: boolean;
   data: NotificationData;
   createdAt: string;
+  readAt?: string;
 }
 
 export interface NotificationListResponse {
   content: Notification[];
   totalElements: number;
   totalPages: number;
+  number: number;
+  size: number;
   unreadCount: number;
+}
+
+export interface NotificationMarkReadResponse {
+  notificationId: string;
+  isRead: boolean;
+  readAt?: string;
 }
 
 export interface NotificationSettings {

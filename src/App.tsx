@@ -31,6 +31,7 @@ const ExplorePage = lazy(() => import('./pages/ExplorePage').then(module => ({ d
 const RecommendedPage = lazy(() => import('./pages/RecommendedPage').then(module => ({ default: module.RecommendedPage })));
 const MyPage = lazy(() => import('./pages/MyPage').then(module => ({ default: module.MyPage })));
 const MyChallengesPage = lazy(() => import('./pages/MyChallengesPage').then(module => ({ default: module.MyChallengesPage })));
+const AccountPage = lazy(() => import('./pages/AccountPage').then(module => ({ default: module.AccountPage })));
 const WalletPage = lazy(() => import('./pages/WalletPage').then(module => ({ default: module.WalletPage })));
 const TransactionHistoryPage = lazy(() => import('./pages/TransactionHistoryPage').then(module => ({ default: module.TransactionHistoryPage })));
 const FeedPage = lazy(() => import('./components/domain/Challenge/Feed/FeedPage').then(module => ({ default: module.FeedPage })));
@@ -124,7 +125,7 @@ function App() {
                   <Route path={PATHS.MY.CHALLENGES} element={<MyChallengesPage />} />
                   <Route path={PATHS.MY.LEDGER} element={<WalletPage />} />
                   <Route path={PATHS.MY.SETTINGS} element={<SettingsPage />} />
-                  <Route path={PATHS.MY.ACCOUNT} element={<Navigate replace to={PATHS.MY.LEDGER} />} />
+                  <Route path={PATHS.MY.ACCOUNT} element={<AccountPage />} />
                   <Route path="/me/ledger/transactions" element={<TransactionHistoryPage />} />
                   <Route path="/me/account/transactions" element={<Navigate replace to="/me/ledger/transactions" />} />
                   <Route path={PATHS.WALLET.PAYMENT_CALLBACK} element={<PaymentCallbackPage />} />

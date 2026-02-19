@@ -136,7 +136,7 @@ export function MyPage() {
       <div className={styles.menuSection} style={{ marginTop: '24px' }}>
         <h3 className={styles.menuTitle}>계정</h3>
         <div className={styles.menuList}>
-          <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.LEDGER)}>
+          <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.ACCOUNT)}>
             <div className={styles.menuIcon}><User size={20} /></div>
             <span className={styles.menuText}>계정 관리</span>
             <ChevronRight size={18} className={styles.chevron} />

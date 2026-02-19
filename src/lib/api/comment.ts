@@ -46,10 +46,16 @@ const normalizeComment = (comment: BackendComment): Comment => ({
   replies: comment.replies?.map(normalizeComment),
 });
 
-export async function getComments(challengeId: string, postId: string): Promise<Comment[]> {
+export async function getComments(
+  challengeId: string,
+  postId: string,
+  page = 0,
+  size = 50,
+): Promise<Comment[]> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
   const response = await client.get<BackendComment[] | CommentResponse>(
-    `/challenges/${normalizedChallengeId}/posts/${postId}/comments`
+    `/challenges/${normalizedChallengeId}/posts/${postId}/comments`,
+    { params: { page, size } }
   );
 
   const list = Array.isArray(response)
