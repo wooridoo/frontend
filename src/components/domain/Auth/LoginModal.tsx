@@ -1,27 +1,27 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
-import { Button, Input } from '@/components/ui';
+
 import logo from '@/assets/woorido_logo.svg';
+import { Button, Input } from '@/components/ui';
 import { Modal } from '@/components/ui/Overlay/Modal';
-import { useLoginModalStore } from '@/store/modal/useModalStore';
-import { useSignupModalStore } from '@/store/modal/useModalStore';
+import {
+  useLoginModalStore,
+  usePasswordResetModalStore,
+  useSignupModalStore,
+} from '@/store/modal/useModalStore';
 import { useAuthStore } from '@/store/useAuthStore';
-import { toast } from 'sonner';
+
 import styles from './LoginModal.module.css';
 
-// Login form validation schema
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, '이메일을 입력해주세요')
-    .email('올바른 이메일 형식이 아닙니다'),
+  email: z.string().min(1, 'Please enter your email.').email('Please enter a valid email.'),
   password: z
     .string()
-    .min(1, '비밀번호를 입력해주세요')
-    .min(8, '비밀번호는 8자 이상이어야 합니다'),
+    .min(1, 'Please enter your password.')
+    .min(8, 'Password must be at least 8 characters.'),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -29,6 +29,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginModal() {
   const { isOpen, onClose, redirectOnReject, message } = useLoginModalStore();
   const { onOpen: openSignup } = useSignupModalStore();
+  const { onOpen: openPasswordReset } = usePasswordResetModalStore();
   const { login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -58,10 +59,6 @@ export function LoginModal() {
     try {
       const { login: apiLogin } = await import('@/lib/api/auth');
       const response = await apiLogin({ email: data.email, password: data.password });
-
-      console.log('Login success:', response);
-
-      // Store token and user data
       login(response.user, response.accessToken, response.refreshToken);
       onClose();
     } catch (error) {
@@ -74,25 +71,18 @@ export function LoginModal() {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
       <div className={styles.container}>
-        {/* Optional Alert Message */}
-        {message && (
-          <div className={styles.alertMessage}>
-            {message}
-          </div>
-        )}
+        {message && <div className={styles.alertMessage}>{message}</div>}
 
-        {/* Logo & Branding */}
         <header className={styles.header}>
           <div className={styles.logo}>
-            <img src={logo} alt="우리두 로고" className={styles.logoImage} />
+            <img src={logo} alt="Woorido logo" className={styles.logoImage} />
           </div>
-          <p className={styles.subtitle}>동료들과 함께 목표를 달성해보세요.</p>
+          <p className={styles.subtitle}>Achieve goals together with your team.</p>
         </header>
 
-        {/* Login Form */}
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <Input
-            label="이메일"
+            label="Email"
             type="email"
             placeholder="email@example.com"
             error={errors.email?.message}
@@ -100,70 +90,48 @@ export function LoginModal() {
           />
 
           <Input
-            label="비밀번호"
+            label="Password"
             type="password"
-            placeholder="8자 이상 입력"
+            placeholder="At least 8 characters"
             error={errors.password?.message}
             {...register('password')}
           />
 
-          <Button
-            type="submit"
-            isLoading={isLoading}
-            className={styles.submitButton}
-            variant="primary"
-            size="lg"
-          >
-            로그인
+          <Button type="submit" isLoading={isLoading} className={styles.submitButton} variant="primary" size="lg">
+            Sign In
           </Button>
         </form>
 
-        {/* Divider */}
         <div className={styles.divider}>
-          <span>또는</span>
+          <span>or</span>
         </div>
 
-        {/* Social Login (P2) */}
         <div className={styles.socialButtons}>
-          <Button
-            type="button"
-            variant="secondary"
-            size="lg"
-            className={styles.socialButton}
-            disabled
-          >
+          <Button type="button" variant="secondary" size="lg" className={styles.socialButton} disabled>
             <img src="/icons/google.svg" alt="" className={styles.socialIcon} />
-            Google로 계속하기
+            Continue with Google
           </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            size="lg"
-            className={styles.socialButton}
-            disabled
-          >
+          <Button type="button" variant="secondary" size="lg" className={styles.socialButton} disabled>
             <img src="/icons/kakao.svg" alt="" className={styles.socialIcon} />
-            카카오로 계속하기
+            Continue with Kakao
           </Button>
         </div>
 
-        {/* Footer Links */}
         <footer className={styles.footer}>
           <div className="flex justify-center gap-4 text-sm text-gray-500 mb-2">
             <button
               type="button"
-              onClick={() => toast.info('비밀번호 찾기 기능은 준비 중입니다.')}
+              onClick={() => {
+                onClose();
+                openPasswordReset();
+              }}
               className="hover:text-gray-900 transition-colors"
             >
-              비밀번호 찾기
+              Forgot Password
             </button>
             <span>|</span>
-            <button
-              type="button"
-              onClick={handleSignupLink}
-              className="hover:text-gray-900 transition-colors"
-            >
-              회원가입
+            <button type="button" onClick={handleSignupLink} className="hover:text-gray-900 transition-colors">
+              Sign Up
             </button>
           </div>
         </footer>

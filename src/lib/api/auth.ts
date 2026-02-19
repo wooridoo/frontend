@@ -47,3 +47,19 @@ export async function refreshToken(token: string): Promise<{ accessToken: string
 export async function requestPasswordReset(email: string): Promise<void> {
   return client.post<void>('/auth/password/reset', { email });
 }
+
+export interface PasswordResetExecuteRequest {
+  token: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+}
+
+export interface PasswordResetExecuteResponse {
+  passwordReset: boolean;
+}
+
+export async function executePasswordReset(
+  data: PasswordResetExecuteRequest
+): Promise<PasswordResetExecuteResponse> {
+  return client.put<PasswordResetExecuteResponse>('/auth/password/reset', data);
+}

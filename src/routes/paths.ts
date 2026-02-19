@@ -8,6 +8,7 @@ export const PATHS = {
   AUTH: {
     LOGIN: '/login',
     SIGNUP: '/signup',
+    RESET_PASSWORD: '/reset-password',
   },
   RECOMMENDED: '/recommended',
   SIGNUP: '/signup',

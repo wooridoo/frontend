@@ -38,6 +38,7 @@ const FeedPage = lazy(() => import('./components/domain/Challenge/Feed/FeedPage'
 const ChallengeLedgerPage = lazy(() => import('./components/domain/Challenge/Ledger/ChallengeLedgerPage').then(module => ({ default: module.ChallengeLedgerPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })));
 const SignupPage = lazy(() => import('./pages/SignupPage').then(module => ({ default: module.SignupPage })));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage').then(module => ({ default: module.ResetPasswordPage })));
 const CreateChallengePage = lazy(() => import('./pages/CreateChallengePage').then(module => ({ default: module.CreateChallengePage })));
 const ChallengeDetailPage = lazy(() => import('./pages/ChallengeDetailPage').then(module => ({ default: module.ChallengeDetailPage })));
 const PaymentCallbackPage = lazy(() => import('./pages/PaymentCallbackPage').then(module => ({ default: module.PaymentCallbackPage })));
@@ -115,6 +116,7 @@ function App() {
             <Routes>
               <Route element={<MainLayout />}>
                 <Route path={PATHS.SIGNUP} element={<SignupPage />} />
+                <Route path={PATHS.AUTH.RESET_PASSWORD} element={<ResetPasswordPage />} />
                 <Route path={PATHS.HOME} element={<HomePage />} />
                 <Route path={PATHS.EXPLORE} element={<ExplorePage />} />
                 <Route path={PATHS.RECOMMENDED} element={<RecommendedPage />} />

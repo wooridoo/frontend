@@ -1,4 +1,4 @@
-﻿001 POST /auth/signup										
+001 POST /auth/signup										
 Document No :				Version :		1.0.0		Date :		2026-01-15
 Project Name			WOORIDO			version			1.0.0	
 Request URI			/auth/signup			Request Name			회원가입	
@@ -167,6 +167,7 @@ data.expiresIn			Integer		재설정 링크 유효 시간 (초)
 Errors										
 HTTP			코드		메시지					
 404			USER_001		사용자를 찾을 수 없습니다					
+500			AUTH_010		재설정 메일 전송에 실패했습니다					
 Request 예시										
 {"email": "user@example.com"}										
 Response 예시 (200 OK)										
@@ -383,7 +384,7 @@ Errors
 HTTP			코드		메시지					
 401			AUTH_001		인증이 필요합니다					
 Response 예시 (200 OK)										
-{"success": true, "data": {"accountId": 1, "userId": 1, "balance": 500000, "availableBalance": 450000, "lockedBalance": 50000, "limits": {"dailyWithdrawLimit": 1000000, "monthlyWithdrawLimit": 5000000, "usedToday": 100000, "usedThisMonth": 500000}, "linkedBankAccount": {"bankCode": "088", "bankName": "신한은행", "accountNumber": "110-***-***789", "accountHolder": "홍길동", "isVerified": true}, "createdAt": "2025-06-01T10:00:00Z"}, "timestamp": "2026-01-14T10:30:00Z"}										
+{"success": true, "data": {"accountId": "acc_1", "userId": "user_1", "balance": 500000, "availableBalance": 450000, "lockedBalance": 50000, "limits": {"dailyWithdrawLimit": 5000000, "monthlyWithdrawLimit": 20000000, "usedToday": 100000, "usedThisMonth": 500000}, "linkedBankAccount": {"bankCode": "088", "bankName": "SHINHAN", "accountNumber": "110-***-***789", "accountHolder": "홍길동", "isVerified": true}, "createdAt": "2025-06-01T10:00:00Z"}, "timestamp": "2026-01-14T10:30:00Z"}										
 										
 016 GET /accounts/me/transactions										
 Document No :				Version :		1.0.0		Date :		2026-01-15
@@ -414,7 +415,7 @@ data.summary.totalIncome			Long		총 수입
 data.summary.totalExpense			Long		총 지출					
 data.summary.period			Object		조회 기간					
 Response 예시 (200 OK)										
-{"success": true, "data": {"content": [{"transactionId": 1, "type": "CHARGE", "amount": 100000, "balance": 500000, "description": "크레딧 충전", "relatedChallenge": null, "createdAt": "2026-01-14T10:00:00Z"}, {"transactionId": 2, "type": "SUPPORT", "amount": -100000, "balance": 400000, "description": "책벌레들 서포트 납입", "relatedChallenge": {"challengeId": 1, "name": "책벌레들"}, "createdAt": "2026-01-14T11:00:00Z"}], "page": {"number": 0, "size": 20, "totalElements": 2, "totalPages": 1}, "summary": {"totalIncome": 100000, "totalExpense": 100000, "period": {"startDate": "2026-01-01", "endDate": "2026-01-14"}}}, "timestamp": "2026-01-14T10:30:00Z"}										
+{"success": true, "data": {"content": [{"transactionId": "tx_1", "type": "CHARGE", "amount": 100000, "balance": 500000, "description": "크레딧 충전", "relatedChallenge": null, "createdAt": "2026-01-14T10:00:00Z"}, {"transactionId": "tx_2", "type": "SUPPORT", "amount": -100000, "balance": 400000, "description": "책벌레들 서포트 납입", "relatedChallenge": {"challengeId": "challenge_1", "name": "책벌레들"}, "createdAt": "2026-01-14T11:00:00Z"}], "page": {"number": 0, "size": 20, "totalElements": 2, "totalPages": 1}, "summary": {"totalIncome": 100000, "totalExpense": 100000, "period": {"startDate": "2026-01-01", "endDate": "2026-01-14"}}}, "timestamp": "2026-01-14T10:30:00Z"}										
 										
 017 POST /accounts/charge										
 Document No :				Version :		1.0.0		Date :		2026-01-15
