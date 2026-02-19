@@ -28,17 +28,17 @@ export function ResetPasswordPage() {
     setError(null);
 
     if (!token) {
-      setError('Invalid reset token.');
+      setError('유효하지 않은 재설정 토큰입니다.');
       return;
     }
 
     if (!PASSWORD_PATTERN.test(newPassword)) {
-      setError('Password must be 8-20 chars and include letters, numbers, and special characters.');
+      setError('비밀번호는 8~20자이며 영문, 숫자, 특수문자를 포함해야 합니다.');
       return;
     }
 
     if (newPassword !== newPasswordConfirm) {
-      setError('Passwords do not match.');
+      setError('비밀번호가 일치하지 않습니다.');
       return;
     }
 
@@ -51,15 +51,15 @@ export function ResetPasswordPage() {
       });
 
       if (response.passwordReset) {
-        toast.success('Password reset completed. Please sign in again.');
+        toast.success('비밀번호 재설정이 완료되었습니다. 다시 로그인해주세요.');
         navigate(PATHS.HOME, { replace: true });
         return;
       }
 
-      setError('Password reset failed. Please try again.');
+      setError('비밀번호 재설정에 실패했습니다. 다시 시도해주세요.');
     } catch (requestError) {
-      console.error('Failed to reset password:', requestError);
-      setError('Password reset failed. Please request a new link.');
+      console.error('비밀번호 재설정 실패:', requestError);
+      setError('비밀번호 재설정에 실패했습니다. 새 링크를 요청해주세요.');
     } finally {
       setSubmitting(false);
     }
@@ -67,22 +67,22 @@ export function ResetPasswordPage() {
 
   return (
     <PageContainer>
-      <PageHeader title="Reset Password" showBack />
+      <PageHeader title="비밀번호 재설정" showBack />
       <section className={styles.card}>
         {!token ? (
           <div className={styles.invalidToken}>
-            <p>This reset link is invalid.</p>
+            <p>유효하지 않은 재설정 링크입니다.</p>
             <button type="button" className={styles.linkButton} onClick={() => navigate(PATHS.HOME)}>
-              Go Home
+              홈으로 이동
             </button>
           </div>
         ) : (
           <form className={styles.form} onSubmit={handleSubmit}>
-            <h2 className={styles.title}>Set a New Password</h2>
-            <p className={styles.description}>Use a strong password with letters, numbers, and special characters.</p>
+            <h2 className={styles.title}>새 비밀번호 설정</h2>
+            <p className={styles.description}>영문, 숫자, 특수문자를 포함한 안전한 비밀번호를 사용해주세요.</p>
 
             <label className={styles.label} htmlFor="newPassword">
-              New Password
+              새 비밀번호
             </label>
             <input
               id="newPassword"
@@ -95,7 +95,7 @@ export function ResetPasswordPage() {
             />
 
             <label className={styles.label} htmlFor="newPasswordConfirm">
-              Confirm Password
+              새 비밀번호 확인
             </label>
             <input
               id="newPasswordConfirm"
@@ -110,7 +110,7 @@ export function ResetPasswordPage() {
             {error ? <p className={styles.error}>{error}</p> : null}
 
             <button type="submit" className={styles.submitButton} disabled={submitting}>
-              {submitting ? 'Resetting...' : 'Reset Password'}
+              {submitting ? '재설정 중...' : '비밀번호 재설정'}
             </button>
           </form>
         )}
