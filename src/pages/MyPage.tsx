@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   User,
   Settings,
@@ -17,12 +17,16 @@ import { getMyProfile } from '@/lib/api/user';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Avatar } from '@/components/ui/Avatar';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
+import { useLoginModalStore } from '@/store/modal/useModalStore';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import styles from './MyPage.module.css';
 
 export function MyPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout } = useAuthStore();
   const { confirm } = useConfirmDialog();
+  const { onOpen: openLogin } = useLoginModalStore();
 
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['myProfile'],
@@ -54,6 +58,8 @@ export function MyPage() {
   }
 
   if (error || !user) {
+    const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
+
     return (
       <PageContainer>
         <PageHeader title="마이페이지" />
@@ -63,7 +69,7 @@ export function MyPage() {
           </div>
           <button
             className={styles.loginButton}
-            onClick={() => navigate(PATHS.AUTH.LOGIN)}
+            onClick={() => openLogin({ returnTo, redirectOnReject: PATHS.HOME, message: '로그인이 필요합니다.' })}
           >
             로그인 하러 가기
           </button>
@@ -80,7 +86,7 @@ export function MyPage() {
     },
     {
       icon: <CreditCard size={20} />,
-      label: '나의 장부 (Wallet)',
+      label: '나의 장부',
       path: PATHS.MY.LEDGER,
     },
     {
@@ -93,59 +99,60 @@ export function MyPage() {
   return (
     <PageContainer>
       <PageHeader title="마이페이지" />
-
-      <div className={styles.profileSection}>
-        <Avatar
-          src={user.profileImage}
-          name={user.nickname}
-          size="xl"
-          className={styles.avatar}
-        />
-        <div className={styles.profileInfo}>
-          <div className={styles.nickname}>
-            {user.nickname} <Badge variant="default">Lv.{Math.floor(user.brix / 1000) + 1}</Badge>
+      <div className={styles.pageBody}>
+        <div className={styles.profileSection}>
+          <Avatar
+            src={user.profileImage}
+            name={user.nickname}
+            size="xl"
+            className={styles.avatar}
+          />
+          <div className={styles.profileInfo}>
+            <div className={styles.nickname}>
+              {user.nickname} <Badge variant="default">레벨 {Math.floor(user.brix / 1000) + 1}</Badge>
+            </div>
+            <div className={styles.email}>{user.email}</div>
           </div>
-          <div className={styles.email}>{user.email}</div>
         </div>
-      </div>
 
-      <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
-          <span className={styles.statValue}>{user.participatingChallengeIds?.length || 0}</span>
-          <span className={styles.statLabel}>참여중</span>
+        <div className={styles.statsGrid}>
+          <div className={styles.statCard}>
+            <span className={styles.statValue}>{user.participatingChallengeIds?.length || 0}</span>
+            <span className={styles.statLabel}>참여중</span>
+          </div>
         </div>
-      </div>
 
-      <div className={styles.menuSection}>
-        <h3 className={styles.menuTitle}>내 활동</h3>
-        <div className={styles.menuList}>
-          {menuItems.map((item) => (
-            <div
-              key={item.label}
-              className={styles.menuItem}
-              onClick={() => navigate(item.path)}
-            >
-              <div className={styles.menuIcon}>{item.icon}</div>
-              <span className={styles.menuText}>{item.label}</span>
+        <div className={styles.menuSection}>
+          <h3 className={styles.menuTitle}>내 활동</h3>
+          <div className={styles.menuList}>
+            {menuItems.map((item) => (
+              <div
+                key={item.label}
+                className={styles.menuItem}
+                onClick={() => navigate(item.path)}
+              >
+                <div className={styles.menuIcon}>{item.icon}</div>
+                <span className={styles.menuText}>{item.label}</span>
+                <ChevronRight size={18} className={styles.chevron} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={`${styles.menuSection} ${styles.accountSection}`}>
+          <h3 className={styles.menuTitle}>계정</h3>
+          <div className={styles.menuList}>
+            <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.ACCOUNT)}>
+              <div className={styles.menuIcon}><User size={20} /></div>
+              <span className={styles.menuText}>계정 관리</span>
               <ChevronRight size={18} className={styles.chevron} />
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className={styles.menuSection} style={{ marginTop: '24px' }}>
-        <h3 className={styles.menuTitle}>계정</h3>
-        <div className={styles.menuList}>
-          <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.ACCOUNT)}>
-            <div className={styles.menuIcon}><User size={20} /></div>
-            <span className={styles.menuText}>계정 관리</span>
-            <ChevronRight size={18} className={styles.chevron} />
-          </div>
-          <div className={styles.menuItem} onClick={handleLogout}>
-            <div className={styles.menuIcon}><LogOut size={20} /></div>
-            <span className={`${styles.menuText} ${styles.dangerText}`}>
-              로그아웃
-            </span>
+            <div className={styles.menuItem} onClick={handleLogout}>
+              <div className={styles.menuIcon}><LogOut size={20} /></div>
+              <span className={`${styles.menuText} ${styles.dangerText}`}>
+                로그아웃
+              </span>
+            </div>
           </div>
         </div>
       </div>

@@ -1,17 +1,24 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
+import { PATHS } from '@/routes/paths';
 
 export function useAuthGuard() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isLoggedIn, user } = useAuthStore();
   const { onOpen: openLoginModal } = useLoginModalStore();
 
   const requireAuth = (callback?: () => void): boolean => {
     if (!isLoggedIn) {
-      openLoginModal();
+      const returnTo = sanitizeReturnToPath(
+        `${location.pathname}${location.search}${location.hash}`,
+        PATHS.HOME,
+      );
+      openLoginModal({ returnTo });
       return false;
     }
     if (callback) callback();

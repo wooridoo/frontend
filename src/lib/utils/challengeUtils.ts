@@ -19,10 +19,10 @@ export function validateChallengeAccess(challengeId: string): void {
   const { isLoggedIn, user } = useAuthStore.getState();
 
   if (!isLoggedIn || !user) {
-    throw new ApiError('Login required', 401);
+    throw new ApiError('로그인이 필요합니다.', 401);
   }
 
   if (!user.participatingChallengeIds?.includes(normalizedChallengeId)) {
-    throw new ApiError('Challenge access denied', 403);
+    throw new ApiError('챌린지 접근 권한이 없습니다.', 403);
   }
 }

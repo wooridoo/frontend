@@ -86,9 +86,9 @@
   color: #111;
 }
 
-.googleIcon {
-  font-weight: 700;
-  font-size: 18px;
+.googleIconImage {
+  width: 18px;
+  height: 18px;
 }
 
 .emailButton {

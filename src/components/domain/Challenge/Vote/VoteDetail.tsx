@@ -26,7 +26,7 @@ export function VoteDetail() {
   const { mutate: castVote, isPending: isCasting } = useCastVote(voteId || '', challengeId);
 
   if (isLoading) return <Loading />;
-  if (!vote) return <div>Vote not found</div>;
+  if (!vote) return <div>투표를 찾을 수 없습니다.</div>;
 
   const handleVote = async (option: VoteOption) => {
     const isConfirmed = await confirm({

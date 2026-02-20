@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { type User } from '@/types/user';
 import { Avatar } from '@/components/ui/Avatar';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useToggleLike, useDeletePost } from '@/hooks/useFeed';
+import { useToggleLike, useDeletePost, useSetPostPinned } from '@/hooks/useFeed';
 import { ResponsiveOverlay } from '@/components/ui/Overlay/ResponsiveOverlay';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
@@ -22,7 +22,9 @@ interface PostCardProps {
   likeCount: number;
   commentCount: number;
   isNotice?: boolean;
+  isPinned?: boolean;
   isLiked?: boolean;
+  canPinNotice?: boolean;
   onOpenDetail?: () => void;
 }
 
@@ -36,7 +38,9 @@ export function PostCard({
   likeCount: initialLikeCount,
   commentCount,
   isNotice,
+  isPinned = false,
   isLiked: initialIsLiked,
+  canPinNotice = false,
   onOpenDetail,
 }: PostCardProps) {
   const { challengeId: routeChallengeId } = useChallengeRoute();
@@ -50,10 +54,24 @@ export function PostCard({
 
   const toggleLike = useToggleLike(challengeId);
   const deletePost = useDeletePost(challengeId);
+  const pinPost = useSetPostPinned(challengeId);
 
   const author = createdBy || { nickname: '알 수 없음', profileImage: undefined, userId: 'unknown' };
   const authorName = author.nickname;
   const isAuthor = user?.userId === author.userId;
+  const canOpenMenu = isAuthor || (canPinNotice && isNotice);
+
+  const formatCreatedAt = (value: string) => {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
 
   const handleLike = () => {
     if (!user) return;
@@ -96,17 +114,44 @@ export function PostCard({
     onOpenDetail?.();
   };
 
+  const handleTogglePin = () => {
+    pinPost.mutate(
+      { postId: id, pinned: !isPinned },
+      {
+        onSuccess: () => {
+          toast.success(isPinned ? '공지 고정을 해제했습니다.' : '공지를 상단에 고정했습니다.');
+          setIsMenuOpen(false);
+        },
+        onError: () => {
+          toast.error('공지 고정 상태 변경에 실패했습니다.');
+        },
+      },
+    );
+  };
+
   const menuContent = (
-    <div className="flex flex-col p-1 min-w-[150px] bg-white rounded-md shadow-lg border border-gray-100">
-      <button
-        className="flex items-center gap-2 px-4 py-3 text-sm text-red-600 hover:bg-red-50 w-full text-left rounded-md"
-        onClick={() => {
-          void handleDelete();
-        }}
-      >
-        <Trash2 size={16} />
-        삭제하기
-      </button>
+    <div className={styles.menuContainer}>
+      {canPinNotice && isNotice ? (
+        <button
+          className={styles.menuButton}
+          onClick={handleTogglePin}
+          disabled={pinPost.isPending}
+        >
+          <Pin size={16} />
+          {isPinned ? '고정 해제' : '상단 고정'}
+        </button>
+      ) : null}
+      {isAuthor ? (
+        <button
+          className={clsx(styles.menuButton, styles.menuButtonDanger)}
+          onClick={() => {
+            void handleDelete();
+          }}
+        >
+          <Trash2 size={16} />
+          삭제하기
+        </button>
+      ) : null}
     </div>
   );
 
@@ -120,11 +165,11 @@ export function PostCard({
               <span className={styles.name}>{authorName}</span>
               {isNotice ? <span className={styles.noticeBadge}>공지</span> : null}
             </div>
-            <span className={styles.time}>{createdAt}</span>
+            <span className={styles.time}>{formatCreatedAt(createdAt)}</span>
           </div>
         </div>
 
-        {isAuthor ? (
+        {canOpenMenu ? (
           <ResponsiveOverlay
             align="end"
             onOpenChange={setIsMenuOpen}
@@ -142,7 +187,7 @@ export function PostCard({
       </div>
 
       <div className={styles.content} onClick={handleOpenDetail}>
-        {isNotice ? (
+        {isPinned ? (
           <div className={styles.pinIcon}>
             <Pin fill="currentColor" size={14} />
           </div>
@@ -152,7 +197,7 @@ export function PostCard({
         {images && images.length > 0 ? (
           <div className={clsx(styles.imageGrid, styles[`grid${Math.min(images.length, 4)}`])}>
             {images.map((img, idx) => (
-              <img key={idx} alt="Post attachment" className={styles.postImage} src={img} />
+              <img key={idx} alt={`첨부 이미지 ${idx + 1}`} className={styles.postImage} src={img} />
             ))}
           </div>
         ) : null}

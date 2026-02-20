@@ -27,9 +27,9 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
     const diffMs = deadlineDate.getTime() - now.getTime();
     const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-    if (days < 0) return 'Closed';
-    if (days === 0) return 'Closes today';
-    return `${days} day(s) left`;
+    if (days < 0) return '마감됨';
+    if (days === 0) return '오늘 마감';
+    return `${days}일 남음`;
   };
 
   const participationCount = vote.voteCount.agree + vote.voteCount.disagree;
@@ -47,10 +47,12 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
 
       <div className={styles.footer}>
         <span className={styles.voters}>
-          Participated {participationCount}/{eligibleVoters ?? '-'}
+          참여 {participationCount}/{eligibleVoters ?? '-'}
         </span>
         <span className={styles.author}>
-          {voteResult ? `${voteResult.passed ? 'Passed' : 'Rejected'} ${voteResult.approvalRate.toFixed(0)}%` : `By ${vote.createdBy.nickname}`}
+          {voteResult
+            ? `${voteResult.passed ? '가결' : '부결'} ${voteResult.approvalRate.toFixed(0)}%`
+            : `작성자 ${vote.createdBy.nickname}`}
         </span>
       </div>
 

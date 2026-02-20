@@ -45,7 +45,7 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
                 <div className={styles.nameRow}>
                     <span className={styles.name}>{user.nickname}</span>
                     {user.brix !== undefined && (
-                        <span className={styles.brix}>Brix {user.brix.toFixed(1)}</span>
+                        <span className={styles.brix}>브릭스 {user.brix.toFixed(1)}</span>
                     )}
                 </div>
                 <div className={styles.stats}>

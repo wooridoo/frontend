@@ -113,12 +113,14 @@ export function SideNav({
                         clsx(styles.navItem, isActive && styles.active)
                       }
                       onClick={handleNavClick}
-                      title={isCollapsed ? (challenge.title || 'Untitled') : undefined}
+                      title={isCollapsed ? (challenge.title || '이름 없는 챌린지') : undefined}
                     >
                       <span className={styles.challengeIcon}>
                         {(challenge.title || '?').slice(0, 1)}
                       </span>
-                      <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>{challenge.title || 'Untitled'}</span>
+                      <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>
+                        {challenge.title || '이름 없는 챌린지'}
+                      </span>
                     </NavLink>
                   </li>
                 ))

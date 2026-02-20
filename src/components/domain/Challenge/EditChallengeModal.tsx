@@ -113,13 +113,13 @@ export function EditChallengeModal() {
                     </div>
 
                     <div className={styles.fieldGroup}>
-                        <label className={styles.label}>썸네일 URL</label>
+                        <label className={styles.label}>썸네일 주소</label>
                         <input
                             type="url"
                             className={styles.input}
                             value={formData.thumbnailUrl}
                             onChange={(e) => handleChange('thumbnailUrl', e.target.value)}
-                            placeholder="https://..."
+                            placeholder="이미지 주소를 입력하세요"
                         />
                     </div>
 

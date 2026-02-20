@@ -64,11 +64,11 @@ export function CreateMeetingModal() {
     const minAllowed = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     if (dateTime < now) {
-      return 'Past date/time is not allowed.';
+      return '현재 시각 이전으로는 설정할 수 없습니다.';
     }
 
     if (dateTime < minAllowed) {
-      return 'Meeting must be scheduled at least 24 hours later.';
+      return '모임 시간은 최소 24시간 이후로 설정해야 합니다.';
     }
 
     return null;
@@ -76,24 +76,24 @@ export function CreateMeetingModal() {
 
   const handleSubmit = async () => {
     if (!challengeId) {
-      setError('Invalid challenge context.');
+      setError('챌린지 정보가 올바르지 않습니다.');
       return;
     }
 
     if (!formData.title.trim()) {
-      setError('Please enter a meeting title.');
+      setError('모임 제목을 입력해 주세요.');
       return;
     }
     if (!formData.meetingDate) {
-      setError('Please select a meeting date.');
+      setError('모임 날짜를 선택해 주세요.');
       return;
     }
     if (!formData.meetingTime) {
-      setError('Please select a meeting time.');
+      setError('모임 시간을 선택해 주세요.');
       return;
     }
     if (!formData.location.trim()) {
-      setError('Please enter meeting location or online link.');
+      setError('장소 또는 온라인 링크를 입력해 주세요.');
       return;
     }
 
@@ -120,7 +120,7 @@ export function CreateMeetingModal() {
       const message =
         err && typeof err === 'object' && 'message' in err
           ? String((err as { message: unknown }).message)
-          : 'Failed to create meeting.';
+          : '모임 생성에 실패했습니다.';
       setError(message);
     }
   };
@@ -128,25 +128,25 @@ export function CreateMeetingModal() {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
       <div className={styles.container}>
-        <h2 className={styles.title}>Create Regular Meeting</h2>
+        <h2 className={styles.title}>정기 모임 만들기</h2>
 
         <div className={styles.form}>
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Title *</label>
+            <label className={styles.label}>제목 *</label>
             <input
               type="text"
               className={styles.input}
-              placeholder="e.g. Week 3 regular meeting"
+              placeholder="예: 3주차 정기 모임"
               value={formData.title}
               onChange={event => handleChange('title', event.target.value)}
             />
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Description</label>
+            <label className={styles.label}>설명</label>
             <textarea
               className={styles.textarea}
-              placeholder="Describe agenda or check-in details"
+              placeholder="안건이나 진행 방식을 입력해 주세요."
               value={formData.description}
               onChange={event => handleChange('description', event.target.value)}
             />
@@ -154,7 +154,7 @@ export function CreateMeetingModal() {
 
           <div className={styles.row}>
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Date *</label>
+              <label className={styles.label}>날짜 *</label>
               <input
                 type="date"
                 className={styles.input}
@@ -165,7 +165,7 @@ export function CreateMeetingModal() {
               />
             </div>
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Time *</label>
+              <label className={styles.label}>시간 *</label>
               <input
                 type="time"
                 className={styles.input}
@@ -176,38 +176,38 @@ export function CreateMeetingModal() {
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Meeting Type</label>
+            <label className={styles.label}>모임 유형</label>
             <div className={styles.locationToggle}>
               <button
                 type="button"
                 className={`${styles.toggleButton} ${formData.locationType === 'OFFLINE' ? styles.active : ''}`}
                 onClick={() => handleChange('locationType', 'OFFLINE')}
               >
-                Offline
+                오프라인
               </button>
               <button
                 type="button"
                 className={`${styles.toggleButton} ${formData.locationType === 'ONLINE' ? styles.active : ''}`}
                 onClick={() => handleChange('locationType', 'ONLINE')}
               >
-                Online
+                온라인
               </button>
             </div>
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>{formData.locationType === 'OFFLINE' ? 'Location *' : 'Meeting Link *'}</label>
+            <label className={styles.label}>{formData.locationType === 'OFFLINE' ? '장소 *' : '온라인 링크 *'}</label>
             <input
               type="text"
               className={styles.input}
-              placeholder={formData.locationType === 'OFFLINE' ? 'e.g. Gangnam workspace' : 'https://zoom.us/...'}
+              placeholder={formData.locationType === 'OFFLINE' ? '예: 강남 스터디룸' : '온라인 회의 링크를 입력하세요'}
               value={formData.location}
               onChange={event => handleChange('location', event.target.value)}
             />
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Max Participants</label>
+            <label className={styles.label}>최대 참여 인원</label>
             <select
               className={styles.select}
               value={formData.maxParticipants}
@@ -215,7 +215,7 @@ export function CreateMeetingModal() {
             >
               {[5, 10, 15, 20, 30, 50, 100].map(count => (
                 <option key={count} value={count}>
-                  {count} members
+                  {count}명
                 </option>
               ))}
             </select>
@@ -225,10 +225,10 @@ export function CreateMeetingModal() {
 
           <div className={styles.actions}>
             <Button onClick={handleClose} className={styles.cancelButton}>
-              Cancel
+              취소
             </Button>
             <Button onClick={handleSubmit} className={styles.submitButton} disabled={createMutation.isPending}>
-              {createMutation.isPending ? 'Creating...' : 'Create Meeting'}
+              {createMutation.isPending ? '생성 중...' : '모임 만들기'}
             </Button>
           </div>
         </div>

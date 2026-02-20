@@ -50,7 +50,7 @@ export function MyProfilePage() {
                 <div className={styles.userInfo}>
                     <h1 className={styles.nickname}>{user.nickname}</h1>
                     <p className={styles.email}>{user.email}</p>
-                    <div className={styles.brixBadge}>Brix {user.brix?.toFixed(1) || '0.0'}</div>
+                    <div className={styles.brixBadge}>브릭스 {user.brix?.toFixed(1) || '0.0'}</div>
                 </div>
                 <Button className={styles.editButton} variant="secondary">
                     프로필 수정

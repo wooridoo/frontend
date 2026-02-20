@@ -148,6 +148,7 @@ export async function leaveChallenge(challengeId: string): Promise<void> {
 
 export async function joinChallenge(challengeId: string, _depositAmount?: number): Promise<void> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
+  void _depositAmount;
   await client.post(`/challenges/${normalizedChallengeId}/join`);
 }
 

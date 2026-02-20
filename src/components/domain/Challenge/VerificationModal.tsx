@@ -53,7 +53,7 @@ export function VerificationModal() {
             {file ? (
               <img
                 src={URL.createObjectURL(file)}
-                alt="Preview"
+                alt="업로드 미리보기"
                 className={styles.previewImage}
               />
             ) : (
@@ -82,7 +82,7 @@ export function VerificationModal() {
           </div>
           <p className={styles.successMessage}>
             인증이 완료되었습니다!<br />
-            10 Brix를 획득했어요.
+            10 브릭스를 획득했어요.
           </p>
           <Button onClick={handleClose} className={styles.submitButton}>
             확인

@@ -63,7 +63,7 @@ export function PasswordResetModal() {
                                     setEmail(e.target.value);
                                     setError(null);
                                 }}
-                                placeholder="example@email.com"
+                                placeholder="가입한 이메일 주소를 입력하세요"
                             />
                         </div>
 

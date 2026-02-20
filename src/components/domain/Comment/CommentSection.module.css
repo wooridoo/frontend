@@ -137,3 +137,70 @@
 .item:hover .deleteBtn {
   opacity: 1;
 }
+
+.itemWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.replyItem {
+  padding-left: var(--spacing-xs);
+  border-left: 2px solid var(--color-grey-100);
+}
+
+.replyIcon {
+  color: var(--color-grey-400);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.itemActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.replyBtn {
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-500);
+  padding: 0;
+}
+
+.replyBtn:hover {
+  color: var(--color-primary);
+}
+
+.repliesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.replyingTo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-grey-50);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-600);
+  width: 100%;
+}
+
+.cancelReply {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  color: var(--color-grey-500);
+}
+
+.cancelReply:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}

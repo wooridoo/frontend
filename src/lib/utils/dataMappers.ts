@@ -51,7 +51,7 @@ export function normalizeUser(data: any): User {
     return {
       userId: 'unknown',
       email: '',
-      name: 'Unknown',
+      name: '알 수 없음',
       nickname: '알 수 없음',
       status: 'ACTIVE' as any,
       brix: 0,
@@ -59,8 +59,8 @@ export function normalizeUser(data: any): User {
   }
   return {
     ...data,
-    nickname: data.nickname || data.username || data.name || 'User',
-    name: data.name || data.nickname || data.username || 'User',
+    nickname: data.nickname || data.username || data.name || '사용자',
+    name: data.name || data.nickname || data.username || '사용자',
     profileImage: data.profileImage || data.imageUrl || data.avatarUrl || data.avatar,
     brix: data.brix ?? 0,
     account: data.account || { balance: 0, availableBalance: 0, lockedBalance: 0, accountId: 'unknown' },
@@ -72,7 +72,7 @@ export function normalizeChallenge(data: any): ChallengeInfo {
 
   const normalized = {
     ...data,
-    title: data.title || data.name || 'Untitled Challenge',
+    title: data.title || data.name || '제목 없는 챌린지',
     thumbnailUrl: data.thumbnailUrl || data.thumbnail || data.image,
     // Ensure status is present or default
     status: data.status || 'RECRUITING',
@@ -84,11 +84,21 @@ export function normalizeChallenge(data: any): ChallengeInfo {
 
 export function normalizePost(data: any): Post {
   if (!data) return {} as Post;
+  const category = data.category || 'GENERAL';
+  const isNotice = typeof data.isNotice === 'boolean'
+    ? data.isNotice
+    : data.isNotice === 'Y' || category === 'NOTICE';
+  const isPinned = typeof data.isPinned === 'boolean'
+    ? data.isPinned
+    : data.isPinned === 'Y';
 
   return {
     ...data,
     // Handle id normalization
     id: data.id || data.postId,
+    category,
+    isNotice,
+    isPinned,
     // Handle createdBy normalization recursively
     createdBy: normalizeUser(data.createdBy || data.author || data.user),
     images: data.images || [],

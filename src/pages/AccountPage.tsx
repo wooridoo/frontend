@@ -26,6 +26,13 @@ export function AccountPage() {
   const [passwordPending, setPasswordPending] = useState(false);
   const [withdrawPending, setWithdrawPending] = useState(false);
 
+  const userStatusLabel: Record<string, string> = {
+    ACTIVE: '활성',
+    WITHDRAWN: '탈퇴',
+    LOCKED: '잠김',
+    SUSPENDED: '정지',
+  };
+
   const handlePasswordSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!currentPassword || !newPassword || !newPasswordConfirm) {
@@ -90,10 +97,10 @@ export function AccountPage() {
               <h2 className={styles.sectionTitle}>기본 정보</h2>
               <div className={styles.row}><span>닉네임</span><strong>{user.nickname}</strong></div>
               <div className={styles.row}><span>이메일</span><strong>{user.email}</strong></div>
-              <div className={styles.row}><span>상태</span><strong>{user.status}</strong></div>
+              <div className={styles.row}><span>상태</span><strong>{userStatusLabel[user.status] ?? '알 수 없음'}</strong></div>
               <div className={styles.row}>
                 <span>지갑 잔액</span>
-                <strong>{(user.account?.availableBalance ?? 0).toLocaleString()} Brix</strong>
+                <strong>{(user.account?.availableBalance ?? 0).toLocaleString()} 브릭스</strong>
               </div>
             </section>
 
@@ -145,7 +152,7 @@ export function AccountPage() {
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>회원 탈퇴</h2>
-              <p className={styles.helpText}>탈퇴 시 계정은 WITHDRAWN 상태로 전환되며 30일 뒤 완전 삭제됩니다.</p>
+              <p className={styles.helpText}>탈퇴 시 계정은 탈퇴 상태로 전환되며 30일 뒤 완전 삭제됩니다.</p>
               <div className={styles.buttonRow}>
                 <input
                   className={styles.input}

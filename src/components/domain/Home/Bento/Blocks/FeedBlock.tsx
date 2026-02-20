@@ -45,10 +45,10 @@ export function FeedBlock() {
       <div className={styles.header}>
         <h3 className={styles.title}>오늘의 추천 챌린지</h3>
         <div className={styles.controls}>
-          <button onClick={() => scroll('left')} className={styles.controlBtn} aria-label="Previous">
+          <button onClick={() => scroll('left')} className={styles.controlBtn} aria-label="이전">
             <ChevronLeft size={20} />
           </button>
-          <button onClick={() => scroll('right')} className={styles.controlBtn} aria-label="Next">
+          <button onClick={() => scroll('right')} className={styles.controlBtn} aria-label="다음">
             <ChevronRight size={20} />
           </button>
         </div>

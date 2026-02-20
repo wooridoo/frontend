@@ -8,12 +8,15 @@ import { useVerificationModalStore, usePostDetailModalStore } from '@/store/moda
 import { Button } from '@/components/ui';
 import { Camera } from 'lucide-react';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { useChallengeDetail } from '@/hooks/useChallenge';
 
 export function FeedPage() {
   const { challengeId, isResolving } = useChallengeRoute();
   const { data: posts, isLoading, error } = useFeed(challengeId);
+  const { data: challenge } = useChallengeDetail(challengeId);
   const verificationModal = useVerificationModalStore();
   const { onOpen: openPostDetail } = usePostDetailModalStore();
+  const isLeader = challenge?.myMembership?.role === 'LEADER';
 
   if (isResolving || isLoading) {
     return (
@@ -60,7 +63,12 @@ export function FeedPage() {
           </div>
         ) : (
           posts?.map((post, index) => (
-            <PostCard key={post.id || index} {...post} onOpenDetail={() => openPostDetail(post)} />
+            <PostCard
+              key={post.id || index}
+              {...post}
+              canPinNotice={isLeader}
+              onOpenDetail={() => openPostDetail(post)}
+            />
           ))
         )}
       </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useSupportSettingsModalStore } from '@/store/modal/useModalStore';
@@ -19,20 +19,17 @@ export function SupportSettingsModal() {
     const { isOpen, challengeId, onClose } = useSupportSettingsModalStore();
     const { data: challenge } = useChallengeDetail(challengeId || undefined);
     const updateMutation = useUpdateSupportSettings(challengeId || '');
-    const [autoPayEnabled, setAutoPayEnabled] = useState(false);
+    const [autoPayEnabledDraft, setAutoPayEnabledDraft] = useState<boolean | null>(null);
     const [saved, setSaved] = useState(false);
 
-    useEffect(() => {
-        if (!isOpen) return;
-        setSaved(false);
-        const initialValue = toBoolean((challenge?.myMembership as { autoPayEnabled?: unknown } | undefined)?.autoPayEnabled);
-        if (typeof initialValue === 'boolean') {
-            setAutoPayEnabled(initialValue);
-        }
-    }, [isOpen, challenge?.myMembership]);
+    const initialAutoPayEnabled = toBoolean(
+        (challenge?.myMembership as { autoPayEnabled?: unknown } | undefined)?.autoPayEnabled
+    ) ?? false;
+    const autoPayEnabled = autoPayEnabledDraft ?? initialAutoPayEnabled;
 
     const handleClose = () => {
         setSaved(false);
+        setAutoPayEnabledDraft(null);
         onClose();
     };
 
@@ -40,7 +37,7 @@ export function SupportSettingsModal() {
         if (!challengeId) return;
         try {
             const response = await updateMutation.mutateAsync({ autoPayEnabled });
-            setAutoPayEnabled(response.autoPayEnabled);
+            setAutoPayEnabledDraft(response.autoPayEnabled);
             setSaved(true);
             setTimeout(handleClose, 1200);
         } catch {
@@ -75,7 +72,7 @@ export function SupportSettingsModal() {
                                 <input
                                     type="checkbox"
                                     checked={autoPayEnabled}
-                                    onChange={(event) => setAutoPayEnabled(event.target.checked)}
+                                    onChange={(event) => setAutoPayEnabledDraft(event.target.checked)}
                                 />
                                 <span className={styles.label}>자동 납입 사용</span>
                             </label>

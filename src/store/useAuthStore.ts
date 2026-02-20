@@ -12,6 +12,7 @@ interface AuthState {
   refreshToken: string | null;
   login: (userData?: User, accessToken?: string, refreshToken?: string) => void;
   updateUser: (userData: User) => void;
+  clearSession: () => void;
   logout: () => Promise<void>;
   syncParticipatingChallenges: () => Promise<void>;
   refreshUser: () => Promise<void>;
@@ -38,6 +39,14 @@ export const useAuthStore = create<AuthState>()(
           user: userData ? normalizeUser(userData) : null,
         }),
 
+      clearSession: () =>
+        set({
+          isLoggedIn: false,
+          user: null,
+          accessToken: null,
+          refreshToken: null,
+        }),
+
       logout: async () => {
         const { refreshToken } = get();
         try {
@@ -48,12 +57,7 @@ export const useAuthStore = create<AuthState>()(
           // Ignore API failure and clear local auth state anyway.
         }
 
-        set({
-          isLoggedIn: false,
-          user: null,
-          accessToken: null,
-          refreshToken: null,
-        });
+        get().clearSession();
       },
 
       syncParticipatingChallenges: async () => {

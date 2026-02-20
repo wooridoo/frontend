@@ -8,6 +8,7 @@ import type {
 import type { ApiResponse } from '@/types/api';
 import { toast } from 'sonner';
 import { normalizeApiError } from './errorNormalizer';
+import { PATHS } from '@/routes/paths';
 
 export class ApiError extends Error {
   status: number;
@@ -26,6 +27,7 @@ export class ApiError extends Error {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+export const AUTH_SESSION_EXPIRED_EVENT = 'auth:session-expired';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -75,15 +77,69 @@ function updateStoredTokens(accessToken: string, refreshToken?: string) {
   localStorage.setItem('auth-storage', JSON.stringify(storage));
 }
 
-function clearAuthAndRedirect() {
+function clearAuthStorage() {
   try {
     localStorage.removeItem('auth-storage');
   } catch {
     // ignore
   }
+}
 
-  if (!window.location.pathname.includes('/login')) {
-    window.location.href = '/login';
+function emitSessionExpired() {
+  if (typeof window === 'undefined') return;
+
+  const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  window.dispatchEvent(
+    new CustomEvent(AUTH_SESSION_EXPIRED_EVENT, {
+      detail: { returnTo: currentPath || PATHS.HOME },
+    }),
+  );
+}
+
+function isLoginRequest(url?: string): boolean {
+  return Boolean(url?.includes('/auth/login'));
+}
+
+function isRefreshRequest(url?: string): boolean {
+  return Boolean(url?.includes('/auth/refresh'));
+}
+
+function isTokenFailureCode(code?: string): boolean {
+  return code === 'AUTH_004' || code === 'AUTH_001' || code === 'AUTH_002';
+}
+
+function shouldNotifySessionExpired(status: number, code?: string): boolean {
+  return status === 401 && (!code || isTokenFailureCode(code));
+}
+
+function handleSessionExpired() {
+  clearAuthStorage();
+  emitSessionExpired();
+}
+
+function createApiError(normalized: ReturnType<typeof normalizeApiError>, status: number): ApiError {
+  return new ApiError(normalized.userMessage, status, normalized.code, undefined, normalized.rawMessage);
+}
+
+function createSessionExpiredError(normalized: ReturnType<typeof normalizeApiError>): ApiError {
+  return new ApiError('세션이 만료되었습니다. 다시 로그인해 주세요.', 401, normalized.code, undefined, normalized.rawMessage);
+}
+
+function isCredentialFailure(code?: string): boolean {
+  return code === 'AUTH_001' || code === 'AUTH_002';
+}
+
+function shouldBypassSessionHandling(status: number, url?: string, code?: string): boolean {
+  if (status !== 401) return false;
+  if (!isLoginRequest(url)) return false;
+  return !code || isCredentialFailure(code);
+}
+
+function maybeHandleGlobal401(status: number, url?: string, code?: string) {
+  if (status !== 401) return;
+  if (isLoginRequest(url) || isRefreshRequest(url)) return;
+  if (shouldNotifySessionExpired(status, code)) {
+    handleSessionExpired();
   }
 }
 
@@ -107,9 +163,9 @@ axiosInstance.interceptors.response.use(
         const normalized = normalizeApiError(body.message);
         throw new ApiError(normalized.userMessage, response.status, normalized.code, undefined, normalized.rawMessage);
       }
-      return body.data as any;
+      return body.data as unknown as AxiosResponse<ApiResponse<unknown>>;
     }
-    return body as any;
+    return body as unknown as AxiosResponse<ApiResponse<unknown>>;
   },
   async (error: AxiosError<ApiResponse<unknown>>) => {
     const status = error.response?.status || 500;
@@ -117,13 +173,16 @@ axiosInstance.interceptors.response.use(
     const rawMessage = responseBody?.message || error.message || 'Network Error';
     const normalized = normalizeApiError(rawMessage);
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const requestUrl = originalRequest?.url;
 
     if (status === 401 && originalRequest && !originalRequest._retry) {
-      if (originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login')) {
-        clearAuthAndRedirect();
-        return Promise.reject(
-          new ApiError(normalized.userMessage, status, normalized.code, undefined, normalized.rawMessage),
-        );
+      if (shouldBypassSessionHandling(status, requestUrl, normalized.code)) {
+        return Promise.reject(createApiError(normalized, status));
+      }
+
+      if (isRefreshRequest(requestUrl)) {
+        handleSessionExpired();
+        return Promise.reject(createSessionExpiredError(normalized));
       }
 
       if (isRefreshing) {
@@ -144,7 +203,7 @@ axiosInstance.interceptors.response.use(
         const storage = getAuthStorage() as { state?: { refreshToken?: string } } | null;
         const refreshToken = storage?.state?.refreshToken;
         if (!refreshToken) {
-          throw new Error('No refresh token available');
+          throw new Error('NO_REFRESH_TOKEN');
         }
 
         const refreshResponse = await axios.post<ApiResponse<{ accessToken: string; refreshToken?: string }>>(
@@ -169,18 +228,14 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
-        clearAuthAndRedirect();
-        return Promise.reject(
-          new ApiError('세션이 만료되었습니다. 다시 로그인해 주세요.', 401, normalized.code, undefined, normalized.rawMessage),
-        );
+        handleSessionExpired();
+        return Promise.reject(createSessionExpiredError(normalized));
       } finally {
         isRefreshing = false;
       }
     }
 
-    if (status === 401) {
-      clearAuthAndRedirect();
-    }
+    maybeHandleGlobal401(status, requestUrl, normalized.code);
 
     console.error('API Error', {
       url: error.config?.url,
@@ -195,7 +250,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(
-      new ApiError(normalized.userMessage, status, normalized.code, undefined, normalized.rawMessage),
+      createApiError(normalized, status),
     );
   },
 );

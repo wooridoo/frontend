@@ -1,23 +1,39 @@
 import { Target, LogIn } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useLoginModalStore } from '@/store/modal/useModalStore';
+import { PATHS } from '@/routes/paths';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import styles from './StatusBlock.module.css';
 
 export function StatusBlock() {
   const { user, isLoggedIn } = useAuthStore();
+  const location = useLocation();
   const { onOpen: openLogin } = useLoginModalStore();
+  const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
 
   if (!isLoggedIn || !user) {
     return (
-      <div className={styles.container} onClick={() => openLogin()} style={{ cursor: 'pointer' }}>
+      <div
+        className={styles.container}
+        role="button"
+        tabIndex={0}
+        onClick={() => openLogin({ returnTo })}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openLogin({ returnTo });
+          }
+        }}
+      >
         <div className={styles.header}>
           <span className={styles.label}>내 당도</span>
           <Target size={18} className={styles.icon} />
         </div>
-        <div className={styles.content} style={{ alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--color-text-secondary)' }}>
+        <div className={`${styles.content} ${styles.loginContent}`}>
+          <div className={styles.loginHint}>
             <LogIn size={20} />
-            <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>로그인이 필요합니다</span>
+            <span>로그인이 필요합니다</span>
           </div>
         </div>
       </div>

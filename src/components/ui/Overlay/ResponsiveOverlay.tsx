@@ -27,7 +27,7 @@ interface ResponsiveOverlayProps {
 export function ResponsiveOverlay({
     trigger,
     children,
-    title = 'Menu',
+    title = '메뉴',
     open,
     onOpenChange,
     desktopContentClassName,

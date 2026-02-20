@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
 import { LogIn, UserPlus } from 'lucide-react';
 import { ProfileMenu } from '@/components/ui/Overlay';
 import { NotificationOverlay } from '@/components/domain/Notification/NotificationOverlay';
@@ -8,6 +9,8 @@ import { BrixBadge } from '@/components/domain/BrixBadge/BrixBadge';
 import { getBrixGrade, formatBrix } from '@/lib/brix';
 import { formatCurrency } from '@/lib/utils';
 import type { User } from '@/types/user';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
+import { PATHS } from '@/routes/paths';
 import styles from './NavRight.module.css';
 
 interface NavRightProps {
@@ -17,8 +20,10 @@ interface NavRightProps {
 }
 
 export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) {
+  const location = useLocation();
   const { onOpen: openLogin } = useLoginModalStore();
   const { onOpen: openSignup } = useSignupModalStore();
+  const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
 
   return (
     <div className={styles.root}>
@@ -28,7 +33,7 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
             {/* Brix Badge & Score */}
             <div className={styles.brixContainer}>
               <BrixBadge grade={getBrixGrade(user.brix)} variant="3d" size="sm" showLabel={false} />
-              <span className={styles.brixScore}>{formatBrix(user.brix)} Brix</span>
+              <span className={styles.brixScore}>{formatBrix(user.brix)} 브릭스</span>
             </div>
 
             {/* Account Balance */}
@@ -64,7 +69,7 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
         <div className={styles.authButtons}>
           <button
             className={clsx(styles.button, styles.secondaryButton)}
-            onClick={() => openLogin()}
+            onClick={() => openLogin({ returnTo })}
             aria-label="로그인"
           >
             <LogIn size={16} />

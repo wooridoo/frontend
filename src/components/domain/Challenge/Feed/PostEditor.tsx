@@ -4,6 +4,7 @@ import { Image, Send } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useCreatePost } from '@/hooks/useFeed';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { useChallengeDetail } from '@/hooks/useChallenge';
 
 interface PostEditorProps {
   onSuccess?: () => void;
@@ -11,10 +12,13 @@ interface PostEditorProps {
 
 export function PostEditor({ onSuccess }: PostEditorProps) {
   const { challengeId } = useChallengeRoute();
+  const { data: challenge } = useChallengeDetail(challengeId);
   const { user } = useAuthStore();
   const avatarUrl = user?.profileImage || '/images/avatar-fallback.svg';
+  const isLeader = challenge?.myMembership?.role === 'LEADER';
 
   const [content, setContent] = useState('');
+  const [category, setCategory] = useState<'GENERAL' | 'NOTICE'>('GENERAL');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const createPost = useCreatePost(challengeId || '');
@@ -26,9 +30,11 @@ export function PostEditor({ onSuccess }: PostEditorProps) {
     try {
       await createPost.mutateAsync({
         title: content.slice(0, 20), // 임시: 내용 앞부분을 제목으로 사용
-        content: content.trim()
+        content: content.trim(),
+        category,
       });
       setContent('');
+      setCategory('GENERAL');
       onSuccess?.();
     } catch (error) {
       console.error('Failed to create post:', error);
@@ -46,8 +52,24 @@ export function PostEditor({ onSuccess }: PostEditorProps) {
 
   return (
     <div className={styles.container}>
+      {isLeader ? (
+        <div className={styles.categoryRow}>
+          <label htmlFor="post-category" className={styles.categoryLabel}>게시글 유형</label>
+          <select
+            id="post-category"
+            className={styles.categorySelect}
+            value={category}
+            onChange={(e) => setCategory(e.target.value as 'GENERAL' | 'NOTICE')}
+            disabled={isSubmitting}
+          >
+            <option value="GENERAL">일반</option>
+            <option value="NOTICE">공지</option>
+          </select>
+        </div>
+      ) : null}
+
       <div className={styles.inputRow}>
-        <img src={avatarUrl} alt="User" className={styles.avatar} />
+        <img src={avatarUrl} alt="내 프로필" className={styles.avatar} />
         <div className={styles.inputWrapper}>
           <textarea
             placeholder="새로운 소식을 공유해보세요..."

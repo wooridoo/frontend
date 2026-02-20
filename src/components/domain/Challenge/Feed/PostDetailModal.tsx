@@ -4,6 +4,8 @@ import { CommentSection } from '@/components/domain/Comment/CommentSection';
 import { Heart, MessageCircle } from 'lucide-react';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
+import clsx from 'clsx';
+import styles from './PostDetailModal.module.css';
 
 export function PostDetailModal() {
     const { isOpen, post, onClose } = usePostDetailModalStore();
@@ -26,69 +28,52 @@ export function PostDetailModal() {
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} className="post-detail-modal">
-            <div style={{ padding: 'var(--spacing-lg)' }}>
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className={styles.container}>
                 {/* Header */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-lg)' }}>
+                <div className={styles.header}>
                     <img
                         src={post.createdBy.profileImage || '/images/avatar-fallback.svg'}
                         alt={post.createdBy.nickname}
-                        style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }}
+                        className={styles.avatar}
                     />
                     <div>
-                        <div style={{ fontWeight: 600, fontSize: 'var(--font-size-md)' }}>
+                        <div className={styles.authorName}>
                             {post.createdBy.nickname}
                         </div>
-                        <div style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)' }}>
+                        <div className={styles.authorTime}>
                             {formatDate(post.createdAt)}
                         </div>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-                    <p style={{ fontSize: 'var(--font-size-md)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                <div className={styles.content}>
+                    <p className={styles.text}>
                         {post.content}
                     </p>
                 </div>
 
                 {/* Images */}
                 {post.images && post.images.length > 0 && (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: post.images.length === 1 ? '1fr' : 'repeat(2, 1fr)',
-                        gap: 'var(--spacing-sm)',
-                        marginBottom: 'var(--spacing-lg)',
-                    }}>
+                    <div className={clsx(styles.images, styles[`grid${Math.min(post.images.length, 4)}`])}>
                         {post.images.map((url: string, index: number) => (
                             <img
                                 key={index}
                                 src={url}
-                                alt={`Post image ${index + 1}`}
-                                style={{
-                                    width: '100%',
-                                    borderRadius: 'var(--radius-md)',
-                                    objectFit: 'cover',
-                                    maxHeight: 300,
-                                }}
+                                alt={`첨부 이미지 ${index + 1}`}
+                                className={styles.image}
                             />
                         ))}
                     </div>
                 )}
 
                 {/* Stats */}
-                <div style={{
-                    display: 'flex',
-                    gap: 'var(--spacing-lg)',
-                    paddingTop: 'var(--spacing-md)',
-                    borderTop: '1px solid var(--color-border)',
-                    color: 'var(--color-text-secondary)',
-                    fontSize: 'var(--font-size-sm)',
-                }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <div className={styles.stats}>
+                    <span className={styles.statItem}>
                         <Heart size={14} /> {post.likeCount}
                     </span>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <span className={styles.statItem}>
                         <MessageCircle size={14} /> {post.commentCount}
                     </span>
                 </div>

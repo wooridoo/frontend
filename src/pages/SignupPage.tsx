@@ -107,7 +107,7 @@ export function SignupPage() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <div className={styles.logo}>Woorido</div>
+        <div className={styles.logo}>우리두</div>
         <h1 className={styles.title}>회원가입</h1>
       </header>
 
@@ -188,7 +188,7 @@ export function SignupPage() {
                 />
                 <Input
                   label="생년월일 (선택)"
-                  placeholder="YYYY-MM-DD"
+                  placeholder="예: 1990-01-01"
                   error={errors.birthDate?.message}
                   {...register('birthDate')}
                 />
@@ -201,7 +201,7 @@ export function SignupPage() {
                 <Input
                   label="이메일"
                   type="email"
-                  placeholder="example@woorido.com"
+                  placeholder="이메일 주소를 입력하세요"
                   error={errors.email?.message}
                   {...register('email')}
                 />

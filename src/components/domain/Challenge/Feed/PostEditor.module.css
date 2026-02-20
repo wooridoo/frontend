@@ -7,6 +7,31 @@
   border: 1px solid var(--color-grey-100);
 }
 
+.categoryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-grey-100);
+}
+
+.categoryLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+.categorySelect {
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-700);
+  padding: 6px 10px;
+  min-width: 110px;
+  background-color: var(--color-surface);
+}
+
 .inputRow {
   display: flex;
   gap: var(--space-3);

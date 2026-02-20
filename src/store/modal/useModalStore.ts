@@ -21,7 +21,7 @@ interface ModalStore {
   editProfile: { isOpen: boolean };
   join: { isOpen: boolean; challengeId: string | null };
   leaveChallenge: { isOpen: boolean; challengeId: string | null; challengeTitle: string | null };
-  login: { isOpen: boolean; redirectOnReject: string | null; message: string | null };
+  login: { isOpen: boolean; redirectOnReject: string | null; returnTo: string | null; message: string | null };
   passwordReset: { isOpen: boolean };
   postDetail: { isOpen: boolean; post: Post | null };
   signup: { isOpen: boolean };
@@ -63,7 +63,7 @@ interface ModalStore {
   closeJoin: () => void;
   openLeaveChallenge: (challengeId: string, challengeTitle: string) => void;
   closeLeaveChallenge: () => void;
-  openLogin: (options?: { redirectOnReject?: string; message?: string }) => void;
+  openLogin: (options?: { redirectOnReject?: string; returnTo?: string; message?: string }) => void;
   closeLogin: () => void;
   openPasswordReset: () => void;
   closePasswordReset: () => void;
@@ -100,7 +100,7 @@ export const useModalStore = create<ModalStore>(set => ({
   editProfile: { isOpen: false },
   join: { isOpen: false, challengeId: null },
   leaveChallenge: { isOpen: false, challengeId: null, challengeTitle: null },
-  login: { isOpen: false, redirectOnReject: null, message: null },
+  login: { isOpen: false, redirectOnReject: null, returnTo: null, message: null },
   passwordReset: { isOpen: false },
   postDetail: { isOpen: false, post: null },
   signup: { isOpen: false },
@@ -153,10 +153,11 @@ export const useModalStore = create<ModalStore>(set => ({
       login: {
         isOpen: true,
         redirectOnReject: options?.redirectOnReject || null,
+        returnTo: options?.returnTo || null,
         message: options?.message || null,
       },
     }),
-  closeLogin: () => set({ login: { isOpen: false, redirectOnReject: null, message: null } }),
+  closeLogin: () => set({ login: { isOpen: false, redirectOnReject: null, returnTo: null, message: null } }),
   openPasswordReset: () => set({ passwordReset: { isOpen: true } }),
   closePasswordReset: () => set({ passwordReset: { isOpen: false } }),
   openPostDetail: post => set({ postDetail: { isOpen: true, post } }),
@@ -310,6 +311,7 @@ export const useLoginModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.login.isOpen,
     redirectOnReject: state.login.redirectOnReject,
+    returnTo: state.login.returnTo,
     message: state.login.message,
     onOpen: state.openLogin,
     onClose: state.closeLogin,

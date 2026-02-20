@@ -67,11 +67,11 @@ export function ChargePage() {
 
   return (
     <PageContainer>
-      <PageHeader title="Brix 충전" showBack />
+      <PageHeader title="브릭스 충전" showBack />
 
       <div className={styles.titleSection}>
         <p className={styles.currentBalance}>현재 잔액</p>
-        <p className={styles.balanceValue}>{user?.account?.balance?.toLocaleString() || 0} Brix</p>
+        <p className={styles.balanceValue}>{user?.account?.balance?.toLocaleString() || 0} 브릭스</p>
       </div>
 
       <div className={styles.amountGrid}>

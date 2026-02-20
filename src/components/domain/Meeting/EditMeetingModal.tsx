@@ -53,15 +53,15 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
 
   const handleSubmit = async () => {
     if (!formData.title.trim()) {
-      setError('Please enter a meeting title.');
+      setError('모임 제목을 입력해 주세요.');
       return;
     }
     if (!formData.meetingDate || !formData.meetingTime) {
-      setError('Please set date and time.');
+      setError('모임 날짜와 시간을 입력해 주세요.');
       return;
     }
     if (!formData.location.trim()) {
-      setError('Please enter location or meeting link.');
+      setError('장소 또는 온라인 링크를 입력해 주세요.');
       return;
     }
 
@@ -77,18 +77,18 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
       });
       handleClose();
     } catch {
-      setError('Failed to update meeting.');
+      setError('모임 수정에 실패했습니다.');
     }
   };
 
   return (
     <Modal isOpen onClose={handleClose} className={styles.modalContent}>
       <div className={styles.container}>
-        <h2 className={styles.title}>Edit Meeting</h2>
+        <h2 className={styles.title}>모임 수정</h2>
 
         <div className={styles.form}>
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Title *</label>
+            <label className={styles.label}>제목 *</label>
             <input
               type="text"
               className={styles.input}
@@ -98,7 +98,7 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Description</label>
+            <label className={styles.label}>설명</label>
             <textarea
               className={styles.textarea}
               value={formData.description}
@@ -108,7 +108,7 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
 
           <div className={styles.row}>
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Date</label>
+              <label className={styles.label}>날짜</label>
               <input
                 type="date"
                 className={styles.input}
@@ -117,7 +117,7 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
               />
             </div>
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Time</label>
+              <label className={styles.label}>시간</label>
               <input
                 type="time"
                 className={styles.input}
@@ -128,27 +128,27 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Meeting Type</label>
+            <label className={styles.label}>모임 유형</label>
             <div className={styles.locationToggle}>
               <button
                 type="button"
                 className={`${styles.toggleButton} ${formData.locationType === 'OFFLINE' ? styles.active : ''}`}
                 onClick={() => handleChange('locationType', 'OFFLINE')}
               >
-                Offline
+                오프라인
               </button>
               <button
                 type="button"
                 className={`${styles.toggleButton} ${formData.locationType === 'ONLINE' ? styles.active : ''}`}
                 onClick={() => handleChange('locationType', 'ONLINE')}
               >
-                Online
+                온라인
               </button>
             </div>
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>{formData.locationType === 'OFFLINE' ? 'Location' : 'Meeting Link'}</label>
+            <label className={styles.label}>{formData.locationType === 'OFFLINE' ? '장소' : '온라인 링크'}</label>
             <input
               type="text"
               className={styles.input}
@@ -158,7 +158,7 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>Max Participants</label>
+            <label className={styles.label}>최대 참여 인원</label>
             <select
               className={styles.select}
               value={formData.maxParticipants}
@@ -166,7 +166,7 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
             >
               {[5, 10, 15, 20, 30, 50, 100].map(count => (
                 <option key={count} value={count}>
-                  {count} members
+                  {count}명
                 </option>
               ))}
             </select>
@@ -176,10 +176,10 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
 
           <div className={styles.actions}>
             <Button onClick={handleClose} className={styles.cancelButton}>
-              Cancel
+              취소
             </Button>
             <Button onClick={handleSubmit} className={styles.submitButton} disabled={updateMutation.isPending}>
-              {updateMutation.isPending ? 'Updating...' : 'Update Meeting'}
+              {updateMutation.isPending ? '수정 중...' : '수정하기'}
             </Button>
           </div>
         </div>

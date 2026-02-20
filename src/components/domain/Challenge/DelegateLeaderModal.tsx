@@ -1,123 +1,119 @@
-﻿import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useDelegateLeaderModalStore } from '@/store/modal/useModalStore';
 import { getChallengeMembers, delegateLeader } from '@/lib/api/member';
 import type { Member } from '@/types/member';
-import styles from './CreateChallengeModal.module.css';
+import styles from './DelegateLeaderModal.module.css';
+
+const AVATAR_FALLBACK = '/images/avatar-fallback.svg';
 
 export function DelegateLeaderModal() {
-    const { isOpen, challengeId, currentLeaderId, onClose } = useDelegateLeaderModalStore();
-    const [selectedMember, setSelectedMember] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [members, setMembers] = useState<Member[]>([]);
-    const [loading, setLoading] = useState(false);
+  const { isOpen, challengeId, currentLeaderId, onClose } = useDelegateLeaderModalStore();
+  const [selectedMember, setSelectedMember] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchMembers = async () => {
-            if (isOpen && challengeId) {
-                setLoading(true);
-                try {
-                    const response = await getChallengeMembers(challengeId, 'ACTIVE');
-                    // Filter out current leader
-                    const requestLeaderId = currentLeaderId || '';
-                    const filtered = response.members.filter(m => m.user.userId !== requestLeaderId);
-                    setMembers(filtered);
-                } catch (error) {
-                    console.error('Failed to fetch members:', error);
-                } finally {
-                    setLoading(false);
-                }
-            }
-        };
+  useEffect(() => {
+    const fetchMembers = async () => {
+      if (!isOpen || !challengeId) return;
 
-        fetchMembers();
-    }, [isOpen, challengeId, currentLeaderId]);
-
-    const handleClose = () => {
-        setSelectedMember(null);
-        setMembers([]);
-        onClose();
+      setLoading(true);
+      try {
+        const response = await getChallengeMembers(challengeId, 'ACTIVE');
+        const leaderId = currentLeaderId || '';
+        setMembers(response.members.filter((member) => member.user.userId !== leaderId));
+      } catch (error) {
+        console.error('리더 위임 대상 조회 실패:', error);
+        toast.error('멤버 목록을 불러오지 못했습니다.');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleDelegate = async () => {
-        if (!selectedMember || !challengeId) return;
+    void fetchMembers();
+  }, [challengeId, currentLeaderId, isOpen]);
 
-        setIsSubmitting(true);
-        try {
-            await delegateLeader(challengeId, selectedMember);
-            handleClose();
-            // Optional: Refresh challenge data or notify success
-        } catch (error) {
-            console.error('Failed to delegate leader:', error);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+  const handleClose = () => {
+    setSelectedMember(null);
+    setMembers([]);
+    onClose();
+  };
 
-    return (
-        <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
-            <div className={styles.container}>
-                <h2 className={styles.title}>由щ뜑 ?꾩엫</h2>
+  const handleDelegate = async () => {
+    if (!selectedMember || !challengeId) return;
 
-                <p style={{ color: 'var(--color-text-secondary)', textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-                    梨뚮┛吏 由щ뜑 沅뚰븳???ㅻⅨ 硫ㅻ쾭?먭쾶 ?꾩엫?⑸땲??<br />
-                    ?꾩엫 ?꾩뿉???쇰컲 硫ㅻ쾭濡?蹂寃쎈맗?덈떎.
-                </p>
+    setIsSubmitting(true);
+    try {
+      await delegateLeader(challengeId, selectedMember);
+      toast.success('리더 권한이 위임되었습니다.');
+      handleClose();
+    } catch (error) {
+      console.error('리더 위임 실패:', error);
+      toast.error('리더 위임에 실패했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-                {loading ? (
-                    <div style={{ textAlign: 'center', padding: '20px' }}>濡쒕뵫 以?..</div>
-                ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)', marginBottom: 'var(--spacing-lg)', maxHeight: '300px', overflowY: 'auto' }}>
-                        {members.length > 0 ? members.map((member) => (
-                            <button
-                                key={member.memberId}
-                                onClick={() => setSelectedMember(String(member.user.userId))}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 'var(--spacing-md)',
-                                    padding: 'var(--spacing-md)',
-                                    border: selectedMember === String(member.user.userId) ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
-                                    borderRadius: 'var(--radius-md)',
-                                    background: selectedMember === String(member.user.userId) ? 'rgba(var(--color-primary-rgb), 0.05)' : 'var(--color-surface)',
-                                    cursor: 'pointer',
-                                    textAlign: 'left',
-                                }}
-                            >
-                                <img
-                                    src={member.user.profileImage}
-                                    alt={member.user.nickname}
-                                    style={{ width: 40, height: 40, borderRadius: '50%' }}
-                                />
-                                <span style={{ fontSize: 'var(--font-size-md)', fontWeight: 500 }}>
-                                    {member.user.nickname}
-                                </span>
-                                {selectedMember === String(member.user.userId) && (
-                                    <span style={{ marginLeft: 'auto', color: 'var(--color-primary)' }}>✓</span>
-                                )}
-                            </button>
-                        )) : (
-                            <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-tertiary)' }}>
-                                ?꾩엫?????덈뒗 硫ㅻ쾭媛 ?놁뒿?덈떎.
-                            </div>
-                        )}
-                    </div>
-                )}
+  return (
+    <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
+      <div className={styles.container}>
+        <h2 className={styles.title}>리더 위임</h2>
 
-                <div className={styles.actions}>
-                    <Button onClick={handleClose} className={styles.cancelButton}>
-                        痍⑥냼
-                    </Button>
-                    <Button
-                        onClick={handleDelegate}
-                        className={styles.submitButton}
-                        disabled={!selectedMember || isSubmitting}
-                    >
-                        {isSubmitting ? '泥섎━ 以?..' : '?꾩엫?섍린'}
-                    </Button>
-                </div>
-            </div>
-        </Modal>
-    );
+        <p className={styles.description}>
+          챌린지 리더 권한을 다른 멤버에게 위임합니다.
+          <br />
+          위임 후 본인은 일반 멤버로 전환됩니다.
+        </p>
+
+        {loading ? (
+          <div className={styles.loading}>멤버 목록을 불러오는 중...</div>
+        ) : (
+          <div className={styles.memberList}>
+            {members.length > 0 ? (
+              members.map((member) => {
+                const memberId = String(member.user.userId);
+                const selected = selectedMember === memberId;
+
+                return (
+                  <button
+                    key={member.memberId}
+                    type="button"
+                    onClick={() => setSelectedMember(memberId)}
+                    className={`${styles.memberButton} ${selected ? styles.selectedMember : ''}`}
+                  >
+                    <img
+                      src={member.user.profileImage || AVATAR_FALLBACK}
+                      alt={member.user.nickname}
+                      className={styles.avatar}
+                    />
+                    <span className={styles.memberName}>{member.user.nickname}</span>
+                    {selected ? <span className={styles.selectedMark}>선택됨</span> : null}
+                  </button>
+                );
+              })
+            ) : (
+              <div className={styles.empty}>위임 가능한 멤버가 없습니다.</div>
+            )}
+          </div>
+        )}
+
+        <div className={styles.actions}>
+          <Button onClick={handleClose} className={styles.cancelButton}>
+            취소
+          </Button>
+          <Button
+            onClick={() => void handleDelegate()}
+            className={styles.submitButton}
+            disabled={!selectedMember || isSubmitting}
+          >
+            {isSubmitting ? '처리 중...' : '위임하기'}
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
 }

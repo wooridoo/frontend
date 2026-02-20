@@ -4,7 +4,7 @@
  */
 import { client } from './client';
 import { toApiChallengeId } from './challengeId';
-import type { Post, PostLikeResponse } from '@/types/feed';
+import type { Post, PostLikeResponse, PostPinResponse } from '@/types/feed';
 
 // =====================
 // Types
@@ -84,4 +84,16 @@ export async function deletePost(challengeId: string, postId: string): Promise<v
 export async function toggleLike(challengeId: string, postId: string): Promise<PostLikeResponse> {
     const normalizedChallengeId = toApiChallengeId(challengeId);
     return client.post<PostLikeResponse>(`/challenges/${normalizedChallengeId}/posts/${postId}/like`);
+}
+
+/**
+ * 공지 고정/해제
+ */
+export async function setPostPinned(
+  challengeId: string,
+  postId: string,
+  pinned: boolean,
+): Promise<PostPinResponse> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  return client.put<PostPinResponse>(`/challenges/${normalizedChallengeId}/posts/${postId}/pin`, { pinned });
 }

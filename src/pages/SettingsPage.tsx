@@ -3,12 +3,16 @@ import { Bell, ChevronRight, LogOut, UserX } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useWithdrawAccountModalStore } from '@/store/modal/useModalStore';
 import { Avatar } from '@/components/ui/Avatar';
+import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
+import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import {
   useNotificationSettings,
   useUpdateNotificationSettings,
 } from '@/lib/api/notification';
 import { capabilities } from '@/lib/api/capabilities';
 import type { NotificationSettings } from '@/types/notification';
+import { PATHS } from '@/routes/paths';
+import styles from './SettingsPage.module.css';
 
 function Toggle({
   checked,
@@ -24,16 +28,11 @@ function Toggle({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-        checked ? 'bg-blue-500' : 'bg-gray-200'
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`${styles.toggle} ${checked ? styles.toggleOn : styles.toggleOff}`}
       aria-pressed={checked}
+      aria-label={checked ? '켜짐' : '꺼짐'}
     >
-      <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-          checked ? 'translate-x-6' : 'translate-x-1'
-        }`}
-      />
+      <span className={`${styles.toggleThumb} ${checked ? styles.toggleThumbOn : styles.toggleThumbOff}`} />
     </button>
   );
 }
@@ -45,11 +44,9 @@ export function SettingsPage() {
   const { data: settings } = useNotificationSettings();
   const updateSettings = useUpdateNotificationSettings();
 
-  if (!user) return null;
-
   const handleLogout = async () => {
     await logout();
-    navigate('/');
+    navigate(PATHS.HOME);
   };
 
   const patchSettings = (patch: Partial<NotificationSettings>) => {
@@ -57,85 +54,100 @@ export function SettingsPage() {
     updateSettings.mutate(patch);
   };
 
+  if (!user) {
+    return (
+      <PageContainer>
+        <PageHeader title="설정" showBack />
+        <div className={styles.stateText}>사용자 정보를 불러올 수 없습니다.</div>
+      </PageContainer>
+    );
+  }
+
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4">
-      <h1 className="text-2xl font-bold mb-8 text-gray-900">설정</h1>
+    <PageContainer>
+      <PageHeader title="설정" showBack />
 
-      <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">내 계정</h2>
-        <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
-          <Avatar src={user.profileImage} name={user.nickname} size="lg" />
-          <div className="flex-1">
-            <h3 className="font-semibold text-lg">{user.nickname}</h3>
-            <p className="text-sm text-gray-500">{user.email}</p>
+      <div className={styles.pageBody}>
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>내 계정</h2>
+          <div className={styles.accountCard}>
+            <Avatar src={user.profileImage} name={user.nickname} size="lg" />
+            <div className={styles.accountInfo}>
+              <h3 className={styles.accountName}>{user.nickname}</h3>
+              <p className={styles.accountEmail}>{user.email}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate(PATHS.MY.PROFILE)}
+              className={styles.chevronButton}
+              aria-label="내 계정 상세로 이동"
+            >
+              <ChevronRight size={20} />
+            </button>
           </div>
-          <button
-            onClick={() => navigate('/me')}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full"
-          >
-            <ChevronRight size={20} />
-          </button>
-        </div>
-      </section>
+        </section>
 
-      <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">앱 설정</h2>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100 overflow-hidden">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                <Bell size={20} />
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>앱 설정</h2>
+          <div className={styles.panel}>
+            <div className={styles.settingRow}>
+              <div className={styles.settingInfoWrap}>
+                <div className={styles.settingIcon}>
+                  <Bell size={18} />
+                </div>
+                <div className={styles.settingInfo}>
+                  <span className={styles.settingTitle}>푸시 알림</span>
+                  <p className={styles.settingDesc}>알림 수신 여부를 설정합니다.</p>
+                </div>
               </div>
-              <div>
-                <span className="font-medium text-gray-900">푸시 알림</span>
-                <p className="text-xs text-gray-500">알림 수신 여부를 설정합니다.</p>
+              <Toggle
+                checked={Boolean(settings?.pushEnabled)}
+                disabled={!capabilities.notificationSettings || updateSettings.isPending}
+                onClick={() => patchSettings({ pushEnabled: !settings?.pushEnabled })}
+              />
+            </div>
+
+            <div className={styles.settingRow}>
+              <div className={styles.settingInfo}>
+                <span className={styles.settingTitle}>투표 알림</span>
+                <p className={styles.settingDesc}>투표 시작/종료 알림</p>
               </div>
+              <Toggle
+                checked={Boolean(settings?.voteNotification)}
+                disabled={!capabilities.notificationSettings || updateSettings.isPending}
+                onClick={() => patchSettings({ voteNotification: !settings?.voteNotification })}
+              />
             </div>
-            <Toggle
-              checked={Boolean(settings?.pushEnabled)}
-              disabled={!capabilities.notificationSettings || updateSettings.isPending}
-              onClick={() => patchSettings({ pushEnabled: !settings?.pushEnabled })}
-            />
           </div>
+        </section>
 
-          <div className="flex items-center justify-between p-4">
-            <div>
-              <span className="font-medium text-gray-900">투표 알림</span>
-              <p className="text-xs text-gray-500">투표 시작/종료 알림</p>
-            </div>
-            <Toggle
-              checked={Boolean(settings?.voteNotification)}
-              disabled={!capabilities.notificationSettings || updateSettings.isPending}
-              onClick={() => patchSettings({ voteNotification: !settings?.voteNotification })}
-            />
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>계정 관리</h2>
+          <div className={styles.panel}>
+            <button
+              type="button"
+              onClick={() => void handleLogout()}
+              className={styles.rowButton}
+            >
+              <div className={styles.rowButtonIcon}>
+                <LogOut size={18} />
+              </div>
+              <span className={styles.rowButtonLabel}>로그아웃</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={openWithdrawModal}
+              className={`${styles.rowButton} ${styles.rowButtonDanger}`}
+            >
+              <div className={`${styles.rowButtonIcon} ${styles.rowButtonIconDanger}`}>
+                <UserX size={18} />
+              </div>
+              <span className={styles.rowButtonDangerLabel}>회원 탈퇴</span>
+            </button>
           </div>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">계정 관리</h2>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100 overflow-hidden">
-          <button
-            onClick={() => void handleLogout()}
-            className="w-full flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors text-left"
-          >
-            <div className="p-2 bg-gray-100 text-gray-600 rounded-lg">
-              <LogOut size={20} />
-            </div>
-            <span className="font-medium text-gray-700">로그아웃</span>
-          </button>
-
-          <button
-            onClick={openWithdrawModal}
-            className="w-full flex items-center gap-3 p-4 hover:bg-red-50 transition-colors text-left"
-          >
-            <div className="p-2 bg-red-100 text-red-600 rounded-lg">
-              <UserX size={20} />
-            </div>
-            <span className="font-medium text-red-600">회원 탈퇴</span>
-          </button>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </PageContainer>
   );
 }

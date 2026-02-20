@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Lottie from 'lottie-react';
 import { Button, SemanticIcon } from '@/components/ui';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import mascotFaceAnimation from '@/assets/lottie/mascot-face.json';
 import styles from './MainCarousel.module.css';
 
 const SLIDES = [
@@ -68,7 +70,11 @@ export function MainCarousel() {
               </div>
               <div className={styles.imageWrapper}>
                 <span className={styles.emoji}>
-                  <SemanticIcon name={slide.icon} size={56} />
+                  {slide.id === 2 ? (
+                    <Lottie animationData={mascotFaceAnimation} autoplay={true} loop={true} style={{ width: 56, height: 56 }} />
+                  ) : (
+                    <SemanticIcon name={slide.icon} size={56} />
+                  )}
                 </span>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui';
 import logo from '@/assets/woorido_logo.svg';
 import { Modal } from '@/components/ui/Overlay/Modal';
@@ -6,6 +6,7 @@ import { useSignupModalStore } from '@/store/modal/useModalStore';
 import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { MessageCircle, Mail } from 'lucide-react'; // Icons for buttons
 import { PATHS } from '@/routes/paths';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import { toast } from 'sonner';
 import styles from './SignupModal.module.css';
 
@@ -13,10 +14,12 @@ export function SignupModal() {
     const { isOpen, onClose } = useSignupModalStore();
     const { onOpen: openLogin } = useLoginModalStore();
     const navigate = useNavigate();
+    const location = useLocation();
+    const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
 
     const handleLoginLink = () => {
         onClose();
-        openLogin();
+        openLogin({ returnTo });
     };
 
     const handleEmailSignup = () => {
@@ -63,7 +66,7 @@ export function SignupModal() {
                         className={`${styles.socialButton} ${styles.googleButton}`}
                         onClick={handleGoogleLogin}
                     >
-                        <span className={styles.googleIcon}>G</span>
+                        <img src="/icons/google.svg" alt="" className={styles.googleIconImage} />
                         <span>구글로 시작하기</span>
                     </button>
 

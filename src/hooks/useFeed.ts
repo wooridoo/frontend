@@ -3,7 +3,7 @@
  * Vote hooks 패턴 기반 구현
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getFeed, getPost, createPost, updatePost, deletePost, toggleLike } from '@/lib/api/feed';
+import { getFeed, getPost, createPost, updatePost, deletePost, toggleLike, setPostPinned } from '@/lib/api/feed';
 import type { Post, CreatePostInput } from '@/types/feed';
 
 /**
@@ -99,6 +99,21 @@ export function useToggleLike(challengeId: string) {
                     } : post
                 );
             });
+        },
+    });
+}
+
+/**
+ * 게시글 고정/해제 훅
+ */
+export function useSetPostPinned(challengeId: string) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ postId, pinned }: { postId: string; pinned: boolean }) =>
+            setPostPinned(challengeId, postId, pinned),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['feed', challengeId] });
         },
     });
 }

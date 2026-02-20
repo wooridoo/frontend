@@ -82,13 +82,13 @@ export function EditProfileModal() {
                     </div>
 
                     <div className={styles.fieldGroup}>
-                        <label className={styles.label}>프로필 이미지 URL</label>
+                        <label className={styles.label}>프로필 이미지 주소</label>
                         <input
                             type="url"
                             className={styles.input}
                             value={profileImage}
                             onChange={(e) => setProfileImage(e.target.value)}
-                            placeholder="https://..."
+                            placeholder="이미지 주소를 입력하세요"
                         />
                     </div>
 

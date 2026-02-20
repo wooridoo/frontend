@@ -2,12 +2,13 @@ import { Suspense, lazy, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { CHALLENGE_SLUG_REGEX } from '@/lib/utils/challengeRoute';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 
 import { ChallengeDashboardLayout } from './components/domain/Challenge/Layout/ChallengeDashboardLayout';
 import { MainLayout } from './components/layout';
@@ -25,6 +26,8 @@ import { MemberDetail } from './components/domain/Challenge/Member/MemberDetail'
 import { useAuthStore } from '@/store/useAuthStore';
 import { getChallenge } from '@/lib/api/challenge';
 import { getMyProfile } from '@/lib/api/user';
+import { useLoginModalStore } from '@/store/modal/useModalStore';
+import { AUTH_SESSION_EXPIRED_EVENT } from '@/lib/api/client';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
 const ExplorePage = lazy(() => import('./pages/ExplorePage').then(module => ({ default: module.ExplorePage })));
@@ -82,6 +85,30 @@ function LegacyChallengeRedirect() {
   );
 }
 
+function LoginEntryRoute() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
+  const { onOpen } = useLoginModalStore();
+
+  const returnTo = sanitizeReturnToPath(searchParams.get('returnTo'), PATHS.HOME);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(returnTo, { replace: true });
+      return;
+    }
+
+    onOpen({
+      returnTo,
+      redirectOnReject: PATHS.HOME,
+      message: '로그인이 필요합니다.',
+    });
+  }, [isLoggedIn, navigate, onOpen, returnTo]);
+
+  return null;
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -93,7 +120,8 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const { isLoggedIn, updateUser, syncParticipatingChallenges } = useAuthStore();
+  const { isLoggedIn, updateUser, syncParticipatingChallenges, clearSession } = useAuthStore();
+  const { onOpen: openLogin } = useLoginModalStore();
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -107,6 +135,27 @@ function App() {
         console.error('Failed to sync user profile:', error);
       });
   }, [isLoggedIn, syncParticipatingChallenges, updateUser]);
+
+  useEffect(() => {
+    const handleSessionExpired = (event: Event) => {
+      const customEvent = event as CustomEvent<{ returnTo?: string }>;
+      clearSession();
+
+      const fallbackPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      const returnTo = sanitizeReturnToPath(customEvent.detail?.returnTo || fallbackPath, PATHS.HOME);
+
+      openLogin({
+        returnTo,
+        redirectOnReject: PATHS.HOME,
+        message: '세션이 만료되었습니다. 다시 로그인해 주세요.',
+      });
+    };
+
+    window.addEventListener(AUTH_SESSION_EXPIRED_EVENT, handleSessionExpired as EventListener);
+    return () => {
+      window.removeEventListener(AUTH_SESSION_EXPIRED_EVENT, handleSessionExpired as EventListener);
+    };
+  }, [clearSession, openLogin]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -158,7 +207,7 @@ function App() {
                 <Route path={CHALLENGE_ROUTES.LEGACY_GROUP_DETAIL_PATTERN} element={<LegacyChallengeRedirect />} />
                 <Route path={CHALLENGE_ROUTES.LEGACY_ROOT} element={<Navigate to={PATHS.EXPLORE} replace />} />
                 <Route path={CHALLENGE_ROUTES.LEGACY_GROUP_ROOT} element={<Navigate to={PATHS.EXPLORE} replace />} />
-                <Route path={PATHS.AUTH.LOGIN} element={<Navigate to={PATHS.HOME} replace />} />
+                <Route path={PATHS.AUTH.LOGIN} element={<LoginEntryRoute />} />
                 <Route path={PATHS.FEED} element={<Navigate to={PATHS.EXPLORE} replace />} />
               </Route>
 

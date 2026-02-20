@@ -26,15 +26,15 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
             className
           )}
         >
-          <DialogTitle className="sr-only">Dialog</DialogTitle>
-          <DialogDescription className="sr-only">Dialog Content</DialogDescription>
+          <DialogTitle className="sr-only">대화상자</DialogTitle>
+          <DialogDescription className="sr-only">대화상자 내용</DialogDescription>
           {children}
           <button
             onClick={onClose}
             className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
           >
             <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">닫기</span>
           </button>
         </DialogContent>
       </DialogPortal>

@@ -15,7 +15,7 @@ export function PageHeader({ title, showBack = false, action }: PageHeaderProps)
   return (
     <header className={styles.header}>
       {showBack && (
-        <button onClick={() => navigate(-1)} className={styles.backButton} aria-label="Go back">
+        <button onClick={() => navigate(-1)} className={styles.backButton} aria-label="뒤로 가기">
           <ChevronLeft className={styles.icon} />
         </button>
       )}

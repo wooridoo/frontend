@@ -33,3 +33,9 @@ export interface PostLikeResponse {
     liked: boolean;
     likeCount: number;
 }
+
+export interface PostPinResponse {
+    postId: string;
+    isPinned: boolean;
+    pinnedAt?: string;
+}

@@ -92,7 +92,7 @@ export function MemberDetail() {
                 </div>
                 <span className={styles.nickname}>{user.nickname}</span>
                 {user.brix !== undefined && (
-                    <span className={styles.brix}>Brix {user.brix.toFixed(1)}</span>
+                    <span className={styles.brix}>브릭스 {user.brix.toFixed(1)}</span>
                 )}
                 <span className={styles.memberSince}>
                     {formatDate(member.joinedAt)} 가입

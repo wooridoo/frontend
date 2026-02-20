@@ -1,0 +1,209 @@
+.pageBody {
+  max-width: 900px;
+  padding: 0 var(--space-4) var(--space-8);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-800);
+}
+
+.accountCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+}
+
+.accountInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.accountName {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-grey-900);
+}
+
+.accountEmail {
+  margin-top: 2px;
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-500);
+  word-break: break-all;
+}
+
+.chevronButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  color: var(--color-grey-400);
+}
+
+.chevronButton:hover {
+  color: var(--color-grey-600);
+  background-color: var(--color-grey-50);
+}
+
+.panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.settingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.settingRow:not(:last-child),
+.rowButton:not(:last-child) {
+  border-bottom: 1px solid var(--color-grey-100);
+}
+
+.settingInfoWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.settingIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: #eff6ff;
+  color: #2563eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settingInfo {
+  min-width: 0;
+}
+
+.settingTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-grey-900);
+}
+
+.settingDesc {
+  margin-top: 2px;
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-500);
+}
+
+.toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  padding: 0;
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.toggleOn {
+  background-color: #3b82f6;
+}
+
+.toggleOff {
+  background-color: #d1d5db;
+}
+
+.toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  transition: left var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.toggleThumbOn {
+  left: 23px;
+}
+
+.toggleThumbOff {
+  left: 3px;
+}
+
+.rowButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  text-align: left;
+}
+
+.rowButton:hover {
+  background-color: var(--color-grey-50);
+}
+
+.rowButtonIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-600);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rowButtonLabel {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-grey-700);
+}
+
+.rowButtonDanger:hover {
+  background-color: var(--color-danger-bg);
+}
+
+.rowButtonIconDanger {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.rowButtonDangerLabel {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: #dc2626;
+}
+
+.stateText {
+  color: var(--color-grey-500);
+  padding: var(--space-8) var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .pageBody {
+    padding: 0 var(--space-6) var(--space-10);
+  }
+}

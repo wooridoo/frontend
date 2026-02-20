@@ -86,7 +86,7 @@ export function WithdrawPage() {
         <p className={styles.balanceLabel}>출금 가능 금액</p>
         <p className={styles.balanceValue}>
           {user?.account?.availableBalance?.toLocaleString() || 0}
-          <span className={styles.currency}>Brix</span>
+          <span className={styles.currency}>브릭스</span>
         </p>
       </div>
 

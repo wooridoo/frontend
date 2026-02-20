@@ -1,15 +1,16 @@
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Loader2, ChevronRight } from 'lucide-react';
 import { useMyAccount, useTransactionHistoryInfinite } from '@/hooks/useAccount';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PATHS } from '@/routes/paths';
-import { useCreditChargeModalStore, useWithdrawModalStore } from '@/store/modal/useModalStore';
+import { useCreditChargeModalStore, useLoginModalStore, useWithdrawModalStore } from '@/store/modal/useModalStore';
 import { formatCurrency } from '@/lib/utils';
 import { formatUtcDateLabel } from '@/lib/utils/dateTime';
 import { SemanticIcon } from '@/components/ui';
 import type { Transaction } from '@/types/account';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import styles from './WalletPage.module.css';
 
 const positiveTypes: Transaction['type'][] = ['CHARGE', 'DEPOSIT', 'REFUND'];
@@ -32,6 +33,8 @@ function getTransactionMeta(type: Transaction['type']) {
 
 export function WalletPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { onOpen: openLogin } = useLoginModalStore();
   const { onOpen: openChargeModal } = useCreditChargeModalStore();
   const { onOpen: openWithdrawModal } = useWithdrawModalStore();
 
@@ -55,12 +58,17 @@ export function WalletPage() {
   }
 
   if (accountError || !account) {
+    const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
+
     return (
       <PageContainer>
         <PageHeader title="나의 지갑" showBack />
         <div className={styles.centerContainer}>
           <div className={styles.errorText}>지갑 정보를 불러오지 못했습니다.</div>
-          <button className={styles.loginButton} onClick={() => navigate(PATHS.AUTH.LOGIN)}>
+          <button
+            className={styles.loginButton}
+            onClick={() => openLogin({ returnTo, redirectOnReject: PATHS.HOME, message: '로그인이 필요합니다.' })}
+          >
             로그인 하러 가기
           </button>
         </div>
@@ -76,7 +84,7 @@ export function WalletPage() {
         <span className={styles.balanceLabel}>사용 가능 금액</span>
         <div className={styles.balanceAmount}>
           {formatCurrency(account.availableBalance)}
-          <span className={styles.currency}>KRW</span>
+          <span className={styles.currency}>원</span>
         </div>
         <span className={styles.balanceLabel}>총 잔액 {formatCurrency(account.balance)}</span>
         <span className={styles.balanceLabel}>락업 금액 {formatCurrency(account.lockedBalance)}</span>

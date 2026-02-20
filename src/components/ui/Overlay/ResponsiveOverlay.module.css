@@ -5,7 +5,8 @@
   box-shadow: var(--shadow-xl);
   border: 1px solid var(--color-grey-100);
   min-width: 200px;
-  z-index: var(--z-dropdown);
+  max-width: min(90vw, 320px);
+  z-index: 1400;
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 

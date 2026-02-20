@@ -185,11 +185,11 @@ export function CreateVote() {
             </div>
 
             <div className={styles.field}>
-              <label>영수증 URL(선택)</label>
+              <label>영수증 주소(선택)</label>
               <Input
                 value={form.receiptUrl}
                 onChange={(e) => setForm({ ...form, receiptUrl: e.target.value })}
-                placeholder="https://..."
+                placeholder="영수증 주소를 입력하세요"
               />
             </div>
           </>

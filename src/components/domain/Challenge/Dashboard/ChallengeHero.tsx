@@ -42,7 +42,7 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
     <div className={styles.hero}>
       <div className={styles.cover}>
         <img
-          alt="challenge cover"
+          alt="챌린지 대표 이미지"
           className={styles.coverImage}
           onError={e => {
             (e.target as HTMLImageElement).src = CHALLENGE_FALLBACK_IMAGE;
@@ -80,7 +80,7 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
               <span className={styles.leaderLabel}>리더</span>
               <span className={styles.leaderName}>{leader.nickname}</span>
               <span className={styles.leaderScore}>
-                <SemanticIcon animated={false} name="success" size={12} /> {leader.brix}
+                <SemanticIcon animated={false} name="success" size={12} /> {leader.brix} 브릭스
               </span>
             </div>
 
@@ -89,23 +89,27 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
                 <div className={styles.separator}>·</div>
                 <ResponsiveOverlay
                   align="end"
+                  desktopContentClassName={styles.managementOverlay}
+                  mobileContentClassName={styles.managementOverlay}
                   title="챌린지 관리"
                   trigger={(
-                    <button className={styles.leaderBadge}>
+                    <button type="button" className={styles.manageButton}>
                       <EllipsisVertical size={14} />
                       관리
                     </button>
                   )}
                 >
-                  <div className="flex flex-col gap-1 p-1 min-w-[180px]">
+                  <div className={styles.managementMenu}>
                     <button
-                      className="text-left px-3 py-2 rounded-md hover:bg-gray-50"
+                      type="button"
+                      className={styles.managementItem}
                       onClick={() => openSupportPayment(challenge.challengeId, challenge.supportAmount)}
                     >
                       서포트 결제
                     </button>
                     <button
-                      className="text-left px-3 py-2 rounded-md hover:bg-gray-50"
+                      type="button"
+                      className={styles.managementItem}
                       onClick={() => openSupportSettings(challenge.challengeId)}
                     >
                       서포트 설정
@@ -113,19 +117,22 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
                     {isLeader ? (
                       <>
                         <button
-                          className="text-left px-3 py-2 rounded-md hover:bg-gray-50"
+                          type="button"
+                          className={styles.managementItem}
                           onClick={() => openEditChallenge(challenge)}
                         >
                           챌린지 수정
                         </button>
                         <button
-                          className="text-left px-3 py-2 rounded-md hover:bg-gray-50"
+                          type="button"
+                          className={styles.managementItem}
                           onClick={() => openDelegateLeader(challenge.challengeId, leaderUserId)}
                         >
                           리더 위임
                         </button>
                         <button
-                          className="text-left px-3 py-2 rounded-md hover:bg-red-50 text-red-600"
+                          type="button"
+                          className={`${styles.managementItem} ${styles.managementDanger}`}
                           onClick={() => openDeleteChallenge(challenge.challengeId, challenge.title)}
                         >
                           챌린지 삭제
@@ -133,7 +140,8 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
                       </>
                     ) : (
                       <button
-                        className="text-left px-3 py-2 rounded-md hover:bg-red-50 text-red-600"
+                        type="button"
+                        className={`${styles.managementItem} ${styles.managementDanger}`}
                         onClick={() => openLeaveChallenge(challenge.challengeId, challenge.title)}
                       >
                         챌린지 나가기

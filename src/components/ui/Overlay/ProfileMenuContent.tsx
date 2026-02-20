@@ -24,10 +24,10 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
                     )}
                 </div>
                 <div className={styles.userDetails}>
-                    <span className={styles.userName}>{user.name || user.nickname || 'Unknown'}</span>
+                    <span className={styles.userName}>{user.name || user.nickname || '알 수 없음'}</span>
                     <div className={styles.userBrix}>
                         <BrixBadge grade={getBrixGrade(user.brix)} variant="flat" size="sm" showLabel={false} />
-                        <span className={styles.brixValue}>{formatBrix(user.brix)} Brix</span>
+                        <span className={styles.brixValue}>{formatBrix(user.brix)} 브릭스</span>
                     </div>
                 </div>
             </div>

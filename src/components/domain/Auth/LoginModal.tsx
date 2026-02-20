@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,6 +13,9 @@ import {
   useSignupModalStore,
 } from '@/store/modal/useModalStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import { ApiError } from '@/lib/api/client';
+import { PATHS } from '@/routes/paths';
+import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 
 import styles from './LoginModal.module.css';
 
@@ -27,14 +30,17 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginModal() {
-  const { isOpen, onClose, redirectOnReject, message } = useLoginModalStore();
+  const { isOpen, onClose, redirectOnReject, returnTo, message } = useLoginModalStore();
   const { onOpen: openSignup } = useSignupModalStore();
   const { onOpen: openPasswordReset } = usePasswordResetModalStore();
   const { login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const passwordInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
   const handleClose = () => {
+    setAuthError(null);
     onClose();
     if (redirectOnReject) {
       navigate(redirectOnReject);
@@ -42,6 +48,7 @@ export function LoginModal() {
   };
 
   const handleSignupLink = () => {
+    setAuthError(null);
     onClose();
     openSignup();
   };
@@ -49,20 +56,47 @@ export function LoginModal() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
+  const {
+    ref: passwordRegisterRef,
+    ...passwordField
+  } = register('password');
+
+  const handlePasswordRef = (element: HTMLInputElement | null) => {
+    passwordRegisterRef(element);
+    passwordInputRef.current = element;
+  };
+
   const onSubmit = async (data: LoginFormData) => {
+    setAuthError(null);
     setIsLoading(true);
     try {
       const { login: apiLogin } = await import('@/lib/api/auth');
       const response = await apiLogin({ email: data.email, password: data.password });
       login(response.user, response.accessToken, response.refreshToken);
+      const safeReturnTo = sanitizeReturnToPath(returnTo, PATHS.HOME);
       onClose();
+      navigate(safeReturnTo, { replace: true });
     } catch (error) {
-      console.error('로그인 실패:', error);
+      if (error instanceof ApiError) {
+        if (error.code === 'AUTH_001') {
+          setAuthError('이메일 또는 비밀번호가 올바르지 않습니다.');
+        } else if (error.code === 'AUTH_002') {
+          setAuthError('계정이 잠겨 있습니다. 잠시 후 다시 시도해 주세요.');
+        } else {
+          setAuthError(error.message || '로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+        }
+      } else {
+        setAuthError('로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+      }
+
+      setValue('password', '', { shouldValidate: false, shouldDirty: false, shouldTouch: false });
+      passwordInputRef.current?.focus();
     } finally {
       setIsLoading(false);
     }
@@ -72,6 +106,7 @@ export function LoginModal() {
     <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
       <div className={styles.container}>
         {message && <div className={styles.alertMessage}>{message}</div>}
+        {authError && <div className={styles.inlineError}>{authError}</div>}
 
         <header className={styles.header}>
           <div className={styles.logo}>
@@ -84,7 +119,7 @@ export function LoginModal() {
           <Input
             label="이메일"
             type="email"
-            placeholder="email@example.com"
+            placeholder="이메일 주소를 입력하세요"
             error={errors.email?.message}
             {...register('email')}
           />
@@ -94,7 +129,8 @@ export function LoginModal() {
             type="password"
             placeholder="8자 이상 입력"
             error={errors.password?.message}
-            {...register('password')}
+            {...passwordField}
+            ref={handlePasswordRef}
           />
 
           <Button type="submit" isLoading={isLoading} className={styles.submitButton} variant="primary" size="lg">
@@ -109,7 +145,7 @@ export function LoginModal() {
         <div className={styles.socialButtons}>
           <Button type="button" variant="secondary" size="lg" className={styles.socialButton} disabled>
             <img src="/icons/google.svg" alt="" className={styles.socialIcon} />
-            Google로 계속하기
+            구글로 계속하기
           </Button>
           <Button type="button" variant="secondary" size="lg" className={styles.socialButton} disabled>
             <img src="/icons/kakao.svg" alt="" className={styles.socialIcon} />

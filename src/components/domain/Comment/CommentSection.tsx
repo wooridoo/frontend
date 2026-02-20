@@ -139,7 +139,7 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
         <form className={styles.inputArea} onSubmit={handleSubmit}>
           {replyTarget && (
             <div className={styles.replyingTo}>
-              <span>Replying to <strong>{replyTarget.name}</strong></span>
+              <span><strong>{replyTarget.name}</strong>님에게 답글 작성 중</span>
               <button
                 type="button"
                 onClick={() => setReplyTarget(null)}
