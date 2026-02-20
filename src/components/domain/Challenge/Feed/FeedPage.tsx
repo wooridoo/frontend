@@ -21,7 +21,7 @@ export function FeedPage() {
   if (isResolving || isLoading) {
     return (
       <div className={styles.feedContainer}>
-        <div className="flex flex-col gap-4">
+        <div className={styles.skeletonList}>
           <Skeleton className="w-full h-32 rounded-lg" />
           {[1, 2, 3].map(i => (
             <Skeleton key={i} className="w-full h-48 rounded-lg" />
@@ -35,7 +35,7 @@ export function FeedPage() {
   if (error) {
     return (
       <div className={styles.feedContainer}>
-        <div className="text-center py-8 text-gray-500">
+        <div className={styles.stateText}>
           피드를 불러오는 중 오류가 발생했습니다.
         </div>
       </div>
@@ -48,7 +48,7 @@ export function FeedPage() {
         {/* 인증하기 버튼 (트리거) */}
         <Button
           onClick={verificationModal.onOpen}
-          className="w-full mb-4 bg-primary text-white flex gap-2 items-center justify-center py-4 rounded-xl"
+          className={styles.verifyButton}
         >
           <Camera size={20} />
           오늘의 인증하기
@@ -58,7 +58,7 @@ export function FeedPage() {
       <PostEditor />
       <div className={styles.feedList}>
         {posts?.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className={styles.stateText}>
             아직 게시글이 없습니다. 첫 번째 글을 작성해보세요!
           </div>
         ) : (

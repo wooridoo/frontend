@@ -48,7 +48,7 @@ export function MyPage() {
 
   if (isLoading) {
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="md">
         <PageHeader title="마이페이지" />
         <div className={styles.stateContainer}>
           <Loader2 className="animate-spin" size={32} style={{ color: 'var(--color-grey-400)' }} />
@@ -61,7 +61,7 @@ export function MyPage() {
     const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
 
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="md">
         <PageHeader title="마이페이지" />
         <div className={styles.stateContainer}>
           <div className={styles.stateText}>
@@ -97,7 +97,7 @@ export function MyPage() {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="md">
       <PageHeader title="마이페이지" />
       <div className={styles.pageBody}>
         <div className={styles.profileSection}>
@@ -139,7 +139,7 @@ export function MyPage() {
           </div>
         </div>
 
-        <div className={`${styles.menuSection} ${styles.accountSection}`}>
+        <div className={styles.menuSection}>
           <h3 className={styles.menuTitle}>계정</h3>
           <div className={styles.menuList}>
             <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.ACCOUNT)}>

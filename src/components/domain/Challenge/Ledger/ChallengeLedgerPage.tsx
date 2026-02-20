@@ -93,7 +93,7 @@ export function ChallengeLedgerPage() {
       <section className={styles.expenseSection}>
         <div className={styles.statusHeader}>
           <h3 className={styles.sectionTitle}>지출 관리</h3>
-          <div className="flex gap-2">
+          <div className={styles.expenseActions}>
             <Button variant="ghost" onClick={() => challengeId && openSupportSettings(challengeId)}>
               서포트 설정
             </Button>

@@ -18,7 +18,7 @@ export function HomePage() {
   };
 
   return (
-    <PageContainer className={styles.pageContainer}>
+    <PageContainer variant="content" contentWidth="full" className={styles.pageContainer}>
       <BentoGrid>
         {/* Row 1 */}
         {/* Main Hero (3x2) - Expanded to 3 columns */}

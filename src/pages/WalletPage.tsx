@@ -48,7 +48,7 @@ export function WalletPage() {
 
   if (accountLoading || txLoading) {
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="md">
         <PageHeader title="나의 지갑" showBack />
         <div className={styles.centerContainer}>
           <Loader2 className={styles.loadingIcon} size={32} />
@@ -61,7 +61,7 @@ export function WalletPage() {
     const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
 
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="md">
         <PageHeader title="나의 지갑" showBack />
         <div className={styles.centerContainer}>
           <div className={styles.errorText}>지갑 정보를 불러오지 못했습니다.</div>
@@ -77,7 +77,7 @@ export function WalletPage() {
   }
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="md">
       <PageHeader title="나의 지갑" showBack />
 
       <div className={styles.balanceCard}>

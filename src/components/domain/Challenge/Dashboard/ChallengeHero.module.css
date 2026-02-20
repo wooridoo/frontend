@@ -9,8 +9,7 @@
   /* Soft Orange Gradient */
   position: relative;
   border-radius: var(--radius-lg);
-  margin: var(--space-4);
-  margin-bottom: 0;
+  margin: var(--space-4) var(--layout-gutter-desktop) 0;
   overflow: hidden;
   /* 이미지 넘침 방지 */
 }
@@ -28,7 +27,7 @@
 }
 
 .content {
-  padding: 0 var(--space-6);
+  padding: 0 var(--layout-gutter-desktop);
   margin-top: -40px;
   /* Overlap cover */
   position: relative;
@@ -189,4 +188,16 @@
 
 .managementDanger:hover {
   background-color: var(--color-danger-bg);
+}
+
+@media (max-width: 768px) {
+  .cover {
+    margin-left: var(--layout-gutter-mobile);
+    margin-right: var(--layout-gutter-mobile);
+  }
+
+  .content {
+    padding-left: var(--layout-gutter-mobile);
+    padding-right: var(--layout-gutter-mobile);
+  }
 }

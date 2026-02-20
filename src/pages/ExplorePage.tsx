@@ -53,7 +53,7 @@ export function ExplorePage() {
   const content = challenges || [];
 
   return (
-    <PageContainer className={styles.page}>
+    <PageContainer variant="content" contentWidth="xl" className={styles.page}>
       <PageHeader title="탐색" />
 
       {/* Category Filter */}

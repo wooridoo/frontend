@@ -66,7 +66,21 @@ export function ChargePage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer
+      variant="content"
+      contentWidth="md"
+      bottomAction={(
+        <Button
+          className={styles.submitButton}
+          size="lg"
+          onClick={handleCharge}
+          disabled={amount < 1000}
+          isLoading={isSubmitting}
+        >
+          {amount > 0 ? `${amount.toLocaleString()}원 결제하기` : '금액을 선택해주세요'}
+        </Button>
+      )}
+    >
       <PageHeader title="브릭스 충전" showBack />
 
       <div className={styles.titleSection}>
@@ -121,17 +135,6 @@ export function ChargePage() {
         </div>
       </div>
 
-      <div className={styles.bottomAction}>
-        <Button
-          className={styles.submitButton}
-          size="lg"
-          onClick={handleCharge}
-          disabled={amount < 1000}
-          isLoading={isSubmitting}
-        >
-          {amount > 0 ? `${amount.toLocaleString()}원 결제하기` : '금액을 선택해주세요'}
-        </Button>
-      </div>
     </PageContainer>
   );
 }

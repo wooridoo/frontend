@@ -89,7 +89,7 @@ export function TransactionHistoryPage() {
 
   if (isLoading) {
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="md">
         <PageHeader showBack title="거래 내역" />
         <div className={styles.loading}>로딩 중...</div>
       </PageContainer>
@@ -97,7 +97,7 @@ export function TransactionHistoryPage() {
   }
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="md">
       <PageHeader showBack title="거래 내역" />
 
       <div className={styles.filters}>

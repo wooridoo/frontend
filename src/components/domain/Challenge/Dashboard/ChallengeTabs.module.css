@@ -5,12 +5,14 @@
   /* Above regular content */
   background-color: white;
   border-bottom: 1px solid var(--color-grey-100);
-  padding: 0 var(--space-6);
+  padding: 0 var(--layout-gutter-desktop);
 }
 
 .tabs {
   display: flex;
-  gap: var(--space-6);
+  gap: var(--space-5);
+  max-width: var(--layout-content-max-xl);
+  margin: 0 auto;
   overflow-x: auto;
   -ms-overflow-style: none;
   /* Hide scrollbar */
@@ -24,10 +26,10 @@
 .tab {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 14px 4px;
-  color: var(--color-grey-500);
-  font-size: 14px;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-1);
+  color: var(--color-grey-600);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   text-decoration: none;
   border-bottom: 2px solid transparent;
@@ -60,4 +62,10 @@
   justify-content: center;
   padding: 0 4px;
   font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--layout-gutter-mobile);
+  }
 }

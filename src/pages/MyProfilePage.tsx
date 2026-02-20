@@ -13,7 +13,7 @@ export function MyProfilePage() {
 
     if (isLoading) {
         return (
-            <PageContainer>
+            <PageContainer variant="content" contentWidth="md">
                 <PageHeader title="프로필" showBack />
                 <div className={styles.loading}>
                     <div>로딩 중...</div>
@@ -24,7 +24,7 @@ export function MyProfilePage() {
 
     if (error || !user) {
         return (
-            <PageContainer>
+            <PageContainer variant="content" contentWidth="md">
                 <PageHeader title="프로필" showBack />
                 <div className={styles.error}>
                     <div>프로필을 불러올 수 없습니다.</div>
@@ -38,7 +38,7 @@ export function MyProfilePage() {
     const displayAccount = user.account;
 
     return (
-        <PageContainer>
+        <PageContainer variant="content" contentWidth="md">
             <PageHeader title="프로필" showBack />
             {/* Header */}
             <div className={styles.header}>

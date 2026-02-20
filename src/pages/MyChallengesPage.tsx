@@ -77,7 +77,7 @@ export function MyChallengesPage() {
     };
 
     return (
-        <PageContainer>
+        <PageContainer variant="content" contentWidth="lg">
             <PageHeader
                 title="내 챌린지"
                 showBack

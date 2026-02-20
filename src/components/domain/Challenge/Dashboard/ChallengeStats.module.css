@@ -2,7 +2,9 @@
   display: grid;
   grid-template-columns: 1.2fr 1.5fr 1fr;
   gap: var(--space-4);
-  padding: 0 var(--space-6) var(--space-6);
+  max-width: var(--layout-content-max-xl);
+  margin: 0 auto;
+  padding: 0 var(--layout-gutter-desktop) var(--space-6);
   background-color: var(--color-surface);
   /* Connected to Hero */
 }
@@ -11,6 +13,7 @@
   .container {
     grid-template-columns: 1fr;
     /* Stack on mobile */
+    padding: 0 var(--layout-gutter-mobile) var(--space-4);
   }
 }
 

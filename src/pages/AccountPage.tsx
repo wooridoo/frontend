@@ -85,7 +85,7 @@ export function AccountPage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="md">
       <PageHeader title="계정 관리" showBack />
 
       <div className={styles.container}>

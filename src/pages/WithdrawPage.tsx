@@ -79,7 +79,7 @@ export function WithdrawPage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="md">
       <PageHeader title="출금하기" showBack />
 
       <div className={styles.balanceSection}>

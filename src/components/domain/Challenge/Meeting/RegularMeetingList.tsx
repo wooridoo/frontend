@@ -16,7 +16,7 @@ export function RegularMeetingList({ challengeId, challengeRef }: RegularMeeting
   const { data, isLoading } = useChallengeMeetings(challengeId);
   const { onOpen } = useCreateMeetingModalStore();
 
-  if (isLoading) return <Skeleton className="w-full h-24" />;
+  if (isLoading) return <Skeleton className={styles.loadingSkeleton} />;
 
   const handleOpenCreateModal = () => {
     if (challengeId) {
@@ -26,16 +26,16 @@ export function RegularMeetingList({ challengeId, challengeRef }: RegularMeeting
 
   if (!data || data.length === 0) {
     return (
-      <div className="w-full">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-bold text-gray-900">정기모임</h3>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h3 className={styles.title}>정기모임</h3>
           {challengeId && (
             <Button size="sm" onClick={handleOpenCreateModal}>
-              <Plus size={16} className="mr-1" /> 모임 만들기
+              <Plus size={16} /> 모임 만들기
             </Button>
           )}
         </div>
-        <div className="text-gray-500 py-8 text-center bg-gray-50 rounded-lg border border-gray-100">
+        <div className={styles.emptyState}>
           예정된 모임이 없습니다.
         </div>
       </div>
@@ -43,12 +43,12 @@ export function RegularMeetingList({ challengeId, challengeRef }: RegularMeeting
   }
 
   return (
-    <div className="w-full">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-bold text-gray-900">정기모임</h3>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>정기모임</h3>
         {challengeId && (
           <Button size="sm" onClick={handleOpenCreateModal}>
-            <Plus size={16} className="mr-1" /> 모임 만들기
+            <Plus size={16} /> 모임 만들기
           </Button>
         )}
       </div>

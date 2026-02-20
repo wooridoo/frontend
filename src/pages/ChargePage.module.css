@@ -1,12 +1,12 @@
 .titleSection {
-  padding: var(--spacing-xl) 0;
+  padding: var(--space-6) 0;
   text-align: center;
 }
 
 .currentBalance {
   font-size: var(--font-size-sm);
   color: var(--color-grey-600);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--space-1);
 }
 
 .balanceValue {
@@ -18,12 +18,12 @@
 .amountGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .amountButton {
-  padding: var(--spacing-lg);
+  padding: var(--space-6);
   border: 1px solid var(--color-grey-200);
   border-radius: var(--radius-lg);
   background-color: var(--color-white);
@@ -46,7 +46,7 @@
 }
 
 .inputGroup {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--space-8);
 }
 
 .label {
@@ -54,7 +54,7 @@
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-grey-700);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--space-2);
 }
 
 .inputWrapper {
@@ -65,7 +65,7 @@
 
 .input {
   width: 100%;
-  padding: var(--spacing-lg);
+  padding: var(--space-6);
   padding-right: 40px;
   border: 1px solid var(--color-grey-200);
   border-radius: var(--radius-lg);
@@ -81,7 +81,7 @@
 
 .unit {
   position: absolute;
-  right: var(--spacing-lg);
+  right: var(--space-6);
   font-size: var(--font-size-lg);
   font-weight: 600;
   color: var(--color-grey-500);
@@ -90,10 +90,10 @@
 .infoBox {
   background-color: var(--color-grey-50);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--space-2);
 }
 
 .infoRow {
@@ -104,26 +104,13 @@
 }
 
 .totalRow {
-  margin-top: var(--spacing-sm);
-  padding-top: var(--spacing-sm);
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
   border-top: 1px solid var(--color-grey-200);
   font-weight: 700;
   color: var(--color-grey-900);
 }
 
-.bottomAction {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: var(--spacing-lg);
-  background: white;
-  border-top: 1px solid var(--color-grey-100);
-  display: flex;
-  justify-content: center;
-}
-
 .submitButton {
   width: 100%;
-  max-width: 600px;
 }

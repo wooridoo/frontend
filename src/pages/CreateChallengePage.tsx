@@ -100,7 +100,7 @@ export function CreateChallengePage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="lg">
       <PageHeader title="챌린지 개설" showBack />
 
       <form id="create-challenge-form" onSubmit={handleSubmit(onSubmit, onFormError)}>

@@ -6,6 +6,7 @@ import { ChallengeTabs } from '../Dashboard/ChallengeTabs';
 import { useChallengeDetail } from '@/hooks/useChallenge';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { toChallengeSlug } from '@/lib/utils/challengeRoute';
+import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import styles from './ChallengeDashboardLayout.module.css';
 
 export function ChallengeDashboardLayout() {
@@ -32,8 +33,11 @@ export function ChallengeDashboardLayout() {
     return (
       <div className={styles.layout}>
         <ChallengeHeroSkeleton />
-        {/* Skeleton for Stats & Tabs could be added here */}
-        <div style={{ height: 200 }}></div>
+        <div className={styles.stateContainer}>
+          <PageContainer variant="content" contentWidth="xl" contentClassName={styles.contentShell}>
+            <div className={styles.loadingBox} />
+          </PageContainer>
+        </div>
       </div>
     );
   }
@@ -41,9 +45,13 @@ export function ChallengeDashboardLayout() {
   if (error || !challenge) {
     return (
       <div className={styles.layout}>
-        <div style={{ padding: 40, textAlign: 'center' }}>
-          <h3>챌린지 정보를 불러올 수 없습니다.</h3>
-          <p>{error?.message || '잠시 후 다시 시도해주세요.'}</p>
+        <div className={styles.stateContainer}>
+          <PageContainer variant="content" contentWidth="xl" contentClassName={styles.contentShell}>
+            <div className={styles.errorBox}>
+              <h3>챌린지 정보를 불러올 수 없습니다.</h3>
+              <p>{error?.message || '잠시 후 다시 시도해주세요.'}</p>
+            </div>
+          </PageContainer>
         </div>
       </div>
     );
@@ -62,7 +70,9 @@ export function ChallengeDashboardLayout() {
 
       {/* 4. Tab Content */}
       <main className={styles.content}>
-        <Outlet context={{ challenge }} />
+        <PageContainer variant="content" contentWidth="xl" contentClassName={styles.contentShell}>
+          <Outlet context={{ challenge }} />
+        </PageContainer>
       </main>
     </div>
   );

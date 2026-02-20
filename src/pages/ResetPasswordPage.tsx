@@ -66,7 +66,7 @@ export function ResetPasswordPage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="sm">
       <PageHeader title="비밀번호 재설정" showBack />
       <section className={styles.card}>
         {!token ? (

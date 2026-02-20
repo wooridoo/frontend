@@ -1,94 +1,94 @@
 .container {
-  padding: 1.5rem;
-  max-width: 800px;
+  max-width: var(--layout-content-max-md);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }
 
 .navigation {
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 .header {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-gray-200);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-grey-200);
 }
 
 .statusRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .date {
-  color: var(--color-gray-500);
-  font-size: 0.875rem;
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: var(--font-size-xl);
   font-weight: 700;
-  color: var(--color-gray-900);
-  margin-bottom: 0.5rem;
+  color: var(--color-grey-900);
+  margin-bottom: var(--space-2);
 }
 
 .author {
-  color: var(--color-gray-600);
-  font-size: 0.875rem;
+  color: var(--color-grey-600);
+  font-size: var(--font-size-sm);
 }
 
 .content {
-  margin-bottom: 2rem;
-  background-color: var(--color-gray-50);
-  padding: 1.5rem;
-  border-radius: 8px;
+  background-color: var(--color-grey-50);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
 }
 
 .description {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
   line-height: 1.6;
 }
 
 .targetInfo {
-  font-size: 0.875rem;
-  padding-top: 1rem;
-  border-top: 1px dashed var(--color-gray-300);
+  font-size: var(--font-size-sm);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--color-grey-300);
 }
 
 .targetLabel {
   font-weight: 600;
-  margin-right: 0.5rem;
+  margin-right: var(--space-2);
 }
 
 .votingSection {
-  background: white;
-  border: 1px solid var(--color-gray-200);
-  border-radius: 12px;
-  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .results h3,
 .actions h3 {
-  font-size: 1.125rem;
+  font-size: var(--font-size-md);
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .resultItem {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .resultLabel {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.25rem;
-  font-size: 0.875rem;
+  margin-bottom: var(--space-1);
+  font-size: var(--font-size-sm);
 }
 
 .progressBar {
   height: 8px;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-grey-100);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -103,16 +103,12 @@
   background-color: var(--color-red-500);
 }
 
-.progressFill.neutral {
-  background-color: var(--color-gray-400);
-}
-
 .resultBanner {
-  padding: 1rem;
-  border-radius: 8px;
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
   text-align: center;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
 }
 
 .resultBanner.passed {
@@ -126,10 +122,10 @@
 }
 
 .myVote {
-  margin-top: 1.5rem;
+  margin-top: var(--space-6);
   text-align: center;
-  font-size: 0.875rem;
-  color: var(--color-gray-600);
+  font-size: var(--font-size-sm);
+  color: var(--color-grey-600);
 }
 
 .myVoteValue {
@@ -140,12 +136,12 @@
 .buttonGroup {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 .deadlineInfo {
   text-align: center;
-  color: var(--color-gray-500);
-  font-size: 0.875rem;
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
 }

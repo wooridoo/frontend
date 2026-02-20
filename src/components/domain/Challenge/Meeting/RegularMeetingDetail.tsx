@@ -24,7 +24,7 @@ function RegularMeetingContent({ id }: { id?: string }) {
   const { onOpen: openCompleteMeeting } = useCompleteMeetingModalStore();
 
   if (isLoading) return <RegularMeetingSkeleton />;
-  if (!data) return <div>모임을 찾을 수 없습니다.</div>;
+  if (!data) return <div className={styles.emptyState}>모임을 찾을 수 없습니다.</div>;
 
   return (
     <>
@@ -60,13 +60,7 @@ function RegularMeetingContent({ id }: { id?: string }) {
                 {member.profileImage ? (
                   <img src={member.profileImage} alt={member.nickname} className={styles.memberAvatar} />
                 ) : (
-                  <div className={styles.memberAvatar} style={{
-                    backgroundColor: '#f3f4f6',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '18px',
-                  }}>
+                  <div className={`${styles.memberAvatar} ${styles.memberAvatarFallback}`}>
                     <UserRound size={16} />
                   </div>
                 )}
@@ -74,26 +68,28 @@ function RegularMeetingContent({ id }: { id?: string }) {
               </div>
             ))
           ) : (
-            <div style={{ color: '#9ca3af', fontSize: '14px' }}>아직 참석자가 없습니다.</div>
+            <div className={styles.memberEmpty}>아직 참석자가 없습니다.</div>
           )}
         </div>
       </section>
 
       <div className={styles.floatingContainer}>
-        <button
-          className={styles.actionButton}
-          onClick={() => openAttendance(data)}
-        >
-          참석 여부 응답
-        </button>
-        {data.status !== 'COMPLETED' ? (
+        <div className={styles.floatingInner}>
           <button
-            className={`${styles.actionButton} ${styles.cancel}`}
-            onClick={() => openCompleteMeeting(data)}
+            className={styles.actionButton}
+            onClick={() => openAttendance(data)}
           >
-            <Check size={16} /> 모임 완료
+            참석 여부 응답
           </button>
-        ) : null}
+          {data.status !== 'COMPLETED' ? (
+            <button
+              className={`${styles.actionButton} ${styles.cancel}`}
+              onClick={() => openCompleteMeeting(data)}
+            >
+              <Check size={16} /> 모임 완료
+            </button>
+          ) : null}
+        </div>
       </div>
     </>
   );

@@ -47,7 +47,7 @@ export function PaymentCallbackPage() {
   }, [orderId, paymentKey, amount]);
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="sm">
       <PageHeader title="결제 결과" showBack={false} />
 
       <div className={styles.content}>

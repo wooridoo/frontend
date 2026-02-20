@@ -1,13 +1,14 @@
 .pageBody {
-  max-width: 900px;
-  padding: 0 var(--space-4) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-section-gap);
+  padding-bottom: var(--space-10);
 }
 
 .section {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  margin-bottom: var(--space-6);
 }
 
 .sectionTitle {
@@ -199,11 +200,5 @@
 
 .stateText {
   color: var(--color-grey-500);
-  padding: var(--space-8) var(--space-4);
-}
-
-@media (min-width: 768px) {
-  .pageBody {
-    padding: 0 var(--space-6) var(--space-10);
-  }
+  padding: var(--space-8) 0;
 }

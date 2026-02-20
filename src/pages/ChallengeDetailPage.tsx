@@ -81,7 +81,7 @@ export function ChallengeDetailPage() {
 
   if (isLoading) {
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="lg">
         <PageHeader title="챌린지 상세" showBack />
         <div className={styles.stateContainer}>
           <Loader2 className="animate-spin" size={32} style={{ color: 'var(--color-grey-400)' }} />
@@ -92,7 +92,7 @@ export function ChallengeDetailPage() {
 
   if (error || !challenge) {
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="lg">
         <PageHeader title="챌린지 상세" showBack />
         <div className={styles.stateContainer}>
           <div className={styles.stateText}>챌린지 정보를 불러올 수 없습니다.</div>
@@ -127,7 +127,7 @@ export function ChallengeDetailPage() {
   const memberList = membersData?.members?.slice(0, 4) || [];
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="lg">
       <PageHeader title="챌린지 상세" showBack />
 
       <div className={styles.heroSection}>

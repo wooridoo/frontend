@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
+  min-height: 72vh;
+  padding: var(--space-6) 0 var(--space-10);
   background-color: var(--color-white);
 }
 
@@ -12,32 +12,33 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 400px;
+  max-width: 420px;
+  width: 100%;
 }
 
 .iconWrapper {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   color: var(--color-grey-400);
 }
 
 .title {
-  font-size: 24px;
+  font-size: var(--font-size-xl);
   font-weight: 700;
   color: var(--color-grey-900);
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .description {
-  font-size: 16px;
+  font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--color-grey-600);
-  margin-bottom: 40px;
+  margin-bottom: var(--space-10);
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   width: 100%;
 }
 

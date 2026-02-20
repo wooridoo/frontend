@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '@/routes/paths';
 import { signup, login as apiLogin } from '@/lib/api/auth';
 import { useAuthStore } from '@/store/useAuthStore';
+import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button, Input } from '@/components/ui';
 
 
@@ -105,168 +106,170 @@ export function SignupPage() {
   };
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.logo}>우리두</div>
-        <h1 className={styles.title}>회원가입</h1>
-      </header>
+    <PageContainer variant="content" contentWidth="sm">
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <div className={styles.logo}>우리두</div>
+          <h1 className={styles.title}>회원가입</h1>
+        </header>
 
-      {/* Step Indicator */}
-      <div className={styles.stepIndicator}>
-        <div className={`${styles.stepDot} ${step === 1 ? styles.active : ''}`} />
-        <div className={`${styles.stepDot} ${step === 2 ? styles.active : ''}`} />
-        <div className={`${styles.stepDot} ${step === 3 ? styles.active : ''}`} />
-      </div>
+        {/* Step Indicator */}
+        <div className={styles.stepIndicator}>
+          <div className={`${styles.stepDot} ${step === 1 ? styles.active : ''}`} />
+          <div className={`${styles.stepDot} ${step === 2 ? styles.active : ''}`} />
+          <div className={`${styles.stepDot} ${step === 3 ? styles.active : ''}`} />
+        </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.stepContent}>
-        {/* Step 1: Terms Agreement */}
-        {step === 1 && (
-          <div className={styles.stepWrapper}>
-            <h2 className={styles.stepTitle}>약관에 동의해주세요</h2>
-            <div className={styles.termsList}>
-              <label className={styles.termItem}>
-                <input
-                  type="checkbox"
-                  {...register('termsOfService')}
-                  className={styles.checkbox}
-                />
-                <span className={styles.termText}>
-                  <span className={styles.termRequired}>[필수]</span> 서비스 이용약관 동의
-                </span>
-              </label>
-              {errors.termsOfService && <p className={styles.error}>{errors.termsOfService.message}</p>}
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.stepContent}>
+          {/* Step 1: Terms Agreement */}
+          {step === 1 && (
+            <div className={styles.stepWrapper}>
+              <h2 className={styles.stepTitle}>약관에 동의해주세요</h2>
+              <div className={styles.termsList}>
+                <label className={styles.termItem}>
+                  <input
+                    type="checkbox"
+                    {...register('termsOfService')}
+                    className={styles.checkbox}
+                  />
+                  <span className={styles.termText}>
+                    <span className={styles.termRequired}>[필수]</span> 서비스 이용약관 동의
+                  </span>
+                </label>
+                {errors.termsOfService && <p className={styles.error}>{errors.termsOfService.message}</p>}
 
-              <label className={styles.termItem}>
-                <input
-                  type="checkbox"
-                  {...register('privacyPolicy')}
-                  className={styles.checkbox}
-                />
-                <span className={styles.termText}>
-                  <span className={styles.termRequired}>[필수]</span> 개인정보 수집 및 이용 동의
-                </span>
-              </label>
-              {errors.privacyPolicy && <p className={styles.error}>{errors.privacyPolicy.message}</p>}
+                <label className={styles.termItem}>
+                  <input
+                    type="checkbox"
+                    {...register('privacyPolicy')}
+                    className={styles.checkbox}
+                  />
+                  <span className={styles.termText}>
+                    <span className={styles.termRequired}>[필수]</span> 개인정보 수집 및 이용 동의
+                  </span>
+                </label>
+                {errors.privacyPolicy && <p className={styles.error}>{errors.privacyPolicy.message}</p>}
+              </div>
+
+              <div className={styles.bottomActions}>
+                <Button type="button" variant="ghost" onClick={() => navigate(-1)} className={styles.backButton}>
+                  취소
+                </Button>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={handleNextStep}
+                  disabled={!termsOfService || !privacyPolicy}
+                  className={styles.nextButton}
+                >
+                  다음 <ChevronRight size={16} />
+                </Button>
+              </div>
             </div>
+          )}
 
-            <div className={styles.bottomActions}>
-              <Button type="button" variant="ghost" onClick={() => navigate(-1)} className={styles.backButton}>
-                취소
-              </Button>
+          {/* Step 2: User Info (Merged Basic + Account) */}
+          {step === 2 && (
+            <div className={styles.stepWrapper}>
+              <h2 className={styles.stepTitle}>정보를 입력해주세요</h2>
+
+              <div className={styles.formGroup}>
+                {/* Basic Info Section */}
+                <div className={styles.section}>
+                  <Input
+                    label="이름 (실명)"
+                    placeholder="홍길동"
+                    error={errors.name?.message}
+                    {...register('name')}
+                  />
+                  <Input
+                    label="휴대폰 번호"
+                    placeholder="010-1234-5678"
+                    error={errors.phone?.message}
+                    {...register('phone')}
+                  />
+                  <Input
+                    label="생년월일 (선택)"
+                    placeholder="예: 1990-01-01"
+                    error={errors.birthDate?.message}
+                    {...register('birthDate')}
+                  />
+                </div>
+
+                <hr className={styles.divider} />
+
+                {/* Account Info Section */}
+                <div className={styles.section}>
+                  <Input
+                    label="이메일"
+                    type="email"
+                    placeholder="이메일 주소를 입력하세요"
+                    error={errors.email?.message}
+                    {...register('email')}
+                  />
+                  <Input
+                    label="비밀번호"
+                    type="password"
+                    placeholder="8자 이상 입력"
+                    error={errors.password?.message}
+                    {...register('password')}
+                  />
+                  <Input
+                    label="비밀번호 확인"
+                    type="password"
+                    placeholder="비밀번호 재입력"
+                    error={errors.confirmPassword?.message}
+                    {...register('confirmPassword')}
+                  />
+                  <Input
+                    label="닉네임"
+                    placeholder="우리두에서 사용할 이름"
+                    error={errors.nickname?.message}
+                    {...register('nickname')}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.bottomActions}>
+                <Button type="button" variant="ghost" onClick={handlePrevStep} className={styles.backButton}>
+                  <ChevronLeft size={16} /> 이전
+                </Button>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  isLoading={isSubmitting}
+                  className={styles.nextButton}
+                >
+                  가입 완료
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Success */}
+          {step === 3 && (
+            <div className={styles.successContent}>
+              <div className={styles.successIcon}>
+                <Check size={40} strokeWidth={3} />
+              </div>
+              <h2 className={styles.successTitle}>환영합니다!</h2>
+              <p className={styles.successDesc}>
+                회원가입이 완료되었습니다.<br />
+                이제 우리두의 모든 서비스를 이용해보세요.
+              </p>
               <Button
                 type="button"
                 variant="primary"
-                onClick={handleNextStep}
-                disabled={!termsOfService || !privacyPolicy}
-                className={styles.nextButton}
+                size="lg"
+                className={styles.fullWidth}
+                onClick={() => navigate(PATHS.HOME)}
               >
-                다음 <ChevronRight size={16} />
+                시작하기
               </Button>
             </div>
-          </div>
-        )}
-
-        {/* Step 2: User Info (Merged Basic + Account) */}
-        {step === 2 && (
-          <div className={styles.stepWrapper}>
-            <h2 className={styles.stepTitle}>정보를 입력해주세요</h2>
-
-            <div className={styles.formGroup}>
-              {/* Basic Info Section */}
-              <div className={styles.section}>
-                <Input
-                  label="이름 (실명)"
-                  placeholder="홍길동"
-                  error={errors.name?.message}
-                  {...register('name')}
-                />
-                <Input
-                  label="휴대폰 번호"
-                  placeholder="010-1234-5678"
-                  error={errors.phone?.message}
-                  {...register('phone')}
-                />
-                <Input
-                  label="생년월일 (선택)"
-                  placeholder="예: 1990-01-01"
-                  error={errors.birthDate?.message}
-                  {...register('birthDate')}
-                />
-              </div>
-
-              <hr className={styles.divider} />
-
-              {/* Account Info Section */}
-              <div className={styles.section}>
-                <Input
-                  label="이메일"
-                  type="email"
-                  placeholder="이메일 주소를 입력하세요"
-                  error={errors.email?.message}
-                  {...register('email')}
-                />
-                <Input
-                  label="비밀번호"
-                  type="password"
-                  placeholder="8자 이상 입력"
-                  error={errors.password?.message}
-                  {...register('password')}
-                />
-                <Input
-                  label="비밀번호 확인"
-                  type="password"
-                  placeholder="비밀번호 재입력"
-                  error={errors.confirmPassword?.message}
-                  {...register('confirmPassword')}
-                />
-                <Input
-                  label="닉네임"
-                  placeholder="우리두에서 사용할 이름"
-                  error={errors.nickname?.message}
-                  {...register('nickname')}
-                />
-              </div>
-            </div>
-
-            <div className={styles.bottomActions}>
-              <Button type="button" variant="ghost" onClick={handlePrevStep} className={styles.backButton}>
-                <ChevronLeft size={16} /> 이전
-              </Button>
-              <Button
-                type="submit"
-                variant="primary"
-                isLoading={isSubmitting}
-                className={styles.nextButton}
-              >
-                가입 완료
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 3: Success */}
-        {step === 3 && (
-          <div className={styles.successContent}>
-            <div className={styles.successIcon}>
-              <Check size={40} strokeWidth={3} />
-            </div>
-            <h2 className={styles.successTitle}>환영합니다!</h2>
-            <p className={styles.successDesc}>
-              회원가입이 완료되었습니다.<br />
-              이제 우리두의 모든 서비스를 이용해보세요.
-            </p>
-            <Button
-              type="button"
-              variant="primary"
-              size="lg"
-              className={styles.fullWidth}
-              onClick={() => navigate(PATHS.HOME)}
-            >
-              시작하기
-            </Button>
-          </div>
-        )}
-      </form>
-    </div>
+          )}
+        </form>
+      </div>
+    </PageContainer>
   );
 }

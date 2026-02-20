@@ -180,13 +180,9 @@
 .bottomAction {
   position: sticky;
   bottom: 0;
-  left: 0;
-  right: 0;
-  padding: var(--spacing-lg);
-  background: white;
-  border-top: 1px solid var(--color-grey-100);
-  margin: 0 calc(var(--spacing-lg) * -1);
-  /* PageContainer padding 보정 */
+  padding: var(--space-4) 0 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1) 75%, rgba(255, 255, 255, 0));
+  z-index: 2;
 }
 
 .joinButton {

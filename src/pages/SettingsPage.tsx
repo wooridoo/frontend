@@ -56,7 +56,7 @@ export function SettingsPage() {
 
   if (!user) {
     return (
-      <PageContainer>
+      <PageContainer variant="content" contentWidth="md">
         <PageHeader title="설정" showBack />
         <div className={styles.stateText}>사용자 정보를 불러올 수 없습니다.</div>
       </PageContainer>
@@ -64,7 +64,7 @@ export function SettingsPage() {
   }
 
   return (
-    <PageContainer>
+    <PageContainer variant="content" contentWidth="md">
       <PageHeader title="설정" showBack />
 
       <div className={styles.pageBody}>

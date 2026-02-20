@@ -1,20 +1,14 @@
 /* Container for the whole page/modal view */
 .container {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: var(--space-8) var(--space-5);
-  /* xl, 20px */
   display: flex;
   flex-direction: column;
-  background-color: var(--color-white);
-  /* Requested: White background */
+  gap: var(--layout-section-gap);
+  padding-bottom: var(--space-8);
 }
 
 .header {
   text-align: center;
-  margin-bottom: var(--space-10);
-  /* 2xl -> 40px */
+  padding-top: var(--space-4);
 }
 
 .logo {
@@ -36,9 +30,6 @@
   display: flex;
   justify-content: center;
   gap: var(--space-2);
-  /* xs -> 8px */
-  margin-bottom: var(--space-8);
-  /* xl -> 32px */
 }
 
 .stepDot {
@@ -72,7 +63,6 @@
   font-weight: 700;
   color: var(--color-grey-900);
   margin-bottom: var(--space-6);
-  /* md -> 24px */
   text-align: center;
 }
 
@@ -99,7 +89,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  /* md -> 16px */
   margin-top: var(--space-2);
   margin-bottom: var(--space-8);
 }
@@ -163,8 +152,7 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: 400px;
-  /* Minimal height for better vertical centering */
+  min-height: 360px;
 }
 
 .successIcon {
@@ -198,7 +186,6 @@
 .bottomActions {
   margin-top: auto;
   padding-top: var(--space-8);
-  /* xl -> 32px */
   display: flex;
   gap: var(--space-3);
   width: 100%;

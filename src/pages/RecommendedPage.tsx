@@ -24,7 +24,7 @@ export function RecommendedPage() {
 
   if (!isLoggedIn) {
     return (
-      <PageContainer className={styles.page}>
+      <PageContainer variant="content" contentWidth="xl" className={styles.page}>
         <PageHeader title="추천" />
         <div className={styles.loginPrompt}>
           <div className={styles.iconWrapper}>
@@ -44,7 +44,7 @@ export function RecommendedPage() {
   }
 
   return (
-    <PageContainer className={styles.page}>
+    <PageContainer variant="content" contentWidth="xl" className={styles.page}>
       <PageHeader title="추천 챌린지" />
 
       <div className={styles.content}>
