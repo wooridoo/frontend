@@ -30,8 +30,8 @@ export function RegularMeetingList({ challengeId, challengeRef }: RegularMeeting
         <div className={styles.header}>
           <h3 className={styles.title}>정기모임</h3>
           {challengeId && (
-            <Button size="sm" onClick={handleOpenCreateModal}>
-              <Plus size={16} /> 모임 만들기
+            <Button size="sm" leadingIcon={<Plus size={16} />} onClick={handleOpenCreateModal}>
+              모임 만들기
             </Button>
           )}
         </div>
@@ -47,8 +47,8 @@ export function RegularMeetingList({ challengeId, challengeRef }: RegularMeeting
       <div className={styles.header}>
         <h3 className={styles.title}>정기모임</h3>
         {challengeId && (
-          <Button size="sm" onClick={handleOpenCreateModal}>
-            <Plus size={16} /> 모임 만들기
+          <Button size="sm" leadingIcon={<Plus size={16} />} onClick={handleOpenCreateModal}>
+            모임 만들기
           </Button>
         )}
       </div>

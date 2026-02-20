@@ -57,13 +57,14 @@ export function LeaveChallengeModal() {
                 </div>
 
                 <div className={styles.actions}>
-                    <Button onClick={onClose} className={styles.cancelButton}>
+                    <Button onClick={onClose} variant="outline" fullWidth>
                         취소
                     </Button>
                     <Button
                         onClick={handleLeave}
                         disabled={isSubmitting}
-                        style={{ background: 'var(--color-warning)' }}
+                        variant="danger"
+                        fullWidth
                     >
                         {isSubmitting ? '처리 중...' : '나가기'}
                     </Button>

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useMembers } from '@/hooks/useMember';
 import { MemberCard } from './MemberCard';
 import { Skeleton } from '@/components/feedback';
+import { Button } from '@/components/ui';
 import type { MemberStatus } from '@/types/member';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
@@ -68,13 +69,16 @@ export function MemberList() {
             {/* Filter Tabs */}
             <div className={styles.tabs}>
                 {TABS.map(tab => (
-                    <button
+                    <Button
                         key={tab.value}
                         className={clsx(styles.tab, activeTab === tab.value && styles.tabActive)}
                         onClick={() => setActiveTab(tab.value)}
+                        shape="rounded"
+                        size="sm"
+                        variant={activeTab === tab.value ? 'secondary' : 'ghost'}
                     >
                         {tab.label}
-                    </button>
+                    </Button>
                 ))}
             </div>
 

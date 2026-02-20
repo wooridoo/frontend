@@ -102,13 +102,14 @@ export function DelegateLeaderModal() {
         )}
 
         <div className={styles.actions}>
-          <Button onClick={handleClose} className={styles.cancelButton}>
+          <Button onClick={handleClose} fullWidth variant="outline">
             취소
           </Button>
           <Button
             onClick={() => void handleDelegate()}
-            className={styles.submitButton}
             disabled={!selectedMember || isSubmitting}
+            fullWidth
+            variant="primary"
           >
             {isSubmitting ? '처리 중...' : '위임하기'}
           </Button>

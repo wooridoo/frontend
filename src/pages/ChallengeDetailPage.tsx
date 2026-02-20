@@ -205,7 +205,7 @@ export function ChallengeDetailPage() {
       <div className={styles.bottomAction}>
         <Button
           size="lg"
-          className={styles.joinButton}
+          fullWidth
           onClick={isJoined
             ? () => navigate(CHALLENGE_ROUTES.detail(challengeRef || challenge.challengeId, challenge.title))
             : handleJoin}

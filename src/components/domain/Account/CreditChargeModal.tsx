@@ -62,13 +62,16 @@ export function CreditChargeModal() {
                             <label className={styles.label}>충전 금액 선택</label>
                             <div className={styles.amountGrid}>
                                 {PRESET_AMOUNTS.map((preset) => (
-                                    <button
+                                    <Button
                                         key={preset}
                                         className={`${styles.amountButton} ${amount === preset ? styles.selected : ''}`}
                                         onClick={() => handleAmountSelect(preset)}
+                                        size="sm"
+                                        type="button"
+                                        variant={amount === preset ? 'primary' : 'outline'}
                                     >
                                         {(preset / 10000).toLocaleString()}만원
-                                    </button>
+                                    </Button>
                                 ))}
                             </div>
                             <input
@@ -96,13 +99,13 @@ export function CreditChargeModal() {
                         </div>
 
                         <div className={styles.actions}>
-                            <Button onClick={handleClose} className={styles.cancelButton}>
+                            <Button onClick={handleClose} fullWidth variant="outline">
                                 취소
                             </Button>
                             <Button
                                 onClick={handleCharge}
-                                className={styles.submitButton}
                                 disabled={amount < 10000 || chargeMutation.isPending}
+                                fullWidth
                             >
                                 {chargeMutation.isPending ? '처리 중...' : '충전하기'}
                             </Button>
@@ -115,7 +118,7 @@ export function CreditChargeModal() {
                         <div className={styles.successIcon}>✅</div>
                         <p className={styles.successMessage}>충전이 완료되었습니다!</p>
                         <p className={styles.successAmount}>{formatCurrency(amount)}</p>
-                        <Button onClick={handleClose} className={styles.submitButton}>
+                        <Button onClick={handleClose} fullWidth>
                             확인
                         </Button>
                     </div>

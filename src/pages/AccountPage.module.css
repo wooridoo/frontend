@@ -57,27 +57,10 @@
 .primaryButton,
 .secondaryButton,
 .dangerButton {
-  min-height: 40px;
-  border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  min-height: var(--button-height-md);
   font-size: var(--font-size-sm);
   font-weight: 600;
-}
-
-.primaryButton {
-  background: var(--color-primary);
-  color: var(--color-white);
-}
-
-.secondaryButton {
-  background: var(--color-grey-100);
-  color: var(--color-grey-900);
-}
-
-.dangerButton {
-  background: #fff1f1;
-  color: #b91c1c;
-  border-color: #fecaca;
+  justify-content: center;
 }
 
 .helpText {

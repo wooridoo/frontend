@@ -54,14 +54,6 @@
   width: 100%;
 }
 
-.payButton {
-  background-color: var(--color-orange-500);
-}
-
-.payButton:hover {
-  background-color: var(--color-orange-600);
-}
-
 .successIcon {
   font-size: 48px;
   animation: bounce 0.5s ease-out;

@@ -8,21 +8,41 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
   VariantProps<typeof buttonVariants> {
   isLoading?: boolean;
+  leadingIcon?: React.ReactNode;
+  trailingIcon?: React.ReactNode;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, isLoading, disabled, children, ...props }, ref) => {
+  ({
+    className,
+    variant,
+    size,
+    shape,
+    fullWidth,
+    isLoading,
+    disabled,
+    leadingIcon,
+    trailingIcon,
+    children,
+    ...props
+  }, ref) => {
     return (
       <button
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(
+          buttonVariants({ variant, size, shape, fullWidth }),
+          isLoading && styles.loading,
+          className
+        )}
         ref={ref}
         disabled={disabled || isLoading}
         {...props}
       >
-        {isLoading ? (
-          <span className={styles.spinner} aria-hidden="true" />
-        ) : null}
-        {children}
+        <span className={styles.content}>
+          {isLoading ? <span className={styles.spinner} aria-hidden="true" /> : null}
+          {!isLoading && leadingIcon ? <span aria-hidden="true">{leadingIcon}</span> : null}
+          {children}
+          {!isLoading && trailingIcon ? <span aria-hidden="true">{trailingIcon}</span> : null}
+        </span>
       </button>
     );
   }

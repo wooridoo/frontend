@@ -87,11 +87,12 @@
 .menuItem {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: var(--space-4);
   padding: var(--space-4);
   color: var(--color-grey-800);
   transition: background-color 0.2s;
-  cursor: pointer;
+  border-radius: 0;
 }
 
 .menuItem:not(:last-child) {
@@ -134,10 +135,5 @@
 }
 
 .loginButton {
-  padding: var(--space-3) var(--space-4);
-  background-color: var(--color-grey-200);
-  border: none;
-  border-radius: var(--radius-lg);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
+  color: var(--color-grey-800);
 }

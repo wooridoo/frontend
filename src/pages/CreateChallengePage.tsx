@@ -8,8 +8,11 @@ import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button, Input, Card, CardHeader, CardBody, SemanticIcon } from '@/components/ui';
 import { useCreateChallenge } from '@/hooks/useChallenge';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { CATEGORY_VISUALS } from '@/lib/constants/categoryVisuals';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { Category } from '@/types/enums';
 import { toast } from 'sonner';
 import styles from './CreateChallengePage.module.css';
 
@@ -27,18 +30,24 @@ const challengeSchema = z.object({
 
 type ChallengeFormValues = z.infer<typeof challengeSchema>;
 
-const CATEGORIES = [
-  { id: 'CULTURE', label: '생활습관', icon: 'action' as const },
-  { id: 'EXERCISE', label: '운동', icon: 'challenge' as const },
-  { id: 'STUDY', label: '공부', icon: 'feed' as const },
-  { id: 'HOBBY', label: '취미', icon: 'meeting' as const },
-  { id: 'SAVINGS', label: '재테크', icon: 'wallet' as const },
-  { id: 'OTHER', label: '기타', icon: 'default' as const },
+const CREATE_CATEGORY_ORDER: Category[] = [
+  Category.CULTURE,
+  Category.EXERCISE,
+  Category.STUDY,
+  Category.HOBBY,
+  Category.SAVINGS,
+  Category.OTHER,
 ];
+
+const CATEGORIES = CREATE_CATEGORY_ORDER.map(category => ({
+  id: category,
+  ...CATEGORY_VISUALS[category],
+}));
 
 export function CreateChallengePage() {
   const navigate = useNavigate();
   const createChallengeMutation = useCreateChallenge();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const {
     register,
@@ -66,6 +75,7 @@ export function CreateChallengePage() {
   }, [supportAmount, setValue]);
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [activeIconCategory, setActiveIconCategory] = useState<Category | null>(null);
 
   const onSubmit = async (data: ChallengeFormValues) => {
     setFormErrors([]);
@@ -110,16 +120,28 @@ export function CreateChallengePage() {
             <h2 className={styles.sectionTitle}>카테고리 선택</h2>
             <div className={styles.categoryGrid}>
               {CATEGORIES.map((cat) => (
-                <div
+                <button
                   key={cat.id}
+                  aria-pressed={selectedCategory === cat.id}
                   className={`${styles.categoryCard} ${selectedCategory === cat.id ? styles.selected : ''}`}
                   onClick={() => setValue('category', cat.id, { shouldValidate: true })}
+                  onFocus={() => setActiveIconCategory(cat.id)}
+                  onBlur={() => setActiveIconCategory(prev => (prev === cat.id ? null : prev))}
+                  onMouseEnter={() => setActiveIconCategory(cat.id)}
+                  onMouseLeave={() => setActiveIconCategory(prev => (prev === cat.id ? null : prev))}
+                  type="button"
                 >
                   <span className={styles.categoryIcon}>
-                    <SemanticIcon name={cat.icon} size={18} />
+                    <SemanticIcon
+                      animated={!prefersReducedMotion && (selectedCategory === cat.id || activeIconCategory === cat.id)}
+                      fallbackName={cat.iconName}
+                      loop={false}
+                      name={cat.iconName}
+                      size={20}
+                    />
                   </span>
                   <span className={styles.categoryName}>{cat.label}</span>
-                </div>
+                </button>
               ))}
             </div>
             {errors.category && <p className={styles.error}>{errors.category.message}</p>}

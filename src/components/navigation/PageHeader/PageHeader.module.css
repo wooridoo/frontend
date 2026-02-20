@@ -7,21 +7,11 @@
 }
 
 .backButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: transparent;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: background-color var(--motion-duration-fast);
   color: var(--color-grey-900);
 }
 
 .backButton:hover {
-  background-color: var(--color-grey-100);
+  color: var(--color-grey-900);
 }
 
 .icon {

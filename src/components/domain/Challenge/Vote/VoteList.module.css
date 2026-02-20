@@ -23,15 +23,9 @@
 }
 
 .tab {
-  padding: var(--space-3) var(--space-2);
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-grey-500);
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
 }
 
 .tab:hover {
@@ -40,7 +34,6 @@
 
 .tab.active {
   color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
 }
 
 .list {

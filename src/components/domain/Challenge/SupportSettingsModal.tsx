@@ -82,13 +82,13 @@ export function SupportSettingsModal() {
                         </div>
 
                         <div className={styles.actions}>
-                            <Button onClick={handleClose} className={styles.cancelButton}>
+                            <Button onClick={handleClose} variant="outline" fullWidth>
                                 취소
                             </Button>
                             <Button
                                 onClick={() => void handleSave()}
-                                className={styles.submitButton}
                                 disabled={!challengeId || updateMutation.isPending}
+                                fullWidth
                             >
                                 {updateMutation.isPending ? '저장 중...' : '저장'}
                             </Button>

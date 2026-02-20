@@ -4,6 +4,7 @@ import { BrixBadge } from '@/components/domain/BrixBadge';
 import { getBrixGrade, formatBrix } from '@/lib/brix';
 import type { User } from '@/types/user';
 import { PATHS } from '@/routes/paths';
+import { Button } from '../Button';
 import styles from './ProfileMenu.module.css';
 
 interface ProfileMenuContentProps {
@@ -34,29 +35,54 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
 
             <div className={styles.separator} />
 
-            <button className={styles.menuItem} onClick={() => onNavigate(PATHS.MY.PROFILE)}>
-                <SidebarIcon type="profile" size={24} />
+            <Button
+                className={styles.menuItem}
+                fullWidth
+                leadingIcon={<SidebarIcon type="profile" size={24} />}
+                onClick={() => onNavigate(PATHS.MY.PROFILE)}
+                variant="ghost"
+            >
                 마이페이지
-            </button>
-            <button className={styles.menuItem} onClick={() => onNavigate(PATHS.MY.CHALLENGES)}>
-                <SidebarIcon type="feed" size={24} />
+            </Button>
+            <Button
+                className={styles.menuItem}
+                fullWidth
+                leadingIcon={<SidebarIcon type="feed" size={24} />}
+                onClick={() => onNavigate(PATHS.MY.CHALLENGES)}
+                variant="ghost"
+            >
                 나의 챌린지
-            </button>
-            <button className={styles.menuItem} onClick={() => onNavigate(PATHS.MY.LEDGER)}>
-                <SidebarIcon type="ledger" size={24} />
+            </Button>
+            <Button
+                className={styles.menuItem}
+                fullWidth
+                leadingIcon={<SidebarIcon type="ledger" size={24} />}
+                onClick={() => onNavigate(PATHS.MY.LEDGER)}
+                variant="ghost"
+            >
                 나의 장부
-            </button>
+            </Button>
 
             <div className={styles.separator} />
 
-            <button className={styles.menuItem} onClick={() => onNavigate(PATHS.MY.SETTINGS)}>
-                <SidebarIcon type="settings" size={24} />
+            <Button
+                className={styles.menuItem}
+                fullWidth
+                leadingIcon={<SidebarIcon type="settings" size={24} />}
+                onClick={() => onNavigate(PATHS.MY.SETTINGS)}
+                variant="ghost"
+            >
                 설정
-            </button>
-            <button className={clsx(styles.menuItem, styles.logout)} onClick={onLogout}>
-                <SidebarIcon type="logout" size={24} />
+            </Button>
+            <Button
+                className={clsx(styles.menuItem, styles.logout)}
+                fullWidth
+                leadingIcon={<SidebarIcon type="logout" size={24} />}
+                onClick={onLogout}
+                variant="ghost"
+            >
                 로그아웃
-            </button>
+            </Button>
         </div>
     );
 }

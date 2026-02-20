@@ -102,13 +102,16 @@ export function TransactionHistoryPage() {
 
       <div className={styles.filters}>
         {FILTER_OPTIONS.map(opt => (
-          <button
+          <Button
             key={opt.value}
             className={`${styles.filterButton} ${filter === opt.value ? styles.active : ''}`}
             onClick={() => setFilter(opt.value)}
+            shape="pill"
+            size="sm"
+            variant={filter === opt.value ? 'primary' : 'outline'}
           >
             {opt.label}
-          </button>
+          </Button>
         ))}
       </div>
 

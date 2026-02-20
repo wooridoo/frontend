@@ -130,20 +130,22 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
           <div className={styles.fieldGroup}>
             <label className={styles.label}>모임 유형</label>
             <div className={styles.locationToggle}>
-              <button
-                type="button"
+              <Button
                 className={`${styles.toggleButton} ${formData.locationType === 'OFFLINE' ? styles.active : ''}`}
                 onClick={() => handleChange('locationType', 'OFFLINE')}
+                size="sm"
+                variant={formData.locationType === 'OFFLINE' ? 'primary' : 'ghost'}
               >
                 오프라인
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
                 className={`${styles.toggleButton} ${formData.locationType === 'ONLINE' ? styles.active : ''}`}
                 onClick={() => handleChange('locationType', 'ONLINE')}
+                size="sm"
+                variant={formData.locationType === 'ONLINE' ? 'primary' : 'ghost'}
               >
                 온라인
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -175,10 +177,10 @@ function EditMeetingModalContent({ meeting, onClose }: EditMeetingModalContentPr
           {error && <div className={styles.error}>{error}</div>}
 
           <div className={styles.actions}>
-            <Button onClick={handleClose} className={styles.cancelButton}>
+            <Button onClick={handleClose} fullWidth variant="outline">
               취소
             </Button>
-            <Button onClick={handleSubmit} className={styles.submitButton} disabled={updateMutation.isPending}>
+            <Button onClick={handleSubmit} fullWidth disabled={updateMutation.isPending}>
               {updateMutation.isPending ? '수정 중...' : '수정하기'}
             </Button>
           </div>

@@ -69,6 +69,8 @@ export function VerificationModal() {
             disabled={!file || isLoading}
             isLoading={isLoading}
             className={styles.submitButton}
+            fullWidth
+            variant="primary"
           >
             인증 제출하기
           </Button>
@@ -84,7 +86,7 @@ export function VerificationModal() {
             인증이 완료되었습니다!<br />
             10 브릭스를 획득했어요.
           </p>
-          <Button onClick={handleClose} className={styles.submitButton}>
+          <Button onClick={handleClose} className={styles.submitButton} fullWidth variant="primary">
             확인
           </Button>
         </div>

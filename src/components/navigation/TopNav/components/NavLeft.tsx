@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
+import { IconButton } from '@/components/ui';
 import styles from './NavLeft.module.css';
 import logo from '@/assets/woorido_logo.svg';
 import { PATHS } from '@/routes/paths';
@@ -13,13 +14,14 @@ export function NavLeft({ isSidebarCollapsed, onToggleSidebar }: NavLeftProps) {
   return (
     <div className={styles.root}>
       {/* 1. Hamburger Menu */}
-      <button
+      <IconButton
+        icon={<Menu size={24} />}
         className={styles.menuButton}
         onClick={onToggleSidebar}
         aria-label={isSidebarCollapsed ? "메뉴 펼치기" : "메뉴 접기"}
-      >
-        <Menu size={24} />
-      </button>
+        size="md"
+        variant="ghost"
+      />
 
       {/* 2. Logo */}
       <Link to={PATHS.HOME} className={styles.logoLink}>

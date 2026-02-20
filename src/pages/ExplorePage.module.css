@@ -75,20 +75,13 @@
 }
 
 .categoryChip {
-  padding: 8px 16px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-grey-100);
   color: var(--color-grey-600);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  border: none;
-  cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s;
 }
 
 .categoryChip.active {
-  background-color: var(--color-orange-500);
   color: white;
 }
 

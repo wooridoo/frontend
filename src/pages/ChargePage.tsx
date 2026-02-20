@@ -90,20 +90,26 @@ export function ChargePage() {
 
       <div className={styles.amountGrid}>
         {PRESET_AMOUNTS.map(value => (
-          <button
+          <Button
             key={value}
             className={`${styles.amountButton} ${amount === value ? styles.selected : ''}`}
             onClick={() => handlePresetClick(value)}
+            type="button"
+            variant={amount === value ? 'primary' : 'outline'}
+            shape="rounded"
           >
             {value.toLocaleString()}
-          </button>
+          </Button>
         ))}
-        <button
+        <Button
           className={`${styles.amountButton} ${!PRESET_AMOUNTS.includes(amount) && amount > 0 ? styles.selected : ''}`}
           onClick={() => setAmount(0)}
+          type="button"
+          variant={!PRESET_AMOUNTS.includes(amount) && amount > 0 ? 'primary' : 'outline'}
+          shape="rounded"
         >
           직접 입력
-        </button>
+        </Button>
       </div>
 
       <div className={styles.inputGroup}>

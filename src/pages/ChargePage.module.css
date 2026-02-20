@@ -24,24 +24,15 @@
 
 .amountButton {
   padding: var(--space-6);
-  border: 1px solid var(--color-grey-200);
   border-radius: var(--radius-lg);
-  background-color: var(--color-white);
+  height: auto;
+  min-height: 0;
   font-size: var(--font-size-lg);
   font-weight: 500;
   color: var(--color-grey-900);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.amountButton:hover {
-  background-color: var(--color-grey-50);
 }
 
 .amountButton.selected {
-  border-color: var(--color-primary);
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
   font-weight: 700;
 }
 

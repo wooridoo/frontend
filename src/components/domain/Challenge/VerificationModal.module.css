@@ -61,13 +61,7 @@
 
 .submitButton {
   width: 100%;
-  background-color: var(--color-primary);
-  color: white;
   margin-top: var(--space-4);
-}
-
-.submitButton:hover {
-  background-color: var(--color-primary-600);
 }
 
 .successIcon {

@@ -8,7 +8,7 @@ import { PATHS } from '@/routes/paths';
 import { useCreditChargeModalStore, useLoginModalStore, useWithdrawModalStore } from '@/store/modal/useModalStore';
 import { formatCurrency } from '@/lib/utils';
 import { formatUtcDateLabel } from '@/lib/utils/dateTime';
-import { SemanticIcon } from '@/components/ui';
+import { Button, SemanticIcon } from '@/components/ui';
 import type { Transaction } from '@/types/account';
 import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import styles from './WalletPage.module.css';
@@ -65,12 +65,13 @@ export function WalletPage() {
         <PageHeader title="나의 지갑" showBack />
         <div className={styles.centerContainer}>
           <div className={styles.errorText}>지갑 정보를 불러오지 못했습니다.</div>
-          <button
+          <Button
             className={styles.loginButton}
             onClick={() => openLogin({ returnTo, redirectOnReject: PATHS.HOME, message: '로그인이 필요합니다.' })}
+            variant="secondary"
           >
             로그인 하러 가기
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -91,27 +92,32 @@ export function WalletPage() {
       </div>
 
       <div className={styles.actionGrid}>
-        <button className={styles.actionButton} onClick={openChargeModal}>
+        <Button className={styles.actionButton} onClick={openChargeModal} variant="secondary">
           <div className={styles.actionIcon}>
             <SemanticIcon name="charge" size={28} />
           </div>
           <span className={styles.actionLabel}>충전하기</span>
-        </button>
-        <button className={styles.actionButton} onClick={openWithdrawModal}>
+        </Button>
+        <Button className={styles.actionButton} onClick={openWithdrawModal} variant="secondary">
           <div className={styles.actionIcon}>
             <SemanticIcon name="withdraw" size={28} />
           </div>
           <span className={styles.actionLabel}>출금하기</span>
-        </button>
+        </Button>
       </div>
 
       <div className={styles.historySection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>최근 거래</h2>
-          <button className={styles.viewAllButton} onClick={() => navigate('/me/ledger/transactions')}>
+          <Button
+            className={styles.viewAllButton}
+            onClick={() => navigate('/me/ledger/transactions')}
+            size="sm"
+            trailingIcon={<ChevronRight size={14} />}
+            variant="text"
+          >
             전체보기
-            <ChevronRight size={14} />
-          </button>
+          </Button>
         </div>
 
         <div className={styles.historyList}>

@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { executePasswordReset } from '@/lib/api/auth';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
+import { Button } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
 
 import styles from './ResetPasswordPage.module.css';
@@ -72,9 +73,9 @@ export function ResetPasswordPage() {
         {!token ? (
           <div className={styles.invalidToken}>
             <p>유효하지 않은 재설정 링크입니다.</p>
-            <button type="button" className={styles.linkButton} onClick={() => navigate(PATHS.HOME)}>
+            <Button type="button" className={styles.linkButton} onClick={() => navigate(PATHS.HOME)} variant="primary">
               홈으로 이동
-            </button>
+            </Button>
           </div>
         ) : (
           <form className={styles.form} onSubmit={handleSubmit}>
@@ -109,9 +110,9 @@ export function ResetPasswordPage() {
 
             {error ? <p className={styles.error}>{error}</p> : null}
 
-            <button type="submit" className={styles.submitButton} disabled={submitting}>
+            <Button type="submit" className={styles.submitButton} disabled={submitting} fullWidth isLoading={submitting}>
               {submitting ? '재설정 중...' : '비밀번호 재설정'}
-            </button>
+            </Button>
           </form>
         )}
       </section>

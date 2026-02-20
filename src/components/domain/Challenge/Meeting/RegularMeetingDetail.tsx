@@ -5,6 +5,7 @@ import styles from './RegularMeetingDetail.module.css';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
 import { useMeeting } from '@/hooks/useMeeting';
 import { useAttendanceModalStore, useCompleteMeetingModalStore } from '@/store/modal/useModalStore';
+import { Button } from '@/components/ui';
 
 export function RegularMeetingDetail() {
   const { meetingId } = useParams<{ meetingId: string }>();
@@ -75,19 +76,23 @@ function RegularMeetingContent({ id }: { id?: string }) {
 
       <div className={styles.floatingContainer}>
         <div className={styles.floatingInner}>
-          <button
+          <Button
             className={styles.actionButton}
             onClick={() => openAttendance(data)}
+            fullWidth
           >
             참석 여부 응답
-          </button>
+          </Button>
           {data.status !== 'COMPLETED' ? (
-            <button
+            <Button
               className={`${styles.actionButton} ${styles.cancel}`}
+              leadingIcon={<Check size={16} />}
               onClick={() => openCompleteMeeting(data)}
+              variant="secondary"
+              fullWidth
             >
-              <Check size={16} /> 모임 완료
-            </button>
+              모임 완료
+            </Button>
           ) : null}
         </div>
       </div>

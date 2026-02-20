@@ -1,0 +1,43 @@
+.iconButton {
+  min-width: 0;
+  padding-inline: 0;
+  aspect-ratio: 1 / 1;
+}
+
+.circle {
+  border-radius: var(--radius-full);
+}
+
+.rounded {
+  border-radius: var(--button-radius-rounded);
+}
+
+.square {
+  border-radius: var(--button-radius-square);
+}
+
+.sizeXs {
+  width: var(--button-height-xs);
+  height: var(--button-height-xs);
+}
+
+.sizeSm {
+  width: var(--button-height-sm);
+  height: var(--button-height-sm);
+}
+
+.sizeMd {
+  width: var(--button-height-md);
+  height: var(--button-height-md);
+}
+
+.sizeLg {
+  width: var(--button-height-lg);
+  height: var(--button-height-lg);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

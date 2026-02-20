@@ -6,18 +6,11 @@
 }
 
 .menuButton {
-  padding: 8px;
-  border-radius: 50%;
   color: var(--color-grey-700);
-  cursor: pointer;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .menuButton:hover {
-  background-color: var(--color-grey-100);
+  color: var(--color-grey-900);
 }
 
 .logoLink {

@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
+import { IconButton } from '@/components/ui';
 import { SidebarIcon, type SidebarIconProps } from '@/components/ui/Icons';
 import styles from './SideNav.module.css';
 import logo from '@/assets/woorido_logo.svg';
@@ -66,9 +67,14 @@ export function SideNav({
 
         {/* Mobile Header: Logo + Close Button */}
         <div className={clsx(styles.mobileHeader, !isOpen && styles.hidden)}>
-          <button className={styles.menuButton} onClick={onClose}>
-            <Menu size={24} />
-          </button>
+          <IconButton
+            aria-label="사이드 메뉴 닫기"
+            className={styles.menuButton}
+            icon={<Menu size={24} />}
+            onClick={onClose}
+            size="md"
+            variant="ghost"
+          />
           <NavLink to={PATHS.HOME} onClick={handleNavClick} className={styles.logoLink}>
             <img src={logo} alt="우리두" className={styles.logo} />
           </NavLink>

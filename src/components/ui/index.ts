@@ -2,6 +2,7 @@
 
 export { Button, type ButtonProps } from './Button';
 export { buttonVariants } from './Button.variants';
+export { IconButton, type IconButtonProps } from './IconButton';
 export { Input, type InputProps } from './Input';
 export { Badge, type BadgeProps } from './Badge';
 export { badgeVariants } from './Badge.variants';

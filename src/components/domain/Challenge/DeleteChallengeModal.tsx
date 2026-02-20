@@ -77,13 +77,14 @@ export function DeleteChallengeModal() {
                 </div>
 
                 <div className={styles.actions}>
-                    <Button onClick={handleClose} className={styles.cancelButton}>
+                    <Button onClick={handleClose} variant="outline" fullWidth>
                         취소
                     </Button>
                     <Button
                         onClick={handleDelete}
                         disabled={confirmText !== '삭제' || deleteMutation.isPending}
-                        style={{ background: 'var(--color-error)' }}
+                        variant="danger"
+                        fullWidth
                     >
                         {deleteMutation.isPending ? '삭제 중...' : '삭제'}
                     </Button>

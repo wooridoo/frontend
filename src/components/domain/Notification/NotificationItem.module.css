@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 12px;
+  min-height: 72px;
   border-radius: var(--radius-lg);
   background-color: var(--color-surface);
   transition: background-color 0.2s;
@@ -20,6 +21,11 @@
 
 .item.unread:hover {
   background-color: var(--color-orange-100);
+}
+
+.item:focus-visible {
+  outline: none;
+  box-shadow: var(--button-focus-ring);
 }
 
 .header {
@@ -117,4 +123,28 @@
   height: 6px;
   border-radius: 50%;
   background-color: var(--color-orange-500);
+}
+
+@media (max-width: 768px) {
+  .item {
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+  }
+
+  .header {
+    gap: var(--space-2);
+  }
+
+  .iconWrapper {
+    width: 32px;
+    height: 32px;
+  }
+
+  .title {
+    font-size: var(--font-size-sm);
+  }
+
+  .message {
+    font-size: var(--font-size-xs);
+  }
 }

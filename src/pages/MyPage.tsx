@@ -11,7 +11,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
-import { Badge } from '@/components/ui';
+import { Badge, Button } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
 import { getMyProfile } from '@/lib/api/user';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -63,16 +63,17 @@ export function MyPage() {
     return (
       <PageContainer variant="content" contentWidth="md">
         <PageHeader title="마이페이지" />
-        <div className={styles.stateContainer}>
-          <div className={styles.stateText}>
-            {error ? '로그인이 필요하거나 정보를 불러올 수 없습니다.' : '사용자 정보가 없습니다.'}
-          </div>
-          <button
+          <div className={styles.stateContainer}>
+            <div className={styles.stateText}>
+              {error ? '로그인이 필요하거나 정보를 불러올 수 없습니다.' : '사용자 정보가 없습니다.'}
+            </div>
+          <Button
             className={styles.loginButton}
             onClick={() => openLogin({ returnTo, redirectOnReject: PATHS.HOME, message: '로그인이 필요합니다.' })}
+            variant="secondary"
           >
             로그인 하러 가기
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -126,15 +127,17 @@ export function MyPage() {
           <h3 className={styles.menuTitle}>내 활동</h3>
           <div className={styles.menuList}>
             {menuItems.map((item) => (
-              <div
+              <Button
                 key={item.label}
                 className={styles.menuItem}
                 onClick={() => navigate(item.path)}
+                variant="text"
+                fullWidth
+                leadingIcon={<div className={styles.menuIcon}>{item.icon}</div>}
+                trailingIcon={<ChevronRight size={18} className={styles.chevron} />}
               >
-                <div className={styles.menuIcon}>{item.icon}</div>
                 <span className={styles.menuText}>{item.label}</span>
-                <ChevronRight size={18} className={styles.chevron} />
-              </div>
+              </Button>
             ))}
           </div>
         </div>
@@ -142,17 +145,27 @@ export function MyPage() {
         <div className={styles.menuSection}>
           <h3 className={styles.menuTitle}>계정</h3>
           <div className={styles.menuList}>
-            <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.ACCOUNT)}>
-              <div className={styles.menuIcon}><User size={20} /></div>
+            <Button
+              className={styles.menuItem}
+              fullWidth
+              leadingIcon={<div className={styles.menuIcon}><User size={20} /></div>}
+              onClick={() => navigate(PATHS.MY.ACCOUNT)}
+              trailingIcon={<ChevronRight size={18} className={styles.chevron} />}
+              variant="text"
+            >
               <span className={styles.menuText}>계정 관리</span>
-              <ChevronRight size={18} className={styles.chevron} />
-            </div>
-            <div className={styles.menuItem} onClick={handleLogout}>
-              <div className={styles.menuIcon}><LogOut size={20} /></div>
+            </Button>
+            <Button
+              className={styles.menuItem}
+              fullWidth
+              leadingIcon={<div className={styles.menuIcon}><LogOut size={20} /></div>}
+              onClick={handleLogout}
+              variant="text"
+            >
               <span className={`${styles.menuText} ${styles.dangerText}`}>
                 로그아웃
               </span>
-            </div>
+            </Button>
           </div>
         </div>
       </div>

@@ -52,23 +52,27 @@ export function SignupModal() {
 
                 <div className={styles.buttonGroup}>
                     {/* Social Login Buttons */}
-                    <button
-                        type="button"
+                    <Button
                         className={`${styles.socialButton} ${styles.kakaoButton}`}
                         onClick={handleKakaoLogin}
+                        size="lg"
+                        type="button"
+                        variant="secondary"
                     >
                         <MessageCircle size={20} fill="currentColor" className={styles.icon} />
                         <span>카카오로 3초만에 시작하기</span>
-                    </button>
+                    </Button>
 
-                    <button
-                        type="button"
+                    <Button
                         className={`${styles.socialButton} ${styles.googleButton}`}
                         onClick={handleGoogleLogin}
+                        size="lg"
+                        type="button"
+                        variant="outline"
                     >
                         <img src="/icons/google.svg" alt="" className={styles.googleIconImage} />
                         <span>구글로 시작하기</span>
-                    </button>
+                    </Button>
 
                     <div className={styles.divider}>
                         <span>또는</span>
@@ -80,8 +84,8 @@ export function SignupModal() {
                         size="lg"
                         className={styles.emailButton}
                         onClick={handleEmailSignup}
+                        leadingIcon={<Mail size={18} className={styles.icon} />}
                     >
-                        <Mail size={18} className={styles.icon} />
                         이메일로 가입하기
                     </Button>
                 </div>
@@ -90,13 +94,15 @@ export function SignupModal() {
                 <footer className={styles.footer}>
                     <p className={styles.loginPrompt}>
                         이미 계정이 있으신가요?{' '}
-                        <button
+                        <Button
+                            size="xs"
                             type="button"
                             onClick={handleLoginLink}
                             className={styles.loginLink}
+                            variant="text"
                         >
                             로그인
-                        </button>
+                        </Button>
                     </p>
                 </footer>
             </div>

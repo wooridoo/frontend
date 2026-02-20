@@ -158,11 +158,12 @@ export function SignupPage() {
                 <Button
                   type="button"
                   variant="primary"
+                  trailingIcon={<ChevronRight size={16} />}
                   onClick={handleNextStep}
                   disabled={!termsOfService || !privacyPolicy}
                   className={styles.nextButton}
                 >
-                  다음 <ChevronRight size={16} />
+                  다음
                 </Button>
               </div>
             </div>
@@ -231,8 +232,14 @@ export function SignupPage() {
               </div>
 
               <div className={styles.bottomActions}>
-                <Button type="button" variant="ghost" onClick={handlePrevStep} className={styles.backButton}>
-                  <ChevronLeft size={16} /> 이전
+                <Button
+                  type="button"
+                  variant="ghost"
+                  leadingIcon={<ChevronLeft size={16} />}
+                  onClick={handlePrevStep}
+                  className={styles.backButton}
+                >
+                  이전
                 </Button>
                 <Button
                   type="submit"
@@ -261,7 +268,7 @@ export function SignupPage() {
                 type="button"
                 variant="primary"
                 size="lg"
-                className={styles.fullWidth}
+                fullWidth
                 onClick={() => navigate(PATHS.HOME)}
               >
                 시작하기

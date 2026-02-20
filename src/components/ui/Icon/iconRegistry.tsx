@@ -2,16 +2,23 @@ import type { LucideIcon } from 'lucide-react';
 import {
   AlertTriangle,
   Bell,
+  BookOpen,
   CheckCircle2,
   CircleHelp,
   Coins,
   CreditCard,
+  Dumbbell,
   FileText,
   Flame,
   FolderOpen,
   HandCoins,
   Landmark,
+  Palette,
   PieChart,
+  PiggyBank,
+  Plane,
+  Sparkles,
+  UtensilsCrossed,
   UserRound,
   Users,
   Vote,
@@ -36,7 +43,16 @@ export type IconName =
   | 'charge'
   | 'withdraw'
   | 'notification'
-  | 'default';
+  | 'default'
+  | 'brixBadge'
+  | 'categoryCulture'
+  | 'categoryExercise'
+  | 'categoryStudy'
+  | 'categoryHobby'
+  | 'categorySavings'
+  | 'categoryTravel'
+  | 'categoryFood'
+  | 'categoryOther';
 
 export const iconRegistry: Record<IconName, LucideIcon> = {
   action: Flame,
@@ -57,4 +73,13 @@ export const iconRegistry: Record<IconName, LucideIcon> = {
   withdraw: HandCoins,
   notification: Bell,
   default: CircleHelp,
+  brixBadge: Coins,
+  categoryCulture: Sparkles,
+  categoryExercise: Dumbbell,
+  categoryStudy: BookOpen,
+  categoryHobby: Palette,
+  categorySavings: PiggyBank,
+  categoryTravel: Plane,
+  categoryFood: UtensilsCrossed,
+  categoryOther: CircleHelp,
 };

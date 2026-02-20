@@ -154,9 +154,9 @@
 }
 
 .rowButton {
-  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: var(--space-3);
   padding: var(--space-4);
   text-align: left;

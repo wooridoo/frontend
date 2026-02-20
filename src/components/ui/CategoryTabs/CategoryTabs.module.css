@@ -13,11 +13,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--button-height-xs);
+  height: var(--button-height-xs);
   background-color: var(--color-surface);
   border: 1px solid var(--color-grey-200);
-  border-radius: var(--radius-full);
+  border-radius: var(--button-radius-pill);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   font-size: var(--font-size-xs);
@@ -55,11 +55,12 @@
 .tab {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-2) var(--space-4);
+  gap: var(--button-icon-gap);
+  min-height: var(--button-height-sm);
+  padding: 0 var(--space-4);
   background-color: var(--color-grey-100);
   border: 1px solid transparent;
-  border-radius: var(--radius-full);
+  border-radius: var(--button-radius-pill);
   font-size: var(--font-size-sm);
   color: var(--color-grey-700);
   white-space: nowrap;
@@ -69,6 +70,12 @@
 
 .tab:hover {
   background-color: var(--color-grey-200);
+}
+
+.tab:focus-visible,
+.scrollButton:focus-visible {
+  outline: none;
+  box-shadow: var(--button-focus-ring);
 }
 
 .tab.selected {

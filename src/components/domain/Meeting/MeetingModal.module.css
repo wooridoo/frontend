@@ -75,19 +75,11 @@
 
 .toggleButton {
     flex: 1;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border: none;
-    border-radius: var(--radius-sm);
-    background: transparent;
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: all 0.2s;
 }
 
 .toggleButton.active {
-    background: var(--color-surface);
-    color: var(--color-primary);
     font-weight: var(--font-weight-medium);
     box-shadow: var(--shadow-sm);
 }
@@ -104,21 +96,6 @@
     display: flex;
     gap: var(--spacing-sm);
     margin-top: var(--spacing-lg);
-}
-
-.actions button {
-    flex: 1;
-}
-
-.cancelButton {
-    background: var(--color-surface);
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-border);
-}
-
-.submitButton {
-    background: var(--color-primary);
-    color: white;
 }
 
 /* Error */

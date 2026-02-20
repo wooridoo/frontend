@@ -28,25 +28,17 @@
 }
 
 .tab {
-    padding: var(--spacing-sm) var(--spacing-md);
     font-size: var(--font-size-md);
     color: var(--color-text-secondary);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-    transition: all 0.2s;
 }
 
 .tab:hover {
-    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
 }
 
 .tab.active {
     color: var(--color-primary);
-    background: var(--color-surface);
     font-weight: var(--font-weight-medium);
-    border-bottom: 2px solid var(--color-primary);
 }
 
 /* Challenge Grid */

@@ -80,14 +80,10 @@
 .maxButton {
   position: absolute;
   right: var(--spacing-sm);
-  padding: 4px 8px;
   font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-primary);
-  background-color: var(--color-primary-light);
-  border-radius: var(--radius-sm);
-  border: none;
-  cursor: pointer;
+  min-height: var(--button-height-xs);
 }
 
 .unit {

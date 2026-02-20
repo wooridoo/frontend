@@ -120,9 +120,9 @@ export function WithdrawPage() {
               placeholder="0"
               {...register('amount', { valueAsNumber: true })}
             />
-            <button type="button" className={styles.maxButton} onClick={handleMaxAmount}>
+            <Button type="button" className={styles.maxButton} onClick={handleMaxAmount} size="xs" variant="text">
               전액
-            </button>
+            </Button>
           </div>
           {errors.amount ? <p className={styles.error}>{errors.amount.message}</p> : null}
         </div>

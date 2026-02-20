@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import styles from './ExplorePage.module.css';
 import { PageContainer } from '@/components/layout';
 import { PageHeader } from '@/components/navigation';
+import { Button } from '@/components/ui';
 import { getChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { getCategoryLabel, CATEGORY_LABELS } from '@/lib/utils/categoryLabels';
 import { Category } from '@/types/enums';
@@ -60,13 +61,16 @@ export function ExplorePage() {
       <div className={styles.categorySection}>
         <div className={styles.categoryList}>
           {CATEGORIES.map(category => (
-            <button
+            <Button
               key={category}
               className={`${styles.categoryChip} ${selectedCategory === category ? styles.active : ''}`}
               onClick={() => setSelectedCategory(category)}
+              shape="pill"
+              size="sm"
+              variant={selectedCategory === category ? 'primary' : 'secondary'}
             >
               {category}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui';
 import { BrixBadgeLottie } from './BrixBadgeLottie';
@@ -20,12 +21,19 @@ export function BrixBadge({
   showLabel = true,
 }: BrixBadgeProps) {
   const config = GRADE_CONFIG[grade];
+  const [animate, setAnimate] = useState(false);
 
   if (variant === '3d') {
     const lottieSize = size === 'sm' ? 32 : size === 'md' ? 48 : 64;
     return (
-      <div className={cn("inline-flex items-center gap-1", className)}>
-        <BrixBadgeLottie size={lottieSize} />
+      <div
+        className={cn("inline-flex items-center gap-1", className)}
+        onBlurCapture={() => setAnimate(false)}
+        onFocusCapture={() => setAnimate(true)}
+        onMouseEnter={() => setAnimate(true)}
+        onMouseLeave={() => setAnimate(false)}
+      >
+        <BrixBadgeLottie animate={animate} size={lottieSize} />
         {showLabel && (
           <span className={cn(
             "font-bold text-slate-700",

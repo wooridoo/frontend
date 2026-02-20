@@ -96,33 +96,12 @@
 
 .actionButton {
   flex: 1;
-  padding: var(--space-3);
-  background-color: var(--color-primary);
-  /* Use primary token */
-  color: white;
-  border: none;
   border-radius: var(--radius-lg);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.actionButton:active {
-  background-color: var(--color-primary-dark);
-}
-
-.actionButton:disabled {
-  background-color: var(--color-grey-300);
-  cursor: not-allowed;
 }
 
 .actionButton.cancel {
-  background-color: var(--color-grey-200);
   color: var(--color-grey-700);
 }
 

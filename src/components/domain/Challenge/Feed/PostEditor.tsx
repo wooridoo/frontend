@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useCreatePost } from '@/hooks/useFeed';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useChallengeDetail } from '@/hooks/useChallenge';
+import { Button } from '@/components/ui';
 
 interface PostEditorProps {
   onSuccess?: () => void;
@@ -89,17 +90,26 @@ export function PostEditor({ onSuccess }: PostEditorProps) {
       </div>
 
       <div className={styles.actions}>
-        <button className={styles.actionButton} disabled={isSubmitting}>
-          <Image size={20} />
-          <span>사진</span>
-        </button>
-        <button
+        <Button
+          className={styles.actionButton}
+          disabled={isSubmitting}
+          leadingIcon={<Image size={20} />}
+          size="sm"
+          variant="text"
+        >
+          사진
+        </Button>
+        <Button
           className={styles.postButton}
+          shape="pill"
+          size="sm"
+          trailingIcon={<Send size={14} className={styles.sendIcon} />}
           onClick={handleSubmit}
           disabled={!content.trim() || isSubmitting}
+          variant="primary"
         >
-          {isSubmitting ? '게시 중...' : '게시'} <Send size={14} className={styles.sendIcon} />
-        </button>
+          {isSubmitting ? '게시 중...' : '게시'}
+        </Button>
       </div>
     </div>
   );

@@ -72,31 +72,15 @@
 }
 
 .actionButton {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: var(--color-grey-500);
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: var(--radius-md);
-  transition: background 0.2s;
 }
 
 .actionButton:hover {
-  background-color: var(--color-grey-50);
   color: var(--color-grey-800);
 }
 
 .postButton {
-  background-color: var(--color-orange-500);
-  color: white;
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  font-weight: 600;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  min-width: 114px;
 }
 
 .sendIcon {

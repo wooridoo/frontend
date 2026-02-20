@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogOverlay, DialogPortal, DialogTitle, DialogDescription } from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { IconButton } from '../IconButton';
 
 interface ModalProps {
   isOpen: boolean;
@@ -29,13 +30,14 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
           <DialogTitle className="sr-only">대화상자</DialogTitle>
           <DialogDescription className="sr-only">대화상자 내용</DialogDescription>
           {children}
-          <button
+          <IconButton
+            aria-label="닫기"
+            className="absolute right-4 top-4"
+            icon={<X className="h-4 w-4" />}
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">닫기</span>
-          </button>
+            size="sm"
+            variant="ghost"
+          />
         </DialogContent>
       </DialogPortal>
     </Dialog>

@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   z-index: var(--z-index-fab, 100);
   transition: all var(--motion-duration-fast) var(--motion-ease-standard);
@@ -30,23 +30,23 @@
 
 /* Sizes */
 .sm {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
+  width: calc(var(--button-height-md) + 4px);
+  height: calc(var(--button-height-md) + 4px);
+  border-radius: var(--button-radius-pill);
   font-size: 20px;
 }
 
 .md {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-full);
+  width: calc(var(--button-height-lg) + 4px);
+  height: calc(var(--button-height-lg) + 4px);
+  border-radius: var(--button-radius-pill);
   font-size: 24px;
 }
 
 .lg {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-full);
+  width: calc(var(--button-height-lg) + var(--space-3));
+  height: calc(var(--button-height-lg) + var(--space-3));
+  border-radius: var(--button-radius-pill);
   font-size: 28px;
 }
 
@@ -54,8 +54,8 @@
 .extended {
   width: auto;
   padding: 0 var(--spacing-lg);
-  gap: var(--spacing-xs);
-  border-radius: var(--radius-xl);
+  gap: var(--button-icon-gap);
+  border-radius: var(--button-radius-rounded);
 }
 
 .extended .label {
@@ -102,8 +102,8 @@
 
 /* Focus state */
 .fab:focus-visible {
-  outline: 2px solid var(--color-orange-500);
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: var(--button-focus-ring);
 }
 
 /* Ripple effect */

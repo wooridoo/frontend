@@ -154,21 +154,23 @@ export function LoginModal() {
         </div>
 
         <footer className={styles.footer}>
-          <div className="flex justify-center gap-4 text-sm text-gray-500 mb-2">
-            <button
+          <div className={styles.footerLinks}>
+            <Button
               type="button"
               onClick={() => {
                 onClose();
                 openPasswordReset();
               }}
-              className="hover:text-gray-900 transition-colors"
+              className={styles.footerLink}
+              size="xs"
+              variant="text"
             >
               비밀번호 찾기
-            </button>
-            <span>|</span>
-            <button type="button" onClick={handleSignupLink} className="hover:text-gray-900 transition-colors">
+            </Button>
+            <span className={styles.footerDivider}>|</span>
+            <Button type="button" onClick={handleSignupLink} className={styles.footerLink} size="xs" variant="text">
               회원가입
-            </button>
+            </Button>
           </div>
         </footer>
       </div>

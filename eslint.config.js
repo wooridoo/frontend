@@ -19,5 +19,23 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/components/common/Button',
+              message: 'Button은 @/components/ui/Button 또는 @/components/ui를 사용하세요.',
+            },
+            {
+              name: '@/components/common',
+              importNames: ['Button'],
+              message: 'Button은 @/components/ui/Button 또는 @/components/ui를 사용하세요.',
+            },
+          ],
+        },
+      ],
+    },
   },
 ])

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
+import { Button } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
 import { changeMyPassword, getMyProfile, withdrawAccount } from '@/lib/api/user';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
@@ -107,16 +108,18 @@ export function AccountPage() {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>지갑 / 거래</h2>
               <div className={styles.buttonRow}>
-                <button type="button" className={styles.secondaryButton} onClick={() => navigate(PATHS.MY.LEDGER)}>
+                <Button type="button" className={styles.secondaryButton} fullWidth onClick={() => navigate(PATHS.MY.LEDGER)} variant="secondary">
                   나의 지갑
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   className={styles.secondaryButton}
                   onClick={() => navigate('/me/ledger/transactions')}
+                  fullWidth
+                  variant="secondary"
                 >
                   거래내역
-                </button>
+                </Button>
               </div>
             </section>
 
@@ -144,9 +147,9 @@ export function AccountPage() {
                   value={newPasswordConfirm}
                   onChange={(e) => setNewPasswordConfirm(e.target.value)}
                 />
-                <button type="submit" className={styles.primaryButton} disabled={passwordPending}>
+                <Button type="submit" className={styles.primaryButton} disabled={passwordPending} fullWidth isLoading={passwordPending}>
                   {passwordPending ? '변경 중...' : '비밀번호 변경'}
-                </button>
+                </Button>
               </form>
             </section>
 
@@ -161,9 +164,17 @@ export function AccountPage() {
                   value={withdrawPassword}
                   onChange={(e) => setWithdrawPassword(e.target.value)}
                 />
-                <button type="button" className={styles.dangerButton} disabled={withdrawPending} onClick={handleWithdraw}>
+                <Button
+                  type="button"
+                  className={styles.dangerButton}
+                  disabled={withdrawPending}
+                  onClick={handleWithdraw}
+                  fullWidth
+                  variant="danger"
+                  isLoading={withdrawPending}
+                >
                   {withdrawPending ? '처리 중...' : '회원 탈퇴'}
-                </button>
+                </Button>
               </div>
             </section>
           </>

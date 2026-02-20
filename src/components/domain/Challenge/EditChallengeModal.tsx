@@ -126,13 +126,13 @@ export function EditChallengeModal() {
                     {error && <div className={styles.error}>{error}</div>}
 
                     <div className={styles.actions}>
-                        <Button onClick={handleClose} className={styles.cancelButton}>
+                        <Button onClick={handleClose} variant="outline" fullWidth>
                             취소
                         </Button>
                         <Button
                             onClick={handleSubmit}
-                            className={styles.submitButton}
                             disabled={updateMutation.isPending}
+                            fullWidth
                         >
                             {updateMutation.isPending ? '수정 중...' : '저장'}
                         </Button>

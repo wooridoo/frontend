@@ -72,13 +72,13 @@ export function SupportPaymentModal() {
                         )}
 
                         <div className={styles.actions}>
-                            <Button onClick={handleClose} className={styles.cancelButton}>
+                            <Button onClick={handleClose} variant="outline" fullWidth>
                                 취소
                             </Button>
                             <Button
                                 onClick={handlePayment}
-                                className={styles.submitButton}
                                 disabled={!hasEnoughBalance || supportMutation.isPending}
+                                fullWidth
                             >
                                 {supportMutation.isPending ? '결제 중...' : '결제하기'}
                             </Button>
@@ -91,7 +91,7 @@ export function SupportPaymentModal() {
                         <div className={styles.successIcon}>✅</div>
                         <p className={styles.successMessage}>서포트 결제 완료!</p>
                         <p className={styles.successAmount}>{formatCurrency(amount)}</p>
-                        <Button onClick={handleClose} className={styles.submitButton}>
+                        <Button onClick={handleClose} fullWidth>
                             확인
                         </Button>
                     </div>

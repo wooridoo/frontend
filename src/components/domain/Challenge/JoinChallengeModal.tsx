@@ -76,10 +76,10 @@ export function JoinChallengeModal() {
             </div>
 
             <div className={styles.actions}>
-              <Button className={styles.payButton} disabled={isSubmitting} onClick={handleJoin}>
+              <Button className={styles.payButton} disabled={isSubmitting} fullWidth onClick={handleJoin} variant="primary">
                 {isSubmitting ? '처리 중...' : '보증금 결제하고 참여하기'}
               </Button>
-              <Button className={styles.closeButton} onClick={handleClose} variant="ghost">
+              <Button className={styles.closeButton} fullWidth onClick={handleClose} variant="outline">
                 취소
               </Button>
             </div>
@@ -90,7 +90,7 @@ export function JoinChallengeModal() {
               <SemanticIcon name="success" size={48} />
             </div>
             <p className={styles.successMessage}>챌린지 참여가 완료되었습니다.</p>
-            <Button className={styles.nextButton} onClick={handleGoToChallenge}>
+            <Button className={styles.nextButton} fullWidth onClick={handleGoToChallenge}>
               챌린지 보러가기
             </Button>
           </div>

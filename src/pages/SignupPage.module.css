@@ -198,8 +198,3 @@
 .nextButton {
   flex: 2;
 }
-
-/* Utilities */
-.fullWidth {
-  width: 100%;
-}

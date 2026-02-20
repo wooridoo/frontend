@@ -2,125 +2,76 @@
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: var(--space-2);
+  min-width: 0;
 }
 
 .userActions {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
+  min-width: 0;
 }
 
-.userInfo {
-  display: flex;
+.summaryChip {
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-4);
-  margin-right: var(--space-2);
+  gap: var(--space-2);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-grey-200);
+  background-color: var(--color-grey-50);
+  min-width: 0;
 }
 
 .brixContainer {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  min-width: 0;
 }
 
 .brixScore {
   font-weight: 700;
   font-size: var(--font-size-sm);
   color: var(--color-grey-800);
+  white-space: nowrap;
 }
 
-.balanceContainer {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 4px 12px;
-  background-color: var(--color-grey-50);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-grey-200);
+.summaryDot {
+  color: var(--color-grey-300);
+  font-size: var(--font-size-sm);
+  line-height: 1;
 }
 
 .balanceLabel {
   font-size: var(--font-size-xs);
   color: var(--color-grey-500);
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .balanceValue {
   font-size: var(--font-size-sm);
   color: var(--color-grey-900);
   font-weight: 700;
+  white-space: nowrap;
 }
-
-.divider {
-  width: 1px;
-  height: 24px;
-  background-color: var(--color-grey-200);
-  margin: 0 var(--space-2);
-}
-
-.iconButton {
-  position: relative;
-  padding: 8px;
-  border-radius: 50%;
-  color: var(--color-grey-700);
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.iconButton:hover {
-  background-color: var(--color-grey-100);
-}
-
-.notiDot {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-error);
-  border: 1px solid white;
-}
-
 
 .authButtons {
   display: flex;
   gap: var(--space-2);
 }
 
-.button {
-  padding: 8px 16px;
-  border-radius: var(--radius-lg);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-
 .secondaryButton {
-  background-color: transparent;
   color: var(--color-grey-700);
-  border: 1px solid var(--color-grey-200);
 }
 
 .secondaryButton:hover {
-  background-color: var(--color-grey-50);
-  border-color: var(--color-grey-300);
+  color: var(--color-grey-900);
 }
 
 .primaryButton {
-  background-color: var(--color-orange-500);
   color: white;
-  border: 1px solid transparent;
 }
 
 .profileButton {
@@ -130,8 +81,9 @@
   overflow: hidden;
   border: 1px solid var(--color-grey-200);
   padding: 0;
-  margin-left: var(--space-2);
+  margin-left: var(--space-1);
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .profileImage {
@@ -140,13 +92,44 @@
   object-fit: cover;
 }
 
+@media (max-width: 1024px) {
+  .summaryChip {
+    padding: 4px 8px;
+    gap: 6px;
+  }
+
+  .summaryDot,
+  .balanceLabel {
+    display: none;
+  }
+
+  .brixScore,
+  .balanceValue {
+    font-size: var(--font-size-xs);
+  }
+}
+
 @media (max-width: 768px) {
-  .authButtons .button {
-    padding: 8px;
-    gap: 0;
+  .authButtons :global(button) {
+    padding-inline: 8px;
   }
 
   .buttonText {
     display: none;
+  }
+
+  .summaryChip {
+    max-width: 170px;
+    gap: 4px;
+  }
+
+  .balanceValue {
+    max-width: 82px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .profileButton {
+    margin-left: 0;
   }
 }

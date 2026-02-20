@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, ChevronRight, LogOut, UserX } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useWithdrawAccountModalStore } from '@/store/modal/useModalStore';
+import { Button, IconButton } from '@/components/ui';
 import { Avatar } from '@/components/ui/Avatar';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
@@ -76,14 +77,14 @@ export function SettingsPage() {
               <h3 className={styles.accountName}>{user.nickname}</h3>
               <p className={styles.accountEmail}>{user.email}</p>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate(PATHS.MY.PROFILE)}
-              className={styles.chevronButton}
+            <IconButton
               aria-label="내 계정 상세로 이동"
-            >
-              <ChevronRight size={20} />
-            </button>
+              className={styles.chevronButton}
+              icon={<ChevronRight size={20} />}
+              onClick={() => navigate(PATHS.MY.PROFILE)}
+              size="sm"
+              variant="ghost"
+            />
           </div>
         </section>
 
@@ -124,27 +125,33 @@ export function SettingsPage() {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>계정 관리</h2>
           <div className={styles.panel}>
-            <button
-              type="button"
+            <Button
               onClick={() => void handleLogout()}
               className={styles.rowButton}
+              fullWidth
+              leadingIcon={(
+                <div className={styles.rowButtonIcon}>
+                  <LogOut size={18} />
+                </div>
+              )}
+              variant="text"
             >
-              <div className={styles.rowButtonIcon}>
-                <LogOut size={18} />
-              </div>
               <span className={styles.rowButtonLabel}>로그아웃</span>
-            </button>
+            </Button>
 
-            <button
-              type="button"
+            <Button
               onClick={openWithdrawModal}
               className={`${styles.rowButton} ${styles.rowButtonDanger}`}
+              fullWidth
+              leadingIcon={(
+                <div className={`${styles.rowButtonIcon} ${styles.rowButtonIconDanger}`}>
+                  <UserX size={18} />
+                </div>
+              )}
+              variant="text"
             >
-              <div className={`${styles.rowButtonIcon} ${styles.rowButtonIconDanger}`}>
-                <UserX size={18} />
-              </div>
               <span className={styles.rowButtonDangerLabel}>회원 탈퇴</span>
-            </button>
+            </Button>
           </div>
         </section>
       </div>

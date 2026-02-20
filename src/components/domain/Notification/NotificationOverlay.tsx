@@ -3,6 +3,7 @@ import { Bell } from 'lucide-react';
 import { useNotifications, useMarkAsRead, useMarkAllAsRead } from '@/lib/api/notification';
 import { capabilities } from '@/lib/api/capabilities';
 import { ResponsiveOverlay } from '@/components/ui/Overlay/ResponsiveOverlay';
+import { Button, IconButton } from '@/components/ui';
 import { NotificationList } from './NotificationList';
 import styles from './NotificationOverlay.module.css';
 
@@ -24,25 +25,39 @@ export function NotificationOverlay({ children }: NotificationOverlayProps) {
   };
 
   const Trigger = children || (
-    <button className={styles.trigger} aria-label="알림">
-      <Bell size={20} />
+    <IconButton aria-label="알림" className={styles.trigger} icon={<Bell size={20} />} size="md" variant="ghost">
       {unreadCount > 0 && <span className={styles.badge} />}
-    </button>
+    </IconButton>
   );
+
+  const headerAction = capabilities.notificationReadAll ? (
+    <Button
+      className={styles.markReadBtn}
+      disabled={unreadCount === 0}
+      onClick={() => markAllAsRead()}
+      size="xs"
+      variant="text"
+    >
+      모두 읽음
+    </Button>
+  ) : undefined;
 
   return (
     <ResponsiveOverlay
-      trigger={Trigger}
-      open={open}
+      desktopContentClassName={styles.notificationPanel}
+      headerAction={headerAction}
+      headerMode="always"
+      mobileContentClassName={styles.notificationPanel}
+      mobilePresentation="sheet"
       onOpenChange={setOpen}
+      open={open}
       title="알림"
-      desktopContentClassName={styles.notificationWidth}
+      trigger={Trigger}
     >
       <NotificationList
         notifications={notifications}
         isLoading={isLoading}
         onItemClick={handleItemClick}
-        onMarkAllRead={capabilities.notificationReadAll ? () => markAllAsRead() : undefined}
       />
     </ResponsiveOverlay>
   );

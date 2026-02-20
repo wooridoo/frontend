@@ -185,10 +185,6 @@
   z-index: 2;
 }
 
-.joinButton {
-  width: 100%;
-}
-
 .stateContainer {
   display: flex;
   flex-direction: column;

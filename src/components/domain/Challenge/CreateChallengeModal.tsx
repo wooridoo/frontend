@@ -277,10 +277,10 @@ export function CreateChallengeModal() {
                         </div>
 
                         <div className={styles.actions}>
-                            <Button type="button" onClick={handleClose} className={styles.cancelButton}>
+                            <Button type="button" onClick={handleClose} variant="outline" fullWidth>
                                 취소
                             </Button>
-                            <Button type="submit" className={styles.submitButton}>
+                            <Button type="submit" fullWidth>
                                 다음
                             </Button>
                         </div>
@@ -299,14 +299,14 @@ export function CreateChallengeModal() {
                             <li><strong>시작일:</strong> {formData.startDate}</li>
                         </ul>
                         <div className={styles.actions}>
-                            <Button type="button" onClick={() => setStep('form')} className={styles.cancelButton}>
+                            <Button type="button" onClick={() => setStep('form')} variant="outline" fullWidth>
                                 수정하기
                             </Button>
                             <Button
                                 type="button"
                                 onClick={handleSubmit}
-                                className={styles.submitButton}
                                 disabled={createChallengeMutation.isPending}
+                                fullWidth
                             >
                                 {createChallengeMutation.isPending ? '생성 중...' : '챌린지 생성'}
                             </Button>
@@ -323,7 +323,7 @@ export function CreateChallengeModal() {
                             챌린지가 생성되었습니다!<br />
                             멤버를 모집해보세요.
                         </p>
-                        <Button onClick={handleSuccessClose} className={styles.submitButton}>
+                        <Button onClick={handleSuccessClose} fullWidth>
                             확인
                         </Button>
                     </div>

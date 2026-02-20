@@ -25,6 +25,9 @@
 }
 
 .categoryCard {
+  appearance: none;
+  background: var(--color-surface);
+  width: 100%;
   border: 1px solid var(--color-grey-200);
   border-radius: var(--radius-md);
   padding: var(--space-4);
@@ -34,11 +37,17 @@
   gap: var(--space-2);
   cursor: pointer;
   transition: all 0.2s;
+  text-align: center;
 }
 
 .categoryCard:hover {
   border-color: var(--color-grey-300);
   background-color: var(--color-grey-50);
+}
+
+.categoryCard:focus-visible {
+  outline: none;
+  box-shadow: var(--button-focus-ring);
 }
 
 .categoryCard.selected {
@@ -48,7 +57,11 @@
 }
 
 .categoryIcon {
-  font-size: 28px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .categoryName {
@@ -207,4 +220,25 @@
   font-size: var(--font-size-sm);
   color: var(--color-error);
   line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .categoryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .categoryCard {
+    min-height: 104px;
+    padding: var(--space-3);
+  }
+
+  .categoryName {
+    font-size: var(--font-size-xs);
+  }
+
+  .row {
+    flex-direction: column;
+  }
 }

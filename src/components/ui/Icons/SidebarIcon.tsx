@@ -51,7 +51,17 @@ export function SidebarIcon({ type, className, size = 20, color = 'currentColor'
         );
       case 'settings':
         return (
-          <circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" /> // Simplified
+          <>
+            <circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d="M12 2v2" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            <path d="M12 20v2" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            <path d="M2 12h2" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            <path d="M20 12h2" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            <path d="M4.9 4.9l1.4 1.4" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            <path d="M17.7 17.7l1.4 1.4" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            <path d="M19.1 4.9l-1.4 1.4" stroke={color} strokeWidth="2" strokeLinecap="round" />
+            <path d="M6.3 17.7l-1.4 1.4" stroke={color} strokeWidth="2" strokeLinecap="round" />
+          </>
         );
       case 'profile':
         return (

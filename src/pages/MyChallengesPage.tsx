@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
 import { Button, SemanticIcon } from '@/components/ui';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
@@ -82,8 +83,8 @@ export function MyChallengesPage() {
                 title="내 챌린지"
                 showBack
                 action={
-                    <Button className={styles.createButton} onClick={openCreateModal}>
-                        + 새 챌린지
+                    <Button className={styles.createButton} leadingIcon={<Plus size={14} />} onClick={openCreateModal}>
+                        새 챌린지
                     </Button>
                 }
             />
@@ -91,13 +92,16 @@ export function MyChallengesPage() {
             {/* Tabs */}
             <div className={styles.tabs}>
                 {TAB_OPTIONS.map((tab) => (
-                    <button
+                    <Button
                         key={tab.value}
                         className={`${styles.tab} ${activeTab === tab.value ? styles.active : ''}`}
                         onClick={() => setActiveTab(tab.value)}
+                        shape="pill"
+                        size="sm"
+                        variant={activeTab === tab.value ? 'primary' : 'ghost'}
                     >
                         {tab.label}
-                    </button>
+                    </Button>
                 ))}
             </div>
 

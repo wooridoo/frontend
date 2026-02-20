@@ -38,7 +38,18 @@ export function NotificationItem({ notification, onClick }: NotificationItemProp
   });
 
   return (
-    <div className={clsx(styles.item, { [styles.unread]: !notification.isRead })} onClick={handleClick}>
+    <div
+      className={clsx(styles.item, { [styles.unread]: !notification.isRead })}
+      onClick={handleClick}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          handleClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
       {!notification.isRead ? <span className={styles.dot} /> : null}
       <div className={styles.header}>
         <div className={styles.iconWrapper}>{getIcon()}</div>

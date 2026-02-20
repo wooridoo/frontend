@@ -40,18 +40,24 @@ export function VoteList() {
       </div>
 
       <div className={styles.tabs}>
-        <button
+        <Button
           className={`${styles.tab} ${tab === 'IN_PROGRESS' ? styles.active : ''}`}
           onClick={() => setTab('IN_PROGRESS')}
+          shape="pill"
+          size="sm"
+          variant={tab === 'IN_PROGRESS' ? 'primary' : 'ghost'}
         >
           진행 중
-        </button>
-        <button
+        </Button>
+        <Button
           className={`${styles.tab} ${tab === 'COMPLETED' ? styles.active : ''}`}
           onClick={() => setTab('COMPLETED')}
+          shape="pill"
+          size="sm"
+          variant={tab === 'COMPLETED' ? 'primary' : 'ghost'}
         >
           완료
-        </button>
+        </Button>
       </div>
 
       <div className={styles.list}>

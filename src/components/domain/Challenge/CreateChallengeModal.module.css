@@ -88,26 +88,6 @@
   margin-top: var(--spacing-md);
 }
 
-.actions button {
-  flex: 1;
-}
-
-.cancelButton {
-  background: var(--color-surface);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
-}
-
-.submitButton {
-  background: var(--color-primary);
-  color: white;
-}
-
-.submitButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 /* Step indicator */
 .stepIndicator {
   display: flex;

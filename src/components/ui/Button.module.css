@@ -1,95 +1,171 @@
-/* Button Component Styles - WDS v2.1 */
+/* Button Component Styles - Unified System */
 
-.button {
+.base {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  border-radius: var(--radius-md);
-  font-weight: var(--font-weight-medium);
+  gap: var(--button-icon-gap);
+  border: 1px solid transparent;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    color var(--motion-duration-fast) var(--motion-ease-standard),
+    transform var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
   white-space: nowrap;
+  text-decoration: none;
+  user-select: none;
 }
 
-.button:active:not(:disabled) {
-  transform: scale(0.96);
+.base:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
-.button:focus-visible {
-  outline: 2px solid var(--color-orange-500);
-  outline-offset: 2px;
+.base:focus-visible {
+  outline: none;
+  box-shadow: var(--button-focus-ring);
 }
 
-.button:disabled {
-  opacity: 0.5;
+.base:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* Variants */
 .primary {
   background-color: var(--color-orange-500);
-  color: white;
+  border-color: var(--color-orange-500);
+  color: var(--color-white);
 }
 
 .primary:hover:not(:disabled) {
   background-color: var(--color-orange-600);
+  border-color: var(--color-orange-600);
 }
 
 .secondary {
   background-color: var(--color-grey-100);
+  border-color: var(--color-grey-200);
   color: var(--color-grey-900);
 }
 
 .secondary:hover:not(:disabled) {
-  background-color: var(--color-grey-300);
+  background-color: var(--color-grey-200);
+  border-color: var(--color-grey-300);
 }
 
 .ghost {
   background-color: transparent;
+  border-color: transparent;
   color: var(--color-grey-700);
 }
 
 .ghost:hover:not(:disabled) {
   background-color: var(--color-grey-100);
+  color: var(--color-grey-900);
 }
 
 .danger {
   background-color: var(--color-error);
-  color: white;
+  border-color: var(--color-error);
+  color: var(--color-white);
 }
 
 .danger:hover:not(:disabled) {
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
-/* Sizes */
+.outline {
+  background-color: var(--color-white);
+  border-color: var(--color-grey-300);
+  color: var(--color-grey-800);
+}
+
+.outline:hover:not(:disabled) {
+  background-color: var(--color-grey-50);
+  border-color: var(--color-grey-400);
+}
+
+.text {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--color-orange-500);
+}
+
+.text:hover:not(:disabled) {
+  background-color: var(--color-orange-50);
+  color: var(--color-orange-600);
+}
+
+.xs {
+  min-height: var(--button-height-xs);
+  height: var(--button-height-xs);
+  padding-inline: var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
 .sm {
-  height: 32px;
-  padding: 0 var(--space-3);
+  min-height: var(--button-height-sm);
+  height: var(--button-height-sm);
+  padding-inline: var(--space-3);
   font-size: var(--font-size-sm);
 }
 
 .md {
-  height: 44px;
-  padding: 0 var(--space-4);
+  min-height: var(--button-height-md);
+  height: var(--button-height-md);
+  padding-inline: var(--space-4);
   font-size: var(--font-size-base);
 }
 
 .lg {
-  height: 52px;
-  padding: 0 var(--space-5);
+  min-height: var(--button-height-lg);
+  height: var(--button-height-lg);
+  padding-inline: var(--space-5);
   font-size: var(--font-size-md);
 }
 
-/* Loading Spinner */
+.rounded {
+  border-radius: var(--button-radius-rounded);
+}
+
+.pill {
+  border-radius: var(--button-radius-pill);
+}
+
+.square {
+  border-radius: var(--button-radius-square);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--button-icon-gap);
+  white-space: nowrap;
+}
+
+.loading {
+  pointer-events: none;
+}
+
 .spinner {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
+  animation: spin 0.8s linear infinite;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
 }
 
 @keyframes spin {

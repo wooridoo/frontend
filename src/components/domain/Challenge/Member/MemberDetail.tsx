@@ -7,6 +7,7 @@ import { ChallengeRole } from '@/types/enums';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui';
 import styles from './MemberDetail.module.css';
 
 export function MemberDetail() {
@@ -154,13 +155,14 @@ export function MemberDetail() {
             {/* Actions (Leader Only) */}
             {canDelegate && (
                 <div className={styles.actions}>
-                    <button
+                    <Button
                         className={styles.delegateButton}
                         onClick={handleDelegate}
                         disabled={delegateMutation.isPending}
+                        fullWidth
                     >
                         {delegateMutation.isPending ? '처리 중...' : '리더 위임하기'}
-                    </button>
+                    </Button>
                 </div>
             )}
         </div>
