@@ -23,6 +23,11 @@
   max-height: 80vh;
 }
 
+.notificationModal {
+  width: min(94vw, 420px);
+  max-height: min(80vh, 560px);
+}
+
 .markReadBtn {
   font-size: var(--font-size-xs);
   min-height: 0;
@@ -62,9 +67,9 @@
 }
 
 @media (max-width: 768px) {
-  .notificationPanel {
-    width: 100%;
-    max-height: none;
+  .notificationModal {
+    width: min(94vw, 420px);
+    max-height: min(80vh, 560px);
   }
 
   .list {

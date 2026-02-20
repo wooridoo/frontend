@@ -47,8 +47,8 @@ export function NotificationOverlay({ children }: NotificationOverlayProps) {
       desktopContentClassName={styles.notificationPanel}
       headerAction={headerAction}
       headerMode="always"
-      mobileContentClassName={styles.notificationPanel}
-      mobilePresentation="sheet"
+      mobileContentClassName={styles.notificationModal}
+      mobilePresentation="modal"
       onOpenChange={setOpen}
       open={open}
       title="알림"
