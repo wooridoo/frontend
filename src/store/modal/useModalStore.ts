@@ -11,7 +11,6 @@ interface ModalStore {
   accessDenied: { isOpen: boolean; challengeId: string | null };
   attendance: { isOpen: boolean; meeting: Meeting | null };
   completeMeeting: { isOpen: boolean; meeting: Meeting | null };
-  createChallenge: { isOpen: boolean };
   createMeeting: { isOpen: boolean; challengeId: string | null };
   creditCharge: { isOpen: boolean };
   delegateLeader: { isOpen: boolean; challengeId: string | null; currentLeaderId: string | null };
@@ -43,8 +42,6 @@ interface ModalStore {
   closeAttendance: () => void;
   openCompleteMeeting: (meeting: Meeting) => void;
   closeCompleteMeeting: () => void;
-  openCreateChallenge: () => void;
-  closeCreateChallenge: () => void;
   openCreateMeeting: (challengeId: string) => void;
   closeCreateMeeting: () => void;
   openCreditCharge: () => void;
@@ -90,7 +87,6 @@ export const useModalStore = create<ModalStore>(set => ({
   accessDenied: { isOpen: false, challengeId: null },
   attendance: { isOpen: false, meeting: null },
   completeMeeting: { isOpen: false, meeting: null },
-  createChallenge: { isOpen: false },
   createMeeting: { isOpen: false, challengeId: null },
   creditCharge: { isOpen: false },
   delegateLeader: { isOpen: false, challengeId: null, currentLeaderId: null },
@@ -122,8 +118,6 @@ export const useModalStore = create<ModalStore>(set => ({
   closeAttendance: () => set({ attendance: { isOpen: false, meeting: null } }),
   openCompleteMeeting: meeting => set({ completeMeeting: { isOpen: true, meeting } }),
   closeCompleteMeeting: () => set({ completeMeeting: { isOpen: false, meeting: null } }),
-  openCreateChallenge: () => set({ createChallenge: { isOpen: true } }),
-  closeCreateChallenge: () => set({ createChallenge: { isOpen: false } }),
   openCreateMeeting: challengeId => set({ createMeeting: { isOpen: true, challengeId } }),
   closeCreateMeeting: () => set({ createMeeting: { isOpen: false, challengeId: null } }),
   openCreditCharge: () => set({ creditCharge: { isOpen: true } }),
@@ -225,13 +219,6 @@ export const useCompleteMeetingModalStore = () =>
     meeting: state.completeMeeting.meeting,
     onOpen: state.openCompleteMeeting,
     onClose: state.closeCompleteMeeting,
-  })));
-
-export const useCreateChallengeModalStore = () =>
-  useModalStore(useShallow(state => ({
-    isOpen: state.createChallenge.isOpen,
-    onOpen: state.openCreateChallenge,
-    onClose: state.closeCreateChallenge,
   })));
 
 export const useCreateMeetingModalStore = () =>

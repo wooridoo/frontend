@@ -58,7 +58,7 @@ export function WithdrawModal() {
 
                         <div className={styles.amountSection}>
                             <label className={styles.label}>출금 금액</label>
-                            <div style={{ display: 'flex', gap: '8px' }}>
+                            <div className={styles.amountRow}>
                                 <input
                                     type="number"
                                     value={amount || ''}

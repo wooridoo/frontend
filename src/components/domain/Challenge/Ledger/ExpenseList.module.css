@@ -14,12 +14,12 @@
 .sectionTitle {
   font-size: var(--font-size-lg, 18px);
   font-weight: 600;
-  color: var(--color-text-primary, #111);
+  color: var(--color-text-primary);
 }
 
 .totalAmount {
   font-size: var(--font-size-sm, 14px);
-  color: var(--color-text-secondary, #666);
+  color: var(--color-text-secondary);
 }
 
 .list {
@@ -32,8 +32,8 @@
   width: 100%;
   text-align: left;
   cursor: pointer;
-  background: var(--color-bg-surface, #fff);
-  border: 1px solid var(--color-border-default, #e5e5e5);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
   border-radius: var(--radius-lg, 12px);
   padding: var(--space-4, 16px);
   transition: box-shadow 0.2s ease;
@@ -60,14 +60,14 @@
   font-size: var(--font-size-xs, 12px);
   padding: 2px 8px;
   border-radius: var(--radius-full, 9999px);
-  background: var(--color-primary-subtle, #e8f4ff);
-  color: var(--color-primary, #3b82f6);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
   font-weight: 500;
 }
 
 .expenseTitle {
   font-weight: 600;
-  color: var(--color-text-primary, #111);
+  color: var(--color-text-primary);
 }
 
 .statusBadge {
@@ -78,28 +78,28 @@
 }
 
 .statusBadge.pending {
-  background: var(--color-warning-subtle, #fff7e6);
-  color: var(--color-warning, #f59e0b);
+  background: var(--color-warning-subtle);
+  color: var(--color-warning);
 }
 
 .statusBadge.approved {
-  background: var(--color-success-subtle, #ecfdf5);
-  color: var(--color-success, #10b981);
+  background: var(--color-success-subtle);
+  color: var(--color-success);
 }
 
 .statusBadge.rejected {
-  background: var(--color-danger-subtle, #fef2f2);
-  color: var(--color-danger, #ef4444);
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
 }
 
 .statusBadge.paid {
-  background: var(--color-primary-subtle, #e8f4ff);
-  color: var(--color-primary, #3b82f6);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
 }
 
 .expenseDesc {
   font-size: var(--font-size-sm, 14px);
-  color: var(--color-text-secondary, #666);
+  color: var(--color-text-secondary);
   margin-bottom: var(--space-3, 12px);
   line-height: 1.5;
 }
@@ -115,7 +115,7 @@
   align-items: center;
   gap: var(--space-2, 8px);
   font-size: var(--font-size-sm, 14px);
-  color: var(--color-text-secondary, #666);
+  color: var(--color-text-secondary);
 }
 
 .requesterAvatar {
@@ -130,17 +130,17 @@
 }
 
 .normalAmount {
-  color: var(--color-danger, #ef4444);
+  color: var(--color-danger);
 }
 
 .rejectedAmount {
-  color: var(--color-text-muted, #999);
+  color: var(--color-text-muted);
   text-decoration: line-through;
 }
 
 .expenseDate {
   font-size: var(--font-size-xs, 12px);
-  color: var(--color-text-muted, #999);
+  color: var(--color-text-muted);
   margin-top: var(--space-2, 8px);
   text-align: right;
 }
@@ -148,7 +148,7 @@
 .empty {
   text-align: center;
   padding: var(--space-8, 32px);
-  color: var(--color-text-muted, #999);
-  background: var(--color-bg-subtle, #fafafa);
+  color: var(--color-text-muted);
+  background: var(--color-bg-subtle);
   border-radius: var(--radius-lg, 12px);
 }

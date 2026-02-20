@@ -50,7 +50,7 @@ export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsP
           <span className={styles.label}>
             <SemanticIcon animated={false} name="wallet" size={14} /> 모임 잔액
           </span>
-          <TrendingUp size={14} style={{ color: 'var(--color-status-success)' }} />
+          <TrendingUp className={styles.trendIcon} size={14} />
         </div>
         <div className={styles.balance}>{formatCurrency(balance)}</div>
       </div>

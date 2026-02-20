@@ -197,3 +197,7 @@
 .stateText {
   color: var(--color-grey-500);
 }
+
+.loaderIcon {
+  color: var(--color-grey-400);
+}

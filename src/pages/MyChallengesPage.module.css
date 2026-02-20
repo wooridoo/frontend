@@ -29,16 +29,11 @@
 
 .tab {
     font-size: var(--font-size-md);
-    color: var(--color-text-secondary);
-}
-
-.tab:hover {
-    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
 }
 
 .tab.active {
-    color: var(--color-primary);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
 }
 
 /* Challenge Grid */
@@ -107,18 +102,18 @@
 }
 
 .cardStatus.recruiting {
-    background: rgba(34, 197, 94, 0.1);
-    color: #22c55e;
+    background: var(--color-success-alpha);
+    color: var(--color-success);
 }
 
 .cardStatus.inProgress {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
+    background: var(--color-support-alpha);
+    color: var(--color-support);
 }
 
 .cardStatus.completed {
-    background: rgba(156, 163, 175, 0.1);
-    color: #9ca3af;
+    background: var(--color-grey-100);
+    color: var(--color-grey-400);
 }
 
 /* Empty State */

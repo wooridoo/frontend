@@ -1,7 +1,6 @@
 import { LoginModal } from '@/components/domain/Auth/LoginModal';
 import { SignupModal } from '@/components/domain/Auth/SignupModal';
 import { JoinChallengeModal } from '@/components/domain/Challenge/JoinChallengeModal';
-import { CreateChallengeModal } from '@/components/domain/Challenge/CreateChallengeModal';
 import { CreditChargeModal } from '@/components/domain/Account/CreditChargeModal';
 import { WithdrawModal } from '@/components/domain/Account/WithdrawModal';
 import { AccessDeniedModal } from '@/components/domain/Auth/AccessDeniedModal';
@@ -30,7 +29,6 @@ export function ModalHost() {
       <LoginModal />
       <SignupModal />
       <JoinChallengeModal />
-      <CreateChallengeModal />
       <CreditChargeModal />
       <WithdrawModal />
       <AccessDeniedModal />

@@ -90,8 +90,8 @@
   width: 34px;
   height: 34px;
   border-radius: var(--radius-md);
-  background: #eff6ff;
-  color: #2563eb;
+  background: var(--color-blue-100);
+  color: var(--color-blue-700);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -123,11 +123,11 @@
 }
 
 .toggleOn {
-  background-color: #3b82f6;
+  background-color: var(--color-support);
 }
 
 .toggleOff {
-  background-color: #d1d5db;
+  background-color: var(--color-grey-300);
 }
 
 .toggle:disabled {
@@ -188,14 +188,14 @@
 }
 
 .rowButtonIconDanger {
-  background-color: #fee2e2;
-  color: #dc2626;
+  background-color: var(--color-red-100);
+  color: var(--color-error);
 }
 
 .rowButtonDangerLabel {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: #dc2626;
+  color: var(--color-error);
 }
 
 .stateText {

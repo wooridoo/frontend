@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useWithdrawAccountModalStore } from '@/store/modal/useModalStore';
 import { useWithdrawAccount } from '@/hooks/useUser';
-import styles from './AuthModal.module.css';
+import { PATHS } from '@/routes/paths';
+import styles from './WithdrawAccountModal.module.css';
 
 export function WithdrawAccountModal() {
     const { isOpen, onClose } = useWithdrawAccountModalStore();
     const [confirmText, setConfirmText] = useState('');
     const [password, setPassword] = useState('');
     const withdrawMutation = useWithdrawAccount();
+    const navigate = useNavigate();
 
     const handleClose = () => {
         setConfirmText('');
@@ -22,8 +25,7 @@ export function WithdrawAccountModal() {
 
         try {
             await withdrawMutation.mutateAsync({ password: password.trim(), reason: 'USER_REQUEST' });
-            // Redirect to home or login page after withdrawal
-            window.location.href = '/';
+            navigate(PATHS.HOME, { replace: true });
         } catch {
             // Error handled by mutation
         }
@@ -32,28 +34,22 @@ export function WithdrawAccountModal() {
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
             <div className={styles.container}>
-                <h2 className={styles.title} style={{ color: 'var(--color-error)' }}>
+                <h2 className={styles.title}>
                     ⚠️ 회원 탈퇴
                 </h2>
 
-                <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-                    <p style={{ color: 'var(--color-text-secondary)' }}>
+                <div className={styles.descriptionBox}>
+                    <p className={styles.description}>
                         정말 탈퇴하시겠습니까?<br />
-                        <strong style={{ color: 'var(--color-error)' }}>이 작업은 되돌릴 수 없습니다.</strong>
+                        <strong className={styles.descriptionStrong}>이 작업은 되돌릴 수 없습니다.</strong>
                     </p>
                 </div>
 
-                <div style={{
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: 'var(--spacing-md)',
-                    marginBottom: 'var(--spacing-lg)',
-                }}>
-                    <p style={{ fontSize: 'var(--font-size-sm)', color: '#dc2626', margin: 0 }}>
+                <div className={styles.warningPanel}>
+                    <p className={styles.warningTitle}>
                         탈퇴 시 삭제되는 정보:
                     </p>
-                    <ul style={{ fontSize: 'var(--font-size-sm)', color: '#dc2626', margin: 'var(--spacing-xs) 0 0', paddingLeft: 'var(--spacing-lg)' }}>
+                    <ul className={styles.warningList}>
                         <li>모든 챌린지 참여 정보</li>
                         <li>작성한 게시물 및 댓글</li>
                         <li>거래 내역 및 지갑 정보</li>
@@ -88,9 +84,9 @@ export function WithdrawAccountModal() {
                         취소
                     </Button>
                     <Button
+                        className={styles.withdrawButton}
                         onClick={handleWithdraw}
                         disabled={confirmText !== '탈퇴' || !password.trim() || withdrawMutation.isPending}
-                        style={{ background: 'var(--color-error)' }}
                     >
                         {withdrawMutation.isPending ? '처리 중...' : '탈퇴하기'}
                     </Button>

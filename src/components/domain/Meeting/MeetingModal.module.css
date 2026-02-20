@@ -76,7 +76,6 @@
 .toggleButton {
     flex: 1;
     font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
 }
 
 .toggleButton.active {
@@ -102,4 +101,73 @@
 .error {
     font-size: var(--font-size-sm);
     color: var(--color-error);
+}
+
+.attendanceSummary {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.meetingHeading {
+    margin: 0 0 var(--spacing-sm);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+}
+
+.metaLine {
+    color: var(--color-text-secondary);
+    margin: 0;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.metaLine + .metaLine {
+    margin-top: var(--spacing-xs);
+}
+
+.responseActions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.agreeButton {
+    background-color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.agreeButton:hover:not(:disabled) {
+    background-color: var(--color-success-600);
+    border-color: var(--color-success-600);
+}
+
+.disagreeButton {
+    color: var(--color-error);
+}
+
+.centeredContent {
+    text-align: center;
+}
+
+.completeEmoji {
+    font-size: 48px;
+    margin-bottom: var(--spacing-md);
+}
+
+.completeTitle {
+    font-size: var(--font-size-lg);
+    margin: 0 0 var(--spacing-sm);
+    color: var(--color-text-primary);
+}
+
+.completeDescription {
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--spacing-lg);
+    line-height: var(--line-height-relaxed);
+}
+
+.cancelButton,
+.submitButton {
+    flex: 1;
 }

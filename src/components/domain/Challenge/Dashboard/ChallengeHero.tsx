@@ -167,7 +167,7 @@ export function ChallengeHeroSkeleton() {
           <Skeleton height={40} width={40} />
         </div>
         <div className={styles.info}>
-          <div style={{ marginBottom: 10 }}>
+          <div className={styles.skeletonTitle}>
             <Skeleton height={32} width={200} />
           </div>
           <Skeleton height={20} width={300} />

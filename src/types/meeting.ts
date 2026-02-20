@@ -17,6 +17,8 @@ export interface Meeting {
     meetingDate: string;
     location: string;
     locationDetail?: string;
+    displayLocation?: string;
+    isAttendanceVoteSource?: boolean;
     isOnline: boolean;
     status: 'SCHEDULED' | 'COMPLETED' | 'CANCELED' | string;
     members?: MeetingMember[];

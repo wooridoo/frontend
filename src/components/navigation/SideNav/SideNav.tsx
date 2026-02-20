@@ -2,8 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { IconButton } from '@/components/ui';
-import { SidebarIcon, type SidebarIconProps } from '@/components/ui/Icons';
+import { Icon, IconButton, type IconName } from '@/components/ui';
 import styles from './SideNav.module.css';
 import logo from '@/assets/woorido_logo.svg';
 
@@ -22,18 +21,22 @@ interface SideNavProps {
 interface NavItem {
   label: string;
   path: string;
-  iconType: SidebarIconProps['type'];
+  iconName: IconName;
 }
 
 
 // Section 1: Main Navigation
 const mainItems: NavItem[] = [
-  { label: '홈', path: PATHS.HOME, iconType: 'home' },
-  { label: '탐색', path: PATHS.EXPLORE, iconType: 'explore' },
-  { label: '추천', path: PATHS.RECOMMENDED, iconType: 'recommended' },
+  { label: '홈', path: PATHS.HOME, iconName: 'home' },
+  { label: '탐색', path: PATHS.EXPLORE, iconName: 'explore' },
+  { label: '추천', path: PATHS.RECOMMENDED, iconName: 'recommended' },
 ];
 
 
+/**
+ * 좌측 네비게이션 컴포넌트입니다.
+ * 메인 메뉴와 사용자가 참여한 챌린지 목록을 함께 렌더링합니다.
+ */
 export function SideNav({
   className,
   isCollapsed = false,
@@ -94,7 +97,7 @@ export function SideNav({
                   title={isCollapsed ? item.label : undefined}
                 >
                   <span className={styles.navIcon}>
-                    <SidebarIcon type={item.iconType} size={24} />
+                    <Icon name={item.iconName} size={24} />
                   </span>
                   <span className={clsx(styles.navLabel, (isCollapsed && !isOpen) && styles.hidden)}>{item.label}</span>
                 </NavLink>

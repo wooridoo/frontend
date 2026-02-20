@@ -51,7 +51,7 @@ export function MyPage() {
       <PageContainer variant="content" contentWidth="md">
         <PageHeader title="마이페이지" />
         <div className={styles.stateContainer}>
-          <Loader2 className="animate-spin" size={32} style={{ color: 'var(--color-grey-400)' }} />
+          <Loader2 className={`animate-spin ${styles.loaderIcon}`} size={32} />
         </div>
       </PageContainer>
     );

@@ -3,8 +3,12 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button, SemanticIcon } from '@/components/ui';
 import { usePasswordResetModalStore } from '@/store/modal/useModalStore';
 import { requestPasswordReset } from '@/lib/api/auth';
-import styles from './AuthModal.module.css';
+import styles from './PasswordResetModal.module.css';
 
+/**
+ * 비밀번호 재설정 요청 모달입니다.
+ * 이메일 입력 단계와 전송 완료 단계를 같은 모달에서 관리합니다.
+ */
 export function PasswordResetModal() {
     const { isOpen, onClose } = usePasswordResetModalStore();
     const [step, setStep] = useState<'email' | 'sent'>('email');
@@ -48,7 +52,7 @@ export function PasswordResetModal() {
 
                 {step === 'email' && (
                     <div className={styles.form}>
-                        <p style={{ color: 'var(--color-text-secondary)', textAlign: 'center', marginBottom: 'var(--spacing-md)' }}>
+                        <p className={styles.description}>
                             가입하신 이메일 주소를 입력하시면<br />
                             비밀번호 재설정 링크를 보내드립니다.
                         </p>
@@ -67,7 +71,11 @@ export function PasswordResetModal() {
                             />
                         </div>
 
-                        {error && <div className={styles.error}>{error}</div>}
+                        {error && (
+                            <div className={styles.error} role="alert" aria-live="polite">
+                                {error}
+                            </div>
+                        )}
 
                         <div className={styles.actions}>
                             <Button onClick={handleClose} variant="secondary">
@@ -85,10 +93,10 @@ export function PasswordResetModal() {
                         <div className={styles.successIcon}>
                             <SemanticIcon name="notification" size={36} />
                         </div>
-                        <p style={{ marginBottom: 'var(--spacing-sm)' }}>
+                        <p className={styles.successTitle}>
                             비밀번호 재설정 이메일을 보냈습니다!
                         </p>
-                        <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--spacing-lg)' }}>
+                        <p className={styles.successDescription}>
                             {email}로 전송된 링크를 확인해주세요
                         </p>
                         <Button onClick={handleClose}>확인</Button>

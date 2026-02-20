@@ -18,6 +18,10 @@
   text-align: center;
 }
 
+.titleDanger {
+  color: var(--color-error);
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -123,4 +127,93 @@
   font-size: var(--font-size-lg);
   color: var(--color-text-primary);
   margin-bottom: var(--spacing-lg);
+}
+
+.centeredBlock {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.centeredTitle {
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.centeredDescription {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.dangerStrong {
+  color: var(--color-error);
+}
+
+.dangerPanel {
+  background: var(--color-error-alpha);
+  border: 1px solid var(--color-danger-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.dangerPanelTitle {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+}
+
+.dangerPanelList {
+  margin: var(--spacing-xs) 0 0;
+  padding-left: var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+}
+
+.successState {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.successEmoji {
+  font-size: 40px;
+  margin-bottom: var(--spacing-md);
+}
+
+.valueLarge {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.helperText {
+  margin: var(--spacing-xs) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: var(--line-height-relaxed);
+}
+
+.inlineLabelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.surfacePanel {
+  background: var(--color-surface-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.panelText {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.iconBlock {
+  margin-bottom: var(--spacing-md);
 }

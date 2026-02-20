@@ -69,7 +69,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="pt-2">
               <Button
                 variant="ghost"
-                onClick={() => window.location.href = '/'}
+                onClick={() => window.location.assign('/')}
                 className="w-full text-gray-400 hover:text-gray-600"
               >
                 홈으로 돌아가기

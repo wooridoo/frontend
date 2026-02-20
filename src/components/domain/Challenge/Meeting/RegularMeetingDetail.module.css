@@ -1,7 +1,14 @@
 .container {
+  display: block;
+}
+
+.contentStack {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+}
+
+.withFloating {
   padding-bottom: calc(var(--space-12) + var(--space-8));
 }
 
@@ -79,23 +86,33 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: var(--space-4) var(--layout-gutter-desktop);
+  padding: var(--space-4) var(--layout-gutter-desktop) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
   background: linear-gradient(to top, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0));
   display: block;
   z-index: 10;
 }
 
 .floatingInner {
-  max-width: var(--layout-content-max-xl);
+  max-width: var(--layout-content-max-lg);
   margin: 0 auto;
   width: 100%;
-  display: flex;
-  justify-content: center;
+  display: grid;
   gap: var(--space-2);
 }
 
+.singleAction {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.twoActions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: var(--layout-content-max-lg);
+}
+
 .actionButton {
-  flex: 1;
+  min-height: var(--button-height-md);
   border-radius: var(--radius-lg);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
@@ -116,7 +133,20 @@
 }
 
 @media (max-width: 768px) {
+  .withFloating {
+    padding-bottom: calc(var(--space-12) + var(--space-6));
+  }
+
   .floatingContainer {
-    padding: var(--space-3) var(--layout-gutter-mobile);
+    padding: var(--space-2) var(--layout-gutter-mobile) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .twoActions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .actionButton {
+    min-height: var(--button-height-sm);
+    font-size: var(--font-size-sm);
   }
 }

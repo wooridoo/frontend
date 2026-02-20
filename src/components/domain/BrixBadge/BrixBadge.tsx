@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui';
 import { BrixBadgeLottie } from './BrixBadgeLottie';
 import type { BrixGrade } from '@/types/brix';
 import { GRADE_CONFIG } from '@/lib/brix';
+import { preloadLottie } from '@/components/ui/Icon/lottieRegistry';
 
 interface BrixBadgeProps {
   grade: BrixGrade;
@@ -13,6 +14,10 @@ interface BrixBadgeProps {
   showLabel?: boolean;
 }
 
+/**
+ * 브릭스 등급 배지 컴포넌트입니다.
+ * 3D 변형은 원격 Lottie를 기본으로 사용하고 실패 시 평면 아이콘으로 폴백합니다.
+ */
 export function BrixBadge({
   grade,
   variant = '3d',
@@ -21,25 +26,22 @@ export function BrixBadge({
   showLabel = true,
 }: BrixBadgeProps) {
   const config = GRADE_CONFIG[grade];
-  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    void preloadLottie('brixBadge');
+  }, []);
 
   if (variant === '3d') {
     const lottieSize = size === 'sm' ? 32 : size === 'md' ? 48 : 64;
     return (
-      <div
-        className={cn("inline-flex items-center gap-1", className)}
-        onBlurCapture={() => setAnimate(false)}
-        onFocusCapture={() => setAnimate(true)}
-        onMouseEnter={() => setAnimate(true)}
-        onMouseLeave={() => setAnimate(false)}
-      >
-        <BrixBadgeLottie animate={animate} size={lottieSize} />
+      <div className={cn('inline-flex items-center gap-1', className)}>
+        <BrixBadgeLottie size={lottieSize} />
         {showLabel && (
           <span className={cn(
-            "font-bold text-slate-700",
-            size === 'sm' && "text-xs",
-            size === 'md' && "text-sm",
-            size === 'lg' && "text-base"
+            'font-bold text-slate-700',
+            size === 'sm' && 'text-xs',
+            size === 'md' && 'text-sm',
+            size === 'lg' && 'text-base'
           )}>
             {config.label}
           </span>

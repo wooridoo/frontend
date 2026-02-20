@@ -67,3 +67,16 @@
     font-size: var(--font-size-sm);
     color: var(--color-error);
 }
+
+.avatarPreview {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.avatarPreviewImage {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    margin-bottom: var(--spacing-sm);
+}

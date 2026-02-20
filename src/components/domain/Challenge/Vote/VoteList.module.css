@@ -24,16 +24,11 @@
 
 .tab {
   font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-grey-500);
-}
-
-.tab:hover {
-  color: var(--color-grey-900);
+  font-weight: 600;
 }
 
 .tab.active {
-  color: var(--color-primary);
+  font-weight: 700;
 }
 
 .list {

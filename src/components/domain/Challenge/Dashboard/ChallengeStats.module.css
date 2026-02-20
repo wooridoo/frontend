@@ -94,3 +94,7 @@
   font-size: 11px;
   color: var(--color-grey-400);
 }
+
+.trendIcon {
+  color: var(--color-status-success);
+}

@@ -28,6 +28,7 @@ import { getChallenge } from '@/lib/api/challenge';
 import { getMyProfile } from '@/lib/api/user';
 import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { AUTH_SESSION_EXPIRED_EVENT } from '@/lib/api/client';
+import { preloadConfiguredLotties } from '@/components/ui/Icon/lottieRegistry';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
 const ExplorePage = lazy(() => import('./pages/ExplorePage').then(module => ({ default: module.ExplorePage })));
@@ -122,6 +123,10 @@ const queryClient = new QueryClient({
 function App() {
   const { isLoggedIn, updateUser, syncParticipatingChallenges, clearSession } = useAuthStore();
   const { onOpen: openLogin } = useLoginModalStore();
+
+  useEffect(() => {
+    preloadConfiguredLotties();
+  }, []);
 
   useEffect(() => {
     if (!isLoggedIn) return;

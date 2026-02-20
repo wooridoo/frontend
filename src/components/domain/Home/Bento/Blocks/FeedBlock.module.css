@@ -213,3 +213,15 @@
 .joinBtn:hover {
   background-color: black;
 }
+
+.loadingRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-5);
+}
+
+.loadingSpinner {
+  color: var(--color-grey-400);
+}

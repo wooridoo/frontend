@@ -11,7 +11,7 @@
   flex-direction: column;
   min-height: 560px;
   padding: 40px;
-  background: #fff;
+  background: var(--color-white);
 }
 
 .header {
@@ -23,7 +23,7 @@
   width: 64px;
   height: 64px;
   margin: 0 auto 16px;
-  background: #f5f5f5;
+  background: var(--color-grey-100);
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -38,13 +38,13 @@
 .title {
   font-size: 24px;
   font-weight: 700;
-  color: #111;
+  color: var(--color-grey-900);
   margin-bottom: 8px;
 }
 
 .subtitle {
   font-size: 15px;
-  color: #666;
+  color: var(--color-grey-600);
   line-height: 1.5;
 }
 
@@ -76,14 +76,14 @@
 }
 
 .kakaoButton {
-  background-color: #FEE500;
-  color: #191919;
+  background-color: var(--color-brand-kakao);
+  color: var(--color-brand-kakao-text);
 }
 
 .googleButton {
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  color: #111;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-grey-300);
+  color: var(--color-grey-900);
 }
 
 .googleIconImage {
@@ -106,7 +106,7 @@
   display: flex;
   align-items: center;
   margin: 24px 0;
-  color: #999;
+  color: var(--color-grey-500);
   font-size: 13px;
 }
 
@@ -115,7 +115,7 @@
   content: "";
   flex: 1;
   height: 1px;
-  background: #eee;
+  background: var(--color-grey-200);
 }
 
 .divider span {
@@ -126,16 +126,16 @@
   text-align: center;
   margin-top: auto;
   padding-top: 24px;
-  border-top: 1px solid #f5f5f5;
+  border-top: 1px solid var(--color-grey-100);
 }
 
 .loginPrompt {
   font-size: 14px;
-  color: #666;
+  color: var(--color-grey-600);
 }
 
 .loginLink {
-  color: #FF5A5F;
+  color: var(--color-brix-apple);
   font-weight: 600;
   margin-left: 8px;
   text-decoration: none;

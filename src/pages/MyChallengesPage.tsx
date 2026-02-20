@@ -7,7 +7,6 @@ import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { getMyChallenges, type ChallengeInfo } from '@/lib/api/challenge';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
-import { useCreateChallengeModalStore } from '@/store/modal/useModalStore';
 import { ChallengeStatus } from '@/types/enums';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './MyChallengesPage.module.css';
@@ -35,7 +34,6 @@ const STATUS_MAP: Record<TabType, ChallengeStatus | null> = {
 export function MyChallengesPage() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<TabType>('all');
-    const { onOpen: openCreateModal } = useCreateChallengeModalStore();
 
     const { data: challenges = [], isLoading } = useQuery({
         queryKey: ['challenges', 'me'],
@@ -83,7 +81,11 @@ export function MyChallengesPage() {
                 title="내 챌린지"
                 showBack
                 action={
-                    <Button className={styles.createButton} leadingIcon={<Plus size={14} />} onClick={openCreateModal}>
+                    <Button
+                        className={styles.createButton}
+                        leadingIcon={<Plus size={14} />}
+                        onClick={() => navigate(CHALLENGE_ROUTES.NEW)}
+                    >
                         새 챌린지
                     </Button>
                 }
@@ -119,7 +121,7 @@ export function MyChallengesPage() {
                     <p className={styles.emptyDescription}>
                         새로운 챌린지에 참여하거나 직접 만들어보세요!
                     </p>
-                    <Button onClick={openCreateModal}>챌린지 만들기</Button>
+                    <Button onClick={() => navigate(CHALLENGE_ROUTES.NEW)}>챌린지 만들기</Button>
                 </div>
             ) : (
                 <div className={styles.challengeGrid}>

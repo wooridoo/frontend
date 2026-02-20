@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import { SidebarIcon } from '@/components/ui/Icons';
 import { BrixBadge } from '@/components/domain/BrixBadge';
 import { getBrixGrade, formatBrix } from '@/lib/brix';
 import type { User } from '@/types/user';
 import { PATHS } from '@/routes/paths';
 import { Button } from '../Button';
+import { Icon } from '../Icon';
 import styles from './ProfileMenu.module.css';
 
 interface ProfileMenuContentProps {
@@ -13,6 +13,10 @@ interface ProfileMenuContentProps {
     onLogout: () => void;
 }
 
+/**
+ * 프로필 드롭다운 내부 메뉴입니다.
+ * 사용자 프로필 요약과 주요 이동 액션을 제공합니다.
+ */
 export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuContentProps) {
     return (
         <div className={styles.menuContainer}>
@@ -38,7 +42,7 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
             <Button
                 className={styles.menuItem}
                 fullWidth
-                leadingIcon={<SidebarIcon type="profile" size={24} />}
+                leadingIcon={<Icon name="profile" size={24} />}
                 onClick={() => onNavigate(PATHS.MY.PROFILE)}
                 variant="ghost"
             >
@@ -47,7 +51,7 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
             <Button
                 className={styles.menuItem}
                 fullWidth
-                leadingIcon={<SidebarIcon type="feed" size={24} />}
+                leadingIcon={<Icon name="feed" size={24} />}
                 onClick={() => onNavigate(PATHS.MY.CHALLENGES)}
                 variant="ghost"
             >
@@ -56,7 +60,7 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
             <Button
                 className={styles.menuItem}
                 fullWidth
-                leadingIcon={<SidebarIcon type="ledger" size={24} />}
+                leadingIcon={<Icon name="ledger" size={24} />}
                 onClick={() => onNavigate(PATHS.MY.LEDGER)}
                 variant="ghost"
             >
@@ -68,7 +72,7 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
             <Button
                 className={styles.menuItem}
                 fullWidth
-                leadingIcon={<SidebarIcon type="settings" size={24} />}
+                leadingIcon={<Icon name="settings" size={24} />}
                 onClick={() => onNavigate(PATHS.MY.SETTINGS)}
                 variant="ghost"
             >
@@ -77,7 +81,7 @@ export function ProfileMenuContent({ user, onNavigate, onLogout }: ProfileMenuCo
             <Button
                 className={clsx(styles.menuItem, styles.logout)}
                 fullWidth
-                leadingIcon={<SidebarIcon type="logout" size={24} />}
+                leadingIcon={<Icon name="logout" size={24} />}
                 onClick={onLogout}
                 variant="ghost"
             >

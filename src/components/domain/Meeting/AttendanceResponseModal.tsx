@@ -41,23 +41,23 @@ export function AttendanceResponseModal() {
 
                 {meeting && (
                     <>
-                        <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-                            <h3 style={{ margin: '0 0 var(--spacing-sm)', fontSize: 'var(--font-size-lg)' }}>
+                        <div className={styles.attendanceSummary}>
+                            <h3 className={styles.meetingHeading}>
                                 {meeting.title}
                             </h3>
-                            <p style={{ color: 'var(--color-text-secondary)', margin: 0, display: 'inline-flex', gap: 6, alignItems: 'center' }}>
+                            <p className={styles.metaLine}>
                                 <Calendar size={14} /> {formatDate(meeting.meetingDate)}
                             </p>
-                            <p style={{ color: 'var(--color-text-secondary)', margin: 'var(--spacing-xs) 0 0', display: 'inline-flex', gap: 6, alignItems: 'center' }}>
+                            <p className={styles.metaLine}>
                                 <MapPin size={14} /> {meeting.location}
                             </p>
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)' }}>
+                        <div className={styles.responseActions}>
                             <Button
+                                className={styles.agreeButton}
                                 onClick={() => handleResponse('AGREE')}
                                 disabled={respondMutation.isPending}
-                                style={{ background: '#22c55e' }}
                             >
                                 ✓ 참석
                             </Button>
@@ -69,10 +69,10 @@ export function AttendanceResponseModal() {
                                 미정
                             </Button>
                             <Button
+                                className={styles.disagreeButton}
                                 onClick={() => handleResponse('DISAGREE')}
                                 disabled={respondMutation.isPending}
                                 variant="secondary"
-                                style={{ color: '#ef4444' }}
                             >
                                 ✕ 불참
                             </Button>

@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   Bell,
   BookOpen,
+  ChartNoAxesColumnIncreasing,
   CheckCircle2,
   CircleHelp,
   Coins,
@@ -12,11 +13,15 @@ import {
   Flame,
   FolderOpen,
   HandCoins,
+  Heart,
+  House,
   Landmark,
+  LogOut,
   Palette,
   PieChart,
   PiggyBank,
   Plane,
+  Search,
   Sparkles,
   UtensilsCrossed,
   UserRound,
@@ -40,11 +45,18 @@ export type IconName =
   | 'vote'
   | 'wallet'
   | 'warning'
+  | 'search'
+  | 'home'
+  | 'explore'
+  | 'recommended'
+  | 'logout'
   | 'charge'
   | 'withdraw'
   | 'notification'
   | 'default'
   | 'brixBadge'
+  | 'heroCreate'
+  | 'heroExplore'
   | 'categoryCulture'
   | 'categoryExercise'
   | 'categoryStudy'
@@ -64,6 +76,11 @@ export const iconRegistry: Record<IconName, LucideIcon> = {
   member: Users,
   meeting: Bell,
   profile: UserRound,
+  search: Search,
+  home: House,
+  explore: Search,
+  recommended: Heart,
+  logout: LogOut,
   settings: Coins,
   success: CheckCircle2,
   vote: Vote,
@@ -74,6 +91,8 @@ export const iconRegistry: Record<IconName, LucideIcon> = {
   notification: Bell,
   default: CircleHelp,
   brixBadge: Coins,
+  heroCreate: FolderOpen,
+  heroExplore: ChartNoAxesColumnIncreasing,
   categoryCulture: Sparkles,
   categoryExercise: Dumbbell,
   categoryStudy: BookOpen,

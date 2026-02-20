@@ -11,15 +11,15 @@ interface AvatarProps {
 }
 
 const COLORS = [
-  '#F87171', // Red 400
-  '#FB923C', // Orange 400
-  '#FACC15', // Yellow 400
-  '#4ADE80', // Green 400
-  '#2DD4BF', // Teal 400
-  '#60A5FA', // Blue 400
-  '#818CF8', // Indigo 400
-  '#A78BFA', // Purple 400
-  '#F472B6', // Pink 400
+  'var(--color-red-500)',
+  'var(--color-orange-400)',
+  'var(--color-warning)',
+  'var(--color-success)',
+  'var(--color-support)',
+  'var(--color-blue-700)',
+  'var(--color-brix-grape)',
+  'var(--color-brix-apple)',
+  'var(--color-brix-mandarin)',
 ];
 
 function getInitials(name: string): string {

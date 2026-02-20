@@ -44,7 +44,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--color-primary-light, #e8f0fe);
+  background: var(--color-primary-light);
   color: var(--color-primary);
   display: flex;
   align-items: center;

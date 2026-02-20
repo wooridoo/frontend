@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Lottie from 'lottie-react';
 import { Button, SemanticIcon } from '@/components/ui';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
-import mascotFaceAnimation from '@/assets/lottie/mascot-face.json';
+import { preloadLottie } from '@/components/ui/Icon/lottieRegistry';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import styles from './MainCarousel.module.css';
 
 const SLIDES = [
@@ -15,7 +15,7 @@ const SLIDES = [
     label: '새로운 시작',
     title: '나만의 챌린지를\n만들어보세요',
     description: '명확한 목표를 설정하고\n친구와 함께 달성해보세요.',
-    icon: 'challenge' as const,
+    icon: 'heroCreate' as const,
     action: '챌린지 만들기',
     link: CHALLENGE_ROUTES.NEW,
     bgClass: 'bg-primary-50',
@@ -25,17 +25,28 @@ const SLIDES = [
     label: '탐색하기',
     title: '지금 뜨는 챌린지\n참여하기',
     description: '다른 사람들이 어떤 목표를\n달성하고 있는지 확인해보세요.',
-    icon: 'action' as const,
+    icon: 'heroExplore' as const,
     action: '챌린지 보러가기',
     link: '/explore',
     bgClass: 'bg-orange-50',
   },
 ];
 
+/**
+ * 홈 메인 캐러셀입니다.
+ * 슬라이드별 CTA와 hero Lottie를 제공하며, hover 시 자동 슬라이드 전환을 일시 정지합니다.
+ */
 export function MainCarousel() {
   const { user } = useAuthGuard();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const isMobileLayout = useMediaQuery('(max-width: 768px)');
+  const heroIconSize = isMobileLayout ? 72 : 96;
+
+  useEffect(() => {
+    void preloadLottie('heroCreate');
+    void preloadLottie('heroExplore');
+  }, []);
 
   useEffect(() => {
     if (isPaused) return;
@@ -50,7 +61,7 @@ export function MainCarousel() {
 
   return (
     <div className={styles.carousel} onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
-      <div className={styles.track} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+      <div className={styles.track} data-slide={currentSlide}>
         {SLIDES.map(slide => (
           <div key={slide.id} className={clsx(styles.slide, slide.bgClass)}>
             <div className={styles.content}>
@@ -70,11 +81,13 @@ export function MainCarousel() {
               </div>
               <div className={styles.imageWrapper}>
                 <span className={styles.emoji}>
-                  {slide.id === 2 ? (
-                    <Lottie animationData={mascotFaceAnimation} autoplay={true} loop={true} style={{ width: 56, height: 56 }} />
-                  ) : (
-                    <SemanticIcon name={slide.icon} size={56} />
-                  )}
+                  <SemanticIcon
+                    animated
+                    fallbackName={slide.icon}
+                    playMode="loop"
+                    name={slide.icon}
+                    size={heroIconSize}
+                  />
                 </span>
               </div>
             </div>

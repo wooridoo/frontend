@@ -33,6 +33,10 @@ export default defineConfig([
               importNames: ['Button'],
               message: 'Button은 @/components/ui/Button 또는 @/components/ui를 사용하세요.',
             },
+            {
+              name: '@/components/ui/Icons',
+              message: '아이콘은 @/components/ui/Icon 또는 @/components/ui를 사용하세요.',
+            },
           ],
         },
       ],

@@ -84,34 +84,47 @@ const isOnlineLocation = (location?: string, locationDetail?: string) => {
 
 const normalizeMeeting = (
   meeting: BackendMeetingResponse
-): Meeting => ({
-  meetingId: String(meeting.meetingId || ''),
-  challengeId: meeting.challengeId,
-  title: meeting.title || '',
-  description: meeting.description || '',
-  status: meeting.status || 'SCHEDULED',
-  meetingDate: meeting.meetingDate || '',
-  location: meeting.location || '',
-  locationDetail: meeting.locationDetail,
-  isOnline: isOnlineLocation(meeting.location, meeting.locationDetail),
-  attendance: meeting.attendance
-    ? {
-      confirmed: Number(meeting.attendance.confirmed || 0),
-      declined: Number(meeting.attendance.declined || 0),
-      pending: Number(meeting.attendance.pending || 0),
-      total: Number(meeting.attendance.total || 0),
-    }
-    : undefined,
-  myAttendance: meeting.myAttendance
-    ? {
-      status: meeting.myAttendance.status || 'NONE',
-      respondedAt: meeting.myAttendance.respondedAt,
-    }
-    : undefined,
-  members: meeting.members,
-  createdBy: meeting.createdBy,
-  createdAt: meeting.createdAt,
-});
+): Meeting => {
+  const location = meeting.location || '';
+  const isAttendanceVoteSource = location === 'MEETING_ATTENDANCE';
+  const isOnline = isOnlineLocation(location, meeting.locationDetail);
+  const displayLocation = isAttendanceVoteSource
+    ? '출석 투표 연동'
+    : isOnline
+      ? meeting.locationDetail || '온라인 모임'
+      : location;
+
+  return {
+    meetingId: String(meeting.meetingId || ''),
+    challengeId: meeting.challengeId,
+    title: meeting.title || '',
+    description: meeting.description || '',
+    status: meeting.status || 'SCHEDULED',
+    meetingDate: meeting.meetingDate || '',
+    location,
+    locationDetail: meeting.locationDetail,
+    displayLocation,
+    isAttendanceVoteSource,
+    isOnline,
+    attendance: meeting.attendance
+      ? {
+        confirmed: Number(meeting.attendance.confirmed || 0),
+        declined: Number(meeting.attendance.declined || 0),
+        pending: Number(meeting.attendance.pending || 0),
+        total: Number(meeting.attendance.total || 0),
+      }
+      : undefined,
+    myAttendance: meeting.myAttendance
+      ? {
+        status: meeting.myAttendance.status || 'NONE',
+        respondedAt: meeting.myAttendance.respondedAt,
+      }
+      : undefined,
+    members: meeting.members,
+    createdBy: meeting.createdBy,
+    createdAt: meeting.createdAt,
+  };
+};
 
 export async function getMeeting(id: string): Promise<Meeting> {
   const meeting = await client.get<BackendMeetingDetailResponse>(`/meetings/${id}`);

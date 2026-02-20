@@ -36,8 +36,8 @@
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: white;
+    background: linear-gradient(135deg, var(--color-brix-honey), var(--color-orange-500));
+    color: var(--color-white);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-full);
     font-size: var(--font-size-sm);

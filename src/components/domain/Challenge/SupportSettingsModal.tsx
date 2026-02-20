@@ -4,7 +4,7 @@ import { Button } from '@/components/ui';
 import { useSupportSettingsModalStore } from '@/store/modal/useModalStore';
 import { useChallengeDetail, useUpdateSupportSettings } from '@/hooks/useChallenge';
 import { formatCurrency } from '@/lib/utils';
-import styles from './CreateChallengeModal.module.css';
+import styles from './ChallengeModalShared.module.css';
 
 const toBoolean = (value: unknown): boolean | undefined => {
     if (typeof value === 'boolean') return value;
@@ -51,24 +51,24 @@ export function SupportSettingsModal() {
                 <h2 className={styles.title}>서포트 설정</h2>
 
                 {saved ? (
-                    <div style={{ textAlign: 'center', padding: 'var(--spacing-xl)' }}>
-                        <div style={{ fontSize: '40px', marginBottom: 'var(--spacing-md)' }}>✅</div>
+                    <div className={styles.successState}>
+                        <div className={styles.successEmoji}>✅</div>
                         <p>설정이 저장되었습니다.</p>
                     </div>
                 ) : (
                     <div className={styles.form}>
                         <div className={styles.fieldGroup}>
                             <label className={styles.label}>월 서포트 금액</label>
-                            <div style={{ fontSize: 'var(--font-size-xl)', fontWeight: 700 }}>
+                            <div className={styles.valueLarge}>
                                 {formatCurrency(challenge?.supportAmount || 0)}
                             </div>
-                            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)' }}>
+                            <p className={styles.helperText}>
                                 챌린지 월 서포트 금액은 리더가 챌린지 설정에서 관리합니다.
                             </p>
                         </div>
 
                         <div className={styles.fieldGroup}>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)' }}>
+                            <label className={styles.inlineLabelRow}>
                                 <input
                                     type="checkbox"
                                     checked={autoPayEnabled}
@@ -76,7 +76,7 @@ export function SupportSettingsModal() {
                                 />
                                 <span className={styles.label}>자동 납입 사용</span>
                             </label>
-                            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)' }}>
+                            <p className={styles.helperText}>
                                 매월 1일에 서포트 금액이 자동 결제됩니다.
                             </p>
                         </div>

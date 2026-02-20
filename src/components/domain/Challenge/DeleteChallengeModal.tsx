@@ -3,7 +3,7 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useDeleteChallengeModalStore } from '@/store/modal/useModalStore';
 import { useDeleteChallenge } from '@/hooks/useChallenge';
-import styles from './CreateChallengeModal.module.css';
+import styles from './ChallengeModalShared.module.css';
 
 export function DeleteChallengeModal() {
     const { isOpen, challengeId, challengeTitle, onClose } = useDeleteChallengeModalStore();
@@ -31,31 +31,25 @@ export function DeleteChallengeModal() {
     return (
         <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
             <div className={styles.container}>
-                <h2 className={styles.title} style={{ color: 'var(--color-error)' }}>
+                <h2 className={`${styles.title} ${styles.titleDanger}`}>
                     ⚠️ 챌린지 삭제
                 </h2>
 
-                <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>
-                    <p style={{ fontSize: 'var(--font-size-lg)', fontWeight: 600, marginBottom: 'var(--spacing-sm)' }}>
+                <div className={styles.centeredBlock}>
+                    <p className={styles.centeredTitle}>
                         {challengeTitle}
                     </p>
-                    <p style={{ color: 'var(--color-text-secondary)' }}>
+                    <p className={styles.centeredDescription}>
                         이 챌린지를 정말 삭제하시겠습니까?<br />
-                        <strong style={{ color: 'var(--color-error)' }}>이 작업은 되돌릴 수 없습니다.</strong>
+                        <strong className={styles.dangerStrong}>이 작업은 되돌릴 수 없습니다.</strong>
                     </p>
                 </div>
 
-                <div style={{
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: 'var(--spacing-md)',
-                    marginBottom: 'var(--spacing-lg)',
-                }}>
-                    <p style={{ fontSize: 'var(--font-size-sm)', color: '#dc2626', margin: 0 }}>
+                <div className={styles.dangerPanel}>
+                    <p className={styles.dangerPanelTitle}>
                         삭제 시 다음 데이터가 모두 삭제됩니다:
                     </p>
-                    <ul style={{ fontSize: 'var(--font-size-sm)', color: '#dc2626', margin: 'var(--spacing-xs) 0 0', paddingLeft: 'var(--spacing-lg)' }}>
+                    <ul className={styles.dangerPanelList}>
                         <li>모든 모임 기록</li>
                         <li>모든 투표 기록</li>
                         <li>모든 피드 게시물</li>

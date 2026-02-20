@@ -84,7 +84,7 @@ export function ChallengeDetailPage() {
       <PageContainer variant="content" contentWidth="lg">
         <PageHeader title="챌린지 상세" showBack />
         <div className={styles.stateContainer}>
-          <Loader2 className="animate-spin" size={32} style={{ color: 'var(--color-grey-400)' }} />
+          <Loader2 className={`animate-spin ${styles.loaderIcon}`} size={32} />
         </div>
       </PageContainer>
     );

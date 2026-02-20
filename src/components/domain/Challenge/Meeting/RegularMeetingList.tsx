@@ -70,7 +70,7 @@ export function RegularMeetingList({ challengeId, challengeRef }: RegularMeeting
                 <Calendar size={14} /> {new Date(meeting.meetingDate).toLocaleDateString()}
               </span>
               <span>
-                <MapPin size={14} /> {meeting.isOnline ? '온라인' : meeting.location}
+                <MapPin size={14} /> {meeting.displayLocation || (meeting.isOnline ? '온라인' : meeting.location)}
               </span>
             </div>
           </Link>

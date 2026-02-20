@@ -52,17 +52,11 @@ export function EditProfileModal() {
 
                 <div className={styles.form}>
                     {/* Avatar Preview */}
-                    <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-md)' }}>
+                    <div className={styles.avatarPreview}>
                         <img
                             src={profileImage || '/images/avatar-fallback.svg'}
                             alt={nickname}
-                            style={{
-                                width: 80,
-                                height: 80,
-                                borderRadius: '50%',
-                                objectFit: 'cover',
-                                marginBottom: 'var(--spacing-sm)',
-                            }}
+                            className={styles.avatarPreviewImage}
                         />
                     </div>
 

@@ -11,7 +11,9 @@
     "skills:check": "npx woorido-skills check",
     "skills:qa": "node .woorido/scripts/qa-runner.js",
     "qa:buttons": "node scripts/qa-buttons.mjs",
-    "qa:lottie": "node scripts/qa-lottie.mjs"
+    "qa:lottie": "node scripts/qa-lottie.mjs",
+    "qa:style": "node scripts/qa-style-consistency.mjs",
+    "qa:comments": "node scripts/qa-comments.mjs"
   },
   "dependencies": {
     "@ai-sdk/react": "^1.0.0",

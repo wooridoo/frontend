@@ -120,6 +120,8 @@
   --color-red-700: #B91C1C;
   --color-orange-400: #FB923C;
   --color-orange-700: #C2410C;
+  --color-brand-kakao: #FEE500;
+  --color-brand-kakao-text: #191919;
 
   /* Spelling aliases (gray -> grey) */
   --color-gray-50: var(--color-grey-50);

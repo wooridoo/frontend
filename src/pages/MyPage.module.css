@@ -137,3 +137,7 @@
 .loginButton {
   color: var(--color-grey-800);
 }
+
+.loaderIcon {
+  color: var(--color-grey-400);
+}

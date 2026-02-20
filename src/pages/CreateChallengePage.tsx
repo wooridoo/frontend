@@ -8,12 +8,13 @@ import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button, Input, Card, CardHeader, CardBody, SemanticIcon } from '@/components/ui';
 import { useCreateChallenge } from '@/hooks/useChallenge';
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { CATEGORY_VISUALS } from '@/lib/constants/categoryVisuals';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { Category } from '@/types/enums';
 import { toast } from 'sonner';
+import { preloadLottie } from '@/components/ui/Icon/lottieRegistry';
 import styles from './CreateChallengePage.module.css';
 
 // Zod Schema (API 기준)
@@ -44,10 +45,15 @@ const CATEGORIES = CREATE_CATEGORY_ORDER.map(category => ({
   ...CATEGORY_VISUALS[category],
 }));
 
+/**
+ * 챌린지 생성 페이지입니다.
+ * 카테고리/기본정보/운영설정/금액설정을 한 폼으로 수집합니다.
+ */
 export function CreateChallengePage() {
   const navigate = useNavigate();
   const createChallengeMutation = useCreateChallenge();
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const isMobileLayout = useMediaQuery('(max-width: 768px)');
+  const categoryIconSize = isMobileLayout ? 26 : 30;
 
   const {
     register,
@@ -74,8 +80,14 @@ export function CreateChallengePage() {
     }
   }, [supportAmount, setValue]);
 
+  useEffect(() => {
+    const preloadTargets = [...new Set(CATEGORIES.map(category => category.iconName))];
+    preloadTargets.forEach(iconName => {
+      void preloadLottie(iconName);
+    });
+  }, []);
+
   const [formErrors, setFormErrors] = useState<string[]>([]);
-  const [activeIconCategory, setActiveIconCategory] = useState<Category | null>(null);
 
   const onSubmit = async (data: ChallengeFormValues) => {
     setFormErrors([]);
@@ -125,19 +137,15 @@ export function CreateChallengePage() {
                   aria-pressed={selectedCategory === cat.id}
                   className={`${styles.categoryCard} ${selectedCategory === cat.id ? styles.selected : ''}`}
                   onClick={() => setValue('category', cat.id, { shouldValidate: true })}
-                  onFocus={() => setActiveIconCategory(cat.id)}
-                  onBlur={() => setActiveIconCategory(prev => (prev === cat.id ? null : prev))}
-                  onMouseEnter={() => setActiveIconCategory(cat.id)}
-                  onMouseLeave={() => setActiveIconCategory(prev => (prev === cat.id ? null : prev))}
                   type="button"
                 >
                   <span className={styles.categoryIcon}>
                     <SemanticIcon
-                      animated={!prefersReducedMotion && (selectedCategory === cat.id || activeIconCategory === cat.id)}
+                      animated
                       fallbackName={cat.iconName}
-                      loop={false}
+                      playMode="loop"
                       name={cat.iconName}
-                      size={20}
+                      size={categoryIconSize}
                     />
                   </span>
                   <span className={styles.categoryName}>{cat.label}</span>

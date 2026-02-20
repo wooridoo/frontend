@@ -86,8 +86,8 @@ export function FeedBlock() {
         ))}
 
         {loading && items.length === 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 20 }}>
-            <Loader2 className="animate-spin text-gray-400" />
+          <div className={styles.loadingRow}>
+            <Loader2 className={`animate-spin ${styles.loadingSpinner}`} />
           </div>
         )}
       </div>

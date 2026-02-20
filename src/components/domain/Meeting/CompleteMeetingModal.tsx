@@ -25,14 +25,14 @@ export function CompleteMeetingModal() {
                 <h2 className={styles.title}>모임 완료</h2>
 
                 {meeting && (
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '48px', marginBottom: 'var(--spacing-md)' }}>
+                    <div className={styles.centeredContent}>
+                        <div className={styles.completeEmoji}>
                             ✅
                         </div>
-                        <p style={{ fontSize: 'var(--font-size-lg)', marginBottom: 'var(--spacing-sm)' }}>
+                        <p className={styles.completeTitle}>
                             <strong>{meeting.title}</strong>
                         </p>
-                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--spacing-lg)' }}>
+                        <p className={styles.completeDescription}>
                             이 모임을 완료 처리하시겠습니까?<br />
                             완료 후에는 참석 인원 확정 및 정산이 진행됩니다.
                         </p>

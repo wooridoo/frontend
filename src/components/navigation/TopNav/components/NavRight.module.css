@@ -16,6 +16,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  min-height: 38px;
   padding: 4px 10px;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-grey-200);
@@ -33,6 +34,7 @@
 .brixScore {
   font-weight: 700;
   font-size: var(--font-size-sm);
+  line-height: 1.2;
   color: var(--color-grey-800);
   white-space: nowrap;
 }
@@ -94,6 +96,7 @@
 
 @media (max-width: 1024px) {
   .summaryChip {
+    min-height: 36px;
     padding: 4px 8px;
     gap: 6px;
   }
@@ -119,7 +122,8 @@
   }
 
   .summaryChip {
-    max-width: 170px;
+    max-width: 184px;
+    min-height: 34px;
     gap: 4px;
   }
 
