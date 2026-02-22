@@ -10,7 +10,7 @@ import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import { ApiError } from '@/lib/api/client';
 import type { SocialAuthProvider } from '@/types/auth';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './SignupModal.module.css';
 
 /**
@@ -22,7 +22,52 @@ export function SignupModal() {
     const navigate = useNavigate();
     const location = useLocation();
     const [socialPending, setSocialPending] = useState<SocialAuthProvider | null>(null);
+    const [providerEnabled, setProviderEnabled] = useState<Record<SocialAuthProvider, boolean>>({
+        GOOGLE: false,
+        KAKAO: false,
+    });
+    const [providerReason, setProviderReason] = useState<Record<SocialAuthProvider, string | null>>({
+        GOOGLE: null,
+        KAKAO: null,
+    });
     const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
+
+    useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+
+        let isDisposed = false;
+        import('@/lib/api/auth')
+            .then(({ getSocialProviders }) => getSocialProviders())
+            .then((response) => {
+                if (isDisposed) {
+                    return;
+                }
+
+                const nextEnabled: Record<SocialAuthProvider, boolean> = { GOOGLE: true, KAKAO: true };
+                const nextReason: Record<SocialAuthProvider, string | null> = { GOOGLE: null, KAKAO: null };
+                response.providers.forEach((provider) => {
+                    if (provider.provider === 'GOOGLE' || provider.provider === 'KAKAO') {
+                        nextEnabled[provider.provider] = provider.enabled;
+                        nextReason[provider.provider] = provider.reasonCode ?? null;
+                    }
+                });
+
+                setProviderEnabled(nextEnabled);
+                setProviderReason(nextReason);
+            })
+            .catch(() => {
+                if (!isDisposed) {
+                    setProviderEnabled({ GOOGLE: false, KAKAO: false });
+                    setProviderReason({ GOOGLE: null, KAKAO: null });
+                }
+            });
+
+        return () => {
+            isDisposed = true;
+        };
+    }, [isOpen]);
 
     const handleClose = () => {
         setSocialPending(null);
@@ -40,6 +85,15 @@ export function SignupModal() {
     };
 
     const handleSocialSignup = async (provider: SocialAuthProvider) => {
+        if (!providerEnabled[provider]) {
+            if (providerReason[provider] === 'AUTH_011') {
+                toast.info('선택한 소셜 로그인은 준비 중입니다.');
+            } else {
+                toast.error('선택한 소셜 로그인 제공자를 현재 사용할 수 없습니다.');
+            }
+            return;
+        }
+
         setSocialPending(provider);
         try {
             sessionStorage.setItem('oauth_provider', provider);
@@ -82,7 +136,7 @@ export function SignupModal() {
                         size="lg"
                         type="button"
                         variant="secondary"
-                        disabled={socialPending !== null}
+                        disabled={socialPending !== null || !providerEnabled.KAKAO}
                         isLoading={socialPending === 'KAKAO'}
                     >
                         <MessageCircle size={20} fill="currentColor" className={styles.icon} />
@@ -95,7 +149,7 @@ export function SignupModal() {
                         size="lg"
                         type="button"
                         variant="outline"
-                        disabled={socialPending !== null}
+                        disabled={socialPending !== null || !providerEnabled.GOOGLE}
                         isLoading={socialPending === 'GOOGLE'}
                     >
                         <img src="/icons/google.svg" alt="" className={styles.googleIconImage} />

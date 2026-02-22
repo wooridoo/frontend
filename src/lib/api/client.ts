@@ -10,6 +10,10 @@ import { toast } from 'sonner';
 import { normalizeApiError } from './errorNormalizer';
 import { PATHS } from '@/routes/paths';
 
+interface ApiRequestConfig extends AxiosRequestConfig {
+  silentError?: boolean;
+}
+
 /**
     * 동작 설명은 추후 세분화 예정입니다.
  */
@@ -48,6 +52,18 @@ let failedQueue: Array<{
   resolve: (token: string) => void;
   reject: (error: unknown) => void;
 }> = [];
+const errorLogHistory = new Map<string, number>();
+const ERROR_LOG_THROTTLE_MS = 5000;
+
+function shouldLogError(logKey: string): boolean {
+  const now = Date.now();
+  const previous = errorLogHistory.get(logKey);
+  if (previous && now - previous < ERROR_LOG_THROTTLE_MS) {
+    return false;
+  }
+  errorLogHistory.set(logKey, now);
+  return true;
+}
 
 function processQueue(error: unknown, token: string | null) {
   failedQueue.forEach((prom) => {
@@ -178,8 +194,12 @@ axiosInstance.interceptors.response.use(
     const responseBody = error.response?.data;
     const rawMessage = responseBody?.message || error.message || 'Network Error';
     const normalized = normalizeApiError(rawMessage);
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as (InternalAxiosRequestConfig & { _retry?: boolean; silentError?: boolean }) | undefined;
     const requestUrl = originalRequest?.url;
+    const requestMethod = (originalRequest?.method || 'get').toLowerCase();
+    const logKey = `${requestMethod}:${requestUrl}:${status}:${normalized.code || normalized.rawMessage}`;
+    const shouldPrintErrorLog = shouldLogError(logKey);
+    const isSilentRequest = Boolean(originalRequest?.silentError);
 
     if (status === 401 && originalRequest && !originalRequest._retry) {
       if (shouldBypassSessionHandling(status, requestUrl, normalized.code)) {
@@ -243,15 +263,17 @@ axiosInstance.interceptors.response.use(
 
     maybeHandleGlobal401(status, requestUrl, normalized.code);
 
-    console.error('API Error', {
-      url: error.config?.url,
-      method: error.config?.method,
-      status,
-      rawMessage: normalized.rawMessage,
-      code: normalized.code,
-    });
+    if (!isSilentRequest && shouldPrintErrorLog) {
+      console.error('API Error', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status,
+        rawMessage: normalized.rawMessage,
+        code: normalized.code,
+      });
+    }
 
-    if (status !== 401 && status !== 403) {
+    if (!isSilentRequest && status !== 401 && status !== 403 && shouldPrintErrorLog) {
       toast.error(normalized.userMessage);
     }
 
@@ -265,18 +287,18 @@ axiosInstance.interceptors.response.use(
     * 동작 설명은 추후 세분화 예정입니다.
  */
 export const client = {
-  get: <T>(url: string, config?: AxiosRequestConfig) =>
+  get: <T>(url: string, config?: ApiRequestConfig) =>
     axiosInstance.get<unknown, T>(url, config),
 
-  post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+  post: <T>(url: string, data?: unknown, config?: ApiRequestConfig) =>
     axiosInstance.post<unknown, T>(url, data, config),
 
-  put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+  put: <T>(url: string, data?: unknown, config?: ApiRequestConfig) =>
     axiosInstance.put<unknown, T>(url, data, config),
 
-  delete: <T>(url: string, config?: AxiosRequestConfig) =>
+  delete: <T>(url: string, config?: ApiRequestConfig) =>
     axiosInstance.delete<unknown, T>(url, config),
 
-  patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+  patch: <T>(url: string, data?: unknown, config?: ApiRequestConfig) =>
     axiosInstance.patch<unknown, T>(url, data, config),
 };

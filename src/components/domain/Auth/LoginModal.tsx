@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,9 +41,55 @@ export function LoginModal() {
   const [isLoading, setIsLoading] = useState(false);
   const [socialPending, setSocialPending] = useState<SocialAuthProvider | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [providerEnabled, setProviderEnabled] = useState<Record<SocialAuthProvider, boolean>>({
+    GOOGLE: false,
+    KAKAO: false,
+  });
+  const [providerReason, setProviderReason] = useState<Record<SocialAuthProvider, string | null>>({
+    GOOGLE: null,
+    KAKAO: null,
+  });
   const passwordInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    let isDisposed = false;
+    import('@/lib/api/auth')
+      .then(({ getSocialProviders }) => getSocialProviders())
+      .then((response) => {
+        if (isDisposed) {
+          return;
+        }
+
+        const nextEnabled: Record<SocialAuthProvider, boolean> = { GOOGLE: true, KAKAO: true };
+        const nextReason: Record<SocialAuthProvider, string | null> = { GOOGLE: null, KAKAO: null };
+
+        response.providers.forEach((provider) => {
+          if (provider.provider === 'GOOGLE' || provider.provider === 'KAKAO') {
+            nextEnabled[provider.provider] = provider.enabled;
+            nextReason[provider.provider] = provider.reasonCode ?? null;
+          }
+        });
+
+        setProviderEnabled(nextEnabled);
+        setProviderReason(nextReason);
+      })
+      .catch(() => {
+        if (!isDisposed) {
+          setProviderEnabled({ GOOGLE: false, KAKAO: false });
+          setProviderReason({ GOOGLE: null, KAKAO: null });
+        }
+      });
+
+    return () => {
+      isDisposed = true;
+    };
+  }, [isOpen]);
 
   const handleClose = () => {
     setAuthError(null);
@@ -62,6 +108,15 @@ export function LoginModal() {
   };
 
   const handleSocialLogin = async (provider: SocialAuthProvider) => {
+    if (!providerEnabled[provider]) {
+      if (providerReason[provider] === 'AUTH_011') {
+        setAuthError('선택한 소셜 로그인은 아직 준비 중입니다.');
+      } else {
+        setAuthError('선택한 소셜 로그인 제공자를 현재 사용할 수 없습니다.');
+      }
+      return;
+    }
+
     setAuthError(null);
     setSocialPending(provider);
 
@@ -181,7 +236,7 @@ export function LoginModal() {
             variant="secondary"
             size="lg"
             className={styles.socialButton}
-            disabled={socialPending !== null}
+            disabled={socialPending !== null || !providerEnabled.GOOGLE}
             isLoading={socialPending === 'GOOGLE'}
             onClick={() => void handleSocialLogin('GOOGLE')}
           >
@@ -193,7 +248,7 @@ export function LoginModal() {
             variant="secondary"
             size="lg"
             className={styles.socialButton}
-            disabled={socialPending !== null}
+            disabled={socialPending !== null || !providerEnabled.KAKAO}
             isLoading={socialPending === 'KAKAO'}
             onClick={() => void handleSocialLogin('KAKAO')}
           >

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
@@ -12,26 +13,15 @@ const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
     * 동작 설명은 추후 세분화 예정입니다.
  */
 export function FeedBlock() {
-  const [items, setItems] = useState<ChallengeInfo[]>([]);
-  const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { handleChallengeAction, isParticipant } = useAuthGuard();
 
-  useEffect(() => {
-    const fetchChallenges = async () => {
-      setLoading(true);
-      try {
-        const challenges = await getChallenges();
-        setItems(challenges);
-      } catch (error) {
-        console.error('Failed to fetch challenges:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChallenges();
-  }, []);
+  const { data: items = [], isLoading, isError } = useQuery<ChallengeInfo[]>({
+    queryKey: ['home', 'feed-block', 'challenges'],
+    queryFn: () => getChallenges(undefined, { silentError: true }),
+    retry: 1,
+    staleTime: 1000 * 60 * 5,
+  });
 
   const scroll = (direction: 'left' | 'right') => {
     if (!containerRef.current) return;
@@ -88,9 +78,15 @@ export function FeedBlock() {
           </div>
         ))}
 
-        {loading && items.length === 0 && (
+        {isLoading && items.length === 0 && (
           <div className={styles.loadingRow}>
             <Loader2 className={`animate-spin ${styles.loadingSpinner}`} />
+          </div>
+        )}
+
+        {!isLoading && isError && items.length === 0 && (
+          <div className={styles.errorRow}>
+            추천 챌린지를 불러오지 못했습니다.
           </div>
         )}
       </div>

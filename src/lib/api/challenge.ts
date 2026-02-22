@@ -45,6 +45,10 @@ export interface GetChallengesParams {
   size?: number;
 }
 
+export interface GetChallengesOptions {
+  silentError?: boolean;
+}
+
 const toSearchable = (value: string | undefined) => (value || '').trim().toLowerCase();
 
 const matchesChallengeQuery = (challenge: ChallengeInfo, query: string) => {
@@ -61,7 +65,10 @@ const matchesChallengeQuery = (challenge: ChallengeInfo, query: string) => {
 /**
  * 챌린지 목록 조회 (검색/탐색용)
  */
-export async function getChallenges(params?: GetChallengesParams): Promise<ChallengeInfo[]> {
+export async function getChallenges(
+  params?: GetChallengesParams,
+  options?: GetChallengesOptions,
+): Promise<ChallengeInfo[]> {
   const { query, ...apiParams } = params || {};
   const filteredApiParams = Object.fromEntries(
     Object.entries(apiParams).filter(([, value]) => value !== undefined && value !== null && value !== '')
@@ -69,6 +76,7 @@ export async function getChallenges(params?: GetChallengesParams): Promise<Chall
 
   const response = await client.get<ChallengeInfo[] | ChallengeResponse>('/challenges', {
     params: filteredApiParams,
+    silentError: options?.silentError,
   });
 
   const list = Array.isArray(response)

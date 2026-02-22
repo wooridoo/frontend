@@ -44,6 +44,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({
 const SignupPage = lazy(() => import('./pages/SignupPage').then(module => ({ default: module.SignupPage })));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage').then(module => ({ default: module.ResetPasswordPage })));
 const SocialAuthCallbackPage = lazy(() => import('./pages/SocialAuthCallbackPage').then(module => ({ default: module.SocialAuthCallbackPage })));
+const SocialOnboardingPage = lazy(() => import('./pages/SocialOnboardingPage').then(module => ({ default: module.SocialOnboardingPage })));
 const CreateChallengePage = lazy(() => import('./pages/CreateChallengePage').then(module => ({ default: module.CreateChallengePage })));
 const ChallengeDetailPage = lazy(() => import('./pages/ChallengeDetailPage').then(module => ({ default: module.ChallengeDetailPage })));
 const PaymentCallbackPage = lazy(() => import('./pages/PaymentCallbackPage').then(module => ({ default: module.PaymentCallbackPage })));
@@ -111,6 +112,30 @@ function LoginEntryRoute() {
   return null;
 }
 
+function SocialOnboardingNavigationGuard() {
+  const { isLoggedIn, user } = useAuthStore();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+
+    if (location.pathname === PATHS.AUTH.SOCIAL_ONBOARDING && !user?.requiresOnboarding) {
+      const returnTo = sanitizeReturnToPath(sessionStorage.getItem('oauth_return_to'), PATHS.HOME);
+      navigate(returnTo, { replace: true });
+      return;
+    }
+
+    if (location.pathname !== PATHS.AUTH.SOCIAL_ONBOARDING && user?.requiresOnboarding) {
+      navigate(PATHS.AUTH.SOCIAL_ONBOARDING, { replace: true });
+    }
+  }, [isLoggedIn, location.pathname, navigate, user?.requiresOnboarding]);
+
+  return null;
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -168,6 +193,7 @@ function App() {
       <ErrorBoundary>
         <Suspense fallback={<Loading />}>
           <BrowserRouter>
+            <SocialOnboardingNavigationGuard />
             <Routes>
               <Route element={<MainLayout />}>
                 <Route path={PATHS.SIGNUP} element={<SignupPage />} />
@@ -179,6 +205,7 @@ function App() {
                 <Route path={CHALLENGE_ROUTES.NEW} element={<CreateChallengePage />} />
 
                 <Route element={<AuthGuard />}>
+                  <Route path={PATHS.AUTH.SOCIAL_ONBOARDING} element={<SocialOnboardingPage />} />
                   <Route path={PATHS.MY.PROFILE} element={<MyPage />} />
                   <Route path={PATHS.MY.CHALLENGES} element={<MyChallengesPage />} />
                   <Route path={PATHS.MY.LEDGER} element={<WalletPage />} />

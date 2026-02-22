@@ -22,6 +22,7 @@ export interface User {
     profileImage?: string;
     status: UserStatus;
     hasPassword?: boolean;
+    requiresOnboarding?: boolean;
     brix: number;
     participatingChallengeIds?: string[];
     account?: Account;

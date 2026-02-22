@@ -33,6 +33,24 @@ export interface SocialAuthCompleteRequest {
   state: string;
 }
 
+export interface SocialProviderStatus {
+  provider: SocialAuthProvider;
+  enabled: boolean;
+  reasonCode?: string | null;
+}
+
+export interface SocialProviderStatusResponse {
+  providers: SocialProviderStatus[];
+}
+
+export interface SocialOnboardingPayload {
+  nickname: string;
+  phone: string;
+  termsAgreed: boolean;
+  privacyAgreed: boolean;
+  marketingAgreed: boolean;
+}
+
 export interface SignupRequest {
   email: string;
   password: string;

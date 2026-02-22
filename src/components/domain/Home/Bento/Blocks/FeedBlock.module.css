@@ -225,3 +225,11 @@
 .loadingSpinner {
   color: var(--color-grey-400);
 }
+
+.errorRow {
+  width: 100%;
+  padding: var(--space-5);
+  text-align: center;
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
+}

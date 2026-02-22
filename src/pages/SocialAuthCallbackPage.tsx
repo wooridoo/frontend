@@ -8,10 +8,11 @@ import { ApiError } from '@/lib/api/client';
 import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import { PATHS } from '@/routes/paths';
 import { useAuthStore } from '@/store/useAuthStore';
-import type { SocialAuthProvider } from '@/types/auth';
+import type { LoginResponse, SocialAuthProvider } from '@/types/auth';
 import styles from './SocialAuthCallbackPage.module.css';
 
 type CallbackStatus = 'processing' | 'failed';
+const completeRequestCache = new Map<string, Promise<LoginResponse>>();
 
 /**
  * 외부 소셜 로그인 후 인가 코드를 서비스 세션으로 교환하는 콜백 페이지입니다.
@@ -48,22 +49,46 @@ export function SocialAuthCallbackPage() {
 
   const status: CallbackStatus = precheckErrorMessage || errorMessage ? 'failed' : 'processing';
   const displayErrorMessage = precheckErrorMessage || errorMessage || '소셜 로그인 처리 중 문제가 발생했습니다.';
+  const callbackKey = provider && code && state ? `${provider}:${state}:${code}` : null;
 
   useEffect(() => {
-    if (precheckErrorMessage || !provider || !code || !state) {
+    if (precheckErrorMessage || !provider || !code || !state || !callbackKey) {
       return;
     }
 
-    completeSocialAuth({ provider, code, state })
+    let isDisposed = false;
+    const existingTask = completeRequestCache.get(callbackKey);
+    const requestTask = existingTask ?? completeSocialAuth({ provider, code, state });
+
+    if (!existingTask) {
+      completeRequestCache.set(callbackKey, requestTask);
+    }
+
+    requestTask
       .then((response) => {
+        if (isDisposed) {
+          return;
+        }
+
         login(response.user, response.accessToken, response.refreshToken);
         const fallback = sessionStorage.getItem('oauth_return_to');
         const target = sanitizeReturnToPath(response.returnTo ?? fallback, PATHS.HOME);
+
         sessionStorage.removeItem('oauth_provider');
+        if (response.user?.requiresOnboarding) {
+          sessionStorage.setItem('oauth_return_to', target);
+          navigate(PATHS.AUTH.SOCIAL_ONBOARDING, { replace: true });
+          return;
+        }
+
         sessionStorage.removeItem('oauth_return_to');
         navigate(target, { replace: true });
       })
       .catch((error) => {
+        if (isDisposed) {
+          return;
+        }
+
         if (error instanceof ApiError) {
           if (error.code === 'AUTH_011') {
             setErrorMessage('소셜 로그인 설정이 아직 완료되지 않았습니다.');
@@ -77,12 +102,27 @@ export function SocialAuthCallbackPage() {
             setErrorMessage('소셜 계정 이메일을 확인할 수 없어 로그인을 완료하지 못했습니다.');
             return;
           }
+          if (error.code === 'AUTH_017') {
+            setErrorMessage('인가 코드가 만료되었거나 이미 사용되었습니다. 다시 시도해 주세요.');
+            return;
+          }
+          if (error.code === 'AUTH_018') {
+            setErrorMessage('소셜 인증 제공자 응답 처리 중 문제가 발생했습니다.');
+            return;
+          }
           setErrorMessage(error.message);
           return;
         }
         setErrorMessage('소셜 로그인 처리 중 문제가 발생했습니다.');
+      })
+      .finally(() => {
+        completeRequestCache.delete(callbackKey);
       });
-  }, [code, login, navigate, precheckErrorMessage, provider, state]);
+
+    return () => {
+      isDisposed = true;
+    };
+  }, [callbackKey, code, login, navigate, precheckErrorMessage, provider, state]);
 
   return (
     <PageContainer variant="content" contentWidth="sm">

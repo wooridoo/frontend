@@ -13,6 +13,7 @@ export const PATHS = {
     SIGNUP: '/signup',
     RESET_PASSWORD: '/reset-password',
     SOCIAL_CALLBACK: '/auth/social/callback',
+    SOCIAL_ONBOARDING: '/auth/social/onboarding',
   },
   RECOMMENDED: '/recommended',
   SIGNUP: '/signup',

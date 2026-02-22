@@ -112,6 +112,7 @@ export function normalizeUser(data: unknown): User {
       nickname: '알 수 없음',
       status: UserStatus.ACTIVE,
       hasPassword: true,
+      requiresOnboarding: false,
       brix: 0,
     };
   }
@@ -128,6 +129,7 @@ export function normalizeUser(data: unknown): User {
     profileImage: asString(source.profileImage) || asString(source.imageUrl) || asString(source.avatarUrl) || asString(source.avatar) || undefined,
     status: isValidStatus ? (rawStatus as UserStatus) : UserStatus.ACTIVE,
     hasPassword: asBoolean(source.hasPassword, true),
+    requiresOnboarding: asBoolean(source.requiresOnboarding),
     brix: asNumber(source.brix),
     participatingChallengeIds: asStringArray(source.participatingChallengeIds),
     account: {

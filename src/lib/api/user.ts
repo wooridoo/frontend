@@ -4,6 +4,7 @@
  */
 import { client } from './client';
 import type { User } from '@/types/user';
+import type { SocialOnboardingPayload } from '@/types/auth';
 
 /**
  * 현재 로그인한 사용자 프로필 조회
@@ -65,4 +66,30 @@ export async function checkNickname(nickname: string): Promise<{ available: bool
  */
 export async function withdrawAccount(data: { password?: string; reason?: string }): Promise<void> {
     return client.delete('/users/me', { data });
+}
+
+interface SocialOnboardingCompleteApiResponse {
+    completed: boolean;
+    user: User;
+}
+
+export interface SocialOnboardingCompleteResponse {
+    completed: boolean;
+    user: User;
+}
+
+/**
+ * 소셜 신규가입 사용자의 필수 온보딩 정보를 저장합니다.
+ */
+export async function completeSocialOnboarding(
+    data: SocialOnboardingPayload
+): Promise<SocialOnboardingCompleteResponse> {
+    const response = await client.put<SocialOnboardingCompleteApiResponse>('/users/me/social-onboarding', data, {
+        silentError: true,
+    });
+
+    return {
+        completed: response.completed,
+        user: normalizeUser(response.user),
+    };
 }
