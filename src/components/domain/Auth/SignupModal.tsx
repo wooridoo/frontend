@@ -7,7 +7,10 @@ import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { MessageCircle, Mail } from 'lucide-react'; // ?? ??
 import { PATHS } from '@/routes/paths';
 import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
+import { ApiError } from '@/lib/api/client';
+import type { SocialAuthProvider } from '@/types/auth';
 import { toast } from 'sonner';
+import { useState } from 'react';
 import styles from './SignupModal.module.css';
 
 /**
@@ -18,28 +21,46 @@ export function SignupModal() {
     const { onOpen: openLogin } = useLoginModalStore();
     const navigate = useNavigate();
     const location = useLocation();
+    const [socialPending, setSocialPending] = useState<SocialAuthProvider | null>(null);
     const returnTo = sanitizeReturnToPath(`${location.pathname}${location.search}${location.hash}`, PATHS.HOME);
 
-    const handleLoginLink = () => {
+    const handleClose = () => {
+        setSocialPending(null);
         onClose();
+    };
+
+    const handleLoginLink = () => {
+        handleClose();
         openLogin({ returnTo });
     };
 
     const handleEmailSignup = () => {
-        onClose();
+        handleClose();
         navigate(PATHS.SIGNUP);
     };
 
-    const handleKakaoLogin = () => {
-        toast.info('카카오 로그인은 준비 중입니다.');
-    };
-
-    const handleGoogleLogin = () => {
-        toast.info('구글 로그인은 준비 중입니다.');
+    const handleSocialSignup = async (provider: SocialAuthProvider) => {
+        setSocialPending(provider);
+        try {
+            sessionStorage.setItem('oauth_provider', provider);
+            sessionStorage.setItem('oauth_return_to', returnTo);
+            const { startSocialAuth } = await import('@/lib/api/auth');
+            const response = await startSocialAuth({ provider, intent: 'signup', returnTo });
+            window.location.assign(response.authorizeUrl);
+        } catch (error) {
+            sessionStorage.removeItem('oauth_provider');
+            sessionStorage.removeItem('oauth_return_to');
+            if (error instanceof ApiError && error.code === 'AUTH_011') {
+                toast.info('소셜 로그인은 준비 중입니다.');
+            } else {
+                toast.error('소셜 로그인 처리 중 문제가 발생했습니다.');
+            }
+            setSocialPending(null);
+        }
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} className={styles.modalContent}>
+        <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
             <div className={styles.container}>
                 {/* 보조 설명 */}
                 <header className={styles.header}>
@@ -57,10 +78,12 @@ export function SignupModal() {
                     {/* 보조 설명 */}
                     <Button
                         className={`${styles.socialButton} ${styles.kakaoButton}`}
-                        onClick={handleKakaoLogin}
+                        onClick={() => void handleSocialSignup('KAKAO')}
                         size="lg"
                         type="button"
                         variant="secondary"
+                        disabled={socialPending !== null}
+                        isLoading={socialPending === 'KAKAO'}
                     >
                         <MessageCircle size={20} fill="currentColor" className={styles.icon} />
                         <span>카카오로 3초만에 시작하기</span>
@@ -68,10 +91,12 @@ export function SignupModal() {
 
                     <Button
                         className={`${styles.socialButton} ${styles.googleButton}`}
-                        onClick={handleGoogleLogin}
+                        onClick={() => void handleSocialSignup('GOOGLE')}
                         size="lg"
                         type="button"
                         variant="outline"
+                        disabled={socialPending !== null}
+                        isLoading={socialPending === 'GOOGLE'}
                     >
                         <img src="/icons/google.svg" alt="" className={styles.googleIconImage} />
                         <span>구글로 시작하기</span>

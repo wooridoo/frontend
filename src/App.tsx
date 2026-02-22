@@ -43,6 +43,7 @@ const ChallengeLedgerPage = lazy(() => import('./components/domain/Challenge/Led
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })));
 const SignupPage = lazy(() => import('./pages/SignupPage').then(module => ({ default: module.SignupPage })));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage').then(module => ({ default: module.ResetPasswordPage })));
+const SocialAuthCallbackPage = lazy(() => import('./pages/SocialAuthCallbackPage').then(module => ({ default: module.SocialAuthCallbackPage })));
 const CreateChallengePage = lazy(() => import('./pages/CreateChallengePage').then(module => ({ default: module.CreateChallengePage })));
 const ChallengeDetailPage = lazy(() => import('./pages/ChallengeDetailPage').then(module => ({ default: module.ChallengeDetailPage })));
 const PaymentCallbackPage = lazy(() => import('./pages/PaymentCallbackPage').then(module => ({ default: module.PaymentCallbackPage })));
@@ -171,6 +172,7 @@ function App() {
               <Route element={<MainLayout />}>
                 <Route path={PATHS.SIGNUP} element={<SignupPage />} />
                 <Route path={PATHS.AUTH.RESET_PASSWORD} element={<ResetPasswordPage />} />
+                <Route path={PATHS.AUTH.SOCIAL_CALLBACK} element={<SocialAuthCallbackPage />} />
                 <Route path={PATHS.HOME} element={<HomePage />} />
                 <Route path={PATHS.EXPLORE} element={<ExplorePage />} />
                 <Route path={PATHS.RECOMMENDED} element={<RecommendedPage />} />

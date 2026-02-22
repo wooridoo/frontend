@@ -63,6 +63,6 @@ export async function checkNickname(nickname: string): Promise<{ available: bool
 /**
  * 회원 탈퇴
  */
-export async function withdrawAccount(data: { password: string; reason?: string }): Promise<void> {
+export async function withdrawAccount(data: { password?: string; reason?: string }): Promise<void> {
     return client.delete('/users/me', { data });
 }

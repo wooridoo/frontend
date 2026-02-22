@@ -63,7 +63,8 @@ export function AccountPage() {
   };
 
   const handleWithdraw = async () => {
-    if (!withdrawPassword) {
+    const passwordRequired = user?.hasPassword ?? true;
+    if (passwordRequired && !withdrawPassword) {
       toast.error('탈퇴 확인용 비밀번호를 입력해주세요.');
       return;
     }
@@ -78,7 +79,9 @@ export function AccountPage() {
 
     setWithdrawPending(true);
     try {
-      await withdrawAccount({ password: withdrawPassword });
+      await withdrawAccount({
+        ...(passwordRequired ? { password: withdrawPassword } : {}),
+      });
       toast.success('탈퇴 처리가 완료되었습니다.');
       navigate(PATHS.HOME);
     } catch (error) {
@@ -160,13 +163,15 @@ export function AccountPage() {
               <h2 className={styles.sectionTitle}>회원 탈퇴</h2>
               <p className={styles.helpText}>탈퇴 시 계정은 탈퇴 상태로 전환되며 30일 뒤 완전 삭제됩니다.</p>
               <div className={styles.buttonRow}>
-                <input
-                  className={styles.input}
-                  type="password"
-                  placeholder="탈퇴 확인용 비밀번호"
-                  value={withdrawPassword}
-                  onChange={(e) => setWithdrawPassword(e.target.value)}
-                />
+                {(user?.hasPassword ?? true) && (
+                  <input
+                    className={styles.input}
+                    type="password"
+                    placeholder="탈퇴 확인용 비밀번호"
+                    value={withdrawPassword}
+                    onChange={(e) => setWithdrawPassword(e.target.value)}
+                  />
+                )}
                 <Button
                   type="button"
                   className={styles.dangerButton}

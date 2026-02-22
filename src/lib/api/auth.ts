@@ -1,5 +1,12 @@
 import { client } from './client';
-import type { LoginRequest, LoginResponse, SignupRequest } from '@/types/auth';
+import type {
+  LoginRequest,
+  LoginResponse,
+  SignupRequest,
+  SocialAuthCompleteRequest,
+  SocialAuthStartRequest,
+  SocialAuthStartResponse,
+} from '@/types/auth';
 
 /**
  * 로그인
@@ -62,4 +69,22 @@ export async function executePasswordReset(
   data: PasswordResetExecuteRequest
 ): Promise<PasswordResetExecuteResponse> {
   return client.put<PasswordResetExecuteResponse>('/auth/password/reset', data);
+}
+
+/**
+ * 소셜 로그인 인가 URL을 발급합니다.
+ */
+export async function startSocialAuth(data: SocialAuthStartRequest): Promise<SocialAuthStartResponse> {
+  return client.post<SocialAuthStartResponse>('/auth/social/start', data);
+}
+
+/**
+ * 소셜 인가 코드를 서버에서 교환해 서비스 토큰을 발급받습니다.
+ */
+export async function completeSocialAuth(data: SocialAuthCompleteRequest): Promise<LoginResponse> {
+  const response = await client.post<LoginResponse>('/auth/social/complete', data);
+  if (response.user) {
+    response.user = normalizeUser(response.user);
+  }
+  return response;
 }

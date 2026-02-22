@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -16,6 +16,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { ApiError } from '@/lib/api/client';
 import { PATHS } from '@/routes/paths';
 import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
+import type { SocialAuthProvider } from '@/types/auth';
 
 import styles from './LoginModal.module.css';
 
@@ -38,12 +39,15 @@ export function LoginModal() {
   const { onOpen: openPasswordReset } = usePasswordResetModalStore();
   const { login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [socialPending, setSocialPending] = useState<SocialAuthProvider | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
   const passwordInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClose = () => {
     setAuthError(null);
+    setSocialPending(null);
     onClose();
     if (redirectOnReject) {
       navigate(redirectOnReject);
@@ -52,8 +56,34 @@ export function LoginModal() {
 
   const handleSignupLink = () => {
     setAuthError(null);
+    setSocialPending(null);
     onClose();
     openSignup();
+  };
+
+  const handleSocialLogin = async (provider: SocialAuthProvider) => {
+    setAuthError(null);
+    setSocialPending(provider);
+
+    try {
+      const fallbackReturnTo = `${location.pathname}${location.search}${location.hash}`;
+      const safeReturnTo = sanitizeReturnToPath(returnTo || fallbackReturnTo, PATHS.HOME);
+      sessionStorage.setItem('oauth_provider', provider);
+      sessionStorage.setItem('oauth_return_to', safeReturnTo);
+
+      const { startSocialAuth } = await import('@/lib/api/auth');
+      const response = await startSocialAuth({ provider, intent: 'login', returnTo: safeReturnTo });
+      window.location.assign(response.authorizeUrl);
+    } catch (error) {
+      sessionStorage.removeItem('oauth_provider');
+      sessionStorage.removeItem('oauth_return_to');
+      if (error instanceof ApiError && error.code === 'AUTH_011') {
+        setAuthError('소셜 로그인은 준비 중입니다. 잠시 후 다시 시도해 주세요.');
+      } else {
+        setAuthError('소셜 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+      }
+      setSocialPending(null);
+    }
   };
 
   const {
@@ -146,11 +176,27 @@ export function LoginModal() {
         </div>
 
         <div className={styles.socialButtons}>
-          <Button type="button" variant="secondary" size="lg" className={styles.socialButton} disabled>
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            className={styles.socialButton}
+            disabled={socialPending !== null}
+            isLoading={socialPending === 'GOOGLE'}
+            onClick={() => void handleSocialLogin('GOOGLE')}
+          >
             <img src="/icons/google.svg" alt="" className={styles.socialIcon} />
             구글로 계속하기
           </Button>
-          <Button type="button" variant="secondary" size="lg" className={styles.socialButton} disabled>
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            className={styles.socialButton}
+            disabled={socialPending !== null}
+            isLoading={socialPending === 'KAKAO'}
+            onClick={() => void handleSocialLogin('KAKAO')}
+          >
             <img src="/icons/kakao.svg" alt="" className={styles.socialIcon} />
             카카오로 계속하기
           </Button>

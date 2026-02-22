@@ -21,6 +21,7 @@ export interface User {
     nickname: string;
     profileImage?: string;
     status: UserStatus;
+    hasPassword?: boolean;
     brix: number;
     participatingChallengeIds?: string[];
     account?: Account;

@@ -12,6 +12,7 @@ export const PATHS = {
     LOGIN: '/login',
     SIGNUP: '/signup',
     RESET_PASSWORD: '/reset-password',
+    SOCIAL_CALLBACK: '/auth/social/callback',
   },
   RECOMMENDED: '/recommended',
   SIGNUP: '/signup',

@@ -8,7 +8,29 @@ export interface LoginRequest {
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
+  tokenType?: string;
+  expiresIn?: number;
+  returnTo?: string | null;
   user: User;
+}
+
+export type SocialAuthProvider = 'GOOGLE' | 'KAKAO';
+export type SocialAuthIntent = 'login' | 'signup';
+
+export interface SocialAuthStartRequest {
+  provider: SocialAuthProvider;
+  intent: SocialAuthIntent;
+  returnTo?: string;
+}
+
+export interface SocialAuthStartResponse {
+  authorizeUrl: string;
+}
+
+export interface SocialAuthCompleteRequest {
+  provider: SocialAuthProvider;
+  code: string;
+  state: string;
 }
 
 export interface SignupRequest {
