@@ -15,6 +15,9 @@ export interface CategoryVisual {
   iconName: CategoryVisualIconName;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const CATEGORY_VISUALS: Record<Category, CategoryVisual> = {
   [Category.CULTURE]: { label: '생활습관', iconName: 'categoryCulture' },
   [Category.EXERCISE]: { label: '운동', iconName: 'categoryExercise' },
@@ -26,6 +29,9 @@ export const CATEGORY_VISUALS: Record<Category, CategoryVisual> = {
   [Category.OTHER]: { label: '기타', iconName: 'categoryOther' },
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function getCategoryVisual(category: Category): CategoryVisual {
   return CATEGORY_VISUALS[category] ?? CATEGORY_VISUALS[Category.OTHER];
 }

@@ -27,8 +27,8 @@
   border-radius: var(--radius-sm);
   font-size: var(--font-size-sm);
   color: var(--color-grey-700);
-  padding: 6px 10px;
-  min-width: 110px;
+  padding: var(--size-px-6) var(--size-px-10);
+  min-width: var(--size-px-110);
   background-color: var(--color-surface);
 }
 
@@ -39,8 +39,8 @@
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: var(--size-px-40);
+  height: var(--size-px-40);
   border-radius: 50%;
   object-fit: cover;
 }
@@ -59,7 +59,7 @@
   resize: none;
   font-size: var(--font-size-md);
   outline: none;
-  max-height: 200px;
+  max-height: var(--size-px-200);
   line-height: 1.5;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .postButton {
-  min-width: 114px;
+  min-width: var(--size-px-114);
 }
 
 .sendIcon {

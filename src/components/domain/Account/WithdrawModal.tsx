@@ -6,6 +6,9 @@ import { useMyAccount, useRequestWithdraw } from '@/hooks/useAccount';
 import { formatCurrency } from '@/lib/utils';
 import styles from './ChargeWithdrawModal.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function WithdrawModal() {
     const { isOpen, onClose } = useWithdrawModalStore();
     const { data: account } = useMyAccount();
@@ -14,7 +17,7 @@ export function WithdrawModal() {
 
     const withdrawMutation = useRequestWithdraw();
 
-    // Handle wrapped response safely
+    // 보조 처리
     const availableBalance = account?.availableBalance || 0;
 
     const handleClose = () => {
@@ -34,7 +37,7 @@ export function WithdrawModal() {
             await withdrawMutation.mutateAsync({ amount });
             setStep('success');
         } catch {
-            // Error handled by mutation
+            // 보조 처리
         }
     };
 

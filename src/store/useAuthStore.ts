@@ -18,6 +18,9 @@ interface AuthState {
   refreshUser: () => Promise<void>;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -54,7 +57,7 @@ export const useAuthStore = create<AuthState>()(
             await client.post('/auth/logout', { refreshToken });
           }
         } catch {
-          // Ignore API failure and clear local auth state anyway.
+          // 보조 처리
         }
 
         get().clearSession();

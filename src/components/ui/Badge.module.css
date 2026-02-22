@@ -1,4 +1,4 @@
-/* Badge Component Styles - WDS v2.1 */
+/* 공통 설명 */
 
 .base {
   display: inline-flex;
@@ -9,37 +9,37 @@
   white-space: nowrap;
 }
 
-/* Sizes */
+/* 공통 설명 */
 .sm {
-  height: 20px;
+  height: var(--size-px-20);
   padding: 0 var(--space-2);
   font-size: var(--font-size-xs);
 }
 
 .md {
-  height: 24px;
+  height: var(--size-px-24);
   padding: 0 var(--space-3);
   font-size: var(--font-size-sm);
 }
 
-/* Status Variants */
+/* 공통 설명 */
 .default {
   background-color: var(--color-grey-100);
   color: var(--color-grey-700);
 }
 
 .success {
-  background-color: rgba(22, 163, 74, 0.1);
+  background-color: var(--color-success-alpha);
   color: var(--color-success);
 }
 
 .warning {
-  background-color: rgba(245, 158, 11, 0.1);
+  background-color: var(--color-warning-alpha);
   color: var(--color-warning);
 }
 
 .error {
-  background-color: rgba(220, 38, 38, 0.1);
+  background-color: var(--color-error-alpha);
   color: var(--color-error);
 }
 
@@ -48,19 +48,19 @@
   color: var(--color-locked);
 }
 
-/* Brix Scale Variants */
+/* 공통 설명 */
 .brixHoney {
-  background-color: rgba(245, 158, 11, 0.15);
+  background-color: var(--color-brix-honey-alpha);
   color: var(--color-brix-honey);
 }
 
 .brixGrape {
-  background-color: rgba(147, 51, 234, 0.15);
+  background-color: var(--color-brix-grape-alpha);
   color: var(--color-brix-grape);
 }
 
 .brixApple {
-  background-color: rgba(244, 63, 94, 0.15);
+  background-color: var(--color-brix-apple-alpha);
   color: var(--color-brix-apple);
 }
 
@@ -70,12 +70,12 @@
 }
 
 .brixTomato {
-  background-color: rgba(252, 165, 165, 0.2);
+  background-color: var(--color-brix-tomato-alpha);
   color: var(--color-brix-tomato-text);
 }
 
 .brixBitter {
-  background-color: rgba(20, 83, 45, 0.1);
+  background-color: var(--color-brix-bitter-alpha);
   color: var(--color-brix-bitter);
 }
 

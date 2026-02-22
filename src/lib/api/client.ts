@@ -10,6 +10,9 @@ import { toast } from 'sonner';
 import { normalizeApiError } from './errorNormalizer';
 import { PATHS } from '@/routes/paths';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export class ApiError extends Error {
   status: number;
   code?: string;
@@ -27,6 +30,9 @@ export class ApiError extends Error {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const AUTH_SESSION_EXPIRED_EVENT = 'auth:session-expired';
 
 const axiosInstance: AxiosInstance = axios.create({
@@ -81,7 +87,7 @@ function clearAuthStorage() {
   try {
     localStorage.removeItem('auth-storage');
   } catch {
-    // ignore
+    // 보조 처리
   }
 }
 
@@ -255,6 +261,9 @@ axiosInstance.interceptors.response.use(
   },
 );
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const client = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>
     axiosInstance.get<unknown, T>(url, config),

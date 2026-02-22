@@ -1,6 +1,6 @@
 .modalContent {
   width: 100%;
-  max-width: 400px;
+  max-width: var(--size-px-400);
 }
 
 .container {
@@ -55,7 +55,7 @@
 }
 
 .successIcon {
-  font-size: 48px;
+  font-size: var(--size-px-48);
   animation: bounce 0.5s ease-out;
 }
 

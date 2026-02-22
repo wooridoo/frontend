@@ -21,7 +21,7 @@ function toLottieLoader(name: IconName): LottieLoader | undefined {
 const names = Object.keys(lottieRemoteManifest) as IconName[];
 
 /**
- * 원격 매니페스트 기반 Lottie 로더 레지스트리입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export const lottieRegistry: Partial<Record<IconName, LottieLoader>> = names.reduce(
   (acc, name) => {
@@ -35,7 +35,7 @@ export const lottieRegistry: Partial<Record<IconName, LottieLoader>> = names.red
 );
 
 /**
- * 단일 Lottie 키를 사전 로드합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export async function preloadLottie(name: IconName) {
   const loader = lottieRegistry[name];
@@ -44,7 +44,7 @@ export async function preloadLottie(name: IconName) {
 }
 
 /**
- * preload 플래그가 지정된 Lottie들을 선로딩합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function preloadConfiguredLotties() {
   const namesToPreload = (Object.keys(lottieRemoteManifest) as IconName[]).filter(name => {

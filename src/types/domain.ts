@@ -1,6 +1,6 @@
 /**
- * @deprecated This file is kept for backward compatibility.
- * Please import types from their specific files (e.g., '@/types/user', '@/types/challenge').
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 
 export * from './user';
@@ -12,4 +12,4 @@ export * from './meeting';
 export * from './ledger';
 export * from './vote';
 export * from './notification';
-// enums는 re-export 하지 않음 (기존 동작 유지)
+// 보조 처리

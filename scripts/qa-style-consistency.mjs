@@ -5,6 +5,35 @@ const projectRoot = path.resolve(process.cwd());
 const srcRoot = path.join(projectRoot, 'src');
 
 const codeExtensions = new Set(['.ts', '.tsx', '.css']);
+const pxInspectProperties = new Set([
+  'margin',
+  'margin-top',
+  'margin-right',
+  'margin-bottom',
+  'margin-left',
+  'padding',
+  'padding-top',
+  'padding-right',
+  'padding-bottom',
+  'padding-left',
+  'gap',
+  'row-gap',
+  'column-gap',
+  'width',
+  'height',
+  'min-width',
+  'max-width',
+  'min-height',
+  'max-height',
+  'font-size',
+  'line-height',
+  'letter-spacing',
+  'border-radius',
+  'top',
+  'left',
+  'right',
+  'bottom',
+]);
 
 const inlineStyleAllowlist = new Set([
   'src/components/domain/BrixBadge/BrixBadgeLottie.tsx',
@@ -65,6 +94,30 @@ for (const absoluteFilePath of files) {
     if (hexMatches && hexMatches.length > 0) {
       failures.push(`hex 하드코딩 금지 위반: ${relativePath}`);
     }
+
+    const rgbaMatches = source.match(/\b(?:rgba|rgb|hsla|hsl)\(/g);
+    if (rgbaMatches && rgbaMatches.length > 0) {
+      failures.push(`rgba/hsla 하드코딩 금지 위반: ${relativePath}`);
+    }
+  }
+
+  if (relativePath.endsWith('.css') && !isTokenSource) {
+    const lines = source.split(/\r?\n/);
+    lines.forEach((line, index) => {
+      const match = line.match(/^\s*([a-z-]+)\s*:\s*([^;]+);/i);
+      if (!match) return;
+      const property = match[1].toLowerCase();
+      const value = match[2];
+      if (!pxInspectProperties.has(property)) return;
+
+      const pxValues = value.match(/\b\d+px\b/g);
+      if (!pxValues) return;
+
+      const invalid = pxValues.filter(token => token !== '0px' && token !== '1px');
+      if (invalid.length > 0) {
+        failures.push(`raw px 금지 위반: ${relativePath}:${index + 1}`);
+      }
+    });
   }
 
   if (source.includes(`from '@/components/ui/Icons'`) || source.includes(`from "@/components/ui/Icons"`)) {

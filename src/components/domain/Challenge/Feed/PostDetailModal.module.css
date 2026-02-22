@@ -10,8 +10,8 @@
 }
 
 .avatar {
-  width: 48px;
-  height: 48px;
+  width: var(--size-px-48);
+  height: var(--size-px-48);
   border-radius: 50%;
   object-fit: cover;
 }
@@ -58,7 +58,7 @@
   width: 100%;
   border-radius: var(--radius-md);
   object-fit: cover;
-  max-height: 300px;
+  max-height: var(--size-px-300);
 }
 
 .stats {
@@ -73,5 +73,5 @@
 .statItem {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--size-px-6);
 }

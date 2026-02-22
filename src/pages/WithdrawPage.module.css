@@ -16,7 +16,7 @@
   color: var(--color-grey-900);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--size-px-4);
 }
 
 .currency {
@@ -105,7 +105,7 @@
 .error {
   font-size: var(--font-size-xs);
   color: var(--color-status-danger);
-  margin-top: 4px;
+  margin-top: var(--size-px-4);
 }
 
 .bottomAction {

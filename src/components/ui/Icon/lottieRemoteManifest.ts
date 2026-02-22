@@ -9,8 +9,8 @@ export interface RemoteLottieEntry {
 }
 
 /**
- * 아이콘 키별 원격 Lottie 매니페스트입니다.
- * renderScale/preload는 표시 품질과 초기 체감 로딩을 보정합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export const lottieRemoteManifest: Partial<Record<IconName, RemoteLottieEntry>> = {
   action: {

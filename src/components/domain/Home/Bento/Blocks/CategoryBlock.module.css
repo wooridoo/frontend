@@ -18,18 +18,18 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
-  /* Increased gap */
+  /* 공통 설명 */
   height: 100%;
   align-items: center;
   justify-items: center;
   padding-bottom: var(--space-2);
-  /* Add bottom padding */
+  /* 공통 설명 */
 }
 
 @media (min-width: 640px) {
   .grid {
     gap: var(--space-6);
-    /* Wider gap on desktop */
+    /* 공통 설명 */
     row-gap: var(--space-4);
   }
 }
@@ -39,11 +39,11 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
-  /* Increased text gap */
+  /* 공통 설명 */
   cursor: pointer;
   transition: transform 0.2s;
   width: 100%;
-  /* Ensure click area */
+  /* 공통 설명 */
 }
 
 .item:hover {
@@ -51,11 +51,11 @@
 }
 
 .iconWrapper {
-  width: 56px;
-  /* Increased from 40px to 56px */
-  height: 56px;
+  width: var(--size-px-56);
+  /* 공통 설명 */
+  height: var(--size-px-56);
   border-radius: var(--radius-2xl);
-  /* Softer rounded square or stick to full? Let's keep circle or soft square. Circle is consistent. */
+  /* 공통 설명 */
   background-color: var(--color-grey-100);
   display: flex;
   align-items: center;
@@ -65,9 +65,9 @@
 }
 
 .iconWrapper svg {
-  width: 28px;
-  height: 28px;
-  /* Control icon size explicitly if needed, or rely on parent font-size usually */
+  width: var(--size-px-28);
+  height: var(--size-px-28);
+  /* 공통 설명 */
 }
 
 .item:hover .iconWrapper {
@@ -77,7 +77,7 @@
 
 .label {
   font-size: var(--font-size-base);
-  /* Increased from 11px to sm (14px) */
+  /* 공통 설명 */
   color: var(--color-grey-700);
   font-weight: var(--font-weight-medium);
 }

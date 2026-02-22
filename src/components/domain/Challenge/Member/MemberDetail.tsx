@@ -10,6 +10,9 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui';
 import styles from './MemberDetail.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function MemberDetail() {
     const { memberId } = useParams<{ memberId: string }>();
     const { challengeId } = useChallengeRoute();
@@ -42,7 +45,7 @@ export function MemberDetail() {
 
     const { user, role, stats, supportHistory } = member;
 
-    // Check if current user is leader (can delegate)
+    // 보조 처리
     const isCurrentUserLeader = currentUser?.participatingChallengeIds?.includes(challengeId);
     const canDelegate = isCurrentUserLeader && role !== ChallengeRole.LEADER;
 
@@ -77,7 +80,7 @@ export function MemberDetail() {
 
     return (
         <div className={styles.container}>
-            {/* Profile Section */}
+            {/* 보조 설명 */}
             <div className={styles.profile}>
                 <div className={styles.avatarWrapper}>
                     <img
@@ -100,7 +103,7 @@ export function MemberDetail() {
                 </span>
             </div>
 
-            {/* Stats Grid */}
+            {/* 보조 설명 */}
             <div className={styles.statsGrid}>
                 <div className={styles.statCard}>
                     <span className={styles.statLabel}>
@@ -137,7 +140,7 @@ export function MemberDetail() {
                 </div>
             </div>
 
-            {/* Support History */}
+            {/* 보조 설명 */}
             <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>서포트 이력</h3>
                 <div className={styles.historyList}>
@@ -152,7 +155,7 @@ export function MemberDetail() {
                 </div>
             </div>
 
-            {/* Actions (Leader Only) */}
+            {/* 보조 설명 */}
             {canDelegate && (
                 <div className={styles.actions}>
                     <Button

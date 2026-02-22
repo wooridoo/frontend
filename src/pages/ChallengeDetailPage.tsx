@@ -20,6 +20,9 @@ import { useAuthStore } from '@/store/useAuthStore';
 
 // ...
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeDetailPage() {
   const { challengeId, challengeRef, isResolving } = useChallengeRoute();
   const navigate = useNavigate();
@@ -48,9 +51,9 @@ export function ChallengeDetailPage() {
 
   const isJoined = useMemo(() => {
     if (!challenge) return false;
-    // 1. Check global store (fast)
+    // 보조 처리
     if (isParticipant(challenge.challengeId)) return true;
-    // 2. Check fetched member list (reliable)
+    // 보조 처리
     if (user && membersData?.members) {
       return membersData.members.some(member => String(member.user.userId) === String(user.userId));
     }
@@ -71,7 +74,7 @@ export function ChallengeDetailPage() {
   }, [challenge, challengeRef, location.hash, location.pathname, location.search, navigate]);
 
   const handleJoin = () => {
-    if (isJoined) return; // Prevent join if already joined
+    if (isJoined) return; // ?? ??
     if (challenge) {
       onOpen(String(challenge.challengeId));
     }
@@ -102,7 +105,7 @@ export function ChallengeDetailPage() {
     );
   }
 
-  // 데이터 매핑 (API -> UI)
+  // 보조 처리
   const frequency = '매일';
   const startedAt = challenge.startedAt || challenge.startDate || challenge.createdAt;
   const endedAt = challenge.endDate;
@@ -149,10 +152,10 @@ export function ChallengeDetailPage() {
         <h2 className={styles.sectionTitle}>챌린지 소개</h2>
         <p className={styles.description}>{challenge.description}</p>
         <div className={styles.hostInfo}>
-          {/* 리더 프로필 이미지 API 부재로 기본 이미지 사용 */}
+          {/* 보조 설명 */}
           <Avatar
             name={challenge.leader.nickname}
-            src={null} // 리더 프로필 이미지가 API에 아직 없음
+            src={null} // ?? ??
             size="md"
             className={styles.hostAvatar}
           />

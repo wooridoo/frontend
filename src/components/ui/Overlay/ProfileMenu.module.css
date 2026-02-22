@@ -1,4 +1,4 @@
-/* Shared Styles */
+/* 공통 설명 */
 .menuContainer {
   display: flex;
   flex-direction: column;
@@ -15,8 +15,8 @@
 }
 
 .avatarLarge {
-  width: 48px;
-  height: 48px;
+  width: var(--size-px-48);
+  height: var(--size-px-48);
   border-radius: var(--radius-full);
   overflow: hidden;
   background-color: var(--color-grey-100);
@@ -53,14 +53,14 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  margin-top: 4px;
+  margin-top: var(--size-px-4);
 }
 
 .brixValue {
   font-size: var(--font-size-base);
   font-weight: 700;
   color: var(--color-grey-800);
-  margin-left: 4px;
+  margin-left: var(--size-px-4);
 }
 
 .separator {
@@ -101,7 +101,7 @@
   background-color: var(--color-error-alpha);
 }
 
-/* Specific override for ResponsiveOverlay */
+/* 공통 설명 */
 .profileDropdownWidth {
-  width: 260px;
+  width: var(--size-px-260);
 }

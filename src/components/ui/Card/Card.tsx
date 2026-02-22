@@ -5,21 +5,21 @@ import styles from './Card.module.css';
 import { CardContext } from './CardContext';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Card visual variant */
+  /* 공통 설명 */
   variant?: 'elevated' | 'outlined' | 'filled' | 'accent';
-  /** Padding size */
+  /* 공통 설명 */
   size?: 'sm' | 'md' | 'lg';
-  /** Makes card interactive (clickable) */
+  /* 공통 설명 */
   interactive?: boolean;
-  /** Makes card collapsible (accordion) */
+  /* 공통 설명 */
   collapsible?: boolean;
-  /** Default expanded state for collapsible cards */
+  /* 공통 설명 */
   defaultExpanded?: boolean;
-  /** Loading state - shows skeleton UI */
+  /* 공통 설명 */
   loading?: boolean;
-  /** As HTML element */
+  /* 공통 설명 */
   as?: 'div' | 'article' | 'section';
-  /** Callback when expanded state changes */
+  /* 공통 설명 */
   onExpandedChange?: (expanded: boolean) => void;
 }
 
@@ -76,7 +76,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = 'Card';
 
-// Compound: Card.Header
+// 보조 처리
 interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
   subtitle?: string;
@@ -131,7 +131,7 @@ const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
 );
 CardHeader.displayName = 'CardHeader';
 
-// Compound: Card.Body
+// 보조 처리
 const CardBody = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, children, ...props }, ref) => {
     const { isCollapsible, isExpanded, isLoading } = useContext(CardContext);
@@ -161,7 +161,7 @@ const CardBody = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>
 );
 CardBody.displayName = 'CardBody';
 
-// Compound: Card.Footer
+// 보조 처리
 const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, children, ...props }, ref) => {
     const { isCollapsible, isExpanded } = useContext(CardContext);
@@ -179,7 +179,7 @@ const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
 );
 CardFooter.displayName = 'CardFooter';
 
-// Compound: Card.Image
+// 보조 처리
 interface CardImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   position?: 'top' | 'body';
 }
@@ -202,7 +202,7 @@ const CardImage = forwardRef<HTMLImageElement, CardImageProps>(
 );
 CardImage.displayName = 'CardImage';
 
-// Skeleton Loading Component
+// 보조 처리
 const CardSkeleton = () => (
   <div className={styles.skeleton}>
     <div className={styles.skeletonLine} style={{ width: '70%' }} />
@@ -211,5 +211,5 @@ const CardSkeleton = () => (
   </div>
 );
 
-// Export compound components
+// 보조 처리
 export { Card, CardHeader, CardBody, CardFooter, CardImage, CardSkeleton };

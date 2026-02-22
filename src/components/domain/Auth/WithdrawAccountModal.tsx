@@ -7,6 +7,9 @@ import { useWithdrawAccount } from '@/hooks/useUser';
 import { PATHS } from '@/routes/paths';
 import styles from './WithdrawAccountModal.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function WithdrawAccountModal() {
     const { isOpen, onClose } = useWithdrawAccountModalStore();
     const [confirmText, setConfirmText] = useState('');
@@ -27,7 +30,7 @@ export function WithdrawAccountModal() {
             await withdrawMutation.mutateAsync({ password: password.trim(), reason: 'USER_REQUEST' });
             navigate(PATHS.HOME, { replace: true });
         } catch {
-            // Error handled by mutation
+            // 보조 처리
         }
     };
 

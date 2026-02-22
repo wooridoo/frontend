@@ -4,7 +4,7 @@ import styles from './Avatar.module.css';
 
 interface AvatarProps {
   src?: string | null;
-  name: string; // Used for initials and background color seed
+  name: string; // ?? ??
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   className?: string;
   onClick?: () => void;
@@ -37,6 +37,9 @@ function getColor(name: string): string {
   return COLORS[index];
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function Avatar({ src, name, size = 'md', className, onClick }: AvatarProps) {
   const [hasError, setHasError] = useState(false);
 

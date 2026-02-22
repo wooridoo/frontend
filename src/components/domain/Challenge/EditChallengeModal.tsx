@@ -21,10 +21,13 @@ const defaultFormData: FormData = {
     maxMembers: 20,
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function EditChallengeModal() {
     const { isOpen, challenge, onClose } = useEditChallengeModalStore();
 
-    // Derive initial form data from challenge using useMemo
+    // 보조 처리
     const initialFormData = useMemo(() => {
         if (!challenge) return defaultFormData;
         return {

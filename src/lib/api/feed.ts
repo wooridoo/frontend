@@ -1,23 +1,23 @@
 /**
- * Feed API Module
- * Vote 패턴 기반 구현
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 import { client } from './client';
 import { toApiChallengeId } from './challengeId';
 import type { Post, PostLikeResponse, PostPinResponse } from '@/types/feed';
 
 // =====================
-// Types
+// 보조 처리
 // =====================
 export interface CreatePostInput {
     title: string;
     content: string;
-    category?: string; // e.g. 'NOTICE', 'GENERAL'
+    category?: string; // ?? ??
     images?: string[];
 }
 
 // =====================
-// API Functions
+// 보조 처리
 // =====================
 
 

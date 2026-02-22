@@ -1,6 +1,6 @@
 import { useExpenses } from '@/hooks/useExpense';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/lib/utils';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useExpenseDetailModalStore } from '@/store/modal/useModalStore';
 import type { Expense, ExpenseStatus } from '@/lib/api/expense';
@@ -65,6 +65,9 @@ function ExpenseItem({
   );
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ExpenseList() {
   const { challengeId } = useChallengeRoute();
   const { onOpen: openExpenseDetail } = useExpenseDetailModalStore();

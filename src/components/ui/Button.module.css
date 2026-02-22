@@ -1,4 +1,4 @@
-/* Button Component Styles - Unified System */
+/* 공통 설명 */
 
 .base {
   display: inline-flex;
@@ -155,8 +155,8 @@
 }
 
 .spinner {
-  width: 14px;
-  height: 14px;
+  width: var(--size-px-14);
+  height: var(--size-px-14);
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;

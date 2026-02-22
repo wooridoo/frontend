@@ -20,6 +20,9 @@ export interface NormalizedApiError {
   isMojibake: boolean;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function parseErrorCode(rawMessage?: string | null): { code?: string; detail?: string } {
   if (!rawMessage) return {};
 
@@ -33,6 +36,9 @@ export function parseErrorCode(rawMessage?: string | null): { code?: string; det
   };
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function detectMojibake(message?: string | null): boolean {
   if (!message) return false;
   if (message.includes('\uFFFD')) return true;
@@ -45,6 +51,9 @@ export function detectMojibake(message?: string | null): boolean {
   return false;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function normalizeApiError(rawMessage?: string | null): NormalizedApiError {
   const fallback = '요청 처리 중 오류가 발생했습니다.';
   const safeRaw = rawMessage?.trim() || fallback;

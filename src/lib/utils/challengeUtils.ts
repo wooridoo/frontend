@@ -3,7 +3,7 @@ import { ApiError } from '@/lib/api/client';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 
 /**
- * Check whether current user participates in challenge.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function isParticipant(challengeId: string): boolean {
   const normalizedChallengeId = resolveChallengeId(challengeId);
@@ -12,7 +12,7 @@ export function isParticipant(challengeId: string): boolean {
 }
 
 /**
- * Throw if current user cannot access challenge.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function validateChallengeAccess(challengeId: string): void {
   const normalizedChallengeId = resolveChallengeId(challengeId);

@@ -4,6 +4,9 @@ import { useCompleteMeetingModalStore } from '@/store/modal/useModalStore';
 import { useCompleteMeeting } from '@/hooks/useMeeting';
 import styles from './MeetingModal.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function CompleteMeetingModal() {
     const { isOpen, meeting, onClose } = useCompleteMeetingModalStore();
     const completeMutation = useCompleteMeeting();
@@ -15,7 +18,7 @@ export function CompleteMeetingModal() {
             await completeMutation.mutateAsync(meeting.meetingId);
             onClose();
         } catch {
-            // Error handled by mutation
+            // 보조 처리
         }
     };
 

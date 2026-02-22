@@ -14,7 +14,7 @@ interface NotificationItemProps {
 
 /**
  * 알림 목록 단일 아이템입니다.
- * 링크가 내부 경로면 SPA 라우팅으로, 외부 경로면 location.assign으로 이동합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function NotificationItem({ notification, onClick }: NotificationItemProps) {
   const navigate = useNavigate();

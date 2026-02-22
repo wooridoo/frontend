@@ -9,6 +9,9 @@ interface NotificationListProps {
   onItemClick: (id: string) => void;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function NotificationList({ notifications, isLoading, onItemClick }: NotificationListProps) {
   return (
     <div className={styles.list}>

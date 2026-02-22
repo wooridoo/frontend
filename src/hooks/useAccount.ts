@@ -1,105 +1,114 @@
-/**
- * Account Hooks
- * 계좌 관련 React Query 훅
- */
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-    getMyAccount,
-    getTransactionHistory,
-    requestCreditCharge,
-    requestWithdraw,
-    chargeCallback,
-    supportPayment,
+  chargeCallback,
+  getMyAccount,
+  getTransactionHistory,
+  requestCreditCharge,
+  requestWithdraw,
+  supportPayment,
 } from '@/lib/api/account';
+import { useAuthStore } from '@/store/useAuthStore';
 import type {
-    CreditChargeRequest,
-    WithdrawRequest,
-    TransactionHistoryParams,
-    ChargeCallbackRequest,
-    SupportPaymentRequest,
+  ChargeCallbackRequest,
+  CreditChargeRequest,
+  SupportPaymentRequest,
+  TransactionHistoryParams,
+  WithdrawRequest,
 } from '@/types/account';
 
-// Query Keys
+/**
+ * 계정 도메인 React Query 키 모음입니다.
+ */
 export const accountKeys = {
-    all: ['account'] as const,
-    my: () => [...accountKeys.all, 'me'] as const,
-    transactions: (filters: TransactionHistoryParams) => [...accountKeys.all, 'transactions', filters] as const,
+  all: ['account'] as const,
+  my: () => [...accountKeys.all, 'me'] as const,
+  transactions: (filters: TransactionHistoryParams) => [...accountKeys.all, 'transactions', filters] as const,
 };
 
-// GET My Account
+/**
+ * 내 계정(잔액/상태) 정보를 조회합니다.
+ */
 export function useMyAccount() {
-    const { isLoggedIn } = useAuthStore();
-    return useQuery({
-        queryKey: accountKeys.my(),
-        queryFn: getMyAccount,
-        enabled: isLoggedIn,
-    });
+  const { isLoggedIn } = useAuthStore();
+  return useQuery({
+    queryKey: accountKeys.my(),
+    queryFn: getMyAccount,
+    enabled: isLoggedIn,
+  });
 }
 
-// GET Transaction History (Infinite)
+/**
+ * 거래내역을 무한 스크롤 형태로 조회합니다.
+ */
 export function useTransactionHistoryInfinite(filters: TransactionHistoryParams = {}) {
-    const { isLoggedIn } = useAuthStore();
-    return useInfiniteQuery({
-        queryKey: accountKeys.transactions(filters),
-        queryFn: ({ pageParam }) =>
-            getTransactionHistory({ ...filters, page: pageParam as number, size: 20 }),
-        getNextPageParam: (lastPage) => {
-            return (lastPage.currentPage + 1 < lastPage.totalPages) ? lastPage.currentPage + 1 : undefined;
-        },
-        initialPageParam: 0,
-        enabled: isLoggedIn,
-    });
+  const { isLoggedIn } = useAuthStore();
+  return useInfiniteQuery({
+    queryKey: accountKeys.transactions(filters),
+    queryFn: ({ pageParam }) => getTransactionHistory({ ...filters, page: pageParam as number, size: 20 }),
+    getNextPageParam: lastPage =>
+      (lastPage.currentPage + 1 < lastPage.totalPages) ? lastPage.currentPage + 1 : undefined,
+    initialPageParam: 0,
+    enabled: isLoggedIn,
+  });
 }
 
-// POST Charge Credit
+/**
+ * 크레딧 충전 요청 mutation입니다.
+ */
 export function useRequestCreditCharge() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: (data: CreditChargeRequest) => requestCreditCharge(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: accountKeys.my() });
-            queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
-        },
-    });
+  return useMutation({
+    mutationFn: (data: CreditChargeRequest) => requestCreditCharge(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: accountKeys.my() });
+      queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
+    },
+  });
 }
 
-// POST Withdraw
+/**
+ * 출금 요청 mutation입니다.
+ */
 export function useRequestWithdraw() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: (data: WithdrawRequest) => requestWithdraw(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: accountKeys.my() });
-            queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
-        },
-    });
+  return useMutation({
+    mutationFn: (data: WithdrawRequest) => requestWithdraw(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: accountKeys.my() });
+      queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
+    },
+  });
 }
 
-// POST Charge Callback (Toss 결제 결과 처리)
+/**
+ * 결제 콜백 반영 mutation입니다.
+ */
 export function useChargeCallback() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: (data: ChargeCallbackRequest) => chargeCallback(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: accountKeys.my() });
-            queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
-        },
-    });
+  return useMutation({
+    mutationFn: (data: ChargeCallbackRequest) => chargeCallback(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: accountKeys.my() });
+      queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
+    },
+  });
 }
 
-// POST Support Payment (서포트 결제)
+/**
+ * 챌린지 지원금 결제 mutation입니다.
+ */
 export function useSupportPayment() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: (data: SupportPaymentRequest) => supportPayment(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: accountKeys.my() });
-            queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
-        },
-    });
+  return useMutation({
+    mutationFn: (data: SupportPaymentRequest) => supportPayment(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: accountKeys.my() });
+      queryClient.invalidateQueries({ queryKey: accountKeys.transactions({}) });
+    },
+  });
 }
+

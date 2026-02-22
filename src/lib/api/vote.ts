@@ -112,6 +112,9 @@ const formatLocalDateTime = (date: Date): string => {
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const toLocalDateTimeString = (input: string | Date): string => {
   if (input instanceof Date) {
     return formatLocalDateTime(input);
@@ -175,7 +178,7 @@ const mapListItem = (challengeId: string, item: VoteListItemResponse): Vote => (
   status: normalizeVoteStatus(item.status),
   createdBy: item.createdBy,
   voteCount: toVoteCount(item.voteCount),
-  // eligibleVoters is not returned by current list API in main branch.
+  // 보조 처리
   eligibleVoters: Number(item.eligibleVoters || 0),
   requiredApproval: Number(item.requiredApproval || 0),
   deadline: item.deadline,

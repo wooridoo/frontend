@@ -1,6 +1,6 @@
 .container {
     padding: var(--spacing-lg);
-    max-width: 400px;
+    max-width: var(--size-px-400);
     width: 100%;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .successIcon {
-    font-size: 48px;
+    font-size: var(--size-px-48);
     margin-bottom: var(--spacing-md);
 }
 
@@ -74,8 +74,8 @@
 }
 
 .avatarPreviewImage {
-    width: 80px;
-    height: 80px;
+    width: var(--size-px-80);
+    height: var(--size-px-80);
     border-radius: var(--radius-full);
     object-fit: cover;
     margin-bottom: var(--spacing-sm);

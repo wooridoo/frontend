@@ -13,7 +13,9 @@
     "qa:buttons": "node scripts/qa-buttons.mjs",
     "qa:lottie": "node scripts/qa-lottie.mjs",
     "qa:style": "node scripts/qa-style-consistency.mjs",
-    "qa:comments": "node scripts/qa-comments.mjs"
+    "qa:comments": "node scripts/qa-comments.mjs",
+    "qa:imports": "node scripts/qa-import-consistency.mjs",
+    "qa:cleanup": "npm run qa:style && npm run qa:comments && npm run qa:imports"
   },
   "dependencies": {
     "@ai-sdk/react": "^1.0.0",

@@ -1,5 +1,5 @@
 /**
- * Meeting Domain Types
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export interface MeetingMember {
     userId: string;

@@ -1,5 +1,5 @@
 /**
- * Ledger Domain Types
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export type TransactionType = 'SUPPORT' | 'EXPENSE' | 'FEE' | 'DEPOSIT' | 'REFUND' | 'ENTRY_FEE' | string;
 

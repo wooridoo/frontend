@@ -1,39 +1,48 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  attendMeeting,
+  completeMeeting,
+  createMeeting,
   getChallengeMeetings,
   getMeeting,
-  attendMeeting,
-  createMeeting,
-  updateMeeting,
-  completeMeeting,
   respondAttendance,
+  updateMeeting,
   type CreateMeetingRequest,
   type UpdateMeetingRequest,
 } from '@/lib/api/meeting';
 
+/**
+ * 단일 모임 상세 정보를 조회합니다.
+ */
 export function useMeeting(id?: string) {
   const { data, isLoading, error } = useQuery({
     queryKey: ['meeting', id],
     queryFn: () => getMeeting(id!),
     enabled: !!id,
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    staleTime: 1000 * 60 * 5,
   });
 
   return { data, isLoading, error };
 }
 
+/**
+ * 챌린지의 모임 목록을 조회합니다.
+ */
 export function useChallengeMeetings(challengeId?: string) {
   const { data, isLoading, error } = useQuery({
     queryKey: ['challenge', challengeId, 'meetings'],
     queryFn: () => getChallengeMeetings(challengeId!),
     enabled: !!challengeId,
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    staleTime: 1000 * 60 * 5,
   });
 
-  // Provide fallback empty array to match previous API behavior
   return { data: data || [], isLoading, error };
 }
 
+/**
+ * 참석/불참 응답 mutation입니다.
+ * 성공 시 모임 상세와 챌린지 관련 쿼리를 함께 무효화합니다.
+ */
 export function useAttendMeeting() {
   const queryClient = useQueryClient();
 
@@ -41,21 +50,19 @@ export function useAttendMeeting() {
     mutationFn: ({ meetingId, status }: { meetingId: string; status: 'AGREE' | 'DISAGREE' }) =>
       attendMeeting(meetingId, status),
     onSuccess: (_, { meetingId }) => {
-      // Invalidate meeting detail and challenge meetings list
       queryClient.invalidateQueries({ queryKey: ['meeting', meetingId] });
       queryClient.invalidateQueries({ queryKey: ['challenge'] });
-    }
+    },
   });
 
-  // Wrapper to match previous signature (approx) or easier usage
-  const mutate = (meetingId: string, status: 'AGREE' | 'DISAGREE') =>
-    mutateAsync({ meetingId, status });
+  const mutate = (meetingId: string, status: 'AGREE' | 'DISAGREE') => mutateAsync({ meetingId, status });
 
   return { mutate, isPending };
 }
 
-// --- Additional Meeting Hooks ---
-
+/**
+ * 모임 생성 mutation입니다.
+ */
 export function useCreateMeeting() {
   const queryClient = useQueryClient();
 
@@ -67,6 +74,9 @@ export function useCreateMeeting() {
   });
 }
 
+/**
+ * 모임 수정 mutation입니다.
+ */
 export function useUpdateMeeting() {
   const queryClient = useQueryClient();
 
@@ -79,6 +89,9 @@ export function useUpdateMeeting() {
   });
 }
 
+/**
+ * 모임 완료 처리 mutation입니다.
+ */
 export function useCompleteMeeting() {
   const queryClient = useQueryClient();
 
@@ -91,6 +104,9 @@ export function useCompleteMeeting() {
   });
 }
 
+/**
+ * 참석 상태 응답 mutation입니다.
+ */
 export function useRespondAttendance() {
   const queryClient = useQueryClient();
 

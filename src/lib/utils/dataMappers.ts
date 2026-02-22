@@ -100,7 +100,7 @@ export function normalizeChallengeAccount(data: unknown): ChallengeAccount {
 }
 
 /**
- * 사용자 응답을 UI에서 안정적으로 사용할 수 있는 형태로 정규화합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function normalizeUser(data: unknown): User {
   const source = asObject(data);
@@ -138,7 +138,7 @@ export function normalizeUser(data: unknown): User {
 }
 
 /**
- * 챌린지 응답을 화면 모델로 정규화하고 slug 매핑을 갱신합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function normalizeChallenge(data: unknown): ChallengeInfo {
   const source = asObject(data);

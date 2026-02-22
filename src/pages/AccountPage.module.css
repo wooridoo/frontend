@@ -25,7 +25,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--size-px-14);
   color: var(--color-grey-700);
 }
 
@@ -41,7 +41,7 @@
 
 .input {
   width: 100%;
-  min-height: 42px;
+  min-height: var(--size-px-42);
   border: 1px solid var(--color-grey-300);
   border-radius: var(--radius-sm);
   padding: 0 var(--space-3);
@@ -70,7 +70,7 @@
 }
 
 .empty {
-  min-height: 120px;
+  min-height: var(--size-px-120);
   display: flex;
   align-items: center;
   justify-content: center;

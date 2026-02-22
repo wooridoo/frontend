@@ -1,11 +1,11 @@
 /**
- * WooriDo API Type Definitions
- * Based on API_SPECIFICATION_1.0.0.md
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 
 export type UUID = string;
 
-// Generic API Response Wrapper
+// 보조 처리
 export interface ApiResponse<T = unknown> {
   success: boolean;
   data: T | null;
@@ -13,7 +13,7 @@ export interface ApiResponse<T = unknown> {
   timestamp: string;
 }
 
-// Pagination Response Wrapper
+// 보조 처리
 export interface PageResponse<T> {
   content: T[];
   page: {
@@ -24,7 +24,7 @@ export interface PageResponse<T> {
   };
 }
 
-// Common Params
+// 보조 처리
 export interface PageParams {
   page?: number;
   size?: number;

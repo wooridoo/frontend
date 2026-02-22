@@ -2,9 +2,12 @@ import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useExpense, useDeleteExpense } from '@/hooks/useExpense';
 import { useExpenseApproveModalStore, useExpenseDetailModalStore } from '@/store/modal/useModalStore';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/lib/utils';
 import { capabilities } from '@/lib/api/capabilities';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ExpenseDetailModal() {
   const { isOpen, challengeId, expenseId, onClose } = useExpenseDetailModalStore();
   const { onOpen: openApprove } = useExpenseApproveModalStore();
@@ -17,7 +20,7 @@ export function ExpenseDetailModal() {
       await deleteExpense.mutateAsync(expenseId);
       onClose();
     } catch {
-      // global error handler toast
+      // 보조 처리
     }
   };
 

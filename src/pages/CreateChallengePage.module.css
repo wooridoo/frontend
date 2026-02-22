@@ -57,8 +57,8 @@
 }
 
 .categoryIcon {
-  width: 34px;
-  height: 34px;
+  width: var(--size-px-34);
+  height: var(--size-px-34);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +69,7 @@
   font-weight: 500;
 }
 
-/* Card sections */
+/* 공통 설명 */
 .cardBody {
   display: flex;
   flex-direction: column;
@@ -114,7 +114,7 @@
   border-radius: var(--radius-md);
   font-size: var(--font-size-base);
   width: 100%;
-  min-height: 120px;
+  min-height: var(--size-px-120);
   resize: vertical;
   line-height: 1.5;
 }
@@ -156,8 +156,8 @@
 }
 
 .uploadIcon {
-  width: 32px;
-  height: 32px;
+  width: var(--size-px-32);
+  height: var(--size-px-32);
   color: var(--color-grey-400);
 }
 
@@ -235,14 +235,14 @@
   }
 
   .categoryCard {
-    min-height: 92px;
+    min-height: var(--size-px-92);
     padding: var(--space-3);
     gap: var(--space-1);
   }
 
   .categoryIcon {
-    width: 26px;
-    height: 26px;
+    width: var(--size-px-26);
+    height: var(--size-px-26);
   }
 
   .categoryName {

@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   background-color: var(--color-primary-50);
-  border-radius: 24px;
+  border-radius: var(--size-px-24);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -15,7 +15,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 40px;
+  padding: var(--size-px-40);
 }
 
 .textContent {
@@ -27,32 +27,32 @@
   display: inline-block;
   background-color: var(--color-white);
   color: var(--color-primary);
-  font-size: 14px;
+  font-size: var(--size-px-14);
   font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 100px;
-  margin-bottom: 16px;
+  padding: var(--size-px-6) var(--size-px-12);
+  border-radius: var(--size-px-100);
+  margin-bottom: var(--size-px-16);
 }
 
 .title {
-  font-size: 32px;
+  font-size: var(--size-px-32);
   font-weight: 700;
   line-height: 1.3;
   color: var(--color-grey-900);
   white-space: pre-wrap;
-  margin-bottom: 16px;
+  margin-bottom: var(--size-px-16);
 }
 
 .description {
-  font-size: 16px;
+  font-size: var(--size-px-16);
   line-height: 1.6;
   color: var(--color-grey-600);
-  margin-bottom: 32px;
+  margin-bottom: var(--size-px-32);
 }
 
 .actions {
   display: flex;
-  gap: 12px;
+  gap: var(--size-px-12);
 }
 
 .imageWrapper {
@@ -63,8 +63,8 @@
 }
 
 .emoji {
-  font-size: 120px;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+  font-size: var(--size-px-120);
+  filter: drop-shadow(0 10px 20px var(--color-overlay-black-10));
   animation: float 3s ease-in-out infinite;
 }
 
@@ -86,8 +86,8 @@
   .content {
     flex-direction: column-reverse;
     text-align: center;
-    padding: 24px;
-    gap: 24px;
+    padding: var(--size-px-24);
+    gap: var(--size-px-24);
   }
 
   .textContent {
@@ -97,7 +97,7 @@
   }
 
   .title {
-    font-size: 24px;
+    font-size: var(--size-px-24);
   }
 
   .imageWrapper {
@@ -105,6 +105,6 @@
   }
 
   .emoji {
-    font-size: 80px;
+    font-size: var(--size-px-80);
   }
 }

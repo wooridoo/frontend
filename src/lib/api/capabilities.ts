@@ -3,6 +3,9 @@ const toBoolean = (value: string | undefined, defaultValue: boolean) => {
   return value === '1' || value.toLowerCase() === 'true';
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const capabilities = {
   voteResult: toBoolean(import.meta.env.VITE_CAP_VOTE_RESULT, true),
   notificationDetail: toBoolean(import.meta.env.VITE_CAP_NOTIFICATION_DETAIL, true),

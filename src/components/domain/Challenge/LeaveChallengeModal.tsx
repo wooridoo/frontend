@@ -5,6 +5,9 @@ import { useLeaveChallengeModalStore } from '@/store/modal/useModalStore';
 import { useLeaveChallenge } from '@/hooks/useChallenge';
 import styles from './ChallengeModalShared.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function LeaveChallengeModal() {
     const { isOpen, challengeId, challengeTitle, onClose } = useLeaveChallengeModalStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,9 +21,9 @@ export function LeaveChallengeModal() {
         try {
             await leaveMutation.mutateAsync(challengeId);
             onClose();
-            // Navigate to challenges list
+            // 보조 처리
         } catch {
-            // Error handled by mutation
+            // 보조 처리
         } finally {
             setIsSubmitting(false);
         }

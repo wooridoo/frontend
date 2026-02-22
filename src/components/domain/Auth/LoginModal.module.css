@@ -1,28 +1,28 @@
 .modalContent {
   padding: 0;
   overflow: hidden;
-  max-width: 440px;
+  max-width: var(--size-px-440);
 }
 
 .container {
-  padding: 40px;
+  padding: var(--size-px-40);
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-/* Alert Message */
+/* 공통 설명 */
 .alertMessage {
   background-color: var(--color-danger-bg);
-  /* Red 50 */
+  /* 공통 설명 */
   color: var(--color-danger);
-  /* Red 600 */
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 14px;
+  /* 공통 설명 */
+  padding: var(--size-px-12);
+  border-radius: var(--size-px-8);
+  font-size: var(--size-px-14);
   font-weight: 500;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--size-px-16);
   width: 100%;
 }
 
@@ -30,31 +30,31 @@
   border: 1px solid var(--color-danger-light);
   background-color: var(--color-danger-bg);
   color: var(--color-danger);
-  padding: 10px 12px;
+  padding: var(--size-px-10) var(--size-px-12);
   border-radius: var(--radius-md);
-  font-size: 13px;
+  font-size: var(--size-px-13);
   font-weight: var(--font-weight-medium);
-  margin-bottom: 12px;
+  margin-bottom: var(--size-px-12);
 }
 
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: var(--size-px-32);
 }
 
 .logo {
-  margin-bottom: 16px;
+  margin-bottom: var(--size-px-16);
 }
 
 .logoImage {
-  height: 32px;
-  /* Adjust based on your logo */
+  height: var(--size-px-32);
+  /* 공통 설명 */
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: var(--size-px-14);
   color: var(--color-text-secondary);
   text-align: center;
 }
@@ -62,20 +62,20 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--size-px-20);
 }
 
 .submitButton {
-  margin-top: 8px;
+  margin-top: var(--size-px-8);
 }
 
 .divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 24px 0;
+  margin: var(--size-px-24) 0;
   position: relative;
-  font-size: 12px;
+  font-size: var(--size-px-12);
   color: var(--color-text-tertiary);
 }
 
@@ -88,13 +88,13 @@
 }
 
 .divider span {
-  padding: 0 10px;
+  padding: 0 var(--size-px-10);
 }
 
 .socialButtons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--size-px-12);
 }
 
 .socialButton {
@@ -107,13 +107,13 @@
 
 .socialIcon {
   position: absolute;
-  left: 20px;
-  width: 20px;
-  height: 20px;
+  left: var(--size-px-20);
+  width: var(--size-px-20);
+  height: var(--size-px-20);
 }
 
 .footer {
-  margin-top: 32px;
+  margin-top: var(--size-px-32);
   text-align: center;
 }
 
@@ -141,16 +141,16 @@
 }
 
 .signupPrompt {
-  font-size: 14px;
+  font-size: var(--size-px-14);
   color: var(--color-text-secondary);
 }
 
 .signupLink {
   color: var(--color-primary);
-  /* Brand color */
+  /* 공통 설명 */
   font-weight: 600;
   text-decoration: none;
-  margin-left: 8px;
+  margin-left: var(--size-px-8);
 }
 
 .signupLink:hover {

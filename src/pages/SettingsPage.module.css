@@ -39,7 +39,7 @@
 }
 
 .accountEmail {
-  margin-top: 2px;
+  margin-top: var(--size-px-2);
   font-size: var(--font-size-sm);
   color: var(--color-grey-500);
   word-break: break-all;
@@ -49,8 +49,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: var(--size-px-34);
+  height: var(--size-px-34);
   border-radius: var(--radius-full);
   color: var(--color-grey-400);
 }
@@ -87,8 +87,8 @@
 }
 
 .settingIcon {
-  width: 34px;
-  height: 34px;
+  width: var(--size-px-34);
+  height: var(--size-px-34);
   border-radius: var(--radius-md);
   background: var(--color-blue-100);
   color: var(--color-blue-700);
@@ -108,15 +108,15 @@
 }
 
 .settingDesc {
-  margin-top: 2px;
+  margin-top: var(--size-px-2);
   font-size: var(--font-size-xs);
   color: var(--color-grey-500);
 }
 
 .toggle {
   position: relative;
-  width: 44px;
-  height: 24px;
+  width: var(--size-px-44);
+  height: var(--size-px-24);
   border-radius: var(--radius-full);
   padding: 0;
   transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
@@ -137,20 +137,20 @@
 
 .toggleThumb {
   position: absolute;
-  top: 3px;
-  width: 18px;
-  height: 18px;
+  top: var(--size-px-3);
+  width: var(--size-px-18);
+  height: var(--size-px-18);
   border-radius: 50%;
   background-color: var(--color-white);
   transition: left var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
 .toggleThumbOn {
-  left: 23px;
+  left: var(--size-px-23);
 }
 
 .toggleThumbOff {
-  left: 3px;
+  left: var(--size-px-3);
 }
 
 .rowButton {
@@ -167,8 +167,8 @@
 }
 
 .rowButtonIcon {
-  width: 34px;
-  height: 34px;
+  width: var(--size-px-34);
+  height: var(--size-px-34);
   border-radius: var(--radius-md);
   background-color: var(--color-grey-100);
   color: var(--color-grey-600);

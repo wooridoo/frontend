@@ -19,6 +19,9 @@ const TABS: { value: FilterTab; label: string }[] = [
     { value: 'GRACE_PERIOD', label: '유예' },
 ];
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function MemberList() {
     const { challengeId, challengeRef } = useChallengeRoute();
     const navigate = useNavigate();
@@ -46,7 +49,7 @@ export function MemberList() {
 
     return (
         <div className={styles.container}>
-            {/* Header with Summary */}
+            {/* 보조 설명 */}
             <div className={styles.header}>
                 <h2 className={styles.title}>멤버</h2>
                 {data?.summary && (
@@ -66,7 +69,7 @@ export function MemberList() {
                 )}
             </div>
 
-            {/* Filter Tabs */}
+            {/* 보조 설명 */}
             <div className={styles.tabs}>
                 {TABS.map(tab => (
                     <Button
@@ -82,7 +85,7 @@ export function MemberList() {
                 ))}
             </div>
 
-            {/* Member List */}
+            {/* 보조 설명 */}
             <div className={styles.memberList}>
                 {data?.members && data.members.length > 0 ? (
                     data.members.map(member => (

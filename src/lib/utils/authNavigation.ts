@@ -1,3 +1,6 @@
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function isSafeInternalPath(target: string | null | undefined): target is string {
   if (!target || typeof target !== 'string') return false;
   if (!target.startsWith('/')) return false;
@@ -11,6 +14,9 @@ export function isSafeInternalPath(target: string | null | undefined): target is
   }
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function sanitizeReturnToPath(
   target: string | null | undefined,
   fallback: string = '/',

@@ -1,5 +1,5 @@
-/* FinancialText Component Styles - WDS v2.1 */
-/* CRITICAL: Always use tabular-nums for money display */
+/* 공통 설명 */
+/* 공통 설명 */
 
 .financial {
   font-family: var(--font-sans);
@@ -8,7 +8,7 @@
   font-weight: var(--font-weight-semibold);
 }
 
-/* Size Variants */
+/* 공통 설명 */
 .sm {
   font-size: var(--font-size-sm);
 }
@@ -25,7 +25,7 @@
   font-size: var(--font-size-xl);
 }
 
-/* Color Variants */
+/* 공통 설명 */
 .default {
   color: var(--color-grey-900);
 }

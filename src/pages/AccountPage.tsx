@@ -11,6 +11,9 @@ import { changeMyPassword, getMyProfile, withdrawAccount } from '@/lib/api/user'
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './AccountPage.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function AccountPage() {
   const navigate = useNavigate();
   const { confirm } = useConfirmDialog();

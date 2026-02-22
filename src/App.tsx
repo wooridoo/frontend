@@ -15,7 +15,7 @@ import { MainLayout } from './components/layout';
 import { AuthGuard } from './components/auth/AuthGuard';
 import { ChallengeGuard } from './components/auth/ChallengeGuard';
 import { ModalHost } from './components/ui/Overlay/ModalHost';
-import { ErrorBoundary, Loading } from './components/common';
+import { ErrorBoundary, Loading } from '@/components/feedback';
 import { RegularMeetingDetail } from './components/domain/Challenge/Meeting/RegularMeetingDetail';
 import { RegularMeetingList } from './components/domain/Challenge/Meeting/RegularMeetingList';
 import { VoteList } from './components/domain/Challenge/Vote/VoteList';

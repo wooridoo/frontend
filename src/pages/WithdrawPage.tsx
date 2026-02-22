@@ -13,6 +13,9 @@ import { requestWithdraw } from '@/lib/api/account';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import styles from './WithdrawPage.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function WithdrawPage() {
   const navigate = useNavigate();
   const { user, refreshUser } = useAuthStore();

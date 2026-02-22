@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-// Context for Card compound components
+// 보조 처리
 export interface CardContextValue {
   size: 'sm' | 'md' | 'lg';
   isExpanded: boolean;
@@ -9,6 +9,9 @@ export interface CardContextValue {
   isLoading: boolean;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const CardContext = createContext<CardContextValue>({
   size: 'md',
   isExpanded: true,
@@ -17,5 +20,8 @@ export const CardContext = createContext<CardContextValue>({
   isLoading: false,
 });
 
-// Hook for consuming card context
+// 보조 처리
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const useCardContext = () => useContext(CardContext);

@@ -5,6 +5,9 @@ import { useDeleteChallengeModalStore } from '@/store/modal/useModalStore';
 import { useDeleteChallenge } from '@/hooks/useChallenge';
 import styles from './ChallengeModalShared.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function DeleteChallengeModal() {
     const { isOpen, challengeId, challengeTitle, onClose } = useDeleteChallengeModalStore();
     const [confirmText, setConfirmText] = useState('');
@@ -22,9 +25,9 @@ export function DeleteChallengeModal() {
         try {
             await deleteMutation.mutateAsync(challengeId);
             handleClose();
-            // Navigate to challenges list after deletion
+            // 보조 처리
         } catch {
-            // Error handled by mutation
+            // 보조 처리
         }
     };
 

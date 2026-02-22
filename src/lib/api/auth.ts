@@ -26,7 +26,7 @@ export async function signup(data: SignupRequest): Promise<void> {
 
 /**
  * 로그아웃
- * POST /auth/logout — 서버 측 토큰 무효화
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export async function logout(refreshToken: string): Promise<void> {
   return client.post<void>('/auth/logout', { refreshToken });
@@ -34,7 +34,7 @@ export async function logout(refreshToken: string): Promise<void> {
 
 /**
  * 토큰 갱신
- * POST /auth/refresh — refreshToken으로 새 accessToken 발급
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export async function refreshToken(token: string): Promise<{ accessToken: string }> {
   return client.post<{ accessToken: string }>('/auth/refresh', { refreshToken: token });
@@ -42,7 +42,7 @@ export async function refreshToken(token: string): Promise<{ accessToken: string
 
 /**
  * 비밀번호 재설정 요청
- * POST /auth/password/reset — 이메일로 재설정 링크 전송
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export async function requestPasswordReset(email: string): Promise<void> {
   return client.post<void>('/auth/password/reset', { email });

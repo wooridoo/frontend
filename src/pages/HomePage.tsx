@@ -10,6 +10,9 @@ import { FAB } from '@/components/ui';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './HomePage.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function HomePage() {
   const navigate = useNavigate();
 
@@ -20,37 +23,37 @@ export function HomePage() {
   return (
     <PageContainer variant="content" contentWidth="full" className={styles.pageContainer}>
       <BentoGrid>
-        {/* Row 1 */}
-        {/* Main Hero (3x2) - Expanded to 3 columns */}
+        {/* 보조 설명 */}
+        {/* 보조 설명 */}
         <BentoItem colSpan={3} rowSpan={2}>
           <HeroBlock />
         </BentoItem>
 
-        {/* User Status (1x1) - Placed next to Hero */}
+        {/* 보조 설명 */}
         <BentoItem colSpan={1} rowSpan={1}>
           <StatusBlock />
         </BentoItem>
 
-        {/* Row 2 (Partial fill due to Hero rowSpan=2) */}
-        {/* Active Challenge (1x2) - Vertical Poster, placed under Status */}
+        {/* 보조 설명 */}
+        {/* 보조 설명 */}
         <BentoItem colSpan={1} rowSpan={2}>
           <ActiveChallengeBlock />
         </BentoItem>
 
-        {/* Row 3 */}
-        {/* Categories (3x1) - Expanded to 3 columns, fills gap below Hero */}
+        {/* 보조 설명 */}
+        {/* 보조 설명 */}
         <BentoItem colSpan={3} rowSpan={1}>
           <CategoryBlock />
         </BentoItem>
 
-        {/* Feed / Today's Challenge (4x2) - Full width grid */}
+        {/* 보조 설명 */}
         <BentoItem colSpan={4} rowSpan={2}>
           <FeedBlock />
         </BentoItem>
 
       </BentoGrid>
 
-      {/* Floating Action Button for Challenge Creation */}
+      {/* 보조 설명 */}
       <FAB
         variant="primary"
         size="lg"

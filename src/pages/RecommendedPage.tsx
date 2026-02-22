@@ -12,10 +12,13 @@ import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 
 const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function RecommendedPage() {
   const { isLoggedIn, user, requireAuth } = useAuthGuard();
 
-  // Fetch Recommended (Top 3 Popular)
+  // 보조 처리
   const { data: challenges, isLoading } = useQuery({
     queryKey: ['challenges', 'recommended'],
     queryFn: () => getChallenges({ sort: 'memberCount.desc', size: 3 }),
@@ -76,7 +79,7 @@ export function RecommendedPage() {
                         (e.target as HTMLImageElement).src = CHALLENGE_FALLBACK_IMAGE;
                       }}
                     />
-                    {/* <div className={styles.badge}>98% 일치</div> - Recommendation Logic Not Implemented */}
+                    {/* 보조 설명 */}
                   </div>
                   <div className={styles.cardContent}>
                     <span className={styles.tag}>{getCategoryLabel(challenge.category)}</span>

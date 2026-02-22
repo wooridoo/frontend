@@ -9,6 +9,9 @@ import { toChallengeSlug } from '@/lib/utils/challengeRoute';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import styles from './ChallengeDashboardLayout.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeDashboardLayout() {
   const { challengeId, challengeRef, isResolving } = useChallengeRoute();
   const location = useLocation();
@@ -59,16 +62,16 @@ export function ChallengeDashboardLayout() {
 
   return (
     <div className={styles.layout}>
-      {/* 1. Hero */}
+      {/* 보조 설명 */}
       <ChallengeHero challenge={challenge} />
 
-      {/* 2. Stats Dashboard */}
+      {/* 보조 설명 */}
       <ChallengeStats challengeId={challengeId} />
 
-      {/* 3. Sticky Tabs */}
+      {/* 보조 설명 */}
       <ChallengeTabs />
 
-      {/* 4. Tab Content */}
+      {/* 보조 설명 */}
       <main className={styles.content}>
         <PageContainer variant="content" contentWidth="xl" contentClassName={styles.contentShell}>
           <Outlet context={{ challenge }} />

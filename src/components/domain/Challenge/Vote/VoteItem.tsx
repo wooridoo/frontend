@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import type { Vote } from '../../../../types/domain';
+import type { Vote } from '@/types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { VoteStatusBadge } from './VoteStatusBadge';
 import { VoteStatus } from '@/types/domain';
@@ -12,6 +12,9 @@ interface VoteItemProps {
   challengeRef?: string;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function VoteItem({ vote, challengeRef }: VoteItemProps) {
   const navigate = useNavigate();
   const shouldLoadResult = capabilities.voteResult && vote.status !== VoteStatus.PENDING;

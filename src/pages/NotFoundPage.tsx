@@ -5,6 +5,9 @@ import { AlertCircle } from 'lucide-react';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import styles from './NotFoundPage.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function NotFoundPage() {
   const navigate = useNavigate();
 

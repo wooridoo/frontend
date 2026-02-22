@@ -5,12 +5,15 @@ import { useEditProfileModalStore } from '@/store/modal/useModalStore';
 import { useMyProfile, useUpdateProfile } from '@/hooks/useUser';
 import styles from './AuthModal.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function EditProfileModal() {
     const { isOpen, onClose } = useEditProfileModalStore();
     const { data: user } = useMyProfile();
     const updateMutation = useUpdateProfile();
 
-    // Derive initial values from user using useMemo
+    // 보조 처리
     const initialNickname = useMemo(() => user?.nickname || '', [user]);
     const initialProfileImage = useMemo(() => user?.profileImage || '', [user]);
 
@@ -51,7 +54,7 @@ export function EditProfileModal() {
                 <h2 className={styles.title}>프로필 수정</h2>
 
                 <div className={styles.form}>
-                    {/* Avatar Preview */}
+                    {/* 보조 설명 */}
                     <div className={styles.avatarPreview}>
                         <img
                             src={profileImage || '/images/avatar-fallback.svg'}

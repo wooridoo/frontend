@@ -20,36 +20,36 @@
 
 .initials {
   color: white;
-  /* Initials are always white on colored background */
+  /* 공통 설명 */
 }
 
-/* Sizes */
+/* 공통 설명 */
 .sm {
-  width: 32px;
-  height: 32px;
-  font-size: 12px;
+  width: var(--size-px-32);
+  height: var(--size-px-32);
+  font-size: var(--size-px-12);
 }
 
 .md {
-  width: 40px;
-  height: 40px;
-  font-size: 14px;
+  width: var(--size-px-40);
+  height: var(--size-px-40);
+  font-size: var(--size-px-14);
 }
 
 .lg {
-  width: 48px;
-  height: 48px;
-  font-size: 18px;
+  width: var(--size-px-48);
+  height: var(--size-px-48);
+  font-size: var(--size-px-18);
 }
 
 .xl {
-  width: 64px;
-  height: 64px;
-  font-size: 24px;
+  width: var(--size-px-64);
+  height: var(--size-px-64);
+  font-size: var(--size-px-24);
 }
 
 .xxl {
-  width: 80px;
-  height: 80px;
-  font-size: 32px;
+  width: var(--size-px-80);
+  height: var(--size-px-80);
+  font-size: var(--size-px-32);
 }

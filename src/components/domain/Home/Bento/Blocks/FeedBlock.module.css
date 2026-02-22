@@ -26,8 +26,8 @@
 }
 
 .controlBtn {
-  width: 32px;
-  height: 32px;
+  width: var(--size-px-32);
+  height: var(--size-px-32);
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
@@ -45,18 +45,18 @@
   border-color: var(--color-grey-300);
 }
 
-/* Hide controls on desktop if needed? No, user requested them. */
+/* 공통 설명 */
 @media (min-width: 1280px) {
   .controls {
     display: flex;
-    /* Show controls on desktop */
+    /* 공통 설명 */
   }
 }
 
-/* Feed List Container */
-/* Renamed from .list to .grid in TSX, keeping semantic name here but supporting both just in case or fully replacing */
-/* Feed List Container */
-/* Renamed from .list to .grid in TSX, keeping semantic name here but supporting both just in case or fully replacing */
+/* 공통 설명 */
+/* 공통 설명 */
+/* 공통 설명 */
+/* 공통 설명 */
 .grid {
   flex: 1;
   display: flex;
@@ -64,9 +64,9 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding-bottom: var(--space-2);
-  /* Space for shadow/scroll */
+  /* 공통 설명 */
 
-  /* Hide scrollbar */
+  /* 공통 설명 */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -75,23 +75,23 @@
   display: none;
 }
 
-/* Desktop: Keep flex layout for horizontal scroll */
+/* 공통 설명 */
 @media (min-width: 1280px) {
   .grid {
     display: flex;
-    /* Force flex instead of grid */
+    /* 공통 설명 */
     overflow-x: hidden;
-    /* Hide scrollbar but allow programmatic scroll */
+    /* 공통 설명 */
     scroll-behavior: smooth;
     padding-bottom: 0;
     height: 100%;
   }
 }
 
-/* Card Styles */
+/* 공통 설명 */
 .card {
-  min-width: 260px;
-  /* Mobile: Fixed width for carousel */
+  min-width: var(--size-px-260);
+  /* 공통 설명 */
   scroll-snap-align: start;
   background-color: white;
   border-radius: var(--radius-lg);
@@ -101,14 +101,14 @@
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
   height: 100%;
-  /* Fill parent height */
+  /* 공통 설명 */
 }
 
-/* Desktop: Card fills grid cell - NO, now it scrolls */
+/* 공통 설명 */
 @media (min-width: 1280px) {
   .card {
     min-width: 25%;
-    /* Show approx 4 items */
+    /* 공통 설명 */
     width: 25%;
     flex-shrink: 0;
   }
@@ -121,8 +121,8 @@
 
 .imageWrapper {
   width: 100%;
-  height: 140px;
-  /* Mobile default */
+  height: var(--size-px-140);
+  /* 공통 설명 */
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -130,11 +130,11 @@
 @media (min-width: 1280px) {
   .imageWrapper {
     height: 60%;
-    /* Desktop: Taller image (Poster style) */
-    max-height: 240px;
-    /* Limit max height if needed, or let it flex */
+    /* 공통 설명 */
+    max-height: var(--size-px-240);
+    /* 공통 설명 */
     flex: 1;
-    /* Allow image to fill available space */
+    /* 공통 설명 */
   }
 }
 
@@ -152,20 +152,20 @@
 .cardContent {
   padding: var(--space-4);
   flex: 1;
-  /* Fill remaining space */
+  /* 공통 설명 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Space out content */
+  /* 공통 설명 */
 }
 
 .tag {
-  font-size: 10px;
+  font-size: var(--size-px-10);
   color: var(--color-orange-600);
   font-weight: var(--font-weight-bold);
   background-color: var(--color-orange-50);
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: var(--size-px-2) var(--size-px-6);
+  border-radius: var(--size-px-4);
   align-self: flex-start;
   margin-bottom: var(--space-2);
 }
@@ -203,7 +203,7 @@
 .joinBtn {
   background-color: var(--color-grey-900);
   color: white;
-  padding: 8px 16px;
+  padding: var(--size-px-8) var(--size-px-16);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);

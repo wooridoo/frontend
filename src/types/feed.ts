@@ -2,12 +2,12 @@ import { PostCategory } from './enums';
 import type { User } from './user';
 
 /**
- * SNS Domain Types
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export interface Post {
-    id: string; // UUID
+    id: string; // ?? ??
     challengeId?: string;
-    createdBy: User; // or just userId? Typically expanded in frontend
+    createdBy: User; // ?? ??
     title?: string;
     content: string;
     category: PostCategory;
@@ -17,7 +17,7 @@ export interface Post {
     likeCount: number;
     commentCount: number;
     viewCount: number;
-    images?: string[]; // Simplified for now
+    images?: string[]; // ?? ??
     createdAt: string;
 }
 

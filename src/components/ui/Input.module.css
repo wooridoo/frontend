@@ -1,4 +1,4 @@
-/* Input Component Styles - WDS v2.1 */
+/* 공통 설명 */
 
 .container {
   display: flex;
@@ -14,7 +14,7 @@
 
 .input {
   width: 100%;
-  height: 44px;
+  height: var(--size-px-44);
   padding: 0 var(--space-4);
   font-size: var(--font-size-base);
   color: var(--color-grey-900);

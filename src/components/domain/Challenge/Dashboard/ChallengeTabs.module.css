@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  /* Above regular content */
+  /* 공통 설명 */
   background-color: white;
   border-bottom: 1px solid var(--color-grey-100);
   padding: 0 var(--layout-gutter-desktop);
@@ -15,7 +15,7 @@
   margin: 0 auto;
   overflow-x: auto;
   -ms-overflow-style: none;
-  /* Hide scrollbar */
+  /* 공통 설명 */
   scrollbar-width: none;
 }
 
@@ -53,14 +53,14 @@
 .badge {
   background-color: var(--color-orange-500);
   color: white;
-  font-size: 10px;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 8px;
+  font-size: var(--size-px-10);
+  min-width: var(--size-px-16);
+  height: var(--size-px-16);
+  border-radius: var(--size-px-8);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
+  padding: 0 var(--size-px-4);
   font-weight: 700;
 }
 

@@ -4,15 +4,15 @@ import { cn } from '@/lib/utils';
 import styles from './FAB.module.css';
 
 export interface FABProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** FAB variant */
+  /* 공통 설명 */
   variant?: 'primary' | 'secondary';
-  /** FAB size */
+  /* 공통 설명 */
   size?: 'sm' | 'md' | 'lg';
-  /** Position on screen */
+  /* 공통 설명 */
   position?: 'bottomRight' | 'bottomLeft' | 'bottomCenter';
-  /** Custom icon (defaults to Plus) */
+  /* 공통 설명 */
   icon?: React.ReactNode;
-  /** Label for extended FAB */
+  /* 공통 설명 */
   label?: string;
 }
 

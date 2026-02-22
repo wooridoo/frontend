@@ -14,7 +14,7 @@ export interface ExpenseUser {
 }
 
 export interface Expense {
-  // Vote-driven flow: expenseId is UI alias of voteId.
+  // 보조 처리
   expenseId: string;
   voteId: string;
   challengeId: string;

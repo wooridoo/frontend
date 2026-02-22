@@ -1,21 +1,21 @@
-/* Card Component Styles - WDS v2.1 */
+/* 공통 설명 */
 
 .card {
   display: flex;
   flex-direction: column;
   background-color: var(--color-surface);
-  border-radius: 16px;
+  border-radius: var(--size-px-16);
   overflow: hidden;
   transition: all 0.2s ease;
 }
 
-/* Variants */
+/* 공통 설명 */
 .elevated {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px var(--color-overlay-black-08);
 }
 
 .elevated:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px var(--color-overlay-black-12);
   transform: translateY(-2px);
 }
 
@@ -37,10 +37,10 @@
   background-color: var(--color-grey-100);
 }
 
-/* NEW: Accent variant - top color bar */
+/* 공통 설명 */
 .accent {
   border: 1px solid var(--color-grey-200);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px var(--color-overlay-black-06);
   position: relative;
   overflow: visible;
 }
@@ -51,33 +51,33 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: var(--size-px-4);
   background: linear-gradient(90deg, var(--color-orange-500), var(--color-orange-400));
-  border-radius: 16px 16px 0 0;
+  border-radius: var(--size-px-16) var(--size-px-16) 0 0;
 }
 
 .accent:hover {
-  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.15);
+  box-shadow: 0 4px 12px var(--color-brand-orange-alpha-15);
   border-color: var(--color-orange-200);
 }
 
-/* Sizes */
+/* 공통 설명 */
 .sm {
-  padding: 12px;
-  border-radius: 12px;
+  padding: var(--size-px-12);
+  border-radius: var(--size-px-12);
 }
 
 .md {
-  padding: 16px;
-  border-radius: 16px;
+  padding: var(--size-px-16);
+  border-radius: var(--size-px-16);
 }
 
 .lg {
-  padding: 24px;
-  border-radius: 20px;
+  padding: var(--size-px-24);
+  border-radius: var(--size-px-20);
 }
 
-/* Interactive */
+/* 공통 설명 */
 .interactive {
   cursor: pointer;
 }
@@ -87,32 +87,32 @@
   outline-offset: 2px;
 }
 
-/* Collapsible */
+/* 공통 설명 */
 .collapsible {
   overflow: hidden;
 }
 
-/* Loading */
+/* 공통 설명 */
 .loading {
   pointer-events: none;
 }
 
-/* Parts: Header */
+/* 공통 설명 */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: var(--size-px-12);
   border-bottom: 1px solid var(--color-grey-100);
-  margin-bottom: 12px;
+  margin-bottom: var(--size-px-12);
 }
 
 .headerCollapsible {
   cursor: pointer;
   user-select: none;
   transition: background-color 0.15s ease;
-  margin: -16px -16px 12px -16px;
-  padding: 16px;
+  margin: -var(--size-px-16) -var(--size-px-16) var(--size-px-12) -var(--size-px-16);
+  padding: var(--size-px-16);
   border-bottom: none;
 }
 
@@ -123,24 +123,24 @@
 .headerContent {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--size-px-12);
 }
 
 .headerIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: var(--size-px-40);
+  height: var(--size-px-40);
   background: linear-gradient(135deg, var(--color-orange-50), var(--color-orange-100));
-  border-radius: 10px;
+  border-radius: var(--size-px-10);
   color: var(--color-orange-600);
 }
 
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--size-px-8);
 }
 
 .chevron {
@@ -153,19 +153,19 @@
 }
 
 .title {
-  font-size: 16px;
+  font-size: var(--size-px-16);
   font-weight: 600;
   color: var(--color-grey-900);
   margin: 0;
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: var(--size-px-14);
   color: var(--color-grey-500);
-  margin: 4px 0 0 0;
+  margin: var(--size-px-4) 0 0 0;
 }
 
-/* Parts: Body */
+/* 공통 설명 */
 .body {
   flex: 1;
 }
@@ -186,46 +186,46 @@
   }
 }
 
-/* Parts: Footer */
+/* 공통 설명 */
 .footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 12px;
+  padding-top: var(--size-px-12);
   border-top: 1px solid var(--color-grey-100);
-  margin-top: 12px;
+  margin-top: var(--size-px-12);
 }
 
-/* Image Support */
+/* 공통 설명 */
 .image {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  margin: -16px -16px 16px -16px;
-  width: calc(100% + 32px);
+  margin: -var(--size-px-16) -var(--size-px-16) var(--size-px-16) -var(--size-px-16);
+  width: calc(100% + var(--size-px-32));
 }
 
 .imageTop {
   margin: 0;
   width: 100%;
-  border-radius: 16px 16px 0 0;
+  border-radius: var(--size-px-16) var(--size-px-16) 0 0;
 }
 
-/* Skeleton Loading */
+/* 공통 설명 */
 .skeleton {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--size-px-12);
 }
 
 .skeletonLine {
-  height: 16px;
+  height: var(--size-px-16);
   background: linear-gradient(90deg,
       var(--color-grey-100) 25%,
       var(--color-grey-200) 50%,
       var(--color-grey-100) 75%);
   background-size: 200% 100%;
-  border-radius: 4px;
+  border-radius: var(--size-px-4);
   animation: shimmer 1.5s infinite;
 }
 

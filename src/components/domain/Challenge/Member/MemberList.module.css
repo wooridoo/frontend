@@ -46,7 +46,7 @@
     color: var(--color-warning);
 }
 
-/* Filter Tabs */
+/* 공통 설명 */
 .tabs {
     display: flex;
     gap: var(--space-2);
@@ -72,7 +72,7 @@
     box-shadow: var(--shadow-sm);
 }
 
-/* Member List */
+/* 공통 설명 */
 .memberList {
     display: flex;
     flex-direction: column;

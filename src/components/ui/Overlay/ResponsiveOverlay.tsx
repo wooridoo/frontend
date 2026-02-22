@@ -6,32 +6,35 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import styles from './ResponsiveOverlay.module.css';
 
 interface ResponsiveOverlayProps {
-  /** Trigger element (e.g., Button, Avatar) */
+  /* 공통 설명 */
   trigger: React.ReactNode;
-  /** Content to display inside the overlay */
+  /* 공통 설명 */
   children: React.ReactNode;
-  /** Dialog title for mobile view */
+  /* 공통 설명 */
   title?: string;
-  /** Controlled open state */
+  /* 공통 설명 */
   open?: boolean;
-  /** Controlled open change handler */
+  /* 공통 설명 */
   onOpenChange?: (open: boolean) => void;
-  /** Additional class name for desktop dropdown content */
+  /* 공통 설명 */
   desktopContentClassName?: string;
-  /** Additional class name for mobile modal content */
+  /* 공통 설명 */
   mobileContentClassName?: string;
-  /** Alignment for desktop dropdown */
+  /* 공통 설명 */
   align?: 'start' | 'center' | 'end';
-  /** Mobile presentation mode */
+  /* 공통 설명 */
   mobilePresentation?: 'modal' | 'sheet';
-  /** Header rendering strategy */
+  /* 공통 설명 */
   headerMode?: 'auto' | 'always' | 'none';
-  /** Header action slot (e.g. "모두 읽음") */
+  /* 공통 설명 */
   headerAction?: React.ReactNode;
-  /** Close button visibility */
+  /* 공통 설명 */
   showCloseButton?: boolean;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ResponsiveOverlay({
   trigger,
   children,

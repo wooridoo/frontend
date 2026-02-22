@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui';
-import { Loading } from '@/components/common';
+import { Loading } from '@/components/feedback';
 import { VoteStatusBadge } from './VoteStatusBadge';
 import { useVoteDetail, useVoteResult, useCastVote } from '@/hooks/useVote';
 import type { VoteOption } from '@/types/domain';
@@ -8,7 +8,7 @@ import { VoteStatus } from '@/types/domain';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import { capabilities } from '@/lib/api/capabilities';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/lib/utils';
 import styles from './VoteDetail.module.css';
 
 const VOTE_LABEL: Record<VoteOption, string> = {
@@ -16,6 +16,9 @@ const VOTE_LABEL: Record<VoteOption, string> = {
   DISAGREE: '반대',
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function VoteDetail() {
   const { voteId } = useParams<{ voteId: string }>();
   const { challengeId } = useChallengeRoute();

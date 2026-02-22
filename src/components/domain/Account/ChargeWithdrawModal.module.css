@@ -1,5 +1,5 @@
 .modalContent {
-    max-width: 440px;
+    max-width: var(--size-px-440);
     width: 100%;
 }
 
@@ -15,7 +15,7 @@
     text-align: center;
 }
 
-/* Amount Selection */
+/* 공통 설명 */
 .amountSection {
     margin-bottom: var(--spacing-lg);
 }
@@ -53,7 +53,7 @@
 
 .amountButton:hover {
     border-color: var(--color-primary);
-    background: rgba(var(--color-primary-rgb), 0.05);
+    background: var(--color-primary-alpha-05);
 }
 
 .amountButton.selected {
@@ -76,7 +76,7 @@
     border-color: var(--color-primary);
 }
 
-/* Summary */
+/* 공통 설명 */
 .summary {
     background: var(--color-surface-secondary);
     border-radius: var(--radius-md);
@@ -104,7 +104,7 @@
     color: var(--color-primary);
 }
 
-/* Actions */
+/* 공통 설명 */
 .actions {
     display: flex;
     gap: var(--spacing-sm);
@@ -125,14 +125,14 @@
     color: white;
 }
 
-/* Success State */
+/* 공통 설명 */
 .successContent {
     text-align: center;
     padding: var(--spacing-xl) 0;
 }
 
 .successIcon {
-    font-size: 64px;
+    font-size: var(--size-px-64);
     margin-bottom: var(--spacing-md);
 }
 
@@ -149,7 +149,7 @@
     margin-bottom: var(--spacing-lg);
 }
 
-/* Withdraw specific */
+/* 공통 설명 */
 .bankInfo {
     background: var(--color-surface-secondary);
     border-radius: var(--radius-md);

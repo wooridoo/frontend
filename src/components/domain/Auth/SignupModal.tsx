@@ -4,12 +4,15 @@ import logo from '@/assets/woorido_logo.svg';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { useSignupModalStore } from '@/store/modal/useModalStore';
 import { useLoginModalStore } from '@/store/modal/useModalStore';
-import { MessageCircle, Mail } from 'lucide-react'; // Icons for buttons
+import { MessageCircle, Mail } from 'lucide-react'; // ?? ??
 import { PATHS } from '@/routes/paths';
 import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import { toast } from 'sonner';
 import styles from './SignupModal.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function SignupModal() {
     const { isOpen, onClose } = useSignupModalStore();
     const { onOpen: openLogin } = useLoginModalStore();
@@ -38,7 +41,7 @@ export function SignupModal() {
     return (
         <Modal isOpen={isOpen} onClose={onClose} className={styles.modalContent}>
             <div className={styles.container}>
-                {/* Logo & Branding */}
+                {/* 보조 설명 */}
                 <header className={styles.header}>
                     <div className={styles.logo}>
                         <img src={logo} alt="우리두 로고" className={styles.logoImage} />
@@ -51,7 +54,7 @@ export function SignupModal() {
                 </header>
 
                 <div className={styles.buttonGroup}>
-                    {/* Social Login Buttons */}
+                    {/* 보조 설명 */}
                     <Button
                         className={`${styles.socialButton} ${styles.kakaoButton}`}
                         onClick={handleKakaoLogin}
@@ -78,7 +81,7 @@ export function SignupModal() {
                         <span>또는</span>
                     </div>
 
-                    {/* Email Signup Button */}
+                    {/* 보조 설명 */}
                     <Button
                         variant="secondary"
                         size="lg"
@@ -90,7 +93,7 @@ export function SignupModal() {
                     </Button>
                 </div>
 
-                {/* Footer Links */}
+                {/* 보조 설명 */}
                 <footer className={styles.footer}>
                     <p className={styles.loginPrompt}>
                         이미 계정이 있으신가요?{' '}

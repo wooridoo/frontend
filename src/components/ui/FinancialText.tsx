@@ -2,24 +2,24 @@ import { cn, formatCurrency, formatNumber } from '../../lib/utils';
 import styles from './FinancialText.module.css';
 
 export interface FinancialTextProps extends React.HTMLAttributes<HTMLSpanElement> {
-  /** The numeric amount to display */
+  /* 공통 설명 */
   amount: number;
-  /** Whether to show currency suffix (원) */
+  /* 공통 설명 */
   showCurrency?: boolean;
-  /** Variant for income/expense/locked styling */
+  /* 공통 설명 */
   variant?: 'default' | 'income' | 'expense' | 'locked';
-  /** Font size */
+  /* 공통 설명 */
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  /** Show + sign for positive amounts */
+  /* 공통 설명 */
   showSign?: boolean;
-  /** Whether to animate the value change (rolling number) */
+  /* 공통 설명 */
   animated?: boolean;
 }
 
 /**
- * Financial Text Component
- * Always displays with tabular-nums for proper alignment
- * Use this for ALL money displays in the app
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 import { useEffect, useRef } from 'react';
 import { useSpring } from 'framer-motion';
@@ -37,7 +37,7 @@ function FinancialText({
   const isPositive = amount > 0;
   const isNegative = amount < 0;
 
-  // Auto-detect variant if showSign is true
+  // 보조 처리
   const autoVariant = showSign
     ? (isPositive ? 'income' : isNegative ? 'expense' : 'default')
     : variant;
@@ -66,7 +66,7 @@ function FinancialText({
           : formatNumber(displayAmount);
 
         const prefix = showSign
-          ? (amount > 0 ? '+' : amount < 0 ? '-' : '') // Check original amount for sign
+          ? (amount > 0 ? '+' : amount < 0 ? '-' : '') // ?? ??
           : '';
 
         ref.current.textContent = `${prefix}${formattedValue}`;
@@ -74,7 +74,7 @@ function FinancialText({
     });
   }, [springValue, showCurrency, showSign, amount, animated]);
 
-  // Initial static render for SSR or disabled animation
+  // 보조 처리
   const displayAmount = Math.abs(amount);
   const formattedValue = showCurrency
     ? formatCurrency(displayAmount)

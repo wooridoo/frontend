@@ -1,48 +1,48 @@
-/* Main Grid Container */
+/* 공통 설명 */
 .grid {
   display: grid;
   width: 100%;
   gap: var(--space-4);
-  /* Default gap */
+  /* 공통 설명 */
   padding: var(--space-4);
-  /* Outer padding */
+  /* 공통 설명 */
 }
 
-/* Mobile: Single Column Stack */
+/* 공통 설명 */
 .grid {
   grid-template-columns: 1fr;
 }
 
-/* Tablet (640px+): 2 Columns */
+/* 공통 설명 */
 @media (min-width: 640px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: minmax(180px, auto);
-    /* Base height for blocks */
+    /* 공통 설명 */
     gap: var(--space-5);
   }
 }
 
-/* Desktop (1280px+): 4 Columns */
+/* 공통 설명 */
 @media (min-width: 1280px) {
   .grid {
     width: 100%;
-    /* Force full width */
+    /* 공통 설명 */
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(200px, auto);
-    /* Desktop base height */
+    /* 공통 설명 */
     gap: var(--space-4);
-    /* Compact gap */
+    /* 공통 설명 */
     max-width: none;
-    /* Ensure grid itself doesn't stop */
+    /* 공통 설명 */
   }
 }
 
-/* Bento Item Wrapper */
+/* 공통 설명 */
 .item {
   background-color: var(--color-surface);
   border-radius: var(--radius-xl);
-  /* Bento boxes usually have large rounded corners */
+  /* 공통 설명 */
   overflow: hidden;
   position: relative;
   box-shadow: var(--shadow-sm);
@@ -55,12 +55,12 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Spanning Helper Classes (Desktop Only usually, but let's see) */
-/* On Mobile, everything is spam 1 usually, unless we want internal grid */
+/* 공통 설명 */
+/* 공통 설명 */
 
 @media (min-width: 640px) {
 
-  /* Tablet Spans (max 2 cols) */
+  /* 공통 설명 */
   .item[data-colspan="2"],
   .item[data-colspan="3"],
   .item[data-colspan="4"] {
@@ -70,7 +70,7 @@
 
 @media (min-width: 1280px) {
 
-  /* Desktop Spans (max 4 cols) */
+  /* 공통 설명 */
   .item[data-colspan="2"] {
     grid-column: span 2;
   }

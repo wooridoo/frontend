@@ -1,15 +1,15 @@
 /**
- * WDS TypeScript Design Tokens
- * Mirror of CSS tokens for JS usage
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 
 export const colors = {
-  // Primary (Mandarin Orange)
+  // 보조 처리
   orange500: '#E9481E',
   orange600: '#D43D16',
   orange50: '#FFF7ED',
 
-  // Grey Scale
+  // 보조 처리
   grey900: '#1C1917',
   grey700: '#44403C',
   grey500: '#78716C',
@@ -17,7 +17,7 @@ export const colors = {
   grey100: '#F5F5F4',
   grey50: '#FAFAF9',
 
-  // Semantic
+  // 보조 처리
   income: '#F59E0B',
   expense: '#1C1917',
   locked: '#78716C',
@@ -26,7 +26,7 @@ export const colors = {
   warning: '#F59E0B',
   info: '#E9481E',
 
-  // Brix Scale
+  // 보조 처리
   brixHoney: '#F59E0B',
   brixGrape: '#9333EA',
   brixApple: '#F43F5E',
@@ -35,6 +35,9 @@ export const colors = {
   brixBitter: '#14532D',
 } as const;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const spacing = {
   0: '0px',
   1: '4px',
@@ -48,6 +51,9 @@ export const spacing = {
   12: '48px',
 } as const;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const radius = {
   sm: '8px',
   md: '12px',
@@ -56,6 +62,9 @@ export const radius = {
   full: '9999px',
 } as const;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const fontSize = {
   xs: '11px',
   sm: '13px',
@@ -66,6 +75,9 @@ export const fontSize = {
   '2xl': '28px',
 } as const;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const fontWeight = {
   regular: 400,
   medium: 500,
@@ -73,6 +85,9 @@ export const fontWeight = {
   bold: 700,
 } as const;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const motion = {
   durationFast: '150ms',
   durationNormal: '250ms',
@@ -82,6 +97,9 @@ export const motion = {
   easeAccelerate: 'cubic-bezier(0.4, 0, 1, 1)',
 } as const;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const zIndex = {
   dropdown: 100,
   sticky: 200,
@@ -90,9 +108,12 @@ export const zIndex = {
   tooltip: 500,
 } as const;
 
-// Brix Level Helper
+// 보조 처리
 export type BrixLevel = 'honey' | 'grape' | 'apple' | 'mandarin' | 'tomato' | 'bitter';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const getBrixColor = (score: number): string => {
   if (score >= 60) return colors.brixHoney;
   if (score >= 40) return colors.brixGrape;
@@ -102,6 +123,9 @@ export const getBrixColor = (score: number): string => {
   return colors.brixBitter;
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const getBrixEmoji = (score: number): string => {
   if (score >= 60) return '🍯';
   if (score >= 40) return '🍇';

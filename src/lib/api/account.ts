@@ -100,26 +100,38 @@ const mapTransactionHistory = (
     };
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const getMyAccount = async () => {
     return client.get<Account>(`${BASE_URL}/me`);
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const getTransactionHistory = async (params?: TransactionHistoryParams) => {
     const response = await client.get<BackendTransactionHistoryResponse>(`${BASE_URL}/me/transactions`, { params });
     return mapTransactionHistory(response);
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const requestCreditCharge = async (data: CreditChargeRequest) => {
     return client.post<CreditChargeResponse>(`${BASE_URL}/charge`, data);
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const requestWithdraw = async (data: WithdrawRequest) => {
     return client.post<WithdrawResponse>(`${BASE_URL}/withdraw`, data);
 };
 
 /**
  * 결제 콜백 처리
- * POST /accounts/charge/callback — Toss 결제 완료 후 서버에 결과 전달
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export const chargeCallback = async (data: ChargeCallbackRequest) => {
     return client.post<ChargeCallbackResponse>(`${BASE_URL}/charge/callback`, data);
@@ -127,7 +139,7 @@ export const chargeCallback = async (data: ChargeCallbackRequest) => {
 
 /**
  * 서포트 결제
- * POST /accounts/support — 챌린지 서포트 금액 결제
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export const supportPayment = async (data: SupportPaymentRequest) => {
     const response = await client.post<BackendSupportPaymentResponse>(`${BASE_URL}/support`, {

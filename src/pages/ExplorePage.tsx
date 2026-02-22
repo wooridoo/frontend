@@ -14,7 +14,7 @@ const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
 
 const CATEGORIES = ['전체', '건강', '역량', '취미', '자산', '생활'];
 
-// UI Category -> API Category Enum Mapping
+// 보조 처리
 function mapCategoryToEnum(uiCategory: string): string | undefined {
   if (uiCategory === '전체') return undefined;
   switch (uiCategory) {
@@ -22,18 +22,21 @@ function mapCategoryToEnum(uiCategory: string): string | undefined {
     case '역량': return Category.STUDY;
     case '자산': return Category.SAVINGS;
     case '취미': return Category.HOBBY;
-    case '생활': return Category.OTHER; // Keep mapped to OTHER for current backend enums.
+    case '생활': return Category.OTHER; // ?? ??
     default: return undefined;
   }
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ExplorePage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const categoryParam = searchParams.get('category');
 
-  // Initialize state from URL param if present, mapping Enum -> UI Label
-  // default to '전체'
+  // 보조 처리
+  // 보조 처리
   const [selectedCategory, setSelectedCategory] = useState(() => {
     if (categoryParam && CATEGORY_LABELS[categoryParam]) {
       return CATEGORY_LABELS[categoryParam];
@@ -41,14 +44,14 @@ export function ExplorePage() {
     return '전체';
   });
 
-  // Query Function
+  // 보조 처리
   const { data: challenges, isLoading } = useQuery({
     queryKey: ['challenges', 'explore', query, selectedCategory],
     queryFn: () => getChallenges({
       query: query || undefined,
       category: mapCategoryToEnum(selectedCategory)
     }),
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5, // ?? ??
   });
 
   const content = challenges || [];
@@ -57,7 +60,7 @@ export function ExplorePage() {
     <PageContainer variant="content" contentWidth="xl" className={styles.page}>
       <PageHeader title="탐색" />
 
-      {/* Category Filter */}
+      {/* 보조 설명 */}
       <div className={styles.categorySection}>
         <div className={styles.categoryList}>
           {CATEGORIES.map(category => (
@@ -76,7 +79,7 @@ export function ExplorePage() {
       </div>
 
       <div className={styles.contentContainer}>
-        {/* 1. Search Results Section */}
+        {/* 보조 설명 */}
         {query && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>
@@ -96,7 +99,7 @@ export function ExplorePage() {
           </section>
         )}
 
-        {/* 2. Recommended / Category Section (Only show if not searching or separate logic) */}
+        {/* 보조 설명 */}
         {!query && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>

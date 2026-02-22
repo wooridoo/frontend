@@ -8,6 +8,9 @@ import styles from './FeedBlock.module.css';
 
 const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function FeedBlock() {
   const [items, setItems] = useState<ChallengeInfo[]>([]);
   const [loading, setLoading] = useState(false);

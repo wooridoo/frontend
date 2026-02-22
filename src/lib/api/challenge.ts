@@ -1,6 +1,6 @@
 /**
- * Challenge API Module
- * 챌린지 관련 핵심 API (Feed는 feed.ts로 분리됨)
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  * 
  */
 import { client } from './client';
@@ -10,11 +10,11 @@ import type { ChallengeInfo } from '@/types/challenge';
 export type { ChallengeInfo };
 
 // =====================
-// Types (Imported from @/types/challenge)
+// 보조 처리
 // =====================
 
 // =====================
-// API Functions
+// 보조 처리
 // =====================
 
 /**
@@ -27,7 +27,7 @@ import { normalizeChallenge } from '@/lib/utils/dataMappers';
  */
 export async function getChallenge(challengeId: string): Promise<ChallengeInfo> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
-  // client.get returns the unwrapped data (ChallengeInfo)
+  // 보조 처리
   const challenge = await client.get<ChallengeInfo>(`/challenges/${normalizedChallengeId}`);
   return normalizeChallenge(challenge);
 }
@@ -110,9 +110,9 @@ export async function getMyChallenges(status?: MyChallengeStatus): Promise<Chall
 }
 
 
-// Helpers moved to @/lib/utils/challengeUtils.ts
+// 보조 처리
 
-// --- Additional Challenge API Functions ---
+// 보조 처리
 
 export interface UpdateChallengeRequest {
   challengeId: string;
@@ -153,7 +153,7 @@ export async function joinChallenge(challengeId: string, _depositAmount?: number
 }
 
 /**
- * 챌린지 생성 (P0)
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export interface CreateChallengeRequest {
   category: string;

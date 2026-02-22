@@ -9,6 +9,9 @@ interface SemanticIconProps extends Omit<AnimatedIconProps, 'name'> {
   animated?: boolean;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function SemanticIcon({ name, animated = true, ...rest }: SemanticIconProps) {
   if (!animated) {
     const iconProps: IconProps = {

@@ -4,6 +4,9 @@ import { Button } from '@/components/ui';
 import { useApproveExpense } from '@/hooks/useExpense';
 import { useExpenseApproveModalStore, useExpenseDetailModalStore } from '@/store/modal/useModalStore';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ExpenseApproveModal() {
   const { isOpen, challengeId, expenseId, onClose } = useExpenseApproveModalStore();
   const { onOpen: openDetail } = useExpenseDetailModalStore();
@@ -24,7 +27,7 @@ export function ExpenseApproveModal() {
         openDetail(challengeId, expenseId);
       }
     } catch {
-      // global error handler toast
+      // 보조 처리
     }
   };
 

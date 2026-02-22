@@ -1,49 +1,49 @@
 .modalContent {
   width: 100%;
-  max-width: 480px;
+  max-width: var(--size-px-480);
   padding: 0;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: var(--size-px-24);
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 560px;
-  padding: 40px;
+  min-height: var(--size-px-560);
+  padding: var(--size-px-40);
   background: var(--color-white);
 }
 
 .header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--size-px-40);
 }
 
 .logo {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 16px;
+  width: var(--size-px-64);
+  height: var(--size-px-64);
+  margin: 0 auto var(--size-px-16);
   background: var(--color-grey-100);
-  border-radius: 16px;
+  border-radius: var(--size-px-16);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .logoImage {
-  width: 40px;
-  height: 40px;
+  width: var(--size-px-40);
+  height: var(--size-px-40);
 }
 
 .title {
-  font-size: 24px;
+  font-size: var(--size-px-24);
   font-weight: 700;
   color: var(--color-grey-900);
-  margin-bottom: 8px;
+  margin-bottom: var(--size-px-8);
 }
 
 .subtitle {
-  font-size: 15px;
+  font-size: var(--size-px-15);
   color: var(--color-grey-600);
   line-height: 1.5;
 }
@@ -51,20 +51,20 @@
 .buttonGroup {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: var(--size-px-12);
+  margin-bottom: var(--size-px-32);
   flex: 1;
 }
 
 .socialButton {
-  height: 52px;
-  border-radius: 12px;
-  font-size: 15px;
+  height: var(--size-px-52);
+  border-radius: var(--size-px-12);
+  font-size: var(--size-px-15);
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: var(--size-px-10);
   cursor: pointer;
   border: none;
   transition: opacity 0.2s;
@@ -87,27 +87,27 @@
 }
 
 .googleIconImage {
-  width: 18px;
-  height: 18px;
+  width: var(--size-px-18);
+  height: var(--size-px-18);
 }
 
 .emailButton {
   width: 100%;
-  height: 52px;
-  font-size: 15px;
+  height: var(--size-px-52);
+  font-size: var(--size-px-15);
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--size-px-8);
 }
 
 .divider {
   display: flex;
   align-items: center;
-  margin: 24px 0;
+  margin: var(--size-px-24) 0;
   color: var(--color-grey-500);
-  font-size: 13px;
+  font-size: var(--size-px-13);
 }
 
 .divider::before,
@@ -119,25 +119,25 @@
 }
 
 .divider span {
-  padding: 0 12px;
+  padding: 0 var(--size-px-12);
 }
 
 .footer {
   text-align: center;
   margin-top: auto;
-  padding-top: 24px;
+  padding-top: var(--size-px-24);
   border-top: 1px solid var(--color-grey-100);
 }
 
 .loginPrompt {
-  font-size: 14px;
+  font-size: var(--size-px-14);
   color: var(--color-grey-600);
 }
 
 .loginLink {
   color: var(--color-brix-apple);
   font-weight: 600;
-  margin-left: 8px;
+  margin-left: var(--size-px-8);
   text-decoration: none;
   background: none;
   border: none;

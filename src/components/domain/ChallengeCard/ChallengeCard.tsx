@@ -15,6 +15,9 @@ interface ChallengeCardProps {
   onClick?: (id: string) => void;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeCard({
   className,
   id,
@@ -40,7 +43,7 @@ export function ChallengeCard({
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
     >
-      {/* Thumbnail */}
+      {/* 보조 설명 */}
       <div className={styles.thumbnail}>
         {thumbnailUrl ? (
           <img src={thumbnailUrl} alt={title} />
@@ -54,7 +57,7 @@ export function ChallengeCard({
         </Badge>
       </div>
 
-      {/* Content */}
+      {/* 보조 설명 */}
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
 
@@ -64,7 +67,7 @@ export function ChallengeCard({
           </span>
         </div>
 
-        {/* Progress */}
+        {/* 보조 설명 */}
         <div className={styles.progress}>
           <div className={styles.progressInfo}>
             <span className={styles.progressLabel}>진행률</span>

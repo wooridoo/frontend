@@ -18,7 +18,7 @@ export interface SignupRequest {
   name: string;
   phone: string;
   birthDate?: string;
-  gender?: string; // 'M' | 'F'
+  gender?: string; // ?? ??
   profileImage?: string;
   verificationToken?: string;
   termsAgreed: boolean;

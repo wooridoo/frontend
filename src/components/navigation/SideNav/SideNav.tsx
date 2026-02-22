@@ -14,7 +14,7 @@ import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 interface SideNavProps {
   className?: string;
   isCollapsed?: boolean;
-  isOpen?: boolean; // Controlled state for mobile
+  isOpen?: boolean; // ?? ??
   onClose?: () => void;
 }
 
@@ -25,7 +25,7 @@ interface NavItem {
 }
 
 
-// Section 1: Main Navigation
+// 보조 처리
 const mainItems: NavItem[] = [
   { label: '홈', path: PATHS.HOME, iconName: 'home' },
   { label: '탐색', path: PATHS.EXPLORE, iconName: 'explore' },
@@ -40,7 +40,7 @@ const mainItems: NavItem[] = [
 export function SideNav({
   className,
   isCollapsed = false,
-  isOpen = false, // Controlled state for mobile
+  isOpen = false, // ?? ??
   onClose,
 }: SideNavProps) {
 
@@ -50,25 +50,25 @@ export function SideNav({
 
   const { isLoggedIn: isUserLoggedIn } = useAuthGuard();
 
-  // Fetch real joined challenges from API
+  // 보조 처리
   const { data: joinedChallenges = [] } = useQuery({
     queryKey: ['challenges', 'me', 'sidenav'],
     queryFn: () => getMyChallenges('participating'),
     enabled: isUserLoggedIn,
-    staleTime: 1000 * 60 * 5, // 5분 캐시
+    staleTime: 1000 * 60 * 5, // ?? ??
   });
 
   return (
     <>
-      {/* Overlay (Mobile) */}
+      {/* 보조 설명 */}
       {isOpen && (
         <div className={styles.overlay} onClick={onClose} />
       )}
 
-      {/* Sidebar */}
+      {/* 보조 설명 */}
       <nav className={clsx(styles.sidebar, isOpen && styles.open, !isOpen && isCollapsed && styles.collapsed, className)}>
 
-        {/* Mobile Header: Logo + Close Button */}
+        {/* 보조 설명 */}
         <div className={clsx(styles.mobileHeader, !isOpen && styles.hidden)}>
           <IconButton
             aria-label="사이드 메뉴 닫기"
@@ -83,7 +83,7 @@ export function SideNav({
           </NavLink>
         </div>
 
-        {/* 1. Main Menu Section */}
+        {/* 보조 설명 */}
         <div className={styles.section}>
           <ul className={styles.navList}>
             {mainItems.map((item) => (
@@ -108,7 +108,7 @@ export function SideNav({
 
         <div className={styles.divider} />
 
-        {/* 2. Joined Challenges Section - Dynamic from API */}
+        {/* 보조 설명 */}
         {isUserLoggedIn && (
           <div className={styles.section}>
             <span className={clsx(styles.sectionTitle, (isCollapsed && !isOpen) && styles.hidden)}>가입한 챌린지</span>

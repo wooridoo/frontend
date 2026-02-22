@@ -12,6 +12,9 @@ const getMinDeadline = () => {
   return local.toISOString().slice(0, 16);
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ExpenseCreateModal() {
   const { isOpen, challengeId, onClose } = useExpenseCreateModalStore();
   const { data: meetings = [] } = useChallengeMeetings(challengeId || undefined);

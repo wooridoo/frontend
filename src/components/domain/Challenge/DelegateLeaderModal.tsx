@@ -9,6 +9,9 @@ import styles from './DelegateLeaderModal.module.css';
 
 const AVATAR_FALLBACK = '/images/avatar-fallback.svg';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function DelegateLeaderModal() {
   const { isOpen, challengeId, currentLeaderId, onClose } = useDelegateLeaderModalStore();
   const [selectedMember, setSelectedMember] = useState<string | null>(null);

@@ -3,7 +3,7 @@
   top: 0;
   z-index: 100;
   background-color: white;
-  height: 60px;
+  height: var(--size-px-60);
   border-bottom: 1px solid var(--color-grey-100);
   display: flex;
   align-items: center;
@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  /* Removed max-width: 1600px to fix large screen alignment */
+  /* 공통 설명 */
   margin: 0 auto;
 }
 

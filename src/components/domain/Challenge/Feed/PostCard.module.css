@@ -9,11 +9,11 @@
 
 .noticeCard {
   background-color: var(--color-warning-subtle);
-  /* Light orange tint */
+  /* 공통 설명 */
   border-color: var(--color-warning-border);
 }
 
-/* Header */
+/* 공통 설명 */
 .header {
   display: flex;
   justify-content: space-between;
@@ -27,8 +27,8 @@
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: var(--size-px-40);
+  height: var(--size-px-40);
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--color-grey-100);
@@ -42,49 +42,49 @@
 .nameRow {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 2px;
+  gap: var(--size-px-6);
+  margin-bottom: var(--size-px-2);
 }
 
 .name {
   font-weight: 600;
   color: var(--color-grey-900);
-  font-size: 14px;
+  font-size: var(--size-px-14);
 }
 
 .leaderBadge {
-  font-size: 10px;
+  font-size: var(--size-px-10);
   background-color: var(--color-grey-800);
   color: white;
-  padding: 1px 4px;
-  border-radius: 4px;
+  padding: 1px var(--size-px-4);
+  border-radius: var(--size-px-4);
 }
 
 .noticeBadge {
-  font-size: 10px;
+  font-size: var(--size-px-10);
   background-color: var(--color-danger);
   color: var(--color-white);
-  padding: 1px 4px;
-  border-radius: 4px;
+  padding: 1px var(--size-px-4);
+  border-radius: var(--size-px-4);
   font-weight: 600;
 }
 
 .time {
-  font-size: 12px;
+  font-size: var(--size-px-12);
   color: var(--color-grey-400);
 }
 
 .moreButton {
   color: var(--color-grey-400);
-  padding: 4px;
+  padding: var(--size-px-4);
 }
 
 .menuContainer {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-width: 150px;
-  padding: 6px;
+  gap: var(--size-px-4);
+  min-width: var(--size-px-150);
+  padding: var(--size-px-6);
   background-color: var(--color-surface);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--radius-md);
@@ -94,12 +94,12 @@
 .menuButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--size-px-8);
   width: 100%;
   text-align: left;
   font-size: var(--font-size-sm);
   color: var(--color-grey-700);
-  padding: 10px 12px;
+  padding: var(--size-px-10) var(--size-px-12);
   border-radius: var(--radius-sm);
   transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
 }
@@ -121,13 +121,13 @@
   background-color: var(--color-danger-bg);
 }
 
-/* Content */
+/* 공통 설명 */
 .content {
   margin-bottom: var(--space-4);
 }
 
 .text {
-  font-size: 15px;
+  font-size: var(--size-px-15);
   color: var(--color-grey-800);
   line-height: 1.6;
   white-space: pre-wrap;
@@ -136,14 +136,14 @@
 .pinIcon {
   display: inline-block;
   color: var(--color-danger);
-  margin-right: 6px;
+  margin-right: var(--size-px-6);
   transform: rotate(45deg);
 }
 
 .imageGrid {
   margin-top: var(--space-3);
   display: grid;
-  gap: 4px;
+  gap: var(--size-px-4);
   border-radius: var(--radius-md);
   overflow: hidden;
 }
@@ -168,10 +168,10 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  max-height: 400px;
+  max-height: var(--size-px-400);
 }
 
-/* Footer */
+/* 공통 설명 */
 .footer {
   display: flex;
   gap: var(--space-4);
@@ -182,9 +182,9 @@
 .actionButton {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--size-px-6);
   color: var(--color-grey-500);
-  font-size: 13px;
+  font-size: var(--size-px-13);
   transition: color 0.1s;
 }
 
@@ -196,7 +196,7 @@
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--size-px-6);
   color: var(--color-grey-400);
-  font-size: 13px;
+  font-size: var(--size-px-13);
 }

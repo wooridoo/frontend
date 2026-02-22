@@ -5,6 +5,9 @@ import { useRespondAttendance } from '@/hooks/useMeeting';
 import { Calendar, MapPin } from 'lucide-react';
 import styles from './MeetingModal.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function AttendanceResponseModal() {
     const { isOpen, meeting, onClose } = useAttendanceModalStore();
     const respondMutation = useRespondAttendance();
@@ -19,7 +22,7 @@ export function AttendanceResponseModal() {
             });
             onClose();
         } catch {
-            // Error handled by mutation
+            // 보조 처리
         }
     };
 

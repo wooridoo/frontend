@@ -17,7 +17,7 @@ import { toast } from 'sonner';
 import { preloadLottie } from '@/components/ui/Icon/lottieRegistry';
 import styles from './CreateChallengePage.module.css';
 
-// Zod Schema (API 기준)
+// 보조 처리
 const challengeSchema = z.object({
   category: z.string().min(1, '카테고리를 선택해주세요'),
   name: z.string().min(5, '제목은 5자 이상이어야 합니다').max(30, '제목은 30자 이내여야 합니다'),
@@ -25,7 +25,7 @@ const challengeSchema = z.object({
   startDate: z.string().min(1, '시작일을 선택해주세요'),
   maxMembers: z.number().min(3, '최소 3명 이상이어야 합니다').max(30, '최대 30명까지 가능합니다'),
   supportAmount: z.number().min(10000, '최소 10,000원 이상이어야 합니다'),
-  depositAmount: z.number().min(0), // Auto-calculated
+  depositAmount: z.number().min(0), // ?? ??
   rules: z.string().optional(),
 });
 
@@ -73,7 +73,7 @@ export function CreateChallengePage() {
   const selectedCategory = useWatch({ control, name: 'category' });
   const supportAmount = useWatch({ control, name: 'supportAmount' });
 
-  // Auto-sync deposit with support amount (1개월치 고정)
+  // 보조 처리
   useEffect(() => {
     if (supportAmount) {
       setValue('depositAmount', supportAmount);
@@ -94,7 +94,7 @@ export function CreateChallengePage() {
     try {
       const result = await createChallengeMutation.mutateAsync({
         ...data,
-        supportDay: 1, // 매월 1일 고정
+        supportDay: 1, // ?? ??
       });
       toast.success('챌린지가 개설되었습니다!');
       const newId = result.challengeId;
@@ -103,7 +103,7 @@ export function CreateChallengePage() {
       let message = err && typeof err === 'object' && 'message' in err
         ? (err as { message: string }).message
         : '챌린지 개설 중 오류가 발생했습니다.';
-      // 에러 코드 제거 (예: "VALIDATION_001: 시작일은..." → "시작일은...")
+      // 보조 처리
       message = message.replace(/^[A-Z_]+_?\d*:\s*/i, '');
       setFormErrors([`❌ ${message}`]);
     }

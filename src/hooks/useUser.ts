@@ -1,12 +1,15 @@
 /**
- * User Hooks
- * 사용자 프로필 관련 React Query 훅
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/useAuthStore';
 import { getMyProfile, updateMyProfile, checkNickname, withdrawAccount } from '@/lib/api/user';
 import type { UpdateProfileRequest } from '@/lib/api/user';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const userKeys = {
     all: ['user'] as const,
     profile: () => [...userKeys.all, 'profile'] as const,
@@ -21,8 +24,8 @@ export function useMyProfile() {
     return useQuery({
         queryKey: userKeys.profile(),
         queryFn: getMyProfile,
-        staleTime: 1000 * 60 * 5, // 5분
-        enabled: isLoggedIn, // Only fetch when logged in
+        staleTime: 1000 * 60 * 5, // ?? ??
+        enabled: isLoggedIn, // ?? ??
     });
 }
 
@@ -48,7 +51,7 @@ export function useCheckNickname(nickname: string) {
         queryKey: userKeys.nicknameCheck(nickname),
         queryFn: () => checkNickname(nickname),
         enabled: nickname.length >= 2,
-        staleTime: 1000 * 60, // 1분
+        staleTime: 1000 * 60, // ?? ??
     });
 }
 

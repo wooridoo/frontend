@@ -6,6 +6,9 @@ import { PATHS } from '@/routes/paths';
 import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import styles from './StatusBlock.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function StatusBlock() {
   const { user, isLoggedIn } = useAuthStore();
   const location = useLocation();
@@ -40,11 +43,11 @@ export function StatusBlock() {
     );
   }
 
-  // Calculate progress to next grade (simplified logic for now)
-  // const currentBrix = user.brix;
-  // const nextGradeBrix = Math.ceil(currentBrix / 10) * 10; // Assuming 10-step grades
-  // const progress = (currentBrix % 10) * 10; // 0-100% within the 10-point range
-  // const remaining = (nextGradeBrix - currentBrix).toFixed(1);
+  // 보조 처리
+  // 보조 처리
+  // 보조 처리
+  // 보조 처리
+  // 보조 처리
 
   return (
     <div className={styles.container}>
@@ -54,9 +57,6 @@ export function StatusBlock() {
       </div>
       <div className={styles.content}>
         <span className={styles.value}>{user.name}님</span>
-        {/* <div className={styles.progressTrack}>
-          <div className={styles.progressBar} style={{ width: `${progress}%` }}></div>
-        </div> */}
         <p className={styles.subtext}>반가워요! 오늘도 힘내세요.</p>
       </div>
     </div>

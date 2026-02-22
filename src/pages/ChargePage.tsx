@@ -12,6 +12,9 @@ import styles from './ChargePage.module.css';
 
 const PRESET_AMOUNTS = [5000, 10000, 30000, 50000, 100000];
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChargePage() {
   const navigate = useNavigate();
   const { user, refreshUser } = useAuthStore();

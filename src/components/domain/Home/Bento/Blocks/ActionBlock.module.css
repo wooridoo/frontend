@@ -6,8 +6,8 @@
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--color-orange-50);
-  /* Orange tint for action urgency */
-  /* Or keep white surface */
+  /* 공통 설명 */
+  /* 공통 설명 */
 }
 
 .header {

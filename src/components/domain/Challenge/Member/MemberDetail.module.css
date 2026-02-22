@@ -4,7 +4,7 @@
     gap: var(--space-5);
 }
 
-/* Profile Section */
+/* 공통 설명 */
 .profile {
     display: flex;
     flex-direction: column;
@@ -20,8 +20,8 @@
 }
 
 .avatar {
-    width: 80px;
-    height: 80px;
+    width: var(--size-px-80);
+    height: var(--size-px-80);
     border-radius: 50%;
     object-fit: cover;
 }
@@ -30,8 +30,8 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 24px;
-    height: 24px;
+    width: var(--size-px-24);
+    height: var(--size-px-24);
     background: var(--color-primary);
     border-radius: 50%;
     display: flex;
@@ -41,8 +41,8 @@
 }
 
 .leaderBadge svg {
-    width: 12px;
-    height: 12px;
+    width: var(--size-px-12);
+    height: var(--size-px-12);
     color: white;
 }
 
@@ -65,7 +65,7 @@
     color: var(--color-text-tertiary);
 }
 
-/* Stats Grid */
+/* 공통 설명 */
 .statsGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -90,8 +90,8 @@
 }
 
 .statLabel svg {
-    width: 16px;
-    height: 16px;
+    width: var(--size-px-16);
+    height: var(--size-px-16);
 }
 
 .statValue {
@@ -106,7 +106,7 @@
     color: var(--color-text-secondary);
 }
 
-/* Support History */
+/* 공통 설명 */
 .section {
     display: flex;
     flex-direction: column;
@@ -144,7 +144,7 @@
     color: var(--color-success);
 }
 
-/* Actions */
+/* 공통 설명 */
 .actions {
     display: flex;
     gap: var(--space-3);

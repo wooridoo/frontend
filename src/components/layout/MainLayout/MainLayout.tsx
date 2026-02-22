@@ -6,15 +6,18 @@ import { PATHS } from '@/routes/paths';
 import { useAuthStore } from '@/store/useAuthStore';
 import styles from './MainLayout.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function MainLayout() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
-  // State for sidebar (Desktop defaults to open/expanded, Mobile hidden)
+  // 보조 처리
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Initial Responsive Check
+  // 보조 처리
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -24,7 +27,7 @@ export function MainLayout() {
       }
     };
 
-    // Run on mount
+    // 보조 처리
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -58,7 +61,7 @@ export function MainLayout() {
 
   return (
     <div className={styles.container}>
-      {/* 1. Sticky Header */}
+      {/* 보조 설명 */}
       <TopNav
         isLoggedIn={!!user}
         user={user || undefined}
@@ -68,16 +71,16 @@ export function MainLayout() {
         className={styles.header}
       />
 
-      {/* 2. Layout Body */}
+      {/* 보조 설명 */}
       <div className={styles.body}>
-        {/* Fixed Sidebar */}
+        {/* 보조 설명 */}
         <SideNav
-          isCollapsed={!isSidebarOpen} // Desktop functionality
-          isOpen={isMobileOpen} // Mobile functionality
+          isCollapsed={!isSidebarOpen} // ?? ??
+          isOpen={isMobileOpen} // ?? ??
           onClose={() => setIsMobileOpen(false)}
         />
 
-        {/* Main Content Area */}
+        {/* 보조 설명 */}
         <main
           className={clsx(
             styles.main,

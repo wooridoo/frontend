@@ -11,6 +11,9 @@ interface NotificationOverlayProps {
   children?: React.ReactNode;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function NotificationOverlay({ children }: NotificationOverlayProps) {
   const [open, setOpen] = useState(false);
   const { data, isLoading } = useNotifications();

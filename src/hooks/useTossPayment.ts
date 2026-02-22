@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { loadPaymentWidget, type PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk';
 
-// TossPay 결제 위젯 설정
+// 보조 처리
 const CLIENT_KEY = import.meta.env.VITE_TOSS_CLIENT_KEY || 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
-const CUSTOMER_KEY = 'anonymous'; // 비회원 결제 시
+const CUSTOMER_KEY = 'anonymous'; // ?? ??
 
 export interface PaymentRequest {
   orderId: string;
@@ -19,6 +19,9 @@ export interface UseTossPaymentOptions {
   customerKey?: string;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function useTossPayment(options: UseTossPaymentOptions = {}) {
   const { customerKey = CUSTOMER_KEY } = options;
   const [paymentWidget, setPaymentWidget] = useState<PaymentWidgetInstance | null>(null);

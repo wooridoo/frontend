@@ -1,39 +1,39 @@
 /**
- * WooriDo Design System (WDS) v2.1
- * Design Tokens as CSS Variables
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  * 
- * Philosophy: Warm Tone-on-Tone (Orange + Grey)
- * Source: .woorido/_constants/design_tokens.md
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 
 :root {
   /* ==================== */
-  /* BREAKPOINTS (Ref)    */
+  /* 공통 설명 */
   /* ==================== */
-  /* Mobile: < 640px (Default) */
-  /* Tablet: >= 640px (sm) */
-  /* Laptop: >= 1024px (lg) */
-  /* Desktop: >= 1280px (xl) */
+  /* 공통 설명 */
+  /* 공통 설명 */
+  /* 공통 설명 */
+  /* 공통 설명 */
 
   /* ==================== */
-  /* 1. COLOR PALETTE     */
+  /* 공통 설명 */
   /* ==================== */
 
-  /* Primary (Mandarin Orange) */
+  /* 공통 설명 */
   --color-orange-500: #E9481E;
   --color-orange-600: #D43D16;
   --color-orange-50: #FFF7ED;
   --color-orange-100: #FFEDD5;
   --color-orange-200: #FED7AA;
 
-  /* Aliases for Component Compat */
+  /* 공통 설명 */
   --color-primary: var(--color-orange-500);
   --color-primary-dark: var(--color-orange-600);
   --color-red-500: var(--color-error);
   --color-red-600: #B91C1C;
-  /* Darker red matching brix-tomato-text or custom */
+  /* 공통 설명 */
 
-  /* Grey Scale */
+  /* 공통 설명 */
   --color-grey-900: #1C1917;
   --color-grey-700: #44403C;
   --color-grey-500: #78716C;
@@ -41,11 +41,11 @@
   --color-grey-100: #F5F5F4;
   --color-grey-50: #FAFAF9;
 
-  /* Semantic Colors */
+  /* 공통 설명 */
   --color-income: #F59E0B;
   /* 수입 (+) */
   --color-expense: #1C1917;
-  /* 지출 (-) - Not Red */
+  /* 공통 설명 */
   --color-locked: #78716C;
   /* 보증금 락 */
   --color-success: #16A34A;
@@ -53,9 +53,9 @@
   --color-warning: #F59E0B;
   --color-info: #E9481E;
   --color-support: #3B82F6;
-  /* Blue for Support/Funding */
+  /* 공통 설명 */
 
-  /* Brix Scale (Sweetness/Reliability) */
+  /* 공통 설명 */
   --color-brix-honey: #F59E0B;
   /* 60+ 🍯 */
   --color-brix-grape: #9333EA;
@@ -67,22 +67,22 @@
   --color-brix-tomato: #FCA5A5;
   /* 0~12 🍅 */
   --color-brix-tomato-text: #B91C1C;
-  /* 0~12 🍅 text */
+  /* 공통 설명 */
   --color-brix-bitter: #14532D;
   /* <0 🥒 */
 
-  /* Additional Grey Scale */
+  /* 공통 설명 */
   --color-grey-200: #E7E5E4;
   --color-grey-400: #A8A29E;
   --color-grey-600: #57534E;
   --color-grey-800: #292524;
 
-  /* Surface */
+  /* 공통 설명 */
   --color-surface: #FFFFFF;
   --color-background: #FAFAF9;
   --color-white: #FFFFFF;
 
-  /* Legacy semantic aliases (WDS migration compatibility) */
+  /* 공통 설명 */
   --color-primary-light: var(--color-orange-50);
   --color-primary-rgb: 233, 72, 30;
   --color-border: var(--color-grey-200);
@@ -123,7 +123,7 @@
   --color-brand-kakao: #FEE500;
   --color-brand-kakao-text: #191919;
 
-  /* Spelling aliases (gray -> grey) */
+  /* 공통 설명 */
   --color-gray-50: var(--color-grey-50);
   --color-gray-100: var(--color-grey-100);
   --color-gray-200: var(--color-grey-200);
@@ -135,7 +135,7 @@
   --color-gray-800: var(--color-grey-800);
   --color-gray-900: var(--color-grey-900);
 
-  /* Overlay & Alpha Colors */
+  /* 공통 설명 */
   --color-overlay-dark: rgba(0, 0, 0, 0.5);
   --color-overlay-darker: rgba(0, 0, 0, 0.7);
   --color-overlay-light: rgba(255, 255, 255, 0.5);
@@ -143,20 +143,42 @@
   --color-overlay-white: rgba(255, 255, 255, 0.9);
   --color-skeleton-wave: rgba(255, 255, 255, 0.4);
 
-  /* Glassmorphism Tokens */
+  /* 공통 설명 */
   --glass-surface: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.5);
   --glass-blur: blur(12px);
 
-  /* Status Alpha (10% opacity backgrounds) */
+  /* 공통 설명 */
   --color-success-alpha: rgba(22, 163, 74, 0.1);
   --color-warning-alpha: rgba(245, 158, 11, 0.1);
   --color-error-alpha: rgba(220, 38, 38, 0.1);
   --color-support-alpha: rgba(59, 130, 246, 0.1);
   --color-focus-ring: 0 0 0 3px var(--color-orange-100);
   --color-focus-ring-error: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  --color-error-alpha-08: rgba(220, 38, 38, 0.08);
+  --color-primary-alpha-05: rgba(var(--color-primary-rgb), 0.05);
+  --color-primary-alpha-06: rgba(var(--color-primary-rgb), 0.06);
+  --color-primary-alpha-10: rgba(var(--color-primary-rgb), 0.1);
 
-  /* Brix Alpha (15-20% opacity backgrounds) */
+  /* 공통 설명 */
+  --color-overlay-black-0: rgba(0, 0, 0, 0);
+  --color-overlay-black-02: rgba(0, 0, 0, 0.02);
+  --color-overlay-black-05: rgba(0, 0, 0, 0.05);
+  --color-overlay-black-06: rgba(0, 0, 0, 0.06);
+  --color-overlay-black-08: rgba(0, 0, 0, 0.08);
+  --color-overlay-black-10: rgba(0, 0, 0, 0.1);
+  --color-overlay-black-12: rgba(0, 0, 0, 0.12);
+  --color-overlay-black-15: rgba(0, 0, 0, 0.15);
+  --color-overlay-white-0: rgba(255, 255, 255, 0);
+  --color-overlay-white-30: rgba(255, 255, 255, 0.3);
+  --color-overlay-white-60: rgba(255, 255, 255, 0.6);
+  --color-overlay-white-85: rgba(255, 255, 255, 0.85);
+  --color-overlay-white-95: rgba(255, 255, 255, 0.95);
+  --color-brand-orange-alpha-15: rgba(255, 107, 0, 0.15);
+  --color-brand-orange-alpha-35: rgba(255, 107, 0, 0.35);
+  --color-brand-orange-alpha-45: rgba(255, 107, 0, 0.45);
+
+  /* 공통 설명 */
   --color-brix-honey-alpha: rgba(245, 158, 11, 0.15);
   --color-brix-grape-alpha: rgba(147, 51, 234, 0.15);
   --color-brix-apple-alpha: rgba(244, 63, 94, 0.15);
@@ -164,7 +186,7 @@
   --color-brix-bitter-alpha: rgba(20, 83, 45, 0.1);
 
   /* ==================== */
-  /* 2. SPACING           */
+  /* 공통 설명 */
   /* ==================== */
   --space-0: 0px;
   --space-1: 4px;
@@ -177,7 +199,7 @@
   --space-10: 40px;
   --space-12: 48px;
 
-  /* Spacing aliases */
+  /* 공통 설명 */
   --spacing-xs: var(--space-1);
   --spacing-sm: var(--space-2);
   --spacing-md: var(--space-4);
@@ -187,11 +209,11 @@
   --spacing-3xl: var(--space-12);
 
   /* ==================== */
-  /* 3. TYPOGRAPHY        */
+  /* 공통 설명 */
   /* ==================== */
   --font-sans: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 
-  /* Font Sizes */
+  /* 공통 설명 */
   --font-size-xs: 11px;
   --font-size-sm: 13px;
   --font-size-base: 15px;
@@ -201,7 +223,7 @@
   --font-size-2xl: 28px;
   --font-size-3xl: 32px;
 
-  /* Tailwind-like legacy aliases used by CSS modules */
+  /* 공통 설명 */
   --text-sm: var(--font-size-sm);
   --text-xs: var(--font-size-xs);
   --text-base: var(--font-size-base);
@@ -209,21 +231,21 @@
   --text-xl: var(--font-size-xl);
   --text-2xl: var(--font-size-2xl);
 
-  /* Font Weights */
+  /* 공통 설명 */
   --font-weight-regular: 400;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Line Heights */
+  /* 공통 설명 */
   --line-height-tight: 1.3;
   --line-height-snug: 1.4;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.6;
 
   /* ==================== */
-  /* 4. SHAPES            */
+  /* 공통 설명 */
   /* ==================== */
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -232,7 +254,7 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Button */
+  /* 공통 설명 */
   --button-height-xs: 30px;
   --button-height-sm: 36px;
   --button-height-md: 44px;
@@ -244,15 +266,87 @@
   --button-focus-ring: 0 0 0 3px var(--color-orange-100);
 
   /* ==================== */
-  /* 5. SHADOWS           */
+  /* 공통 설명 */
   /* ==================== */
+  /* 공통 설명 */
+  --size-px-2: 2px;
+  --size-px-3: 3px;
+  --size-px-4: 4px;
+  --size-px-5: 5px;
+  --size-px-6: 6px;
+  --size-px-8: 8px;
+  --size-px-10: 10px;
+  --size-px-11: 11px;
+  --size-px-12: 12px;
+  --size-px-13: 13px;
+  --size-px-14: 14px;
+  --size-px-15: 15px;
+  --size-px-16: 16px;
+  --size-px-18: 18px;
+  --size-px-20: 20px;
+  --size-px-23: 23px;
+  --size-px-24: 24px;
+  --size-px-26: 26px;
+  --size-px-28: 28px;
+  --size-px-32: 32px;
+  --size-px-34: 34px;
+  --size-px-36: 36px;
+  --size-px-38: 38px;
+  --size-px-40: 40px;
+  --size-px-42: 42px;
+  --size-px-44: 44px;
+  --size-px-48: 48px;
+  --size-px-50: 50px;
+  --size-px-52: 52px;
+  --size-px-56: 56px;
+  --size-px-60: 60px;
+  --size-px-64: 64px;
+  --size-px-72: 72px;
+  --size-px-80: 80px;
+  --size-px-82: 82px;
+  --size-px-92: 92px;
+  --size-px-96: 96px;
+  --size-px-100: 100px;
+  --size-px-110: 110px;
+  --size-px-114: 114px;
+  --size-px-120: 120px;
+  --size-px-128: 128px;
+  --size-px-132: 132px;
+  --size-px-140: 140px;
+  --size-px-150: 150px;
+  --size-px-160: 160px;
+  --size-px-184: 184px;
+  --size-px-190: 190px;
+  --size-px-200: 200px;
+  --size-px-220: 220px;
+  --size-px-240: 240px;
+  --size-px-260: 260px;
+  --size-px-280: 280px;
+  --size-px-300: 300px;
+  --size-px-320: 320px;
+  --size-px-360: 360px;
+  --size-px-400: 400px;
+  --size-px-420: 420px;
+  --size-px-440: 440px;
+  --size-px-450: 450px;
+  --size-px-480: 480px;
+  --size-px-500: 500px;
+  --size-px-520: 520px;
+  --size-px-540: 540px;
+  --size-px-560: 560px;
+  --size-px-600: 600px;
+  --size-px-640: 640px;
+  --size-px-720: 720px;
+  --size-px-1600: 1600px;
+  --size-px-9999: 9999px;
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
   /* ==================== */
-  /* 6. ANIMATION         */
+  /* 공통 설명 */
   /* ==================== */
   --motion-duration-fast: 150ms;
   --motion-duration-normal: 250ms;
@@ -262,17 +356,17 @@
   --motion-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
 
   /* ==================== */
-  /* 7. Z-INDEX           */
+  /* 공통 설명 */
   /* ==================== */
   --z-dropdown: 100;
   --z-sticky: 200;
   --z-index-fab: 1200;
   --z-modal: 1300;
-  /* Must be higher than SideNav (1002) */
+  /* 공통 설명 */
   --z-toast: 1400;
   --z-tooltip: 1500;
 
-  /* Layout helpers */
+  /* 공통 설명 */
   --layout-max-width: 1200px;
   --layout-gutter-mobile: var(--space-4);
   --layout-gutter-desktop: var(--space-6);
@@ -284,17 +378,17 @@
 }
 
 /* ==================== */
-/* UTILITY CLASSES      */
+/* 공통 설명 */
 /* ==================== */
 
-/* Financial Text - ALWAYS use for money display */
+/* 공통 설명 */
 .financial-text {
   font-family: var(--font-sans);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
 
-/* Income/Expense Colors */
+/* 공통 설명 */
 .text-income {
   color: var(--color-income);
 }

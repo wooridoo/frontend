@@ -1,4 +1,4 @@
-/* FAB (Floating Action Button) Styles - WDS v2.1 */
+/* 공통 설명 */
 
 .fab {
   position: fixed;
@@ -11,46 +11,46 @@
   transition: all var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
-/* Positions */
+/* 공통 설명 */
 .bottomRight {
-  bottom: 80px;
-  right: 24px;
+  bottom: var(--size-px-80);
+  right: var(--size-px-24);
 }
 
 .bottomLeft {
-  bottom: 80px;
-  left: 24px;
+  bottom: var(--size-px-80);
+  left: var(--size-px-24);
 }
 
 .bottomCenter {
-  bottom: 80px;
+  bottom: var(--size-px-80);
   left: 50%;
   transform: translateX(-50%);
 }
 
-/* Sizes */
+/* 공통 설명 */
 .sm {
-  width: calc(var(--button-height-md) + 4px);
-  height: calc(var(--button-height-md) + 4px);
+  width: calc(var(--button-height-md) + var(--size-px-4));
+  height: calc(var(--button-height-md) + var(--size-px-4));
   border-radius: var(--button-radius-pill);
-  font-size: 20px;
+  font-size: var(--size-px-20);
 }
 
 .md {
-  width: calc(var(--button-height-lg) + 4px);
-  height: calc(var(--button-height-lg) + 4px);
+  width: calc(var(--button-height-lg) + var(--size-px-4));
+  height: calc(var(--button-height-lg) + var(--size-px-4));
   border-radius: var(--button-radius-pill);
-  font-size: 24px;
+  font-size: var(--size-px-24);
 }
 
 .lg {
   width: calc(var(--button-height-lg) + var(--space-3));
   height: calc(var(--button-height-lg) + var(--space-3));
   border-radius: var(--button-radius-pill);
-  font-size: 28px;
+  font-size: var(--size-px-28);
 }
 
-/* Extended (with label) */
+/* 공통 설명 */
 .extended {
   width: auto;
   padding: 0 var(--spacing-lg);
@@ -64,16 +64,16 @@
   white-space: nowrap;
 }
 
-/* Variants */
+/* 공통 설명 */
 .primary {
   background: linear-gradient(135deg, var(--color-orange-500), var(--color-orange-600));
   color: var(--color-white);
-  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+  box-shadow: 0 4px 12px var(--color-brand-orange-alpha-35);
 }
 
 .primary:hover {
   background: linear-gradient(135deg, var(--color-orange-600), var(--color-orange-700));
-  box-shadow: 0 6px 16px rgba(255, 107, 0, 0.45);
+  box-shadow: 0 6px 16px var(--color-brand-orange-alpha-45);
   transform: scale(1.05);
 }
 
@@ -92,7 +92,7 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* Icon */
+/* 공통 설명 */
 .icon {
   display: flex;
   align-items: center;
@@ -100,13 +100,13 @@
   line-height: 0;
 }
 
-/* Focus state */
+/* 공통 설명 */
 .fab:focus-visible {
   outline: none;
   box-shadow: var(--button-focus-ring);
 }
 
-/* Ripple effect */
+/* 공통 설명 */
 .fab::after {
   content: '';
   position: absolute;
@@ -114,7 +114,7 @@
   left: 50%;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-overlay-white-30) 0%, transparent 70%);
   border-radius: inherit;
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;

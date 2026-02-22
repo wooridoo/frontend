@@ -1,3 +1,6 @@
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const CHALLENGE_SLUG_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CHALLENGE_SEGMENT_SEPARATOR = '--';
 const CHALLENGE_ROUTE_MAP_STORAGE_KEY = 'challenge-route-map-v1';
@@ -45,7 +48,7 @@ const writeRouteMap = (routeMap: Record<string, string>): void => {
   try {
     window.localStorage.setItem(CHALLENGE_ROUTE_MAP_STORAGE_KEY, JSON.stringify(routeMap));
   } catch {
-    // Ignore storage failures (quota/private mode).
+    // 보조 처리
   }
 };
 
@@ -85,6 +88,9 @@ const createFallbackSlug = (challengeId: string, routeMap: Record<string, string
   return slug;
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function toChallengeTitleSlug(title: string | undefined | null): string {
   const rawTitle = String(title || '').trim().toLowerCase();
   const raw = rawTitle.includes(CHALLENGE_SEGMENT_SEPARATOR)
@@ -100,6 +106,9 @@ export function toChallengeTitleSlug(title: string | undefined | null): string {
     .replace(/^-|-$/g, '');
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function rememberChallengeRoute(challengeRef: string | number, challengeTitle?: string): void {
   const titleSlug = toChallengeTitleSlug(challengeTitle);
   const challengeId = resolveLegacyChallengeId(String(challengeRef));
@@ -113,6 +122,9 @@ export function rememberChallengeRoute(challengeRef: string | number, challengeT
   writeRouteMap(routeMap);
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function toChallengeSlug(challengeRef: string, challengeTitle?: string): string {
   const raw = String(challengeRef || '').trim();
   if (!raw) return raw;
@@ -120,13 +132,13 @@ export function toChallengeSlug(challengeRef: string, challengeTitle?: string): 
   const titleSlug = toChallengeTitleSlug(challengeTitle);
   const legacyResolved = resolveLegacyChallengeId(raw);
 
-  // Canonical URL format: /{title-slug}/challenge
+  // 보조 처리
   if (titleSlug) {
     rememberChallengeRoute(legacyResolved, challengeTitle);
     return titleSlug;
   }
 
-  // Legacy URL format compatibility: {title}--{token}
+  // 보조 처리
   if (raw.includes(CHALLENGE_SEGMENT_SEPARATOR)) {
     const [legacyTitle] = raw.split(CHALLENGE_SEGMENT_SEPARATOR);
     if (legacyTitle) {
@@ -138,7 +150,7 @@ export function toChallengeSlug(challengeRef: string, challengeTitle?: string): 
     }
   }
 
-  // If only challengeId is available, reuse remembered slug if possible.
+  // 보조 처리
   if (isChallengeId(legacyResolved)) {
     const routeMap = readRouteMap();
     for (const [slug, mappedId] of Object.entries(routeMap)) {
@@ -153,6 +165,9 @@ export function toChallengeSlug(challengeRef: string, challengeTitle?: string): 
   return raw;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function resolveChallengeId(slugOrId: string | undefined | null): string {
   const raw = String(slugOrId || '').trim();
   if (!raw) return raw;
@@ -160,7 +175,7 @@ export function resolveChallengeId(slugOrId: string | undefined | null): string 
   const legacyResolved = resolveLegacyChallengeId(raw);
   if (isChallengeId(legacyResolved)) return legacyResolved;
 
-  // Slug-only route: resolve from cached map first.
+  // 보조 처리
   const routeMap = readRouteMap();
   const mappedId = routeMap[raw];
   if (mappedId) return mappedId;

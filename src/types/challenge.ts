@@ -1,19 +1,19 @@
 import { Category, ChallengeStatus } from './enums';
 
 /**
- * Challenge Domain Types
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export interface Challenge {
-    id: string; // UUID
+    id: string; // ?? ??
     name: string;
     category: Category;
-    thumbnailUrl?: string; // Added for UI
-    description?: string; // Added for UI
-    certificationRate?: number; // Added for UI (0-100)
+    thumbnailUrl?: string; // ?? ??
+    description?: string; // ?? ??
+    certificationRate?: number; // ?? ??
     currentMembers: number;
     minMembers: number;
     maxMembers: number;
-    // Add other fields as needed
+    // 보조 처리
 }
 
 export interface ChallengeInfo {
@@ -37,8 +37,8 @@ export interface ChallengeInfo {
         joinedAt: string;
         status: string;
     };
-    thumbnailUrl?: string; // API 스펙과 맞춤 (legacy: thumbnailUrl)
-    certificationRate?: number; // Legacy 호환용
+    thumbnailUrl?: string; // ?? ??
+    certificationRate?: number; // ?? ??
     leader: {
         userId: string;
         nickname: string;

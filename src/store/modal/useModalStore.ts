@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+﻿import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import type { ChallengeInfo } from '@/lib/api/challenge';
 import type { Post } from '@/types/feed';
@@ -80,6 +80,9 @@ interface ModalStore {
   closeWithdrawAccount: () => void;
 }
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useModalStore = create<ModalStore>(set => ({
   expenseCreate: { isOpen: false, challengeId: null },
   expenseDetail: { isOpen: false, challengeId: null, expenseId: null },
@@ -171,6 +174,9 @@ export const useModalStore = create<ModalStore>(set => ({
   closeWithdrawAccount: () => set({ withdrawAccount: { isOpen: false } }),
 }));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useAccessDeniedModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.accessDenied.isOpen,
@@ -179,6 +185,9 @@ export const useAccessDeniedModalStore = () =>
     onClose: state.closeAccessDenied,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useExpenseCreateModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.expenseCreate.isOpen,
@@ -187,6 +196,9 @@ export const useExpenseCreateModalStore = () =>
     onClose: state.closeExpenseCreate,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useExpenseDetailModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.expenseDetail.isOpen,
@@ -196,6 +208,9 @@ export const useExpenseDetailModalStore = () =>
     onClose: state.closeExpenseDetail,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useExpenseApproveModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.expenseApprove.isOpen,
@@ -205,6 +220,9 @@ export const useExpenseApproveModalStore = () =>
     onClose: state.closeExpenseApprove,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useAttendanceModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.attendance.isOpen,
@@ -213,6 +231,9 @@ export const useAttendanceModalStore = () =>
     onClose: state.closeAttendance,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useCompleteMeetingModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.completeMeeting.isOpen,
@@ -221,6 +242,9 @@ export const useCompleteMeetingModalStore = () =>
     onClose: state.closeCompleteMeeting,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useCreateMeetingModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.createMeeting.isOpen,
@@ -229,6 +253,9 @@ export const useCreateMeetingModalStore = () =>
     onClose: state.closeCreateMeeting,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useCreditChargeModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.creditCharge.isOpen,
@@ -236,6 +263,9 @@ export const useCreditChargeModalStore = () =>
     onClose: state.closeCreditCharge,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useDelegateLeaderModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.delegateLeader.isOpen,
@@ -245,6 +275,9 @@ export const useDelegateLeaderModalStore = () =>
     onClose: state.closeDelegateLeader,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useDeleteChallengeModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.deleteChallenge.isOpen,
@@ -254,6 +287,9 @@ export const useDeleteChallengeModalStore = () =>
     onClose: state.closeDeleteChallenge,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useEditChallengeModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.editChallenge.isOpen,
@@ -262,6 +298,9 @@ export const useEditChallengeModalStore = () =>
     onClose: state.closeEditChallenge,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useEditMeetingModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.editMeeting.isOpen,
@@ -270,6 +309,9 @@ export const useEditMeetingModalStore = () =>
     onClose: state.closeEditMeeting,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useEditProfileModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.editProfile.isOpen,
@@ -277,6 +319,9 @@ export const useEditProfileModalStore = () =>
     onClose: state.closeEditProfile,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useJoinModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.join.isOpen,
@@ -285,6 +330,9 @@ export const useJoinModalStore = () =>
     onClose: state.closeJoin,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useLeaveChallengeModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.leaveChallenge.isOpen,
@@ -294,6 +342,9 @@ export const useLeaveChallengeModalStore = () =>
     onClose: state.closeLeaveChallenge,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useLoginModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.login.isOpen,
@@ -304,6 +355,9 @@ export const useLoginModalStore = () =>
     onClose: state.closeLogin,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const usePasswordResetModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.passwordReset.isOpen,
@@ -311,6 +365,9 @@ export const usePasswordResetModalStore = () =>
     onClose: state.closePasswordReset,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const usePostDetailModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.postDetail.isOpen,
@@ -319,6 +376,9 @@ export const usePostDetailModalStore = () =>
     onClose: state.closePostDetail,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useSignupModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.signup.isOpen,
@@ -326,6 +386,9 @@ export const useSignupModalStore = () =>
     onClose: state.closeSignup,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useSupportPaymentModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.supportPayment.isOpen,
@@ -335,6 +398,9 @@ export const useSupportPaymentModalStore = () =>
     onClose: state.closeSupportPayment,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useSupportSettingsModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.supportSettings.isOpen,
@@ -343,6 +409,9 @@ export const useSupportSettingsModalStore = () =>
     onClose: state.closeSupportSettings,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useVerificationModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.verification.isOpen,
@@ -350,6 +419,9 @@ export const useVerificationModalStore = () =>
     onClose: state.closeVerification,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useWithdrawModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.withdraw.isOpen,
@@ -357,9 +429,14 @@ export const useWithdrawModalStore = () =>
     onClose: state.closeWithdraw,
   })));
 
+/**
+ * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
+ */
 export const useWithdrawAccountModalStore = () =>
   useModalStore(useShallow(state => ({
     isOpen: state.withdrawAccount.isOpen,
     onOpen: state.openWithdrawAccount,
     onClose: state.closeWithdrawAccount,
   })));
+
+

@@ -7,6 +7,9 @@ import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import clsx from 'clsx';
 import styles from './PostDetailModal.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function PostDetailModal() {
     const { isOpen, post, onClose } = usePostDetailModalStore();
     const { challengeId: routeChallengeId } = useChallengeRoute();
@@ -30,7 +33,7 @@ export function PostDetailModal() {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className={styles.container}>
-                {/* Header */}
+                {/* 보조 설명 */}
                 <div className={styles.header}>
                     <img
                         src={post.createdBy.profileImage || '/images/avatar-fallback.svg'}
@@ -47,14 +50,14 @@ export function PostDetailModal() {
                     </div>
                 </div>
 
-                {/* Content */}
+                {/* 보조 설명 */}
                 <div className={styles.content}>
                     <p className={styles.text}>
                         {post.content}
                     </p>
                 </div>
 
-                {/* Images */}
+                {/* 보조 설명 */}
                 {post.images && post.images.length > 0 && (
                     <div className={clsx(styles.images, styles[`grid${Math.min(post.images.length, 4)}`])}>
                         {post.images.map((url: string, index: number) => (
@@ -68,7 +71,7 @@ export function PostDetailModal() {
                     </div>
                 )}
 
-                {/* Stats */}
+                {/* 보조 설명 */}
                 <div className={styles.stats}>
                     <span className={styles.statItem}>
                         <Heart size={14} /> {post.likeCount}
@@ -78,7 +81,7 @@ export function PostDetailModal() {
                     </span>
                 </div>
 
-                {/* Comments */}
+                {/* 보조 설명 */}
                 <CommentSection challengeId={challengeId} postId={post.id} />
             </div>
         </Modal>

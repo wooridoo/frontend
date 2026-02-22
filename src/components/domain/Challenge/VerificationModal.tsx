@@ -5,6 +5,9 @@ import { useVerificationModalStore } from '@/store/modal/useModalStore';
 import styles from './VerificationModal.module.css';
 import { Upload, CheckCircle } from 'lucide-react';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function VerificationModal() {
   const { isOpen, onClose } = useVerificationModalStore();
   const [step, setStep] = useState<'upload' | 'success'>('upload');
@@ -27,7 +30,7 @@ export function VerificationModal() {
     if (!file) return;
 
     setIsLoading(true);
-    // Simulate API Upload
+    // 보조 처리
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsLoading(false);
     setStep('success');

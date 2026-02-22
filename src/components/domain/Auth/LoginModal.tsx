@@ -29,6 +29,9 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function LoginModal() {
   const { isOpen, onClose, redirectOnReject, returnTo, message } = useLoginModalStore();
   const { onOpen: openSignup } = useSignupModalStore();

@@ -8,8 +8,8 @@
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
+    width: var(--size-px-100);
+    height: var(--size-px-100);
     border-radius: 50%;
     object-fit: cover;
     background: var(--color-surface-secondary);
@@ -49,7 +49,7 @@
     align-self: flex-start;
 }
 
-/* Stats Section */
+/* 공통 설명 */
 .statsSection {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -83,7 +83,7 @@
     color: var(--color-text-secondary);
 }
 
-/* Account Section */
+/* 공통 설명 */
 .accountSection {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -136,7 +136,7 @@
     margin-top: var(--spacing-md);
 }
 
-/* Menu Section */
+/* 공통 설명 */
 .menuSection {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -175,14 +175,14 @@
     color: var(--color-text-tertiary);
 }
 
-/* Loading & Error */
+/* 공통 설명 */
 .loading,
 .error {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 300px;
+    min-height: var(--size-px-300);
     gap: var(--spacing-md);
 }
 

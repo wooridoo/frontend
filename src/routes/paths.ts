@@ -3,6 +3,9 @@ import { toChallengeSlug } from '@/lib/utils/challengeRoute';
 const toChallengePath = (challengeRef: string | number, challengeTitle?: string): string =>
   `/${toChallengeSlug(String(challengeRef), challengeTitle)}/challenge`;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const PATHS = {
   HOME: '/',
   AUTH: {

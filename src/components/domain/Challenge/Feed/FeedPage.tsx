@@ -10,6 +10,9 @@ import { Camera } from 'lucide-react';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useChallengeDetail } from '@/hooks/useChallenge';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function FeedPage() {
   const { challengeId, isResolving } = useChallengeRoute();
   const { data: posts, isLoading, error } = useFeed(challengeId);
@@ -31,7 +34,7 @@ export function FeedPage() {
     );
   }
 
-  // 에러 처리: API 오류 발생 시 빈 상태 표시
+  // 보조 처리
   if (error) {
     return (
       <div className={styles.feedContainer}>

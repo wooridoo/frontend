@@ -1,9 +1,9 @@
 /**
- * Account Type Definitions
- * Based on backend DTOs: MyAccountResponse, TransactionHistoryResponse, etc.
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 
-// --- Base Types ---
+// 보조 처리
 
 export interface AccountLimits {
     dailyWithdrawLimit: number;
@@ -28,10 +28,10 @@ export interface Account {
     lockedBalance: number;
     limits: AccountLimits;
     linkedBankAccount?: LinkedBankAccount;
-    createdAt: string; // ISO 8601
+    createdAt: string; // ?? ??
 }
 
-// --- Transaction Types ---
+// 보조 처리
 
 export interface Transaction {
     transactionId: string;
@@ -50,7 +50,7 @@ export interface Transaction {
     amount: number;
     balanceAfter: number;
     description: string;
-    param?: string; // Additional info
+    param?: string; // ?? ??
     createdAt: string;
 }
 
@@ -69,7 +69,7 @@ export interface TransactionHistoryResponse {
     };
 }
 
-// --- Request/Response DTOs ---
+// 보조 처리
 
 export interface CreditChargeRequest {
     amount: number;
@@ -85,7 +85,7 @@ export interface CreditChargeResponse {
 
 export interface WithdrawRequest {
     amount: number;
-    bankCode?: string; // Optional if using linked account
+    bankCode?: string; // ?? ??
     accountNumber?: string;
 }
 
@@ -103,7 +103,7 @@ export interface TransactionHistoryParams {
     size?: number;
 }
 
-// --- Charge Callback (Toss 결제 후 콜백) ---
+// 보조 처리
 
 export interface ChargeCallbackRequest {
     orderId: string;
@@ -119,7 +119,7 @@ export interface ChargeCallbackResponse {
     status: 'SUCCESS' | 'FAILED';
 }
 
-// --- Support Payment ---
+// 보조 처리
 
 export interface SupportPaymentRequest {
     challengeId: string;

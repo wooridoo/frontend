@@ -26,6 +26,9 @@ const initialState: Omit<ConfirmDialogState, 'open' | 'resolve' | 'close'> = {
   resolver: null,
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const useConfirmDialogStore = create<ConfirmDialogState>((set, get) => ({
   ...initialState,
   open: options =>
@@ -58,6 +61,9 @@ export const useConfirmDialogStore = create<ConfirmDialogState>((set, get) => ({
   },
 }));
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function useConfirmDialog() {
   const open = useConfirmDialogStore(state => state.open);
   return { confirm: open };

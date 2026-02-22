@@ -9,6 +9,9 @@ interface MemberCardProps {
     onClick?: () => void;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function MemberCard({ member, onClick }: MemberCardProps) {
     const { user, role, status, supportStatus, attendanceRate } = member;
 
@@ -26,7 +29,7 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
 
     return (
         <div className={styles.card} onClick={onClick}>
-            {/* Avatar */}
+            {/* 보조 설명 */}
             <div className={styles.avatar}>
                 <img
                     src={user.profileImage || '/images/avatar-fallback.svg'}
@@ -40,7 +43,7 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
                 )}
             </div>
 
-            {/* Info */}
+            {/* 보조 설명 */}
             <div className={styles.info}>
                 <div className={styles.nameRow}>
                     <span className={styles.name}>{user.nickname}</span>
@@ -67,7 +70,7 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
                 </div>
             </div>
 
-            {/* Status Badge */}
+            {/* 보조 설명 */}
             <span className={clsx(styles.status, statusStyles[status])}>
                 {statusLabels[status]}
             </span>

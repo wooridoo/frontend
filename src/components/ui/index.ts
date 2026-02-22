@@ -1,4 +1,4 @@
-/* UI Components - Barrel Export */
+/* 공통 설명 */
 
 export { Button, type ButtonProps } from './Button';
 export { buttonVariants } from './Button.variants';

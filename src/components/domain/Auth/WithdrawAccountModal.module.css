@@ -1,6 +1,6 @@
 .container {
   padding: var(--space-6);
-  max-width: 420px;
+  max-width: var(--size-px-420);
 }
 
 .title {

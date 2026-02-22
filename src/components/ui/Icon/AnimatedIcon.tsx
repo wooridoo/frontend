@@ -26,10 +26,10 @@ interface AnimatedIconProps {
 }
 
 /**
- * Remote Lottie 우선 렌더 컴포넌트입니다.
- * - 성공: Lottie 렌더
- * - 로딩: 동일 박스 placeholder 렌더
- * - 실패: semantic fallback icon 렌더
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function AnimatedIcon({
   name,

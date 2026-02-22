@@ -1,6 +1,9 @@
 import { cva } from 'class-variance-authority';
 import styles from './Badge.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const badgeVariants = cva(styles.base, {
     variants: {
         variant: {
@@ -10,7 +13,7 @@ export const badgeVariants = cva(styles.base, {
             error: styles.error,
             locked: styles.locked,
         },
-        // Brix Scale for sweetness/reliability scores
+        // 보조 처리
         brix: {
             honey: styles.brixHoney,
             grape: styles.brixGrape,

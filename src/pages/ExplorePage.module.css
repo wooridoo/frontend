@@ -3,7 +3,7 @@
   padding-bottom: var(--space-10);
 }
 
-/* Search */
+/* 공통 설명 */
 .searchSection {
   display: flex;
   gap: var(--space-3);
@@ -26,8 +26,8 @@
 
 .searchInput {
   width: 100%;
-  height: 48px;
-  padding: 0 16px 0 40px;
+  height: var(--size-px-48);
+  padding: 0 var(--size-px-16) 0 var(--size-px-40);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-grey-200);
   background-color: var(--color-grey-50);
@@ -55,11 +55,11 @@
   cursor: pointer;
 }
 
-/* Categories */
+/* 공통 설명 */
 .categorySection {
   margin-bottom: var(--layout-section-gap);
   overflow-x: auto;
-  /* Hide scrollbar */
+  /* 공통 설명 */
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -131,7 +131,7 @@
   }
 }
 
-/* Card */
+/* 공통 설명 */
 .card {
   display: block;
   text-decoration: none;
@@ -168,8 +168,8 @@
   background-color: var(--color-overlay-dark);
   backdrop-filter: blur(4px);
   color: white;
-  font-size: 10px;
-  border-radius: 4px;
+  font-size: var(--size-px-10);
+  border-radius: var(--size-px-4);
   font-weight: 500;
 }
 

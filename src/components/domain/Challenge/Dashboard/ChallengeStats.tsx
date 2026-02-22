@@ -1,6 +1,6 @@
 import { TrendingUp } from 'lucide-react';
 import { useChallengeAccount } from '@/hooks/useLedger';
-import { formatCurrency, getDDay } from '@/utils/format';
+import { formatCurrency, getDDay } from '@/lib/utils';
 import { formatUtcDateLabel } from '@/lib/utils/dateTime';
 import { Skeleton } from '@/components/feedback';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
@@ -11,6 +11,9 @@ interface ChallengeStatsProps {
   challengeId?: string;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsProps) {
   const { challengeId: routeChallengeId } = useChallengeRoute();
   const challengeId = propChallengeId || routeChallengeId;

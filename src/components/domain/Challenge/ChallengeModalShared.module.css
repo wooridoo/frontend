@@ -1,5 +1,5 @@
 .modalContent {
-  max-width: 540px;
+  max-width: var(--size-px-540);
   width: 100%;
 }
 
@@ -42,7 +42,7 @@
 
 .required {
   color: var(--color-error);
-  margin-left: 2px;
+  margin-left: var(--size-px-2);
 }
 
 .input,
@@ -62,11 +62,11 @@
 .select:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-alpha-10);
 }
 
 .textarea {
-  min-height: 100px;
+  min-height: var(--size-px-100);
   resize: vertical;
 }
 
@@ -92,7 +92,7 @@
   margin-top: var(--spacing-md);
 }
 
-/* Step indicator */
+/* 공통 설명 */
 .stepIndicator {
   display: flex;
   justify-content: center;
@@ -101,8 +101,8 @@
 }
 
 .step {
-  width: 8px;
-  height: 8px;
+  width: var(--size-px-8);
+  height: var(--size-px-8);
   border-radius: 50%;
   background: var(--color-border);
   transition: background 0.2s;
@@ -112,14 +112,14 @@
   background: var(--color-primary);
 }
 
-/* Success state */
+/* 공통 설명 */
 .successContent {
   text-align: center;
   padding: var(--spacing-xl) 0;
 }
 
 .successIcon {
-  font-size: 64px;
+  font-size: var(--size-px-64);
   margin-bottom: var(--spacing-md);
 }
 
@@ -177,7 +177,7 @@
 }
 
 .successEmoji {
-  font-size: 40px;
+  font-size: var(--size-px-40);
   margin-bottom: var(--spacing-md);
 }
 

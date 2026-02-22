@@ -7,6 +7,9 @@ import { formatCurrency } from '@/lib/utils';
 import { PATHS } from '@/routes/paths';
 import styles from './MyProfilePage.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function MyProfilePage() {
     const navigate = useNavigate();
     const { data: user, isLoading, error } = useMyProfile();
@@ -34,13 +37,13 @@ export function MyProfilePage() {
         );
     }
 
-    // Use user.account as the display account
+    // 보조 처리
     const displayAccount = user.account;
 
     return (
         <PageContainer variant="content" contentWidth="md">
             <PageHeader title="프로필" showBack />
-            {/* Header */}
+            {/* 보조 설명 */}
             <div className={styles.header}>
                 <img
                     src={user.profileImage || '/images/avatar-fallback.svg'}
@@ -57,7 +60,7 @@ export function MyProfilePage() {
                 </Button>
             </div>
 
-            {/* Stats */}
+            {/* 보조 설명 */}
             <div className={styles.statsSection}>
                 <div className={styles.statCard}>
                     <div className={styles.statValue}>{user.stats?.challengeCount || 0}</div>
@@ -75,7 +78,7 @@ export function MyProfilePage() {
                 </div>
             </div>
 
-            {/* Account */}
+            {/* 보조 설명 */}
             {displayAccount && (
                 <div className={styles.accountSection}>
                     <h2 className={styles.sectionTitle}>내 지갑</h2>
@@ -104,7 +107,7 @@ export function MyProfilePage() {
                 </div>
             )}
 
-            {/* Menu */}
+            {/* 보조 설명 */}
             <div className={styles.menuSection}>
                 <div className={styles.menuItem} onClick={() => navigate(PATHS.MY.CHALLENGES)}>
                     <span>내 챌린지</span>

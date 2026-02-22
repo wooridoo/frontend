@@ -3,13 +3,16 @@ import { Button } from '@/components/ui';
 import { useChallengeAccount } from '@/hooks/useLedger';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useExpenseCreateModalStore, useSupportSettingsModalStore } from '@/store/modal/useModalStore';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/lib/utils';
 import { ExpenseList } from './ExpenseList';
 import { capabilities } from '@/lib/api/capabilities';
 import styles from './ChallengeLedgerPage.module.css';
 
 const incomeTypes = ['SUPPORT', 'DEPOSIT', 'ENTRY_FEE', 'REFUND'];
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeLedgerPage() {
   const { challengeId } = useChallengeRoute();
   const { data, isLoading } = useChallengeAccount(challengeId);

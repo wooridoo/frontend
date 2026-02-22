@@ -1,4 +1,4 @@
-/* EmptyState Styles - WDS v2.1 */
+/* 공통 설명 */
 
 .container {
   display: flex;
@@ -10,7 +10,7 @@
 }
 
 .icon {
-  font-size: 64px;
+  font-size: var(--size-px-64);
   margin-bottom: var(--space-4);
   opacity: 0.8;
 }
@@ -26,7 +26,7 @@
   font-size: var(--font-size-sm);
   color: var(--color-grey-500);
   margin: 0 0 var(--space-4) 0;
-  max-width: 280px;
+  max-width: var(--size-px-280);
   line-height: 1.5;
 }
 

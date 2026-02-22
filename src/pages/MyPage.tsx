@@ -21,6 +21,9 @@ import { useLoginModalStore } from '@/store/modal/useModalStore';
 import { sanitizeReturnToPath } from '@/lib/utils/authNavigation';
 import styles from './MyPage.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function MyPage() {
   const navigate = useNavigate();
   const location = useLocation();

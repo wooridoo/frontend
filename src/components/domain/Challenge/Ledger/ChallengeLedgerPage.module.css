@@ -5,7 +5,7 @@
   padding-bottom: var(--space-10);
 }
 
-/* Summary Card */
+/* 공통 설명 */
 .summaryCard {
   background-color: var(--color-grey-900);
   color: white;
@@ -50,15 +50,15 @@
 
 .income {
   color: var(--color-primary-light);
-  /* Blue-400 */
+  /* 공통 설명 */
 }
 
 .expense {
   color: var(--color-danger);
-  /* Red-400 */
+  /* 공통 설명 */
 }
 
-/* Support Status Section */
+/* 공통 설명 */
 .statusSection {
   display: flex;
   flex-direction: column;
@@ -85,7 +85,7 @@
 
 .progressBarContainer {
   width: 100%;
-  height: 8px;
+  height: var(--size-px-8);
   background-color: var(--color-grey-200);
   border-radius: var(--radius-full);
   overflow: hidden;
@@ -98,7 +98,7 @@
   border-radius: var(--radius-full);
 }
 
-/* Transaction List Section */
+/* 공통 설명 */
 .transactionSection {
   display: flex;
   flex-direction: column;
@@ -149,8 +149,8 @@
 }
 
 .typeBadge {
-  font-size: 11px;
-  padding: 2px 6px;
+  font-size: var(--size-px-11);
+  padding: var(--size-px-2) var(--size-px-6);
   border-radius: var(--radius-sm);
   background-color: var(--color-grey-100);
   color: var(--color-grey-600);

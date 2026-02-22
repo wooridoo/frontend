@@ -16,7 +16,7 @@ interface BrixBadgeProps {
 
 /**
  * 브릭스 등급 배지 컴포넌트입니다.
- * 3D 변형은 원격 Lottie를 기본으로 사용하고 실패 시 평면 아이콘으로 폴백합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function BrixBadge({
   grade,
@@ -50,7 +50,7 @@ export function BrixBadge({
     );
   }
 
-  // Fallback to Flat Badge using existing Badge styles
+  // 보조 처리
   return (
     <Badge
       brix={config.brixVariant}

@@ -9,23 +9,23 @@
 
 .badge {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: var(--size-px-4);
+  right: var(--size-px-4);
   background-color: var(--color-orange-500);
-  width: 8px;
-  height: 8px;
+  width: var(--size-px-8);
+  height: var(--size-px-8);
   border-radius: 50%;
   border: 1px solid var(--color-white);
 }
 
 .notificationPanel {
-  width: 360px;
+  width: var(--size-px-360);
   max-height: 80vh;
 }
 
 .notificationModal {
-  width: min(94vw, 420px);
-  max-height: min(80vh, 560px);
+  width: min(94vw, var(--size-px-420));
+  max-height: min(80vh, var(--size-px-560));
 }
 
 .markReadBtn {
@@ -50,11 +50,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  max-height: min(60vh, 420px);
+  max-height: min(60vh, var(--size-px-420));
 }
 
 .emptyState {
-  min-height: 240px;
+  min-height: var(--size-px-240);
   padding: var(--space-8) var(--space-4);
   text-align: center;
   color: var(--color-grey-500);
@@ -68,8 +68,8 @@
 
 @media (max-width: 768px) {
   .notificationModal {
-    width: min(94vw, 420px);
-    max-height: min(80vh, 560px);
+    width: min(94vw, var(--size-px-420));
+    max-height: min(80vh, var(--size-px-560));
   }
 
   .list {
@@ -78,7 +78,7 @@
   }
 
   .emptyState {
-    min-height: 220px;
+    min-height: var(--size-px-220);
     font-size: var(--font-size-sm);
   }
 }

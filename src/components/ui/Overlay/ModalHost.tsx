@@ -23,6 +23,9 @@ import { ExpenseDetailModal } from '@/components/domain/Challenge/Ledger/Expense
 import { ExpenseApproveModal } from '@/components/domain/Challenge/Ledger/ExpenseApproveModal';
 import { ConfirmDialog } from './ConfirmDialog';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ModalHost() {
   return (
     <>

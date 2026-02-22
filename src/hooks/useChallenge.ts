@@ -1,6 +1,6 @@
 /**
- * Challenge Hooks
- * 챌린지 관련 React Query 훅
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
@@ -84,6 +84,9 @@ export function useLeaveChallenge() {
     });
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function useUpdateSupportSettings(challengeId: string) {
     const queryClient = useQueryClient();
 

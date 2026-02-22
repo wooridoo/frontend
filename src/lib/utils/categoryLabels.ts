@@ -1,6 +1,6 @@
 /**
- * Category Labels Utility
- * 카테고리 enum → 한글 라벨 매핑 (공통 사용)
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -15,7 +15,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
 };
 
 /**
- * 카테고리 enum 값을 한글 라벨로 변환
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function getCategoryLabel(category: string): string {
   return CATEGORY_LABELS[category] || category;

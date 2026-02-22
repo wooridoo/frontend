@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useVotes } from '../../../../hooks/useVote';
+import { useVotes } from '@/hooks/useVote';
 import { VoteItem } from './VoteItem';
 import { Button } from '@/components/ui';
-import { Loading } from '@/components/common';
-import { VoteStatus } from '../../../../types/domain';
+import { Loading } from '@/components/feedback';
+import { VoteStatus } from '@/types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import styles from './VoteList.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function VoteList() {
   const { challengeId, challengeRef } = useChallengeRoute();
   const routeRef = challengeRef || challengeId;

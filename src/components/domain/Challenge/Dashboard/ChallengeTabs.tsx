@@ -18,6 +18,9 @@ const TABS: TabItem[] = [
   { path: 'members', label: '멤버', icon: Users },
 ];
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeTabs() {
   return (
     <div className={styles.container}>
@@ -27,7 +30,7 @@ export function ChallengeTabs() {
             key={tab.path}
             to={tab.path}
             className={({ isActive }) => clsx(styles.tab, isActive && styles.active)}
-            end={tab.path === 'feed'} // Only feed is root-like if needed
+            end={tab.path === 'feed'} // ?? ??
           >
             <tab.icon size={16} className={styles.icon} />
             <span className={styles.label}>{tab.label}</span>

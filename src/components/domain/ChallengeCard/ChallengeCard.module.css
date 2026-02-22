@@ -1,4 +1,4 @@
-/* ChallengeCard Styles - WDS v2.1 */
+/* 공통 설명 */
 
 .card {
   display: flex;
@@ -21,7 +21,7 @@
   outline-offset: 2px;
 }
 
-/* Thumbnail */
+/* 공통 설명 */
 .thumbnail {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
+  font-size: var(--size-px-48);
   background: linear-gradient(135deg, var(--color-orange-50), var(--color-grey-100));
 }
 
@@ -51,7 +51,7 @@
   left: var(--space-2);
 }
 
-/* Content */
+/* 공통 설명 */
 .content {
   padding: var(--space-3);
   display: flex;
@@ -72,7 +72,7 @@
   overflow: hidden;
 }
 
-/* Meta */
+/* 공통 설명 */
 .meta {
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@
   color: var(--color-grey-500);
 }
 
-/* Progress */
+/* 공통 설명 */
 .progress {
   display: flex;
   flex-direction: column;
@@ -109,7 +109,7 @@
 }
 
 .progressBar {
-  height: 4px;
+  height: var(--size-px-4);
   background-color: var(--color-grey-200);
   border-radius: var(--radius-full);
   overflow: hidden;

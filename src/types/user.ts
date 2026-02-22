@@ -11,7 +11,7 @@ export interface UserStats {
     challengeCount: number;
     completedChallenges: number;
     totalSupportAmount: number;
-    // ... other stats
+    // 보조 처리
 }
 
 export interface User {

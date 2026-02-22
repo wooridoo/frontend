@@ -1,19 +1,19 @@
 /**
- * WooriDo Global Styles
- * Reset + Font Loading + Base Styles
+    * 동작 설명은 추후 세분화 예정입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 
-/* Pretendard Font (from CDN) */
+/* 공통 설명 */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
 
-/* Design Tokens */
+/* 공통 설명 */
 @import './tokens.css';
 
-/* Tailwind CSS v4 */
+/* 공통 설명 */
 @import "tailwindcss";
 
 /* ==================== */
-/* CSS RESET            */
+/* 공통 설명 */
 /* ==================== */
 *,
 *::before,
@@ -37,7 +37,7 @@ body {
   background-color: var(--color-white);
 }
 
-/* Remove default button styles */
+/* 공통 설명 */
 button {
   background: none;
   border: none;
@@ -46,19 +46,19 @@ button {
   color: inherit;
 }
 
-/* Remove default anchor styles */
+/* 공통 설명 */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Remove list styles */
+/* 공통 설명 */
 ul,
 ol {
   list-style: none;
 }
 
-/* Improve media defaults */
+/* 공통 설명 */
 img,
 picture,
 video,
@@ -68,7 +68,7 @@ svg {
   max-width: 100%;
 }
 
-/* Form elements inherit font */
+/* 공통 설명 */
 input,
 button,
 textarea,
@@ -76,18 +76,18 @@ select {
   font: inherit;
 }
 
-/* Focus visible for accessibility */
+/* 공통 설명 */
 :focus-visible {
   outline: 2px solid var(--color-orange-500);
   outline-offset: 2px;
 }
 
 /* ==================== */
-/* SCROLLBAR STYLING    */
+/* 공통 설명 */
 /* ==================== */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: var(--size-px-8);
+  height: var(--size-px-8);
 }
 
 ::-webkit-scrollbar-track {

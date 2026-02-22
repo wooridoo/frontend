@@ -6,6 +6,9 @@ import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeGuard() {
   const { challengeId, challengeRef, isResolving } = useChallengeRoute();
   const { user } = useAuthStore();

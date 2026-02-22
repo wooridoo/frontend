@@ -19,7 +19,7 @@
 }
 
 .logo {
-  height: 24px;
+  height: var(--size-px-24);
   width: auto;
 }
 

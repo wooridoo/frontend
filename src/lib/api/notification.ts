@@ -1,26 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { client } from './client';
 import { useAuthStore } from '@/store/useAuthStore';
 import { capabilities } from './capabilities';
+import { client } from './client';
 import type {
   Notification,
+  NotificationListResponse,
   NotificationMarkReadResponse,
   NotificationQuery,
-  NotificationListResponse,
   NotificationSettings,
 } from '@/types/notification';
 
-const getNotifications = async (params?: NotificationQuery): Promise<NotificationListResponse> => {
-  return client.get<NotificationListResponse>('/notifications', { params });
-};
+const getNotifications = async (params?: NotificationQuery): Promise<NotificationListResponse> =>
+  client.get<NotificationListResponse>('/notifications', { params });
 
-const getNotification = async (notificationId: string): Promise<Notification> => {
-  return client.get<Notification>(`/notifications/${notificationId}`);
-};
+const getNotification = async (notificationId: string): Promise<Notification> =>
+  client.get<Notification>(`/notifications/${notificationId}`);
 
-const markAsRead = async (notificationId: string): Promise<NotificationMarkReadResponse> => {
-  return client.put<NotificationMarkReadResponse>(`/notifications/${notificationId}/read`);
-};
+const markAsRead = async (notificationId: string): Promise<NotificationMarkReadResponse> =>
+  client.put<NotificationMarkReadResponse>(`/notifications/${notificationId}/read`);
 
 const markAllAsRead = async (): Promise<void> => {
   if (!capabilities.notificationReadAll) return;
@@ -55,6 +52,9 @@ const updateNotificationSettings = async (
   return client.put<NotificationSettings>('/notifications/settings', payload);
 };
 
+/**
+ * 알림 도메인 React Query 키입니다.
+ */
 export const NOTIFICATION_KEYS = {
   all: ['notifications'] as const,
   list: (params?: NotificationQuery) => [...NOTIFICATION_KEYS.all, 'list', params || {}] as const,
@@ -62,6 +62,9 @@ export const NOTIFICATION_KEYS = {
   settings: () => [...NOTIFICATION_KEYS.all, 'settings'] as const,
 };
 
+/**
+ * 알림 목록을 조회합니다.
+ */
 export function useNotifications(params?: NotificationQuery) {
   const { isLoggedIn, accessToken } = useAuthStore();
   return useQuery({
@@ -73,6 +76,9 @@ export function useNotifications(params?: NotificationQuery) {
   });
 }
 
+/**
+ * 알림 상세를 조회합니다.
+ */
 export function useNotificationDetail(notificationId?: string) {
   const { isLoggedIn, accessToken } = useAuthStore();
   return useQuery({
@@ -82,6 +88,9 @@ export function useNotificationDetail(notificationId?: string) {
   });
 }
 
+/**
+ * 단건 읽음 처리 mutation입니다.
+ */
 export function useMarkAsRead() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -92,6 +101,9 @@ export function useMarkAsRead() {
   });
 }
 
+/**
+ * 전체 읽음 처리 mutation입니다.
+ */
 export function useMarkAllAsRead() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -102,6 +114,9 @@ export function useMarkAllAsRead() {
   });
 }
 
+/**
+ * 알림 설정을 조회합니다.
+ */
 export function useNotificationSettings() {
   const { isLoggedIn, accessToken } = useAuthStore();
   return useQuery({
@@ -111,13 +126,17 @@ export function useNotificationSettings() {
   });
 }
 
+/**
+ * 알림 설정을 저장합니다.
+ */
 export function useUpdateNotificationSettings() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updateNotificationSettings,
-    onSuccess: (updatedSettings) => {
+    onSuccess: updatedSettings => {
       queryClient.setQueryData(NOTIFICATION_KEYS.settings(), updatedSettings);
       queryClient.invalidateQueries({ queryKey: NOTIFICATION_KEYS.settings() });
     },
   });
 }
+

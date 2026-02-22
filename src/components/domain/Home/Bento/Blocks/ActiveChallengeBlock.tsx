@@ -8,6 +8,9 @@ import styles from './ActiveChallengeBlock.module.css';
 
 const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ActiveChallengeBlock() {
   const { user } = useAuthStore();
   const [activeChallenge, setActiveChallenge] = useState<ChallengeInfo | null>(null);
@@ -17,7 +20,7 @@ export function ActiveChallengeBlock() {
     const fetchChallenge = async () => {
       if (user?.participatingChallengeIds?.length) {
         try {
-          // Fetch the first participating challenge
+          // 보조 처리
           const challengeId = user.participatingChallengeIds[0];
           const data = await getChallenge(String(challengeId));
           setActiveChallenge(data);
@@ -51,7 +54,7 @@ export function ActiveChallengeBlock() {
         <Link to={CHALLENGE_ROUTES.ROOT} className={styles.link}>
           <img
             src={CHALLENGE_FALLBACK_IMAGE}
-            alt="Join a Challenge"
+            alt="챌린지 참여 유도 이미지"
             className={styles.image}
           />
           <div className={styles.overlay}>

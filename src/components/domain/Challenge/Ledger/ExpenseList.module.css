@@ -1,31 +1,31 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3, 12px);
+  gap: var(--space-3, var(--size-px-12));
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-2, 8px);
+  margin-bottom: var(--space-2, var(--size-px-8));
 }
 
 .sectionTitle {
-  font-size: var(--font-size-lg, 18px);
+  font-size: var(--font-size-lg, var(--size-px-18));
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 .totalAmount {
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, var(--size-px-14));
   color: var(--color-text-secondary);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3, 12px);
+  gap: var(--space-3, var(--size-px-12));
 }
 
 .expenseItem {
@@ -34,32 +34,32 @@
   cursor: pointer;
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-lg, 12px);
-  padding: var(--space-4, 16px);
+  border-radius: var(--radius-lg, var(--size-px-12));
+  padding: var(--space-4, var(--size-px-16));
   transition: box-shadow 0.2s ease;
 }
 
 .expenseItem:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px var(--color-overlay-black-08);
 }
 
 .expenseHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--space-2, 8px);
+  margin-bottom: var(--space-2, var(--size-px-8));
 }
 
 .expenseInfo {
   display: flex;
   align-items: center;
-  gap: var(--space-2, 8px);
+  gap: var(--space-2, var(--size-px-8));
 }
 
 .categoryBadge {
-  font-size: var(--font-size-xs, 12px);
-  padding: 2px 8px;
-  border-radius: var(--radius-full, 9999px);
+  font-size: var(--font-size-xs, var(--size-px-12));
+  padding: var(--size-px-2) var(--size-px-8);
+  border-radius: var(--radius-full, var(--size-px-9999));
   background: var(--color-primary-subtle);
   color: var(--color-primary);
   font-weight: 500;
@@ -71,9 +71,9 @@
 }
 
 .statusBadge {
-  font-size: var(--font-size-xs, 12px);
-  padding: 4px 10px;
-  border-radius: var(--radius-full, 9999px);
+  font-size: var(--font-size-xs, var(--size-px-12));
+  padding: var(--size-px-4) var(--size-px-10);
+  border-radius: var(--radius-full, var(--size-px-9999));
   font-weight: 500;
 }
 
@@ -98,9 +98,9 @@
 }
 
 .expenseDesc {
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, var(--size-px-14));
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-3, 12px);
+  margin-bottom: var(--space-3, var(--size-px-12));
   line-height: 1.5;
 }
 
@@ -113,14 +113,14 @@
 .requester {
   display: flex;
   align-items: center;
-  gap: var(--space-2, 8px);
-  font-size: var(--font-size-sm, 14px);
+  gap: var(--space-2, var(--size-px-8));
+  font-size: var(--font-size-sm, var(--size-px-14));
   color: var(--color-text-secondary);
 }
 
 .requesterAvatar {
-  width: 24px;
-  height: 24px;
+  width: var(--size-px-24);
+  height: var(--size-px-24);
   border-radius: 50%;
   object-fit: cover;
 }
@@ -139,16 +139,16 @@
 }
 
 .expenseDate {
-  font-size: var(--font-size-xs, 12px);
+  font-size: var(--font-size-xs, var(--size-px-12));
   color: var(--color-text-muted);
-  margin-top: var(--space-2, 8px);
+  margin-top: var(--space-2, var(--size-px-8));
   text-align: right;
 }
 
 .empty {
   text-align: center;
-  padding: var(--space-8, 32px);
+  padding: var(--space-8, var(--size-px-32));
   color: var(--color-text-muted);
   background: var(--color-bg-subtle);
-  border-radius: var(--radius-lg, 12px);
+  border-radius: var(--radius-lg, var(--size-px-12));
 }

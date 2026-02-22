@@ -19,6 +19,9 @@ interface NavRightProps {
   onLogout: () => void;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) {
   const location = useLocation();
   const { onOpen: openLogin } = useLoginModalStore();
@@ -43,10 +46,10 @@ export function NavRight({ isLoggedIn = false, user, onLogout }: NavRightProps) 
             ) : null}
           </div>
 
-          {/* Notification Overlay */}
+          {/* 보조 설명 */}
           <NotificationOverlay />
 
-          {/* Profile Menu */}
+          {/* 보조 설명 */}
           <ProfileMenu
             user={user}
             onLogout={onLogout}

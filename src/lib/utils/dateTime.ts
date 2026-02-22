@@ -1,3 +1,6 @@
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function formatUtcDateLabel(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '-';

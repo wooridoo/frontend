@@ -28,7 +28,7 @@
   padding: var(--spacing-xl) 0;
 }
 
-/* Input Area */
+/* 공통 설명 */
 .inputArea {
   display: flex;
   align-items: center;
@@ -41,8 +41,8 @@
 
 .avatar,
 .itemAvatar {
-  width: 32px;
-  height: 32px;
+  width: var(--size-px-32);
+  height: var(--size-px-32);
   border-radius: 50%;
   background: var(--color-primary-light);
   color: var(--color-primary);
@@ -68,7 +68,7 @@
   color: var(--color-text-tertiary);
 }
 
-/* Comment List */
+/* 공통 설명 */
 .list {
   display: flex;
   flex-direction: column;
@@ -85,7 +85,7 @@
 }
 
 .item:hover {
-  background: var(--color-surface-hover, rgba(0, 0, 0, 0.02));
+  background: var(--color-surface-hover, var(--color-overlay-black-02));
 }
 
 .itemBody {
@@ -97,7 +97,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  margin-bottom: 2px;
+  margin-bottom: var(--size-px-2);
 }
 
 .itemAuthor {
@@ -131,7 +131,7 @@
 
 .deleteBtn:hover {
   color: var(--color-danger);
-  background: var(--color-danger-light, rgba(220, 38, 38, 0.08));
+  background: var(--color-danger-light, var(--color-error-alpha-08));
 }
 
 .item:hover .deleteBtn {
@@ -151,7 +151,7 @@
 
 .replyIcon {
   color: var(--color-grey-400);
-  margin-top: 6px;
+  margin-top: var(--size-px-6);
   flex-shrink: 0;
 }
 
@@ -195,7 +195,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px;
+  padding: var(--size-px-2);
   border-radius: var(--radius-sm);
   color: var(--color-grey-500);
 }

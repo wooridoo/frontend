@@ -11,6 +11,9 @@ interface PostEditorProps {
   onSuccess?: () => void;
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function PostEditor({ onSuccess }: PostEditorProps) {
   const { challengeId } = useChallengeRoute();
   const { data: challenge } = useChallengeDetail(challengeId);
@@ -30,7 +33,7 @@ export function PostEditor({ onSuccess }: PostEditorProps) {
     setIsSubmitting(true);
     try {
       await createPost.mutateAsync({
-        title: content.slice(0, 20), // 임시: 내용 앞부분을 제목으로 사용
+        title: content.slice(0, 20), // ?? ??
         content: content.trim(),
         category,
       });

@@ -7,7 +7,7 @@ interface BrixBadgeLottieProps {
 }
 
 /**
- * 브릭스 배지의 Lottie 렌더 래퍼입니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  * 배지 컨테이너 크기를 유지한 채 애니메이션만 교체할 수 있게 분리했습니다.
  */
 export function BrixBadgeLottie({ className, size = 48 }: BrixBadgeLottieProps) {

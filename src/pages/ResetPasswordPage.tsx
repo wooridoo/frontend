@@ -13,6 +13,9 @@ import styles from './ResetPasswordPage.module.css';
 
 const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ResetPasswordPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

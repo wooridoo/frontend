@@ -15,6 +15,9 @@ const toBoolean = (value: unknown): boolean | undefined => {
     return undefined;
 };
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function SupportSettingsModal() {
     const { isOpen, challengeId, onClose } = useSupportSettingsModalStore();
     const { data: challenge } = useChallengeDetail(challengeId || undefined);
@@ -41,7 +44,7 @@ export function SupportSettingsModal() {
             setSaved(true);
             setTimeout(handleClose, 1200);
         } catch {
-            // handled by global error normalizer
+            // 보조 처리
         }
     };
 

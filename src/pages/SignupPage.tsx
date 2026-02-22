@@ -12,20 +12,20 @@ import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { Button, Input } from '@/components/ui';
 
 
-// Zod Schema
+// 보조 처리
 const signupSchema = z.object({
-  // Basic Info
+  // 보조 처리
   name: z.string().min(2, '이름은 2글자 이상이어야 합니다'),
   birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'YYYY-MM-DD 형식으로 입력해주세요 (예: 1990-01-01)').optional().or(z.literal('')),
   phone: z.string().regex(/^010-?([0-9]{4})-?([0-9]{4})$/, '올바른 휴대폰 번호 형식이 아닙니다'),
 
-  // Account Info
+  // 보조 처리
   email: z.string().email('올바른 이메일 형식이 아닙니다'),
   password: z.string().min(8, '비밀번호는 8자 이상이어야 합니다'),
   confirmPassword: z.string(),
   nickname: z.string().min(2, '닉네임은 2글자 이상이어야 합니다'),
 
-  // Terms
+  // 보조 처리
   termsOfService: z.boolean().refine((val) => val === true, {
     message: '서비스 이용약관에 동의해야 합니다',
   }),
@@ -39,10 +39,13 @@ const signupSchema = z.object({
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function SignupPage() {
   const navigate = useNavigate();
   const { login } = useAuthStore();
-  const [step, setStep] = useState<1 | 2 | 3>(1); // 1: Terms, 2: Info (Merged), 3: Completion
+  const [step, setStep] = useState<1 | 2 | 3>(1); // ?? ??
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -78,7 +81,7 @@ export function SignupPage() {
   const onSubmit = async (data: SignupFormValues) => {
     setIsSubmitting(true);
     try {
-      // 1. Signup
+      // 보조 처리
       await signup({
         email: data.email,
         password: data.password,
@@ -89,17 +92,17 @@ export function SignupPage() {
         profileImage: '/images/avatar-fallback.svg',
         termsAgreed: data.termsOfService,
         privacyAgreed: data.privacyPolicy,
-        marketingAgreed: false // Default to false
+        marketingAgreed: false // ?? ??
       });
 
-      // 2. Auto Login
+      // 보조 처리
       const loginResponse = await apiLogin({ email: data.email, password: data.password });
       login(loginResponse.user, loginResponse.accessToken, loginResponse.refreshToken);
 
       setStep(3);
     } catch (error) {
       console.error(error);
-      // Global error handler will show toast
+      // 보조 처리
     } finally {
       setIsSubmitting(false);
     }
@@ -113,7 +116,7 @@ export function SignupPage() {
           <h1 className={styles.title}>회원가입</h1>
         </header>
 
-        {/* Step Indicator */}
+        {/* 보조 설명 */}
         <div className={styles.stepIndicator}>
           <div className={`${styles.stepDot} ${step === 1 ? styles.active : ''}`} />
           <div className={`${styles.stepDot} ${step === 2 ? styles.active : ''}`} />
@@ -121,7 +124,7 @@ export function SignupPage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.stepContent}>
-          {/* Step 1: Terms Agreement */}
+          {/* 보조 설명 */}
           {step === 1 && (
             <div className={styles.stepWrapper}>
               <h2 className={styles.stepTitle}>약관에 동의해주세요</h2>
@@ -169,13 +172,13 @@ export function SignupPage() {
             </div>
           )}
 
-          {/* Step 2: User Info (Merged Basic + Account) */}
+          {/* 보조 설명 */}
           {step === 2 && (
             <div className={styles.stepWrapper}>
               <h2 className={styles.stepTitle}>정보를 입력해주세요</h2>
 
               <div className={styles.formGroup}>
-                {/* Basic Info Section */}
+                {/* 보조 설명 */}
                 <div className={styles.section}>
                   <Input
                     label="이름 (실명)"
@@ -199,7 +202,7 @@ export function SignupPage() {
 
                 <hr className={styles.divider} />
 
-                {/* Account Info Section */}
+                {/* 보조 설명 */}
                 <div className={styles.section}>
                   <Input
                     label="이메일"
@@ -253,7 +256,7 @@ export function SignupPage() {
             </div>
           )}
 
-          {/* Step 3: Success */}
+          {/* 보조 설명 */}
           {step === 3 && (
             <div className={styles.successContent}>
               <div className={styles.successIcon}>

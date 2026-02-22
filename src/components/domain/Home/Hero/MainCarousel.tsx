@@ -34,7 +34,7 @@ const SLIDES = [
 
 /**
  * 홈 메인 캐러셀입니다.
- * 슬라이드별 CTA와 hero Lottie를 제공하며, hover 시 자동 슬라이드 전환을 일시 정지합니다.
+    * 동작 설명은 추후 세분화 예정입니다.
  */
 export function MainCarousel() {
   const { user } = useAuthGuard();

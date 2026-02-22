@@ -66,6 +66,9 @@ export type IconName =
   | 'categoryFood'
   | 'categoryOther';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export const iconRegistry: Record<IconName, LucideIcon> = {
   action: Flame,
   challenge: FolderOpen,

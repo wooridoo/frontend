@@ -1,6 +1,6 @@
 import { Crown, EllipsisVertical } from 'lucide-react';
 import type { ChallengeInfo } from '@/lib/api/challenge';
-import { formatCurrency } from '@/utils/format';
+import { formatCurrency } from '@/lib/utils';
 import { Skeleton } from '@/components/feedback';
 import { ChallengeStatus } from '@/types/enums';
 import { getCategoryLabel } from '@/lib/utils/categoryLabels';
@@ -22,6 +22,9 @@ interface ChallengeHeroProps {
 
 const CHALLENGE_FALLBACK_IMAGE = '/images/challenge-fallback.svg';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeHero({ challenge }: ChallengeHeroProps) {
   const { onOpen: openEditChallenge } = useEditChallengeModalStore();
   const { onOpen: openDeleteChallenge } = useDeleteChallengeModalStore();
@@ -158,6 +161,9 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
   );
 }
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ChallengeHeroSkeleton() {
   return (
     <div className={styles.hero}>

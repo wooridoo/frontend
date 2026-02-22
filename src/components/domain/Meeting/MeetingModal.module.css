@@ -1,5 +1,5 @@
 .modalContent {
-    max-width: 500px;
+    max-width: var(--size-px-500);
     width: 100%;
 }
 
@@ -15,7 +15,7 @@
     text-align: center;
 }
 
-/* Form */
+/* 공통 설명 */
 .form {
     display: flex;
     flex-direction: column;
@@ -55,7 +55,7 @@
 
 .textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: var(--size-px-100);
 }
 
 .row {
@@ -64,12 +64,12 @@
     gap: var(--spacing-md);
 }
 
-/* Location Type Toggle */
+/* 공통 설명 */
 .locationToggle {
     display: flex;
     gap: var(--spacing-sm);
     background: var(--color-surface-secondary);
-    padding: 4px;
+    padding: var(--size-px-4);
     border-radius: var(--radius-md);
 }
 
@@ -83,21 +83,21 @@
     box-shadow: var(--shadow-sm);
 }
 
-/* Date Time */
+/* 공통 설명 */
 .dateTimeRow {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: var(--spacing-sm);
 }
 
-/* Actions */
+/* 공통 설명 */
 .actions {
     display: flex;
     gap: var(--spacing-sm);
     margin-top: var(--spacing-lg);
 }
 
-/* Error */
+/* 공통 설명 */
 .error {
     font-size: var(--font-size-sm);
     color: var(--color-error);
@@ -118,7 +118,7 @@
     color: var(--color-text-secondary);
     margin: 0;
     display: inline-flex;
-    gap: 6px;
+    gap: var(--size-px-6);
     align-items: center;
 }
 
@@ -151,7 +151,7 @@
 }
 
 .completeEmoji {
-    font-size: 48px;
+    font-size: var(--size-px-48);
     margin-bottom: var(--spacing-md);
 }
 

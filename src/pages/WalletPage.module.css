@@ -20,7 +20,7 @@
   font-weight: 700;
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: var(--size-px-4);
 }
 
 .currency {
@@ -115,13 +115,13 @@
 .historyInfo {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--size-px-2);
 }
 
 .historyTypeRow {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--size-px-6);
 }
 
 .historyTypeIcon {
@@ -163,7 +163,7 @@
   font-size: var(--font-size-sm);
 }
 
-/* Loading & Error States */
+/* 공통 설명 */
 .centerContainer {
   display: flex;
   flex-direction: column;

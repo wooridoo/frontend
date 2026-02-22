@@ -31,6 +31,9 @@ const STATUS_MAP: Record<TabType, ChallengeStatus | null> = {
 
 
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function MyChallengesPage() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<TabType>('all');
@@ -91,7 +94,7 @@ export function MyChallengesPage() {
                 }
             />
 
-            {/* Tabs */}
+            {/* 보조 설명 */}
             <div className={styles.tabs}>
                 {TAB_OPTIONS.map((tab) => (
                     <Button
@@ -107,7 +110,7 @@ export function MyChallengesPage() {
                 ))}
             </div>
 
-            {/* Content */}
+            {/* 보조 설명 */}
             {isLoading ? (
                 <div className={styles.loading}>로딩 중...</div>
             ) : filteredChallenges.length === 0 ? (

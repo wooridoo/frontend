@@ -1,6 +1,6 @@
-/* Page Container now mostly handles outer spacing if needed */
+/* 공통 설명 */
 .pageContainer {
   width: 100%;
   min-height: 100vh;
-  /* BentoGrid has its own padding, so we might not need much here */
+  /* 공통 설명 */
 }

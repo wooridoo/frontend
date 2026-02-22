@@ -8,6 +8,9 @@ import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useAccessDeniedModalStore } from '@/store/modal/useModalStore';
 import { getChallenge } from '@/lib/api/challenge';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function AccessDeniedModal() {
   const { isOpen, onClose, challengeId } = useAccessDeniedModalStore();
   const navigate = useNavigate();

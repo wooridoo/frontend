@@ -4,6 +4,9 @@ import { useConfirmDialogStore } from '@/store/modal/useConfirmDialogStore';
 import { useShallow } from 'zustand/react/shallow';
 import styles from './ConfirmDialog.module.css';
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function ConfirmDialog() {
   const { isOpen, title, description, confirmText, cancelText, variant, close, resolve } =
     useConfirmDialogStore(

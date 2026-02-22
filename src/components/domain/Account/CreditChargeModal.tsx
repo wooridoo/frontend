@@ -10,6 +10,9 @@ import styles from './ChargeWithdrawModal.module.css';
 
 const PRESET_AMOUNTS = [10000, 30000, 50000, 100000, 200000, 500000];
 
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
 export function CreditChargeModal() {
     const { isOpen, onClose } = useCreditChargeModalStore();
     const [amount, setAmount] = useState<number>(50000);

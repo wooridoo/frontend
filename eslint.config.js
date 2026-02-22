@@ -37,6 +37,20 @@ export default defineConfig([
               name: '@/components/ui/Icons',
               message: '아이콘은 @/components/ui/Icon 또는 @/components/ui를 사용하세요.',
             },
+            {
+              name: '@/components/common',
+              message: '공용 컴포넌트는 @/components/ui 또는 @/components/feedback을 사용하세요.',
+            },
+            {
+              name: '@/utils/format',
+              message: '포맷 유틸은 @/lib/utils를 사용하세요.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['@/components/common/*'],
+              message: '공용 컴포넌트는 @/components/ui 또는 @/components/feedback을 사용하세요.',
+            },
           ],
         },
       ],

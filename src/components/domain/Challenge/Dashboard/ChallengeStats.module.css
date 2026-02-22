@@ -6,13 +6,13 @@
   margin: 0 auto;
   padding: 0 var(--layout-gutter-desktop) var(--space-6);
   background-color: var(--color-surface);
-  /* Connected to Hero */
+  /* 공통 설명 */
 }
 
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
-    /* Stack on mobile */
+    /* 공통 설명 */
     padding: 0 var(--layout-gutter-mobile) var(--space-4);
   }
 }
@@ -36,25 +36,25 @@
 .label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11px;
+  gap: var(--size-px-4);
+  font-size: var(--size-px-11);
   font-weight: 600;
   color: var(--color-grey-500);
 }
 
 .balance {
-  font-size: 20px;
+  font-size: var(--size-px-20);
   font-weight: 800;
   color: var(--color-grey-900);
-  letter-spacing: -0.5px;
+  letter-spacing: -0.var(--size-px-5);
 }
 
 .statRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  margin-bottom: 2px;
+  font-size: var(--size-px-12);
+  margin-bottom: var(--size-px-2);
 }
 
 .statLabel {
@@ -64,7 +64,7 @@
 .income {
   font-weight: 700;
   color: var(--color-warning);
-  /* Amber-600 */
+  /* 공통 설명 */
 }
 
 .expense {
@@ -73,7 +73,7 @@
 }
 
 .statSub {
-  font-size: 10px;
+  font-size: var(--size-px-10);
   color: var(--color-grey-400);
   text-align: right;
 }
@@ -85,13 +85,13 @@
 }
 
 .dday {
-  font-size: 20px;
+  font-size: var(--size-px-20);
   font-weight: 800;
   color: var(--color-orange-500);
 }
 
 .date {
-  font-size: 11px;
+  font-size: var(--size-px-11);
   color: var(--color-grey-400);
 }
 
