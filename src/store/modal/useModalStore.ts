@@ -26,7 +26,6 @@ interface ModalStore {
   signup: { isOpen: boolean };
   supportPayment: { isOpen: boolean; challengeId: string | null; amount: number };
   supportSettings: { isOpen: boolean; challengeId: string | null };
-  verification: { isOpen: boolean };
   withdraw: { isOpen: boolean };
   withdrawAccount: { isOpen: boolean };
 
@@ -72,8 +71,6 @@ interface ModalStore {
   closeSupportPayment: () => void;
   openSupportSettings: (challengeId: string) => void;
   closeSupportSettings: () => void;
-  openVerification: () => void;
-  closeVerification: () => void;
   openWithdraw: () => void;
   closeWithdraw: () => void;
   openWithdrawAccount: () => void;
@@ -105,7 +102,6 @@ export const useModalStore = create<ModalStore>(set => ({
   signup: { isOpen: false },
   supportPayment: { isOpen: false, challengeId: null, amount: 0 },
   supportSettings: { isOpen: false, challengeId: null },
-  verification: { isOpen: false },
   withdraw: { isOpen: false },
   withdrawAccount: { isOpen: false },
 
@@ -166,8 +162,6 @@ export const useModalStore = create<ModalStore>(set => ({
   closeSupportPayment: () => set({ supportPayment: { isOpen: false, challengeId: null, amount: 0 } }),
   openSupportSettings: challengeId => set({ supportSettings: { isOpen: true, challengeId } }),
   closeSupportSettings: () => set({ supportSettings: { isOpen: false, challengeId: null } }),
-  openVerification: () => set({ verification: { isOpen: true } }),
-  closeVerification: () => set({ verification: { isOpen: false } }),
   openWithdraw: () => set({ withdraw: { isOpen: true } }),
   closeWithdraw: () => set({ withdraw: { isOpen: false } }),
   openWithdrawAccount: () => set({ withdrawAccount: { isOpen: true } }),
@@ -407,16 +401,6 @@ export const useSupportSettingsModalStore = () =>
     challengeId: state.supportSettings.challengeId,
     onOpen: state.openSupportSettings,
     onClose: state.closeSupportSettings,
-  })));
-
-/**
- * 모달 상태와 열기/닫기 액션을 구독하는 셀렉터 훅입니다.
- */
-export const useVerificationModalStore = () =>
-  useModalStore(useShallow(state => ({
-    isOpen: state.verification.isOpen,
-    onOpen: state.openVerification,
-    onClose: state.closeVerification,
   })));
 
 /**

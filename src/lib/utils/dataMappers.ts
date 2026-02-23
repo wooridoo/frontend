@@ -55,6 +55,38 @@ function asStringArray(value: unknown): string[] {
   return value.filter(item => typeof item === 'string') as string[];
 }
 
+function normalizeImageUrls(source: JsonObject): string[] {
+  const directImages = asStringArray(source.images);
+  if (directImages.length > 0) {
+    return directImages;
+  }
+
+  if (Array.isArray(source.images)) {
+    const objectImages = source.images
+      .map(item => asObject(item))
+      .map(item => asString(item.url) || asString(item.fileUrl) || asString(item.imageUrl))
+      .filter((url): url is string => Boolean(url));
+    if (objectImages.length > 0) {
+      return objectImages;
+    }
+  }
+
+  const imageUrls = asStringArray(source.imageUrls);
+  if (imageUrls.length > 0) {
+    return imageUrls;
+  }
+
+  const attachments = source.attachments;
+  if (Array.isArray(attachments)) {
+    return attachments
+      .map(item => asObject(item))
+      .map(item => asString(item.url) || asString(item.fileUrl) || asString(item.imageUrl))
+      .filter((url): url is string => Boolean(url));
+  }
+
+  return [];
+}
+
 function normalizeTransaction(item: unknown): Transaction {
   const transaction = asObject(item);
   return {
@@ -181,10 +213,18 @@ export function normalizeChallenge(data: unknown): ChallengeInfo {
     startedAt: asString(source.startedAt) || undefined,
     createdAt: asString(source.createdAt) || undefined,
     myMembership: source.myMembership ? (asObject(source.myMembership) as ChallengeInfo['myMembership']) : undefined,
-    thumbnailUrl: asString(source.thumbnailUrl) || asString(source.thumbnail) || asString(source.image) || undefined,
+    thumbnailUrl: asString(source.thumbnailImage)
+      || asString(source.thumbnailUrl)
+      || asString(source.thumbnail)
+      || asString(source.image)
+      || undefined,
+    bannerUrl: asString(source.bannerImage)
+      || asString(source.bannerUrl)
+      || asString(source.banner)
+      || undefined,
     certificationRate: asNumber(source.certificationRate),
     leader: {
-      userId: asString(leader.userId),
+      userId: asString(leader.userId) || asString(leader.id),
       nickname: asString(leader.nickname, '알 수 없음'),
       brix: asNumber(leader.brix),
     },
@@ -240,7 +280,7 @@ export function normalizePost(data: unknown): Post {
     likeCount: asNumber(source.likeCount),
     commentCount: asNumber(source.commentCount),
     viewCount: asNumber(source.viewCount),
-    images: asStringArray(source.images),
+    images: normalizeImageUrls(source),
     createdAt: asString(source.createdAt),
   };
 }

@@ -8,6 +8,7 @@ export interface Challenge {
     name: string;
     category: Category;
     thumbnailUrl?: string; // ?? ??
+    bannerUrl?: string;
     description?: string; // ?? ??
     certificationRate?: number; // ?? ??
     currentMembers: number;
@@ -38,6 +39,7 @@ export interface ChallengeInfo {
         status: string;
     };
     thumbnailUrl?: string; // ?? ??
+    bannerUrl?: string;
     certificationRate?: number; // ?? ??
     leader: {
         userId: string;

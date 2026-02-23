@@ -1,12 +1,11 @@
 import styles from './FeedPage.module.css';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PostEditor } from './PostEditor';
 import { PostCard } from './PostCard';
 import { useFeed } from '@/hooks/useFeed';
 import { Skeleton } from '@/components/feedback/Skeleton/Skeleton';
-import { VerificationModal } from '../VerificationModal';
-import { useVerificationModalStore, usePostDetailModalStore } from '@/store/modal/useModalStore';
-import { Button } from '@/components/ui';
-import { Camera } from 'lucide-react';
+import { usePostDetailModalStore } from '@/store/modal/useModalStore';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useChallengeDetail } from '@/hooks/useChallenge';
 
@@ -15,11 +14,29 @@ import { useChallengeDetail } from '@/hooks/useChallenge';
  */
 export function FeedPage() {
   const { challengeId, isResolving } = useChallengeRoute();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { data: posts, isLoading, error } = useFeed(challengeId);
   const { data: challenge } = useChallengeDetail(challengeId);
-  const verificationModal = useVerificationModalStore();
   const { onOpen: openPostDetail } = usePostDetailModalStore();
   const isLeader = challenge?.myMembership?.role === 'LEADER';
+
+  useEffect(() => {
+    const targetPostId = searchParams.get('postId');
+    if (!targetPostId || !posts || posts.length === 0) {
+      return;
+    }
+
+    const targetPost = posts.find(post => post.id === targetPostId);
+    if (!targetPost) {
+      return;
+    }
+
+    openPostDetail(targetPost);
+
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('postId');
+    setSearchParams(nextParams, { replace: true });
+  }, [openPostDetail, posts, searchParams, setSearchParams]);
 
   if (isResolving || isLoading) {
     return (
@@ -47,17 +64,6 @@ export function FeedPage() {
 
   return (
     <div className={styles.feedContainer}>
-      <div className={styles.headerAction}>
-        {/* 인증하기 버튼 (트리거) */}
-        <Button
-          onClick={verificationModal.onOpen}
-          className={styles.verifyButton}
-        >
-          <Camera size={20} />
-          오늘의 인증하기
-        </Button>
-      </div>
-
       <PostEditor />
       <div className={styles.feedList}>
         {posts?.length === 0 ? (
@@ -75,8 +81,6 @@ export function FeedPage() {
           ))
         )}
       </div>
-
-      <VerificationModal />
     </div>
   );
 }

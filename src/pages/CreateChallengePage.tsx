@@ -15,6 +15,8 @@ import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { Category } from '@/types/enums';
 import { toast } from 'sonner';
 import { preloadLottie } from '@/components/ui/Icon/lottieRegistry';
+import { uploadChallengeBanner, uploadChallengeThumbnail } from '@/lib/api/upload';
+import { validateSingleImageFile } from '@/lib/image/validation';
 import styles from './CreateChallengePage.module.css';
 
 // 보조 처리
@@ -26,6 +28,8 @@ const challengeSchema = z.object({
   maxMembers: z.number().min(3, '최소 3명 이상이어야 합니다').max(30, '최대 30명까지 가능합니다'),
   supportAmount: z.number().min(10000, '최소 10,000원 이상이어야 합니다'),
   depositAmount: z.number().min(0), // ?? ??
+  bannerImage: z.string().min(1, '대표(배너) 이미지를 업로드해주세요'),
+  thumbnailImage: z.string().min(1, '프로필(썸네일) 이미지를 업로드해주세요'),
   rules: z.string().optional(),
 });
 
@@ -67,11 +71,15 @@ export function CreateChallengePage() {
       maxMembers: 10,
       supportAmount: 10000,
       depositAmount: 10000,
+      bannerImage: '',
+      thumbnailImage: '',
     },
   });
 
   const selectedCategory = useWatch({ control, name: 'category' });
   const supportAmount = useWatch({ control, name: 'supportAmount' });
+  const bannerImage = useWatch({ control, name: 'bannerImage' });
+  const thumbnailImage = useWatch({ control, name: 'thumbnailImage' });
 
   // 보조 처리
   useEffect(() => {
@@ -88,6 +96,39 @@ export function CreateChallengePage() {
   }, []);
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [bannerUploading, setBannerUploading] = useState(false);
+  const [thumbnailUploading, setThumbnailUploading] = useState(false);
+
+  const uploadChallengeImage = async (field: 'bannerImage' | 'thumbnailImage', file: File) => {
+    if (field === 'bannerImage') {
+      setBannerUploading(true);
+    } else {
+      setThumbnailUploading(true);
+    }
+
+    try {
+      await validateSingleImageFile(
+        field === 'bannerImage' ? 'CHALLENGE_BANNER' : 'CHALLENGE_THUMBNAIL',
+        file,
+      );
+      const imageUrl = field === 'bannerImage'
+        ? await uploadChallengeBanner(file)
+        : await uploadChallengeThumbnail(file);
+      if (!imageUrl) {
+        throw new Error('이미지 업로드 결과가 비어 있습니다.');
+      }
+      setValue(field, imageUrl, { shouldValidate: true, shouldDirty: true });
+      toast.success(field === 'bannerImage' ? '대표 이미지 업로드 완료' : '프로필 이미지 업로드 완료');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '이미지 업로드에 실패했습니다.');
+    } finally {
+      if (field === 'bannerImage') {
+        setBannerUploading(false);
+      } else {
+        setThumbnailUploading(false);
+      }
+    }
+  };
 
   const onSubmit = async (data: ChallengeFormValues) => {
     setFormErrors([]);
@@ -118,6 +159,8 @@ export function CreateChallengePage() {
     if (errors.startDate) msgs.push('❌ 시작일을 선택해주세요');
     if (errors.maxMembers) msgs.push(`❌ ${errors.maxMembers.message || '모집 인원을 확인해주세요'}`);
     if (errors.supportAmount) msgs.push(`❌ ${errors.supportAmount.message || '서포트 금액을 확인해주세요'}`);
+    if (errors.bannerImage) msgs.push(`❌ ${errors.bannerImage.message || '대표 이미지 업로드가 필요합니다'}`);
+    if (errors.thumbnailImage) msgs.push(`❌ ${errors.thumbnailImage.message || '프로필 이미지 업로드가 필요합니다'}`);
     setFormErrors(msgs.length > 0 ? msgs : ['❌ 입력 정보를 확인해주세요']);
   };
 
@@ -169,11 +212,59 @@ export function CreateChallengePage() {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label}>대표 이미지</label>
-                <div className={styles.uploadArea}>
-                  <Upload className={styles.uploadIcon} />
-                  <span>이미지 업로드</span>
-                </div>
+                <label className={styles.label}>대표 이미지 (배너)</label>
+                <label className={styles.uploadArea}>
+                  <input
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                    className={styles.hiddenFileInput}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) {
+                        void uploadChallengeImage('bannerImage', file);
+                      }
+                      event.target.value = '';
+                    }}
+                    type="file"
+                  />
+                  {bannerImage ? (
+                    <img className={styles.uploadPreview} src={bannerImage} alt="배너 미리보기" />
+                  ) : (
+                    <>
+                      <Upload className={styles.uploadIcon} />
+                      <span>{bannerUploading ? '업로드 중...' : '배너 이미지 업로드'}</span>
+                    </>
+                  )}
+                </label>
+                <span className={styles.hint}>2048x1152px 정확히 일치, 6MB 이하</span>
+                {errors.bannerImage && <p className={styles.error}>{errors.bannerImage.message}</p>}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>프로필 이미지 (썸네일)</label>
+                <label className={styles.uploadArea}>
+                  <input
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                    className={styles.hiddenFileInput}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) {
+                        void uploadChallengeImage('thumbnailImage', file);
+                      }
+                      event.target.value = '';
+                    }}
+                    type="file"
+                  />
+                  {thumbnailImage ? (
+                    <img className={styles.uploadPreview} src={thumbnailImage} alt="썸네일 미리보기" />
+                  ) : (
+                    <>
+                      <Upload className={styles.uploadIcon} />
+                      <span>{thumbnailUploading ? '업로드 중...' : '썸네일 이미지 업로드'}</span>
+                    </>
+                  )}
+                </label>
+                <span className={styles.hint}>최소 128x128px, 4MB 이하</span>
+                {errors.thumbnailImage && <p className={styles.error}>{errors.thumbnailImage.message}</p>}
               </div>
 
               <div className={styles.formGroup}>

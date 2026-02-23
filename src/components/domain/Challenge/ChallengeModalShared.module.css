@@ -92,6 +92,35 @@
   margin-top: var(--spacing-md);
 }
 
+.uploadArea {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--size-px-140);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.uploadPlaceholder {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-text-tertiary);
+}
+
+.uploadPreview {
+  width: 100%;
+  height: var(--size-px-180);
+  object-fit: cover;
+}
+
 /* 공통 설명 */
 .stepIndicator {
   display: flex;

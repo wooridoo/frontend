@@ -13,6 +13,7 @@ export interface CreatePostInput {
     title: string;
     content: string;
     category?: string; // ?? ??
+    imageUrls?: string[];
     images?: string[];
 }
 
@@ -59,7 +60,12 @@ export async function getPost(challengeId: string, postId: string): Promise<Post
  */
 export async function createPost(challengeId: string, data: CreatePostInput): Promise<Post> {
     const normalizedChallengeId = toApiChallengeId(challengeId);
-    return client.post<Post>(`/challenges/${normalizedChallengeId}/posts`, data);
+    return client.post<Post>(`/challenges/${normalizedChallengeId}/posts`, {
+      title: data.title,
+      content: data.content,
+      category: data.category,
+      imageUrls: data.imageUrls ?? data.images,
+    });
 }
 
 /**
@@ -67,7 +73,12 @@ export async function createPost(challengeId: string, data: CreatePostInput): Pr
  */
 export async function updatePost(challengeId: string, postId: string, data: Partial<CreatePostInput>): Promise<Post> {
     const normalizedChallengeId = toApiChallengeId(challengeId);
-    return client.put<Post>(`/challenges/${normalizedChallengeId}/posts/${postId}`, data);
+    return client.put<Post>(`/challenges/${normalizedChallengeId}/posts/${postId}`, {
+      title: data.title,
+      content: data.content,
+      category: data.category,
+      imageUrls: data.imageUrls ?? data.images,
+    });
 }
 
 /**

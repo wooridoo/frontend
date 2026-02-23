@@ -1,4 +1,5 @@
 import { Crown, EllipsisVertical } from 'lucide-react';
+import { useState } from 'react';
 import type { ChallengeInfo } from '@/lib/api/challenge';
 import { formatCurrency } from '@/lib/utils';
 import { Skeleton } from '@/components/feedback';
@@ -32,6 +33,7 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
   const { onOpen: openDelegateLeader } = useDelegateLeaderModalStore();
   const { onOpen: openSupportSettings } = useSupportSettingsModalStore();
   const { onOpen: openSupportPayment } = useSupportPaymentModalStore();
+  const [isManagementOpen, setIsManagementOpen] = useState(false);
 
   const isLeader = challenge.myMembership?.role === 'LEADER';
   const isMember = Boolean(challenge.myMembership?.memberId);
@@ -39,7 +41,12 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
     || (challenge.leader as { id?: string }).id
     || '';
 
-  const { title, description, category, memberCount, supportAmount, leader, thumbnailUrl, status } = challenge;
+  const { title, description, category, memberCount, supportAmount, leader, thumbnailUrl, bannerUrl, status } = challenge;
+
+  const openActionModal = (callback: () => void) => {
+    setIsManagementOpen(false);
+    window.setTimeout(callback, 0);
+  };
 
   return (
     <div className={styles.hero}>
@@ -50,13 +57,24 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
           onError={e => {
             (e.target as HTMLImageElement).src = CHALLENGE_FALLBACK_IMAGE;
           }}
-          src={thumbnailUrl || CHALLENGE_FALLBACK_IMAGE}
+          src={bannerUrl || CHALLENGE_FALLBACK_IMAGE}
         />
       </div>
 
       <div className={styles.content}>
         <div className={styles.iconWrapper}>
-          <SemanticIcon name="challenge" size={28} />
+          {thumbnailUrl ? (
+            <img
+              alt="챌린지 썸네일"
+              className={styles.iconImage}
+              onError={e => {
+                (e.target as HTMLImageElement).src = CHALLENGE_FALLBACK_IMAGE;
+              }}
+              src={thumbnailUrl}
+            />
+          ) : (
+            <SemanticIcon name="challenge" size={28} />
+          )}
         </div>
 
         <div className={styles.info}>
@@ -94,6 +112,8 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
                   align="end"
                   desktopContentClassName={styles.managementOverlay}
                   mobileContentClassName={styles.managementOverlay}
+                  onOpenChange={setIsManagementOpen}
+                  open={isManagementOpen}
                   title="챌린지 관리"
                   trigger={(
                     <button type="button" className={styles.manageButton}>
@@ -106,14 +126,14 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
                     <button
                       type="button"
                       className={styles.managementItem}
-                      onClick={() => openSupportPayment(challenge.challengeId, challenge.supportAmount)}
+                      onClick={() => openActionModal(() => openSupportPayment(challenge.challengeId, challenge.supportAmount))}
                     >
                       서포트 결제
                     </button>
                     <button
                       type="button"
                       className={styles.managementItem}
-                      onClick={() => openSupportSettings(challenge.challengeId)}
+                      onClick={() => openActionModal(() => openSupportSettings(challenge.challengeId))}
                     >
                       서포트 설정
                     </button>
@@ -122,21 +142,21 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
                         <button
                           type="button"
                           className={styles.managementItem}
-                          onClick={() => openEditChallenge(challenge)}
+                          onClick={() => openActionModal(() => openEditChallenge(challenge))}
                         >
                           챌린지 수정
                         </button>
                         <button
                           type="button"
                           className={styles.managementItem}
-                          onClick={() => openDelegateLeader(challenge.challengeId, leaderUserId)}
+                          onClick={() => openActionModal(() => openDelegateLeader(challenge.challengeId, leaderUserId))}
                         >
                           리더 위임
                         </button>
                         <button
                           type="button"
                           className={`${styles.managementItem} ${styles.managementDanger}`}
-                          onClick={() => openDeleteChallenge(challenge.challengeId, challenge.title)}
+                          onClick={() => openActionModal(() => openDeleteChallenge(challenge.challengeId, challenge.title))}
                         >
                           챌린지 삭제
                         </button>
@@ -145,7 +165,7 @@ export function ChallengeHero({ challenge }: ChallengeHeroProps) {
                       <button
                         type="button"
                         className={`${styles.managementItem} ${styles.managementDanger}`}
-                        onClick={() => openLeaveChallenge(challenge.challengeId, challenge.title)}
+                        onClick={() => openActionModal(() => openLeaveChallenge(challenge.challengeId, challenge.title))}
                       >
                         챌린지 나가기
                       </button>

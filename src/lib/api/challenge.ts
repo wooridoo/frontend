@@ -127,6 +127,8 @@ export interface UpdateChallengeRequest {
   name: string;
   description?: string;
   category?: string;
+  bannerImage?: string;
+  bannerUrl?: string;
   thumbnailImage?: string;
   thumbnailUrl?: string;
   maxMembers?: number;
@@ -138,6 +140,7 @@ export async function updateChallenge(data: UpdateChallengeRequest): Promise<Cha
   return client.put<ChallengeInfo>(`/challenges/${normalizedChallengeId}`, {
     name: data.name,
     description: data.description,
+    bannerImage: data.bannerImage ?? data.bannerUrl,
     thumbnailImage: data.thumbnailImage ?? data.thumbnailUrl,
     maxMembers: data.maxMembers,
     rules: data.rules,
@@ -172,6 +175,8 @@ export interface CreateChallengeRequest {
   supportAmount: number;
   depositAmount: number;
   supportDay?: number;
+  bannerImage?: string;
+  thumbnailImage?: string;
   rules?: string;
 }
 
