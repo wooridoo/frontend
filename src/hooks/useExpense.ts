@@ -55,7 +55,8 @@ export function useCreateExpense(challengeId: string) {
         mutationFn: (data: CreateExpenseInput) => createExpense(challengeId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['expenses', challengeId] });
-            queryClient.invalidateQueries({ queryKey: ['ledger', challengeId] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account'] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account-graph'] });
         },
     });
 }
@@ -75,7 +76,8 @@ export function useApproveExpense(challengeId: string) {
         onSuccess: (updatedExpense) => {
             queryClient.invalidateQueries({ queryKey: ['expenses', challengeId] });
             queryClient.setQueryData(['expense', challengeId, updatedExpense.expenseId], updatedExpense);
-            queryClient.invalidateQueries({ queryKey: ['ledger', challengeId] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account'] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account-graph'] });
         },
     });
 }
@@ -92,6 +94,8 @@ export function useUpdateExpense(challengeId: string) {
         onSuccess: (updatedExpense) => {
             queryClient.invalidateQueries({ queryKey: ['expenses', challengeId] });
             queryClient.setQueryData(['expense', challengeId, updatedExpense.expenseId], updatedExpense);
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account'] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account-graph'] });
         },
     });
 }
@@ -106,7 +110,8 @@ export function useDeleteExpense(challengeId: string) {
         mutationFn: (expenseId: string) => deleteExpense(challengeId, expenseId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['expenses', challengeId] });
-            queryClient.invalidateQueries({ queryKey: ['ledger', challengeId] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account'] });
+            queryClient.invalidateQueries({ queryKey: ['challenge', challengeId, 'account-graph'] });
         },
     });
 }

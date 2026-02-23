@@ -33,3 +33,21 @@ export interface ChallengeAccount {
     recentTransactions: Transaction[];
     supportStatus: SupportStatus;
 }
+
+export interface MonthlyExpensePoint {
+    month: string;
+    expense: number;
+}
+
+export interface MonthlyBalancePoint {
+    month: string;
+    balance: number | null;
+}
+
+export interface ChallengeAccountGraph {
+    challengeId: string;
+    months: number;
+    calculatedAt?: string;
+    monthlyExpenses: MonthlyExpensePoint[];
+    monthlyBalances: MonthlyBalancePoint[];
+}

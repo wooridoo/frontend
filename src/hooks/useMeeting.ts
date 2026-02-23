@@ -96,8 +96,16 @@ export function useCompleteMeeting() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (meetingId: string) => completeMeeting(meetingId),
-    onSuccess: (_, meetingId) => {
+    mutationFn: ({
+      meetingId,
+      actualAttendees,
+      notes,
+    }: {
+      meetingId: string;
+      actualAttendees: string[];
+      notes?: string;
+    }) => completeMeeting(meetingId, actualAttendees, notes),
+    onSuccess: (_, { meetingId }) => {
       queryClient.invalidateQueries({ queryKey: ['meeting', meetingId] });
       queryClient.invalidateQueries({ queryKey: ['challenge'] });
     },

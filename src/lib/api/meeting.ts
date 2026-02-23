@@ -200,10 +200,10 @@ export async function updateMeeting(data: UpdateMeetingRequest): Promise<Meeting
   return normalizeMeeting(response);
 }
 
-export async function completeMeeting(meetingId: string): Promise<void> {
+export async function completeMeeting(meetingId: string, actualAttendees: string[], notes = ''): Promise<void> {
   await client.post(`/meetings/${meetingId}/complete`, {
-    actualAttendees: [],
-    notes: '',
+    actualAttendees,
+    notes,
   });
 }
 

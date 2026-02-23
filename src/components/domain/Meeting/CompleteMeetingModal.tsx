@@ -1,60 +1,106 @@
+import { useMemo, useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useCompleteMeetingModalStore } from '@/store/modal/useModalStore';
 import { useCompleteMeeting } from '@/hooks/useMeeting';
 import styles from './MeetingModal.module.css';
 
-/**
-    * 동작 설명은 추후 세분화 예정입니다.
- */
 export function CompleteMeetingModal() {
-    const { isOpen, meeting, onClose } = useCompleteMeetingModalStore();
-    const completeMutation = useCompleteMeeting();
+  const { isOpen, meeting, onClose } = useCompleteMeetingModalStore();
+  const completeMutation = useCompleteMeeting();
+  const attendees = useMemo(() => meeting?.members ?? [], [meeting]);
+  const [selectionOverrides, setSelectionOverrides] = useState<Record<string, boolean>>({});
 
-    const handleComplete = async () => {
-        if (!meeting) return;
+  const selectedIds = useMemo(
+    () => attendees.filter((member) => selectionOverrides[member.userId] ?? true).map((member) => member.userId),
+    [attendees, selectionOverrides],
+  );
 
-        try {
-            await completeMutation.mutateAsync(meeting.meetingId);
-            onClose();
-        } catch {
-            // 보조 처리
-        }
-    };
+  const handleClose = () => {
+    setSelectionOverrides({});
+    onClose();
+  };
 
-    return (
-        <Modal isOpen={isOpen} onClose={onClose} className={styles.modalContent}>
-            <div className={styles.container}>
-                <h2 className={styles.title}>모임 완료</h2>
+  const handleToggle = (userId: string) => {
+    setSelectionOverrides((prev) => {
+      const effectiveSelected = prev[userId] ?? true;
+      const nextSelected = !effectiveSelected;
 
-                {meeting && (
-                    <div className={styles.centeredContent}>
-                        <div className={styles.completeEmoji}>
-                            ✅
-                        </div>
-                        <p className={styles.completeTitle}>
-                            <strong>{meeting.title}</strong>
-                        </p>
-                        <p className={styles.completeDescription}>
-                            이 모임을 완료 처리하시겠습니까?<br />
-                            완료 후에는 참석 인원 확정 및 정산이 진행됩니다.
-                        </p>
+      if (nextSelected) {
+        const next = { ...prev };
+        delete next[userId];
+        return next;
+      }
 
-                        <div className={styles.actions}>
-                            <Button onClick={onClose} className={styles.cancelButton}>
-                                취소
-                            </Button>
-                            <Button
-                                onClick={handleComplete}
-                                className={styles.submitButton}
-                                disabled={completeMutation.isPending}
-                            >
-                                {completeMutation.isPending ? '처리 중...' : '모임 완료'}
-                            </Button>
-                        </div>
-                    </div>
-                )}
+      return {
+        ...prev,
+        [userId]: false,
+      };
+    });
+  };
+
+  const handleComplete = async () => {
+    if (!meeting || selectedIds.length === 0) return;
+
+    try {
+      await completeMutation.mutateAsync({
+        meetingId: meeting.meetingId,
+        actualAttendees: selectedIds,
+        notes: '',
+      });
+      handleClose();
+    } catch {
+      // handled by global api error handler
+    }
+  };
+
+  const canSubmit = selectedIds.length > 0 && attendees.length > 0 && !completeMutation.isPending;
+
+  return (
+    <Modal isOpen={isOpen} onClose={handleClose} className={styles.modalContent}>
+      <div className={styles.container}>
+        <h2 className={styles.title}>모임 완료</h2>
+
+        {meeting ? (
+          <>
+            <p className={styles.completeDescription}>
+              실제 참석자를 선택한 뒤 완료 처리해 주세요.
+              <br />
+              참석자 선택 결과가 지출 투표 참여 자격에 반영됩니다.
+            </p>
+
+            <div className={styles.attendeeList}>
+              {attendees.length > 0 ? (
+                attendees.map((member) => (
+                  <label key={member.userId} className={styles.attendeeItem}>
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(member.userId)}
+                      onChange={() => handleToggle(member.userId)}
+                    />
+                    <span className={styles.attendeeName}>{member.nickname}</span>
+                  </label>
+                ))
+              ) : (
+                <p className={styles.error}>참석 응답이 AGREE인 멤버가 없어 완료할 수 없습니다.</p>
+              )}
             </div>
-        </Modal>
-    );
+
+            <div className={styles.actions}>
+              <Button onClick={handleClose} className={styles.cancelButton}>
+                취소
+              </Button>
+              <Button
+                onClick={handleComplete}
+                className={styles.submitButton}
+                disabled={!canSubmit}
+              >
+                {completeMutation.isPending ? '처리 중...' : '모임 완료'}
+              </Button>
+            </div>
+          </>
+        ) : null}
+      </div>
+    </Modal>
+  );
 }
