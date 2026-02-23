@@ -51,10 +51,20 @@ export function VoteDetail() {
     return Math.round((count / totalVotes) * 100);
   };
 
+  const handleBack = async () => {
+    const isConfirmed = await confirm({
+      title: '투표 목록으로 돌아가시겠습니까?',
+      confirmText: '이동',
+      cancelText: '취소',
+    });
+    if (!isConfirmed) return;
+    navigate(-1);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.navigation}>
-        <Button variant="ghost" onClick={() => navigate(-1)}>
+        <Button variant="ghost" onClick={() => void handleBack()}>
           목록으로
         </Button>
       </div>

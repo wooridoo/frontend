@@ -1,7 +1,10 @@
 .container {
-  padding: var(--space-4);
-  background: var(--color-surface);
+  display: block;
+  width: 100%;
+  text-align: left;
   border: 1px solid var(--color-grey-200);
+  background: var(--color-surface);
+  padding: var(--space-4);
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.2s;

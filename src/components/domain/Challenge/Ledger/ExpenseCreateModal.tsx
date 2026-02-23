@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Overlay/Modal';
-import { Button } from '@/components/ui';
+import { Button, Input } from '@/components/ui';
 import { useCreateExpense } from '@/hooks/useExpense';
 import { useChallengeMeetings } from '@/hooks/useMeeting';
 import { useExpenseCreateModalStore } from '@/store/modal/useModalStore';
+import { ExpenseField, ExpenseModalLayout } from './ExpenseModalLayout';
+import layoutStyles from './ExpenseModalLayout.module.css';
 
 const getMinDeadline = () => {
   const date = new Date();
@@ -82,20 +84,35 @@ export function ExpenseCreateModal() {
         deadline,
       });
       handleClose();
-    } catch {
-      setError('지출 생성에 실패했습니다.');
+    } catch (createError) {
+      if (createError instanceof Error && createError.message) {
+        setError(createError.message);
+      } else {
+        setError('지출 생성에 실패했습니다.');
+      }
     }
   };
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold">지출 등록</h2>
-
-        <div className="space-y-2">
-          <label className="block text-sm text-gray-600">대상 모임</label>
+      <ExpenseModalLayout
+        title="지출 등록"
+        description="모임 지출은 생성 후 투표를 통해 승인/거절됩니다."
+        footer={(
+          <>
+            <Button variant="ghost" onClick={handleClose}>
+              취소
+            </Button>
+            <Button onClick={() => void handleSubmit()} disabled={createExpense.isPending}>
+              {createExpense.isPending ? '등록 중...' : '등록'}
+            </Button>
+          </>
+        )}
+      >
+        <ExpenseField label="대상 모임" htmlFor="expense-meeting">
           <select
-            className="w-full border rounded-md px-3 py-2"
+            id="expense-meeting"
+            className={layoutStyles.select}
             value={meetingId}
             onChange={(event) => setMeetingId(event.target.value)}
           >
@@ -106,67 +123,56 @@ export function ExpenseCreateModal() {
               </option>
             ))}
           </select>
-        </div>
+        </ExpenseField>
 
-        <div className="space-y-2">
-          <label className="block text-sm text-gray-600">제목</label>
-          <input
-            className="w-full border rounded-md px-3 py-2"
+        <ExpenseField label="제목" htmlFor="expense-title">
+          <Input
+            id="expense-title"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
           />
-        </div>
+        </ExpenseField>
 
-        <div className="space-y-2">
-          <label className="block text-sm text-gray-600">금액</label>
-          <input
+        <ExpenseField label="금액" htmlFor="expense-amount">
+          <Input
+            id="expense-amount"
             type="number"
-            className="w-full border rounded-md px-3 py-2"
+            min={1}
             value={amount}
             onChange={(event) => setAmount(event.target.value)}
           />
-        </div>
+        </ExpenseField>
 
-        <div className="space-y-2">
-          <label className="block text-sm text-gray-600">마감 일시</label>
+        <ExpenseField label="마감 일시" htmlFor="expense-deadline">
           <input
+            id="expense-deadline"
             type="datetime-local"
-            className="w-full border rounded-md px-3 py-2"
+            className={layoutStyles.dateInput}
             min={getMinDeadline()}
             value={deadline}
             onChange={(event) => setDeadline(event.target.value)}
           />
-        </div>
+        </ExpenseField>
 
-        <div className="space-y-2">
-          <label className="block text-sm text-gray-600">설명</label>
+        <ExpenseField label="설명" htmlFor="expense-description">
           <textarea
-            className="w-full border rounded-md px-3 py-2"
+            id="expense-description"
+            className={layoutStyles.textarea}
             value={description}
             onChange={(event) => setDescription(event.target.value)}
           />
-        </div>
+        </ExpenseField>
 
-        <div className="space-y-2">
-          <label className="block text-sm text-gray-600">영수증 주소</label>
-          <input
-            className="w-full border rounded-md px-3 py-2"
+        <ExpenseField label="영수증 주소" htmlFor="expense-receipt">
+          <Input
+            id="expense-receipt"
             value={receiptUrl}
             onChange={(event) => setReceiptUrl(event.target.value)}
           />
-        </div>
+        </ExpenseField>
 
-        {error ? <p className="text-sm text-red-500">{error}</p> : null}
-
-        <div className="flex justify-end gap-2">
-          <Button variant="ghost" onClick={handleClose}>
-            취소
-          </Button>
-          <Button onClick={() => void handleSubmit()} disabled={createExpense.isPending}>
-            {createExpense.isPending ? '등록 중...' : '등록'}
-          </Button>
-        </div>
-      </div>
+        {error ? <p className={layoutStyles.error}>{error}</p> : null}
+      </ExpenseModalLayout>
     </Modal>
   );
 }

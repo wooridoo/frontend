@@ -4,12 +4,14 @@ import { Heart, MessageCircle, MoreVertical, Pin, Share2, Trash2 } from 'lucide-
 import { toast } from 'sonner';
 import { type User } from '@/types/user';
 import { Avatar } from '@/components/ui/Avatar';
+import { CommentSection } from '@/components/domain/Comment/CommentSection';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useToggleLike, useDeletePost, useSetPostPinned } from '@/hooks/useFeed';
 import { ResponsiveOverlay } from '@/components/ui/Overlay/ResponsiveOverlay';
 import { resolveChallengeId } from '@/lib/utils/challengeRoute';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
+import { capabilities } from '@/lib/api/capabilities';
 import styles from './PostCard.module.css';
 
 interface PostCardProps {
@@ -54,6 +56,7 @@ export function PostCard({
   const [isLiked, setIsLiked] = useState(initialIsLiked || false);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isThreadExpanded, setIsThreadExpanded] = useState(false);
 
   const toggleLike = useToggleLike(challengeId);
   const deletePost = useDeletePost(challengeId);
@@ -137,7 +140,8 @@ export function PostCard({
       return;
     }
 
-    const shareUrl = new URL(window.location.href);
+    const currentUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const shareUrl = new URL(currentUrl);
     shareUrl.searchParams.set('postId', id);
     const url = shareUrl.toString();
 
@@ -220,7 +224,7 @@ export function PostCard({
         ) : null}
       </div>
 
-      <div className={styles.content} onClick={handleOpenDetail}>
+      <div className={styles.content}>
         {isPinned ? (
           <div className={styles.pinIcon}>
             <Pin fill="currentColor" size={14} />
@@ -242,7 +246,16 @@ export function PostCard({
           <Heart fill={isLiked ? 'currentColor' : 'none'} size={18} />
           <span>{likeCount}</span>
         </button>
-        <button className={styles.actionButton} onClick={handleOpenDetail}>
+        <button
+          className={styles.actionButton}
+          onClick={() => {
+            if (capabilities.feedInlineThread) {
+              setIsThreadExpanded(prev => !prev);
+              return;
+            }
+            handleOpenDetail();
+          }}
+        >
           <MessageCircle size={18} />
           <span>{commentCount}</span>
         </button>
@@ -251,6 +264,19 @@ export function PostCard({
           <span>공유</span>
         </button>
       </div>
+
+      {capabilities.feedInlineThread ? (
+        <div className={styles.inlineThread}>
+          <CommentSection
+            challengeId={challengeId}
+            postId={id}
+            mode="inline"
+            expanded={isThreadExpanded}
+            previewCount={2}
+            onExpandChange={setIsThreadExpanded}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

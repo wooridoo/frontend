@@ -2,7 +2,7 @@
     * 동작 설명은 추후 세분화 예정입니다.
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getComments, createComment, updateComment, deleteComment } from '@/lib/api/comment';
+import { getComments, createComment, updateComment, deleteComment, toggleCommentLike } from '@/lib/api/comment';
 import type { CreateCommentInput, UpdateCommentInput } from '@/types/comment';
 
 /**
@@ -11,13 +11,20 @@ import type { CreateCommentInput, UpdateCommentInput } from '@/types/comment';
 export function useComments(
   challengeId: string | undefined,
   postId: string | undefined,
-  page = 0,
-  size = 50,
+  options?: {
+    page?: number;
+    size?: number;
+    enabled?: boolean;
+  },
 ) {
+  const page = options?.page ?? 0;
+  const size = options?.size ?? 50;
+  const enabled = options?.enabled ?? true;
+
   return useQuery({
     queryKey: ['comments', challengeId, postId, page, size],
     queryFn: () => getComments(challengeId!, postId!, page, size),
-    enabled: !!challengeId && !!postId,
+    enabled: !!challengeId && !!postId && enabled,
   });
 }
 
@@ -63,6 +70,21 @@ export function useDeleteComment(challengeId: string, postId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', challengeId, postId] });
       queryClient.invalidateQueries({ queryKey: ['post', challengeId, postId] });
+      queryClient.invalidateQueries({ queryKey: ['feed', challengeId] });
+    },
+  });
+}
+
+/**
+    * 동작 설명은 추후 세분화 예정입니다.
+ */
+export function useToggleCommentLike(challengeId: string, postId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (commentId: string) => toggleCommentLike(challengeId, postId, commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments', challengeId, postId] });
       queryClient.invalidateQueries({ queryKey: ['feed', challengeId] });
     },
   });

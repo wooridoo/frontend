@@ -14,6 +14,8 @@ export interface Comment {
   content: string;
   parentId?: string;
   likeCount: number;
+  isDeleted?: boolean;
+  isLiked?: boolean;
   createdAt: string;
   updatedAt?: string;
   replies?: Comment[];

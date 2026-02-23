@@ -7,6 +7,7 @@ import { Loading } from '@/components/feedback';
 import { VoteStatus } from '@/types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { VoteTabSwitcher } from './VoteUi';
 import styles from './VoteList.module.css';
 
 /**
@@ -42,26 +43,14 @@ export function VoteList() {
         <Button onClick={() => navigate(CHALLENGE_ROUTES.voteNew(routeRef))}>투표 생성</Button>
       </div>
 
-      <div className={styles.tabs}>
-        <Button
-          className={`${styles.tab} ${tab === 'IN_PROGRESS' ? styles.active : ''}`}
-          onClick={() => setTab('IN_PROGRESS')}
-          shape="pill"
-          size="sm"
-          variant={tab === 'IN_PROGRESS' ? 'primary' : 'ghost'}
-        >
-          진행 중
-        </Button>
-        <Button
-          className={`${styles.tab} ${tab === 'COMPLETED' ? styles.active : ''}`}
-          onClick={() => setTab('COMPLETED')}
-          shape="pill"
-          size="sm"
-          variant={tab === 'COMPLETED' ? 'primary' : 'ghost'}
-        >
-          완료
-        </Button>
-      </div>
+      <VoteTabSwitcher
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: 'IN_PROGRESS', label: '진행 중' },
+          { value: 'COMPLETED', label: '완료' },
+        ]}
+      />
 
       <div className={styles.list}>
         {displayVotes?.length === 0 ? (

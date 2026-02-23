@@ -16,21 +16,6 @@
   color: var(--color-grey-900);
 }
 
-.tabs {
-  display: flex;
-  gap: var(--space-4);
-  border-bottom: 1px solid var(--color-grey-200);
-}
-
-.tab {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-}
-
-.tab.active {
-  font-weight: 700;
-}
-
 .list {
   display: flex;
   flex-direction: column;

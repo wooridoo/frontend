@@ -20,10 +20,10 @@ interface ApiRequestConfig extends AxiosRequestConfig {
 export class ApiError extends Error {
   status: number;
   code?: string;
-  details?: unknown;
+  details?: Record<string, unknown>;
   rawMessage?: string;
 
-  constructor(message: string, status: number, code?: string, details?: unknown, rawMessage?: string) {
+  constructor(message: string, status: number, code?: string, details?: Record<string, unknown>, rawMessage?: string) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -139,12 +139,19 @@ function handleSessionExpired() {
   emitSessionExpired();
 }
 
-function createApiError(normalized: ReturnType<typeof normalizeApiError>, status: number): ApiError {
-  return new ApiError(normalized.userMessage, status, normalized.code, undefined, normalized.rawMessage);
+function createApiError(
+  normalized: ReturnType<typeof normalizeApiError>,
+  status: number,
+  details?: Record<string, unknown>,
+): ApiError {
+  return new ApiError(normalized.userMessage, status, normalized.code, details, normalized.rawMessage);
 }
 
-function createSessionExpiredError(normalized: ReturnType<typeof normalizeApiError>): ApiError {
-  return new ApiError('세션이 만료되었습니다. 다시 로그인해 주세요.', 401, normalized.code, undefined, normalized.rawMessage);
+function createSessionExpiredError(
+  normalized: ReturnType<typeof normalizeApiError>,
+  details?: Record<string, unknown>,
+): ApiError {
+  return new ApiError('세션이 만료되었습니다. 다시 로그인해 주세요.', 401, normalized.code, details, normalized.rawMessage);
 }
 
 function isCredentialFailure(code?: string): boolean {
@@ -201,6 +208,11 @@ axiosInstance.interceptors.response.use(
     const responseBody = error.response?.data;
     const rawMessage = responseBody?.message || error.message || 'Network Error';
     const normalized = normalizeApiError(rawMessage);
+    const retryAfterHeader = error.response?.headers?.['retry-after'];
+    const retryAfterSeconds = Number(retryAfterHeader);
+    const details: Record<string, unknown> | undefined = Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0
+      ? { retryAfterSeconds }
+      : undefined;
     const originalRequest = error.config as (InternalAxiosRequestConfig & { _retry?: boolean; silentError?: boolean }) | undefined;
     const requestUrl = originalRequest?.url;
     const requestMethod = (originalRequest?.method || 'get').toLowerCase();
@@ -210,12 +222,12 @@ axiosInstance.interceptors.response.use(
 
     if (status === 401 && originalRequest && !originalRequest._retry) {
       if (shouldBypassSessionHandling(status, requestUrl, normalized.code)) {
-        return Promise.reject(createApiError(normalized, status));
+        return Promise.reject(createApiError(normalized, status, details));
       }
 
       if (isRefreshRequest(requestUrl)) {
         handleSessionExpired();
-        return Promise.reject(createSessionExpiredError(normalized));
+        return Promise.reject(createSessionExpiredError(normalized, details));
       }
 
       if (isRefreshing) {
@@ -262,7 +274,7 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         handleSessionExpired();
-        return Promise.reject(createSessionExpiredError(normalized));
+        return Promise.reject(createSessionExpiredError(normalized, details));
       } finally {
         isRefreshing = false;
       }
@@ -285,7 +297,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(
-      createApiError(normalized, status),
+      createApiError(normalized, status, details),
     );
   },
 );

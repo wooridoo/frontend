@@ -9,6 +9,7 @@ const CODE_PREFIX_MESSAGE: Record<string, string> = {
   VOTE: '투표 요청을 처리할 수 없습니다.',
   EXPENSE: '지출 요청을 처리할 수 없습니다.',
   ACCOUNT: '계좌 요청을 처리할 수 없습니다.',
+  ABUSE: '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.',
   NOTIFICATION: '알림 요청을 처리할 수 없습니다.',
   VALIDATION: '입력값을 확인해 주세요.',
 };

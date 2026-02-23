@@ -6,13 +6,17 @@ import { toApiChallengeId } from './challengeId';
 import type { Comment, CommentAuthor, CreateCommentInput, UpdateCommentInput } from '@/types/comment';
 
 interface BackendComment {
-  id: string;
-  content: string;
+  id?: string;
+  commentId?: string;
+  content?: string;
   author?: CommentAuthor;
+  createdBy?: CommentAuthor;
   likeCount?: number;
-  createdAt: string;
+  isDeleted?: boolean;
+  isLiked?: boolean;
+  createdAt?: string;
   updatedAt?: string;
-  parentId?: string;
+  parentId?: string | null;
   replies?: BackendComment[];
 }
 
@@ -22,29 +26,103 @@ interface CommentResponse {
 }
 
 interface CreateCommentResponse {
-  commentId: string;
+  commentId?: string;
+  id?: string;
 }
 
 interface UpdateCommentResponse {
-  commentId: string;
+  commentId?: string;
+  id?: string;
   content: string;
   updatedAt?: string;
 }
 
+interface ToggleCommentLikeResponse {
+  isLiked?: boolean;
+  liked?: boolean;
+  likeCount?: number;
+}
+
+const asDateString = (value?: string): string => {
+  if (typeof value === 'string' && value.trim()) return value;
+  return new Date().toISOString();
+};
+
+const resolveCommentId = (comment: BackendComment): string => {
+  const id = comment.id || comment.commentId;
+  return typeof id === 'string' ? id : '';
+};
+
 const normalizeComment = (comment: BackendComment): Comment => ({
-  id: comment.id,
+  id: resolveCommentId(comment),
   createdBy: {
-    userId: comment.author?.userId ?? 'unknown',
-    nickname: comment.author?.nickname ?? 'Unknown',
-    profileImage: comment.author?.profileImage,
+    userId: comment.author?.userId ?? comment.createdBy?.userId ?? 'unknown',
+    nickname: comment.author?.nickname ?? comment.createdBy?.nickname ?? 'Unknown',
+    profileImage: comment.author?.profileImage ?? comment.createdBy?.profileImage,
   },
-  content: comment.content,
-  parentId: comment.parentId,
+  content: comment.content ?? '',
+  parentId: comment.parentId ?? undefined,
   likeCount: comment.likeCount ?? 0,
-  createdAt: comment.createdAt,
+  isDeleted: comment.isDeleted ?? false,
+  isLiked: comment.isLiked ?? false,
+  createdAt: asDateString(comment.createdAt),
   updatedAt: comment.updatedAt,
-  replies: comment.replies?.map(normalizeComment),
+  replies: comment.replies?.map(normalizeComment) ?? [],
 });
+
+const flattenComments = (comments: Comment[]): Comment[] => {
+  const flat: Comment[] = [];
+  const stack = [...comments];
+
+  while (stack.length > 0) {
+    const current = stack.shift();
+    if (!current || !current.id) continue;
+
+    flat.push({
+      ...current,
+      replies: [],
+    });
+
+    if (current.replies && current.replies.length > 0) {
+      stack.unshift(...current.replies);
+    }
+  }
+
+  return flat;
+};
+
+const sortByCreatedAt = (a: Comment, b: Comment) =>
+  new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+
+const buildCommentTree = (comments: Comment[]): Comment[] => {
+  const flat = flattenComments(comments).sort(sortByCreatedAt);
+  const map = new Map<string, Comment>();
+
+  flat.forEach((comment) => {
+    map.set(comment.id, { ...comment, replies: [] });
+  });
+
+  const roots: Comment[] = [];
+  map.forEach((comment) => {
+    if (comment.parentId && map.has(comment.parentId)) {
+      map.get(comment.parentId)!.replies!.push(comment);
+      return;
+    }
+    roots.push(comment);
+  });
+
+  const sortTree = (nodes: Comment[]) => {
+    nodes.sort(sortByCreatedAt);
+    nodes.forEach((node) => {
+      if (node.replies && node.replies.length > 0) {
+        sortTree(node.replies);
+      }
+    });
+  };
+
+  sortTree(roots);
+  return roots;
+};
 
 export async function getComments(
   challengeId: string,
@@ -62,7 +140,11 @@ export async function getComments(
     ? response
     : (response.comments || response.content || []);
 
-  return list.map(normalizeComment);
+  const normalizedList = list
+    .map(normalizeComment)
+    .filter(comment => Boolean(comment.id));
+
+  return buildCommentTree(normalizedList);
 }
 
 export async function createComment(
@@ -102,4 +184,15 @@ export async function deleteComment(
 ): Promise<void> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
   await client.delete(`/challenges/${normalizedChallengeId}/posts/${postId}/comments/${commentId}`);
+}
+
+export async function toggleCommentLike(
+  challengeId: string,
+  postId: string,
+  commentId: string,
+): Promise<ToggleCommentLikeResponse> {
+  const normalizedChallengeId = toApiChallengeId(challengeId);
+  return client.post<ToggleCommentLikeResponse>(
+    `/challenges/${normalizedChallengeId}/posts/${postId}/comments/${commentId}/like`,
+  );
 }

@@ -6,6 +6,17 @@
   border-top: 1px solid var(--color-border);
 }
 
+.inlineContainer {
+  padding-top: var(--spacing-md);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
 .title {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
@@ -18,6 +29,12 @@
 .count {
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
+}
+
+.expandButton {
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .loading,
@@ -93,6 +110,10 @@
   box-shadow: inset 0 0 0 1px var(--color-primary);
 }
 
+.deletedItem {
+  opacity: 0.86;
+}
+
 .itemBody {
   flex: 1;
   min-width: 0;
@@ -121,6 +142,37 @@
   color: var(--color-text-secondary);
   line-height: 1.5;
   word-break: break-word;
+}
+
+.deletedContent {
+  color: var(--color-grey-500);
+  font-style: italic;
+}
+
+.editRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.editInput {
+  min-width: 0;
+  flex: 1;
+}
+
+.inlineAction {
+  width: var(--size-px-28);
+  height: var(--size-px-28);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-600);
+}
+
+.inlineAction:hover {
+  background: var(--color-grey-100);
+  color: var(--color-grey-800);
 }
 
 .deleteBtn {
@@ -165,6 +217,22 @@
   align-items: center;
   gap: var(--spacing-sm);
   margin-top: var(--spacing-xs);
+}
+
+.inlineTextButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--size-px-4);
+  font-size: var(--font-size-xs);
+  color: var(--color-grey-500);
+}
+
+.inlineTextButton:hover {
+  color: var(--color-grey-800);
+}
+
+.activeLike {
+  color: var(--color-danger);
 }
 
 .replyBtn {
@@ -213,4 +281,13 @@
 .cancelReply:hover {
   color: var(--color-danger);
   background: var(--color-danger-bg);
+}
+
+.cooldownBanner {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-warning-subtle);
+  color: var(--color-warning-border);
+  font-size: var(--font-size-xs);
 }

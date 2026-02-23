@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import type { Vote } from '@/types/domain';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { VoteStatusBadge } from './VoteStatusBadge';
@@ -16,13 +16,9 @@ interface VoteItemProps {
     * 동작 설명은 추후 세분화 예정입니다.
  */
 export function VoteItem({ vote, challengeRef }: VoteItemProps) {
-  const navigate = useNavigate();
   const shouldLoadResult = capabilities.voteResult && vote.status !== VoteStatus.PENDING;
   const { data: voteResult } = useVoteResult(vote.voteId, shouldLoadResult);
-
-  const handleClick = () => {
-    navigate(CHALLENGE_ROUTES.voteDetail(challengeRef || vote.challengeId, vote.voteId));
-  };
+  const targetPath = CHALLENGE_ROUTES.voteDetail(challengeRef || vote.challengeId, vote.voteId);
 
   const getDeadlineText = (deadline: string) => {
     const deadlineDate = new Date(deadline);
@@ -40,7 +36,7 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
   const participationRate = eligibleVoters ? (participationCount / eligibleVoters) * 100 : 0;
 
   return (
-    <div className={styles.container} onClick={handleClick}>
+    <Link className={styles.container} to={targetPath}>
       <div className={styles.header}>
         <VoteStatusBadge status={vote.status} />
         <span className={styles.deadline}>{getDeadlineText(vote.deadline)}</span>
@@ -62,6 +58,6 @@ export function VoteItem({ vote, challengeRef }: VoteItemProps) {
       <div className={styles.progressBar}>
         <div className={styles.progressFill} style={{ width: `${participationRate}%` }} />
       </div>
-    </div>
+    </Link>
   );
 }

@@ -4,10 +4,12 @@ import { useCreateVote } from '@/hooks/useVote';
 import { useChallengeMeetings } from '@/hooks/useMeeting';
 import { useMembers } from '@/hooks/useMember';
 import { useAuthStore } from '@/store/useAuthStore';
-import { Button, Input } from '@/components/ui';
+import { Input } from '@/components/ui';
 import type { VoteType } from '@/types/vote';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
+import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
+import { VoteActionBar, VoteFormField } from './VoteUi';
 import styles from './CreateVote.module.css';
 
 interface VoteForm {
@@ -39,6 +41,7 @@ export function CreateVote() {
   const { challengeId, challengeRef } = useChallengeRoute();
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { confirm } = useConfirmDialog();
   const { mutate: createVote, isPending } = useCreateVote(challengeId);
   const { data: meetings = [] } = useChallengeMeetings(challengeId);
   const { data: membersData } = useMembers(challengeId, 'ACTIVE');
@@ -49,6 +52,21 @@ export function CreateVote() {
   const kickCandidates = useMemo(
     () => (membersData?.members || []).filter((member) => member.user.userId !== user?.userId && member.role !== 'LEADER'),
     [membersData?.members, user?.userId],
+  );
+
+  const isDirty = useMemo(
+    () =>
+      Boolean(
+        form.title.trim() ||
+        form.description.trim() ||
+        form.deadline ||
+        form.meetingId ||
+        form.targetId ||
+        form.amount ||
+        form.receiptUrl.trim() ||
+        form.type !== initialForm.type,
+      ),
+    [form],
   );
 
   const getMinDateTime = () => {
@@ -103,14 +121,27 @@ export function CreateVote() {
     });
   };
 
+  const handleCancel = async () => {
+    if (isDirty) {
+      const isConfirmed = await confirm({
+        title: '작성 중인 내용이 있습니다. 이동하시겠습니까?',
+        confirmText: '나가기',
+        cancelText: '계속 작성',
+        variant: 'danger',
+      });
+      if (!isConfirmed) return;
+    }
+    navigate(-1);
+  };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>새 투표 생성</h2>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.field}>
-          <label>투표 유형</label>
+        <VoteFormField label="투표 유형" htmlFor="vote-type">
           <select
+            id="vote-type"
             value={form.type}
             onChange={(e) => {
               setForm({ ...form, type: e.target.value as VoteType });
@@ -123,11 +154,11 @@ export function CreateVote() {
             <option value="LEADER_KICK">리더 강퇴</option>
             <option value="DISSOLVE">챌린지 해산</option>
           </select>
-        </div>
+        </VoteFormField>
 
-        <div className={styles.field}>
-          <label>제목</label>
+        <VoteFormField label="제목" htmlFor="vote-title">
           <Input
+            id="vote-title"
             value={form.title}
             onChange={(e) => {
               setForm({ ...form, title: e.target.value });
@@ -136,11 +167,11 @@ export function CreateVote() {
             placeholder="투표 제목을 입력하세요"
             required
           />
-        </div>
+        </VoteFormField>
 
-        <div className={styles.field}>
-          <label>설명</label>
+        <VoteFormField label="설명" htmlFor="vote-description">
           <textarea
+            id="vote-description"
             value={form.description}
             onChange={(e) => {
               setForm({ ...form, description: e.target.value });
@@ -150,13 +181,13 @@ export function CreateVote() {
             className={styles.textarea}
             rows={4}
           />
-        </div>
+        </VoteFormField>
 
         {form.type === 'EXPENSE' ? (
           <>
-            <div className={styles.field}>
-              <label>대상 모임</label>
+            <VoteFormField label="대상 모임" htmlFor="vote-meeting">
               <select
+                id="vote-meeting"
                 value={form.meetingId}
                 onChange={(e) => {
                   setForm({ ...form, meetingId: e.target.value });
@@ -171,11 +202,11 @@ export function CreateVote() {
                   </option>
                 ))}
               </select>
-            </div>
+            </VoteFormField>
 
-            <div className={styles.field}>
-              <label>지출 금액</label>
+            <VoteFormField label="지출 금액" htmlFor="vote-amount">
               <Input
+                id="vote-amount"
                 type="number"
                 min={1}
                 value={form.amount}
@@ -185,23 +216,23 @@ export function CreateVote() {
                 }}
                 placeholder="금액을 입력하세요"
               />
-            </div>
+            </VoteFormField>
 
-            <div className={styles.field}>
-              <label>영수증 주소(선택)</label>
+            <VoteFormField label="영수증 주소(선택)" htmlFor="vote-receipt">
               <Input
+                id="vote-receipt"
                 value={form.receiptUrl}
                 onChange={(e) => setForm({ ...form, receiptUrl: e.target.value })}
                 placeholder="영수증 주소를 입력하세요"
               />
-            </div>
+            </VoteFormField>
           </>
         ) : null}
 
         {form.type === 'KICK' ? (
-          <div className={styles.field}>
-            <label>강퇴 대상 멤버</label>
+          <VoteFormField label="강퇴 대상 멤버" htmlFor="vote-target">
             <select
+              id="vote-target"
               value={form.targetId}
               onChange={(e) => {
                 setForm({ ...form, targetId: e.target.value });
@@ -216,24 +247,30 @@ export function CreateVote() {
                 </option>
               ))}
             </select>
-          </div>
+          </VoteFormField>
         ) : null}
 
         {form.type === 'LEADER_KICK' ? (
-          <p className={styles.helper}>
-            최근 30일 리더 활동 조건을 백엔드가 검증합니다. 조건 미충족 시 생성이 거부됩니다.
-          </p>
+          <VoteFormField
+            label="리더 강퇴 안내"
+            helper="최근 30일 리더 활동 조건을 백엔드가 검증합니다. 조건 미충족 시 생성이 거부됩니다."
+          >
+            <div className={styles.readonlyHint}>생성 시 서버 검증이 자동으로 적용됩니다.</div>
+          </VoteFormField>
         ) : null}
 
         {form.type === 'DISSOLVE' ? (
-          <p className={styles.helper}>
-            해산 투표는 100% 동의가 필요합니다. 반대 1표라도 있으면 즉시 부결됩니다.
-          </p>
+          <VoteFormField
+            label="챌린지 해산 안내"
+            helper="해산 투표는 100% 동의가 필요합니다. 반대 1표라도 있으면 즉시 부결됩니다."
+          >
+            <div className={styles.readonlyHint}>참여 멤버 전원 동의가 필요합니다.</div>
+          </VoteFormField>
         ) : null}
 
-        <div className={styles.field}>
-          <label>마감 일시 (최소 24시간 후)</label>
+        <VoteFormField label="마감 일시 (최소 24시간 후)" htmlFor="vote-deadline" error={error ?? undefined}>
           <input
+            id="vote-deadline"
             type="datetime-local"
             value={form.deadline}
             min={getMinDateTime()}
@@ -244,18 +281,13 @@ export function CreateVote() {
             className={styles.dateInput}
             required
           />
-        </div>
+        </VoteFormField>
 
-        {error ? <div className={styles.error}>{error}</div> : null}
-
-        <div className={styles.actions}>
-          <Button type="button" variant="ghost" onClick={() => navigate(-1)}>
-            취소
-          </Button>
-          <Button type="submit" disabled={isPending}>
-            {isPending ? '생성 중...' : '투표 생성'}
-          </Button>
-        </div>
+        <VoteActionBar
+          onCancel={() => void handleCancel()}
+          confirmDisabled={isPending}
+          confirmText={isPending ? '생성 중...' : '투표 생성'}
+        />
       </form>
     </div>
   );

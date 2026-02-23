@@ -124,7 +124,7 @@
   width: var(--size-px-20);
   height: var(--size-px-20);
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.65);
+  background: var(--color-overlay-darker);
   color: var(--color-white);
   display: inline-flex;
   align-items: center;

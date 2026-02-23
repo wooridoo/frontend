@@ -5,7 +5,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useCreatePost } from '@/hooks/useFeed';
 import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useChallengeDetail } from '@/hooks/useChallenge';
-import { Button } from '@/components/ui';
+import { Button, IconButton } from '@/components/ui';
 import { uploadPostImages } from '@/lib/api/upload';
 import { validateImageFiles } from '@/lib/image/validation';
 import { toast } from 'sonner';
@@ -140,13 +140,14 @@ export function PostEditor({ onSuccess }: PostEditorProps) {
                     className={styles.previewImage}
                     src={previewUrl}
                   />
-                  <button
-                    type="button"
+                  <IconButton
+                    aria-label="이미지 제거"
                     className={styles.removePreviewButton}
+                    icon={<X size={14} />}
                     onClick={() => handleRemoveImage(index)}
-                  >
-                    <X size={14} />
-                  </button>
+                    size="xs"
+                    variant="ghost"
+                  />
                 </div>
               ))}
             </div>

@@ -92,8 +92,8 @@ export function ChallengeLedgerPage() {
                     name === 'expense' ? '월별 소비' : '월말 잔액',
                   ]}
                 />
-                <Bar yAxisId="left" dataKey="expense" fill="#F97316" radius={[6, 6, 0, 0]} />
-                <Line yAxisId="right" type="monotone" dataKey="balance" stroke="#2563EB" strokeWidth={3} dot={{ r: 3 }} />
+                <Bar yAxisId="left" dataKey="expense" fill="var(--color-orange-500)" radius={[6, 6, 0, 0]} />
+                <Line yAxisId="right" type="monotone" dataKey="balance" stroke="var(--color-blue-700)" strokeWidth={3} dot={{ r: 3 }} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
