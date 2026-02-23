@@ -29,6 +29,29 @@
   color: var(--color-grey-700);
 }
 
+.profileImageRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.profileImage {
+  width: var(--size-px-64);
+  height: var(--size-px-64);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-grey-200);
+}
+
+.profileImageAction {
+  display: inline-flex;
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
 .row strong {
   color: var(--color-grey-900);
 }

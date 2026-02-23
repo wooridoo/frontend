@@ -172,6 +172,13 @@ axiosInstance.interceptors.request.use(
     if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+    if (config.data instanceof FormData && config.headers) {
+      if ('delete' in config.headers && typeof config.headers.delete === 'function') {
+        config.headers.delete('Content-Type');
+      } else {
+        delete (config.headers as Record<string, unknown>)['Content-Type'];
+      }
+    }
     return config;
   },
   (error) => Promise.reject(error),

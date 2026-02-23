@@ -1,14 +1,19 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Upload } from 'lucide-react';
+import { toast } from 'sonner';
 import { Modal } from '@/components/ui/Overlay/Modal';
 import { Button } from '@/components/ui';
 import { useEditChallengeModalStore } from '@/store/modal/useModalStore';
 import { useUpdateChallenge } from '@/hooks/useChallenge';
+import { uploadChallengeBanner, uploadChallengeThumbnail } from '@/lib/api/upload';
+import { validateSingleImageFile } from '@/lib/image/validation';
 import styles from './ChallengeModalShared.module.css';
 
 interface FormData {
     title: string;
     description: string;
     category: string;
+    bannerUrl: string;
     thumbnailUrl: string;
     maxMembers: number;
 }
@@ -17,6 +22,7 @@ const defaultFormData: FormData = {
     title: '',
     description: '',
     category: '',
+    bannerUrl: '',
     thumbnailUrl: '',
     maxMembers: 20,
 };
@@ -34,6 +40,7 @@ export function EditChallengeModal() {
             title: challenge.title,
             description: challenge.description || '',
             category: challenge.category,
+            bannerUrl: challenge.bannerUrl || '',
             thumbnailUrl: challenge.thumbnailUrl || '',
             maxMembers: challenge.memberCount.max,
         };
@@ -41,8 +48,17 @@ export function EditChallengeModal() {
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [error, setError] = useState<string | null>(null);
+    const [bannerUploading, setBannerUploading] = useState(false);
+    const [thumbnailUploading, setThumbnailUploading] = useState(false);
 
     const updateMutation = useUpdateChallenge();
+
+    useEffect(() => {
+        if (isOpen) {
+            setFormData(initialFormData);
+            setError(null);
+        }
+    }, [initialFormData, isOpen]);
 
     const handleClose = () => {
         setError(null);
@@ -68,12 +84,45 @@ export function EditChallengeModal() {
                 name: formData.title,
                 description: formData.description,
                 category: formData.category,
-                thumbnailUrl: formData.thumbnailUrl || undefined,
+                bannerImage: formData.bannerUrl || undefined,
+                thumbnailImage: formData.thumbnailUrl || undefined,
                 maxMembers: formData.maxMembers,
             });
             handleClose();
         } catch {
             setError('챌린지 수정에 실패했습니다');
+        }
+    };
+
+    const handleImageUpload = async (type: 'banner' | 'thumbnail', file: File) => {
+        if (type === 'banner') {
+            setBannerUploading(true);
+        } else {
+            setThumbnailUploading(true);
+        }
+
+        try {
+            await validateSingleImageFile(type === 'banner' ? 'CHALLENGE_BANNER' : 'CHALLENGE_THUMBNAIL', file);
+            const imageUrl = type === 'banner'
+                ? await uploadChallengeBanner(file)
+                : await uploadChallengeThumbnail(file);
+            if (!imageUrl) {
+                throw new Error('이미지 업로드 결과가 비어 있습니다.');
+            }
+            if (type === 'banner') {
+                handleChange('bannerUrl', imageUrl);
+            } else {
+                handleChange('thumbnailUrl', imageUrl);
+            }
+            toast.success(type === 'banner' ? '배너 이미지 업로드 완료' : '썸네일 이미지 업로드 완료');
+        } catch (uploadError) {
+            setError(uploadError instanceof Error ? uploadError.message : '이미지 업로드에 실패했습니다');
+        } finally {
+            if (type === 'banner') {
+                setBannerUploading(false);
+            } else {
+                setThumbnailUploading(false);
+            }
         }
     };
 
@@ -109,21 +158,70 @@ export function EditChallengeModal() {
                             value={formData.maxMembers}
                             onChange={(e) => handleChange('maxMembers', Number(e.target.value))}
                         >
-                            {[10, 20, 30, 50, 100].map((n) => (
+                            {[10, 20, 30].map((n) => (
                                 <option key={n} value={n}>{n}명</option>
                             ))}
                         </select>
                     </div>
 
                     <div className={styles.fieldGroup}>
-                        <label className={styles.label}>썸네일 주소</label>
-                        <input
-                            type="url"
-                            className={styles.input}
-                            value={formData.thumbnailUrl}
-                            onChange={(e) => handleChange('thumbnailUrl', e.target.value)}
-                            placeholder="이미지 주소를 입력하세요"
-                        />
+                        <label className={styles.label}>대표 이미지 (배너)</label>
+                        <label className={styles.uploadArea}>
+                            <input
+                                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                className={styles.hiddenFileInput}
+                                onChange={(event) => {
+                                    const file = event.target.files?.[0];
+                                    if (file) {
+                                        void handleImageUpload('banner', file);
+                                    }
+                                    event.target.value = '';
+                                }}
+                                type="file"
+                            />
+                            {formData.bannerUrl ? (
+                                <img
+                                    className={styles.uploadPreview}
+                                    src={formData.bannerUrl}
+                                    alt="배너 미리보기"
+                                />
+                            ) : (
+                                <div className={styles.uploadPlaceholder}>
+                                    <Upload size={22} />
+                                    <span>{bannerUploading ? '업로드 중...' : '배너 이미지 업로드'}</span>
+                                </div>
+                            )}
+                        </label>
+                    </div>
+
+                    <div className={styles.fieldGroup}>
+                        <label className={styles.label}>프로필 이미지 (썸네일)</label>
+                        <label className={styles.uploadArea}>
+                            <input
+                                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                className={styles.hiddenFileInput}
+                                onChange={(event) => {
+                                    const file = event.target.files?.[0];
+                                    if (file) {
+                                        void handleImageUpload('thumbnail', file);
+                                    }
+                                    event.target.value = '';
+                                }}
+                                type="file"
+                            />
+                            {formData.thumbnailUrl ? (
+                                <img
+                                    className={styles.uploadPreview}
+                                    src={formData.thumbnailUrl}
+                                    alt="썸네일 미리보기"
+                                />
+                            ) : (
+                                <div className={styles.uploadPlaceholder}>
+                                    <Upload size={22} />
+                                    <span>{thumbnailUploading ? '업로드 중...' : '썸네일 이미지 업로드'}</span>
+                                </div>
+                            )}
+                        </label>
                     </div>
 
                     {error && <div className={styles.error}>{error}</div>}

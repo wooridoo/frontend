@@ -29,7 +29,8 @@ export interface UpdateProfileRequest {
 }
 
 export async function updateMyProfile(data: UpdateProfileRequest): Promise<User> {
-    return client.put<User>('/users/me', data);
+    const response = await client.put<User>('/users/me', data);
+    return normalizeUser(response);
 }
 
 export interface ChangePasswordRequest {

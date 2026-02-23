@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useComments, useCreateComment, useDeleteComment } from '@/hooks/useComment';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -32,6 +32,11 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
 
   const [newComment, setNewComment] = useState('');
   const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
+  const composerRef = useRef<HTMLFormElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const getErrorMessage = (error: unknown, fallback: string) =>
+    error instanceof Error && error.message ? error.message : fallback;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,8 +50,8 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
       });
       setNewComment('');
       setReplyTarget(null);
-    } catch {
-      toast.error('댓글 작성에 실패했습니다.');
+    } catch (error) {
+      toast.error(getErrorMessage(error, '댓글 작성에 실패했습니다.'));
     }
   };
 
@@ -62,13 +67,22 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
     try {
       await deleteMutation.mutateAsync(commentId);
       toast.success('댓글을 삭제했습니다.');
-    } catch {
-      toast.error('댓글 삭제에 실패했습니다.');
+    } catch (error) {
+      toast.error(getErrorMessage(error, '댓글 삭제에 실패했습니다.'));
     }
   };
 
   const handleReply = (commentId: string, authorName: string) => {
-    setReplyTarget({ id: commentId, name: authorName });
+    const isSameTarget = replyTarget?.id === commentId;
+    const nextTarget = isSameTarget ? null : { id: commentId, name: authorName };
+    setReplyTarget(nextTarget);
+
+    if (nextTarget) {
+      window.requestAnimationFrame(() => {
+        composerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        inputRef.current?.focus();
+      });
+    }
   };
 
   if (isLoading) {
@@ -86,7 +100,14 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
 
     return (
       <div className={styles.itemWrapper}>
-        <div className={clsx(styles.item, depth > 0 && styles.replyItem)} style={{ marginLeft: depth * 24 }}>
+        <div
+          className={clsx(
+            styles.item,
+            depth > 0 && styles.replyItem,
+            replyTarget?.id === comment.id && styles.replyTargetItem,
+          )}
+          style={{ marginLeft: depth * 24 }}
+        >
           {depth > 0 && <CornerDownRight className={styles.replyIcon} size={16} />}
           <div className={styles.itemAvatar}>
             {authorName.charAt(0) || '?'}
@@ -103,7 +124,11 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
             <div className={styles.itemActions}>
               {user && (
                 <button
-                  className={styles.replyBtn}
+                  type="button"
+                  className={clsx(
+                    styles.replyBtn,
+                    replyTarget?.id === comment.id && styles.replyBtnActive,
+                  )}
                   onClick={() => handleReply(comment.id, authorName)}
                 >
                   답글달기
@@ -111,6 +136,7 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
               )}
               {isAuthor && (
                 <button
+                  type="button"
                   className={styles.deleteBtn}
                   onClick={() => handleDelete(comment.id)}
                   aria-label="댓글 삭제"
@@ -139,7 +165,7 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
       </h3>
 
       {user && (
-        <form className={styles.inputArea} onSubmit={handleSubmit}>
+        <form ref={composerRef} className={styles.inputArea} onSubmit={handleSubmit}>
           {replyTarget && (
             <div className={styles.replyingTo}>
               <span><strong>{replyTarget.name}</strong>님에게 답글 작성 중</span>
@@ -158,6 +184,7 @@ export function CommentSection({ challengeId, postId }: CommentSectionProps) {
             </div>
             <div className="flex-1 flex flex-col gap-2">
               <input
+                ref={inputRef}
                 className={styles.input}
                 placeholder={replyTarget ? `@${replyTarget.name}에게 답글 남기기...` : '댓글을 입력하세요...'}
                 value={newComment}

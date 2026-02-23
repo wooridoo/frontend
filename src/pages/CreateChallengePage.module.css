@@ -148,6 +148,8 @@
   cursor: pointer;
   background-color: var(--color-grey-50);
   transition: border-color 0.2s, background-color 0.2s;
+  overflow: hidden;
+  min-height: var(--size-px-140);
 }
 
 .uploadArea:hover {
@@ -159,6 +161,17 @@
   width: var(--size-px-32);
   height: var(--size-px-32);
   color: var(--color-grey-400);
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.uploadPreview {
+  width: 100%;
+  height: var(--size-px-180);
+  object-fit: cover;
+  border-radius: var(--radius-md);
 }
 
 .hint {

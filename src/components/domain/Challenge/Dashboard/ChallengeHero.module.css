@@ -49,6 +49,13 @@
   font-size: var(--size-px-40);
 }
 
+.iconImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
 .info {
   padding-top: var(--size-px-48);
   /* 공통 설명 */

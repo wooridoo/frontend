@@ -132,6 +132,37 @@ export function PostCard({
     );
   };
 
+  const handleShare = async () => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const shareUrl = new URL(window.location.href);
+    shareUrl.searchParams.set('postId', id);
+    const url = shareUrl.toString();
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: '챌린지 피드',
+          text: '게시글을 확인해보세요.',
+          url,
+        });
+        return;
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+        toast.success('게시글 링크가 복사되었습니다.');
+        return;
+      }
+
+      toast.error('공유를 지원하지 않는 브라우저입니다.');
+    } catch {
+      toast.error('공유에 실패했습니다.');
+    }
+  };
+
   const menuContent = (
     <div className={styles.menuContainer}>
       {canPinNotice && isNotice ? (
@@ -215,7 +246,7 @@ export function PostCard({
           <MessageCircle size={18} />
           <span>{commentCount}</span>
         </button>
-        <button className={styles.shareAction}>
+        <button className={styles.shareAction} onClick={handleShare}>
           <Share2 size={18} />
           <span>공유</span>
         </button>

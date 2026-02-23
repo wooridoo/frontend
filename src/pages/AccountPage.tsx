@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { PageContainer } from '@/components/layout/PageContainer/PageContainer';
 import { PageHeader } from '@/components/navigation/PageHeader/PageHeader';
 import { Button } from '@/components/ui';
 import { PATHS } from '@/routes/paths';
-import { changeMyPassword, getMyProfile, withdrawAccount } from '@/lib/api/user';
+import { changeMyPassword, getMyProfile, updateMyProfile, withdrawAccount } from '@/lib/api/user';
+import { uploadUserProfileImage } from '@/lib/api/upload';
+import { validateSingleImageFile } from '@/lib/image/validation';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import styles from './AccountPage.module.css';
 
 /**
@@ -16,7 +19,9 @@ import styles from './AccountPage.module.css';
  */
 export function AccountPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { confirm } = useConfirmDialog();
+  const { updateUser } = useAuthStore();
   const { data: user, isLoading } = useQuery({
     queryKey: ['myProfile', 'account-page'],
     queryFn: getMyProfile,
@@ -29,6 +34,7 @@ export function AccountPage() {
   const [withdrawPassword, setWithdrawPassword] = useState('');
   const [passwordPending, setPasswordPending] = useState(false);
   const [withdrawPending, setWithdrawPending] = useState(false);
+  const [profileImagePending, setProfileImagePending] = useState(false);
 
   const userStatusLabel: Record<string, string> = {
     ACTIVE: '활성',
@@ -91,6 +97,35 @@ export function AccountPage() {
     }
   };
 
+  const handleProfileImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setProfileImagePending(true);
+    try {
+      await validateSingleImageFile('USER_PROFILE', file);
+      const imageUrl = await uploadUserProfileImage(file);
+      if (!imageUrl) {
+        throw new Error('프로필 이미지 URL을 받지 못했습니다.');
+      }
+
+      await updateMyProfile({ profileImage: imageUrl });
+      const refreshedProfile = await getMyProfile();
+
+      queryClient.setQueryData(['myProfile', 'account-page'], refreshedProfile);
+      queryClient.setQueryData(['user', 'profile'], refreshedProfile);
+      queryClient.invalidateQueries({ queryKey: ['myProfile'] });
+      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
+      updateUser(refreshedProfile);
+      toast.success('프로필 이미지가 변경되었습니다.');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '프로필 이미지 변경에 실패했습니다.');
+    } finally {
+      setProfileImagePending(false);
+    }
+  };
+
   return (
     <PageContainer variant="content" contentWidth="md">
       <PageHeader title="계정 관리" showBack />
@@ -102,6 +137,30 @@ export function AccountPage() {
           <>
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>기본 정보</h2>
+              <div className={styles.profileImageRow}>
+                <img
+                  alt="프로필 이미지"
+                  className={styles.profileImage}
+                  src={user.profileImage || '/images/avatar-fallback.svg'}
+                />
+                <label className={styles.profileImageAction}>
+                  <input
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                    className={styles.hiddenFileInput}
+                    onChange={handleProfileImageChange}
+                    type="file"
+                  />
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    isLoading={profileImagePending}
+                    disabled={profileImagePending}
+                    className={styles.secondaryButton}
+                  >
+                    이미지 변경
+                  </Button>
+                </label>
+              </div>
               <div className={styles.row}><span>닉네임</span><strong>{user.nickname}</strong></div>
               <div className={styles.row}><span>이메일</span><strong>{user.email}</strong></div>
               <div className={styles.row}><span>상태</span><strong>{userStatusLabel[user.status] ?? '알 수 없음'}</strong></div>

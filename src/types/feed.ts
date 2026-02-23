@@ -25,6 +25,7 @@ export interface CreatePostInput {
     title: string;
     content: string;
     category?: string;
+    imageUrls?: string[];
     images?: string[];
 }
 

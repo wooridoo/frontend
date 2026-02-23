@@ -6,7 +6,7 @@
   border: 1px solid var(--color-grey-100);
   min-width: var(--size-px-200);
   max-width: min(90vw, var(--size-px-320));
-  z-index: 1400;
+  z-index: calc(var(--z-modal) - 1);
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 

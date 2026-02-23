@@ -37,7 +37,10 @@ export function useUpdateProfile() {
 
     return useMutation({
         mutationFn: (data: UpdateProfileRequest) => updateMyProfile(data),
-        onSuccess: () => {
+        onSuccess: async () => {
+            const profile = await getMyProfile();
+            queryClient.setQueryData(userKeys.profile(), profile);
+            useAuthStore.getState().updateUser(profile);
             queryClient.invalidateQueries({ queryKey: userKeys.profile() });
         },
     });
