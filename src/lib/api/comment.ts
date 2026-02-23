@@ -71,9 +71,14 @@ export async function createComment(
   data: CreateCommentInput
 ): Promise<CreateCommentResponse> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
+  const payload = {
+    content: data.content,
+    parentId: data.parentId,
+    parentCommentId: data.parentId,
+  };
   return client.post<CreateCommentResponse>(
     `/challenges/${normalizedChallengeId}/posts/${postId}/comments`,
-    data
+    payload
   );
 }
 
