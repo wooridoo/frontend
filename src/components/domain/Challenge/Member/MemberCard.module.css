@@ -1,15 +1,20 @@
 .card {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-4);
     background: var(--color-surface);
     border: none;
     width: 100%;
+    min-height: 84px;
     text-align: left;
     border-radius: var(--radius-lg);
     cursor: pointer;
     transition: all 0.2s ease;
+    appearance: none;
+    font: inherit;
+    color: inherit;
 }
 
 .card:hover {
@@ -61,6 +66,7 @@
 .nameRow {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: var(--space-2);
     margin-bottom: var(--space-1);
 }
@@ -84,6 +90,7 @@
 
 .stats {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-3);
     font-size: var(--text-sm);
     color: var(--color-text-secondary);
@@ -102,6 +109,7 @@
 
 .status {
     flex-shrink: 0;
+    justify-self: end;
     padding: var(--size-px-4) var(--size-px-8);
     border-radius: var(--radius-full);
     font-size: var(--text-xs);
@@ -129,4 +137,16 @@
 
 .supportUnpaid {
     color: var(--color-error);
+}
+
+@media (max-width: 768px) {
+    .card {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .status {
+        grid-column: 2;
+        justify-self: start;
+        margin-top: var(--space-1);
+    }
 }

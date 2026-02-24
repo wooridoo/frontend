@@ -131,10 +131,16 @@ export async function getMeeting(id: string): Promise<Meeting> {
   return normalizeMeeting(meeting);
 }
 
-export async function getChallengeMeetings(challengeId: string): Promise<Meeting[]> {
+export type MeetingStatusFilter = 'SCHEDULED' | 'COMPLETED' | 'CANCELED' | 'N';
+
+export async function getChallengeMeetings(
+  challengeId: string,
+  status?: MeetingStatusFilter
+): Promise<Meeting[]> {
   const normalizedChallengeId = toApiChallengeId(challengeId);
   const response = await client.get<BackendMeetingListResponse | BackendMeetingListItem[]>(
-    `/challenges/${normalizedChallengeId}/meetings`
+    `/challenges/${normalizedChallengeId}/meetings`,
+    status ? { params: { status } } : undefined
   );
 
   if (Array.isArray(response)) {

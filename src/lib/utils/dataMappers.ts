@@ -189,7 +189,7 @@ export function normalizeChallenge(data: unknown): ChallengeInfo {
       leader: {
         userId: '',
         nickname: '알 수 없음',
-        brix: 0,
+        brix: 12,
       },
     };
   }
@@ -226,7 +226,7 @@ export function normalizeChallenge(data: unknown): ChallengeInfo {
     leader: {
       userId: asString(leader.userId) || asString(leader.id),
       nickname: asString(leader.nickname, '알 수 없음'),
-      brix: asNumber(leader.brix),
+      brix: asNumber(leader.brix, 12),
     },
   };
 

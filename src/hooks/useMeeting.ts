@@ -4,6 +4,7 @@ import {
   completeMeeting,
   createMeeting,
   getChallengeMeetings,
+  type MeetingStatusFilter,
   getMeeting,
   respondAttendance,
   updateMeeting,
@@ -28,10 +29,10 @@ export function useMeeting(id?: string) {
 /**
  * 챌린지의 모임 목록을 조회합니다.
  */
-export function useChallengeMeetings(challengeId?: string) {
+export function useChallengeMeetings(challengeId?: string, status?: MeetingStatusFilter) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['challenge', challengeId, 'meetings'],
-    queryFn: () => getChallengeMeetings(challengeId!),
+    queryKey: ['challenge', challengeId, 'meetings', status],
+    queryFn: () => getChallengeMeetings(challengeId!, status),
     enabled: !!challengeId,
     staleTime: 1000 * 60 * 5,
   });
