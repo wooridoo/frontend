@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -11,7 +11,7 @@ import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
 import styles from './JoinChallengeModal.module.css';
 
 /**
-    * 동작 설명은 추후 세분화 예정입니다.
+ * 챌린지 가입 확인 모달.
  */
 export function JoinChallengeModal() {
   const navigate = useNavigate();
@@ -27,7 +27,12 @@ export function JoinChallengeModal() {
     enabled: Boolean(challengeId) && isOpen,
   });
 
-  const depositAmount = challenge?.supportAmount ?? 10000;
+  const depositAmount = challenge?.depositAmount ?? challenge?.supportAmount ?? 10000;
+  const challengeBalance = challenge?.account?.balance ?? 0;
+  const currentMembers = challenge?.memberCount?.current ?? 0;
+  const followerCount = Math.max(currentMembers - 1, 1);
+  const entryFee = challengeBalance > 0 ? Math.floor(challengeBalance / followerCount) : 0;
+  const totalCost = depositAmount + entryFee;
 
   const handleJoin = async () => {
     if (!challengeId) return;
@@ -35,7 +40,7 @@ export function JoinChallengeModal() {
     setIsSubmitting(true);
     try {
       const { getMyProfile } = await import('@/lib/api/user');
-      await joinChallenge(challengeId, depositAmount);
+      await joinChallenge(challengeId, totalCost);
 
       const freshUser = await getMyProfile();
       updateUser(freshUser);
@@ -70,7 +75,7 @@ export function JoinChallengeModal() {
             <p className={styles.description}>
               이 챌린지에 참여하시겠습니까?
               <br />
-              참여 보증금이 차감됩니다.
+              참여 보증금과 참가비가 차감됩니다.
             </p>
 
             <div className={styles.balanceInfo}>
@@ -78,9 +83,19 @@ export function JoinChallengeModal() {
               <span className={styles.balance}>{depositAmount.toLocaleString()}원</span>
             </div>
 
+            <div className={styles.balanceInfo}>
+              <span>참가비</span>
+              <span className={styles.balance}>{entryFee.toLocaleString()}원</span>
+            </div>
+
+            <div className={styles.balanceInfo}>
+              <span>총 예상 결제금액</span>
+              <span className={styles.balance}>{totalCost.toLocaleString()}원</span>
+            </div>
+
             <div className={styles.actions}>
               <Button className={styles.payButton} disabled={isSubmitting} fullWidth onClick={handleJoin} variant="primary">
-                {isSubmitting ? '처리 중...' : '보증금 결제하고 참여하기'}
+                {isSubmitting ? '처리 중...' : '결제하고 참여하기'}
               </Button>
               <Button className={styles.closeButton} fullWidth onClick={handleClose} variant="outline">
                 취소

@@ -28,6 +28,10 @@ export interface ChallengeInfo {
         max: number;
     };
     supportAmount: number;
+    depositAmount?: number;
+    account?: {
+        balance: number;
+    };
     startDate?: string;
     endDate?: string;
     startedAt?: string;

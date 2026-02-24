@@ -196,6 +196,7 @@ export function normalizeChallenge(data: unknown): ChallengeInfo {
 
   const memberCount = asObject(source.memberCount);
   const leader = asObject(source.leader);
+  const account = asObject(source.account);
 
   const normalized: ChallengeInfo = {
     challengeId: asString(source.challengeId),
@@ -208,6 +209,10 @@ export function normalizeChallenge(data: unknown): ChallengeInfo {
       max: asNumber(memberCount.max),
     },
     supportAmount: asNumber(source.supportAmount),
+    depositAmount: asNumber(source.depositAmount, asNumber(source.supportAmount)),
+    account: {
+      balance: asNumber(account.balance),
+    },
     startDate: asString(source.startDate) || undefined,
     endDate: asString(source.endDate) || undefined,
     startedAt: asString(source.startedAt) || undefined,

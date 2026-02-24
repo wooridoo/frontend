@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+﻿import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Calendar, DollarSign, Clock, Info, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -18,10 +18,8 @@ import styles from './ChallengeDetailPage.module.css';
 
 import { useAuthStore } from '@/store/useAuthStore';
 
-// ...
-
 /**
-    * 동작 설명은 추후 세분화 예정입니다.
+ * 챌린지 상세 페이지.
  */
 export function ChallengeDetailPage() {
   const { challengeId, challengeRef, isResolving } = useChallengeRoute();
@@ -38,7 +36,6 @@ export function ChallengeDetailPage() {
       try {
         return await getChallengeMembers(challengeId);
       } catch (err: unknown) {
-        // 비멤버인 경우 403 반환 — 정상 동작이므로 빈 결과 반환
         if (err && typeof err === 'object' && 'status' in err && (err as { status: number }).status === 403) {
           return { members: [], totalCount: 0 };
         }
@@ -51,9 +48,7 @@ export function ChallengeDetailPage() {
 
   const isJoined = useMemo(() => {
     if (!challenge) return false;
-    // 보조 처리
     if (isParticipant(challenge.challengeId)) return true;
-    // 보조 처리
     if (user && membersData?.members) {
       return membersData.members.some(member => String(member.user.userId) === String(user.userId));
     }
@@ -74,7 +69,7 @@ export function ChallengeDetailPage() {
   }, [challenge, challengeRef, location.hash, location.pathname, location.search, navigate]);
 
   const handleJoin = () => {
-    if (isJoined) return; // ?? ??
+    if (isJoined) return;
     if (challenge) {
       onOpen(String(challenge.challengeId));
     }
@@ -105,7 +100,6 @@ export function ChallengeDetailPage() {
     );
   }
 
-  // 보조 처리
   const frequency = '매일';
   const startedAt = challenge.startedAt || challenge.startDate || challenge.createdAt;
   const endedAt = challenge.endDate;
@@ -128,6 +122,10 @@ export function ChallengeDetailPage() {
   })();
 
   const memberList = membersData?.members?.slice(0, 4) || [];
+  const depositAmount = challenge.depositAmount ?? challenge.supportAmount;
+  const challengeBalance = challenge.account?.balance ?? 0;
+  const followerCount = Math.max(challenge.memberCount.current - 1, 1);
+  const entryFee = challengeBalance > 0 ? Math.floor(challengeBalance / followerCount) : 0;
 
   return (
     <PageContainer variant="content" contentWidth="lg">
@@ -152,10 +150,9 @@ export function ChallengeDetailPage() {
         <h2 className={styles.sectionTitle}>챌린지 소개</h2>
         <p className={styles.description}>{challenge.description}</p>
         <div className={styles.hostInfo}>
-          {/* 보조 설명 */}
           <Avatar
             name={challenge.leader.nickname}
-            src={null} // ?? ??
+            src={null}
             size="md"
             className={styles.hostAvatar}
           />
@@ -173,7 +170,7 @@ export function ChallengeDetailPage() {
             <DollarSign className={styles.icon} size={20} />
             <div className={styles.conditionInfo}>
               <span className={styles.label}>참가 보증금</span>
-              <span className={styles.value}>{challenge.supportAmount.toLocaleString()}원</span>
+              <span className={styles.value}>{depositAmount.toLocaleString()}원</span>
               <span className={styles.subText}>100% 달성 시 전액 환급</span>
             </div>
           </div>
@@ -182,7 +179,7 @@ export function ChallengeDetailPage() {
             <Info className={styles.icon} size={20} />
             <div className={styles.conditionInfo}>
               <span className={styles.label}>참가비</span>
-              <span className={styles.value}>0원</span>
+              <span className={styles.value}>{entryFee.toLocaleString()}원</span>
               <span className={styles.subText}>모임 운영 비용</span>
             </div>
           </div>
