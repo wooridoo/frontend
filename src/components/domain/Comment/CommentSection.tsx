@@ -245,7 +245,7 @@ export function CommentSection({
     );
   }
 
-  const CommentItem = ({ comment, depth = 0 }: { comment: Comment; depth?: number }) => {
+  const renderCommentItem = (comment: Comment, depth = 0): React.ReactElement => {
     const authorName = comment.createdBy?.nickname || '익명';
     const isAuthor = user?.userId === comment.createdBy?.userId;
     const hasReplies = Boolean(comment.replies && comment.replies.length > 0);
@@ -357,7 +357,7 @@ export function CommentSection({
         {hasReplies ? (
           <div className={styles.repliesList}>
             {comment.replies!.map((reply) => (
-              <CommentItem key={reply.id} comment={reply} depth={depth + 1} />
+              <div key={reply.id}>{renderCommentItem(reply, depth + 1)}</div>
             ))}
           </div>
         ) : null}
@@ -436,7 +436,7 @@ export function CommentSection({
           <p className={styles.empty}>아직 댓글이 없습니다. 첫 댓글을 남겨보세요.</p>
         ) : (
           visibleComments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} />
+            <div key={comment.id}>{renderCommentItem(comment)}</div>
           ))
         )}
       </div>
