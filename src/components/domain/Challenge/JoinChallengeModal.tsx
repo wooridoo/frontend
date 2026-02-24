@@ -1,6 +1,6 @@
 ﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useJoinModalStore } from '@/store/modal/useModalStore';
@@ -15,6 +15,7 @@ import styles from './JoinChallengeModal.module.css';
  */
 export function JoinChallengeModal() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { isOpen, challengeId, onClose } = useJoinModalStore();
   const { syncParticipatingChallenges, updateUser } = useAuthStore();
 
@@ -45,6 +46,7 @@ export function JoinChallengeModal() {
       const freshUser = await getMyProfile();
       updateUser(freshUser);
       await syncParticipatingChallenges();
+      await queryClient.invalidateQueries({ queryKey: ['challenges', 'me'] });
       setStep('success');
     } catch (error) {
       console.error(error);

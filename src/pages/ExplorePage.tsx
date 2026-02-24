@@ -49,7 +49,8 @@ export function ExplorePage() {
     queryKey: ['challenges', 'explore', query, selectedCategory],
     queryFn: () => getChallenges({
       query: query || undefined,
-      category: mapCategoryToEnum(selectedCategory)
+      category: mapCategoryToEnum(selectedCategory),
+      status: 'ACTIVE',
     }),
     staleTime: 1000 * 60 * 5, // ?? ??
   });

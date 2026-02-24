@@ -41,6 +41,7 @@ interface ChallengeResponse {
 export interface GetChallengesParams {
   query?: string;
   category?: string;
+  status?: string;
   sort?: string;
   size?: number;
 }

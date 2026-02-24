@@ -75,6 +75,14 @@ export function ChallengeDetailPage() {
     }
   };
 
+  const canJoin = challenge?.status === 'RECRUITING' || challenge?.status === 'IN_PROGRESS';
+  const joinDisabled = !isJoined && !canJoin;
+  const joinButtonLabel = isJoined
+    ? '입장하기'
+    : canJoin
+      ? '챌린지 참여하기'
+      : '참여할 수 없는 챌린지';
+
   const isLoading = isResolving || isChallengeLoading || isMembersLoading;
 
   if (isLoading) {
@@ -209,10 +217,15 @@ export function ChallengeDetailPage() {
           onClick={isJoined
             ? () => navigate(CHALLENGE_ROUTES.detail(challengeRef || challenge.challengeId, challenge.title))
             : handleJoin}
-          disabled={!isJoined && challenge.status === 'COMPLETED'}
+          disabled={joinDisabled}
         >
-          {isJoined ? '입장하기' : '챌린지 참여하기'}
+          {joinButtonLabel}
         </Button>
+        {!isJoined && !canJoin && (
+          <p className={styles.joinHint}>
+            완료된 챌린지라 참여할 수 없습니다.
+          </p>
+        )}
       </div>
     </PageContainer>
   );

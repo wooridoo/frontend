@@ -185,6 +185,13 @@
   z-index: 2;
 }
 
+.joinHint {
+  margin-top: var(--space-2);
+  text-align: center;
+  color: var(--color-grey-600);
+  font-size: var(--font-size-sm);
+}
+
 .stateContainer {
   display: flex;
   flex-direction: column;

@@ -9,14 +9,10 @@
   display: flex;
   flex: 1;
   position: relative;
-  /* 공통 설명 */
 }
 
 .main {
   flex: 1;
-  /* 공통 설명 */
-  /* 공통 설명 */
-  /* 공통 설명 */
   transition: margin-left var(--motion-duration-slow) var(--motion-ease-standard);
   min-height: calc(100vh - var(--size-px-60));
   position: relative;
@@ -25,23 +21,22 @@
 }
 
 .mainShifted {
+  --main-left-offset: var(--size-px-240);
   margin-left: var(--size-px-240);
   width: calc(100% - var(--size-px-240));
 }
 
 .mainCollapsed {
+  --main-left-offset: var(--size-px-72);
   margin-left: var(--size-px-72);
   width: calc(100% - var(--size-px-72));
 }
 
-
-
 @media (max-width: 768px) {
-
   .mainShifted,
   .mainCollapsed {
+    --main-left-offset: 0px;
     margin-left: 0;
-    /* 공통 설명 */
+    width: 100%;
   }
-
 }

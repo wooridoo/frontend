@@ -10,6 +10,7 @@ import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { getMyChallenges } from '@/lib/api/challenge';
 import { PATHS } from '@/routes/paths';
 import { CHALLENGE_ROUTES } from '@/routes/challengePaths';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface SideNavProps {
   className?: string;
@@ -49,13 +50,14 @@ export function SideNav({
   };
 
   const { isLoggedIn: isUserLoggedIn } = useAuthGuard();
+  const userId = useAuthStore((state) => state.user?.userId);
 
   // 보조 처리
   const { data: joinedChallenges = [] } = useQuery({
-    queryKey: ['challenges', 'me', 'sidenav'],
+    queryKey: ['challenges', 'me', 'sidenav', userId ?? 'guest'],
     queryFn: () => getMyChallenges('participating'),
-    enabled: isUserLoggedIn,
-    staleTime: 1000 * 60 * 5, // ?? ??
+    enabled: isUserLoggedIn && Boolean(userId),
+    staleTime: 0,
   });
 
   return (

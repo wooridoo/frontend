@@ -1,19 +1,35 @@
 .container {
   display: grid;
-  grid-template-columns: 1.2fr 1.5fr 1fr;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.5fr) minmax(0, 1fr);
   gap: var(--space-4);
   max-width: var(--layout-content-max-xl);
   margin: 0 auto;
   padding: 0 var(--layout-gutter-desktop) var(--space-6);
   background-color: var(--color-surface);
-  /* 공통 설명 */
+}
+
+.dueCard {
+  min-width: 0;
+}
+
+@media (max-width: 1280px) and (min-width: 769px) {
+  .container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dueCard {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
-    /* 공통 설명 */
     padding: 0 var(--layout-gutter-mobile) var(--space-4);
+  }
+
+  .dueCard {
+    grid-column: auto;
   }
 }
 
@@ -46,7 +62,7 @@
   font-size: var(--size-px-20);
   font-weight: 800;
   color: var(--color-grey-900);
-  letter-spacing: -0.var(--size-px-5);
+  letter-spacing: -0.5px;
 }
 
 .statRow {
@@ -64,7 +80,6 @@
 .income {
   font-weight: 700;
   color: var(--color-warning);
-  /* 공통 설명 */
 }
 
 .expense {
@@ -93,6 +108,9 @@
 .date {
   font-size: var(--size-px-11);
   color: var(--color-grey-400);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .trendIcon {

@@ -48,7 +48,7 @@ export function ChallengeStats({ challengeId: propChallengeId }: ChallengeStatsP
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
+      <div className={`${styles.card} ${styles.dueCard}`}>
         <div className={styles.cardHeader}>
           <span className={styles.label}>
             <SemanticIcon animated={false} name="wallet" size={14} /> 모임 잔액

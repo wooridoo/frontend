@@ -84,12 +84,13 @@
 .floatingContainer {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: var(--main-left-offset, 0px);
+  width: calc(100% - var(--main-left-offset, 0px));
   padding: var(--space-4) var(--layout-gutter-desktop) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
   background: linear-gradient(to top, var(--color-white) 80%, var(--color-overlay-white-0));
   display: block;
   z-index: 10;
+  box-sizing: border-box;
 }
 
 .floatingInner {
