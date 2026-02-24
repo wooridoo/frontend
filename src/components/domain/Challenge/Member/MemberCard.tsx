@@ -2,6 +2,7 @@ import { Crown, Calendar, Wallet } from 'lucide-react';
 import clsx from 'clsx';
 import { ChallengeRole } from '@/types/enums';
 import type { Member } from '@/types/member';
+import { Button } from '@/components/ui';
 import styles from './MemberCard.module.css';
 
 interface MemberCardProps {
@@ -28,7 +29,13 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
     };
 
     return (
-        <div className={styles.card} onClick={onClick}>
+        <Button
+            type="button"
+            variant="ghost"
+            className={styles.card}
+            onClick={onClick}
+            disabled={!onClick}
+        >
             {/* 보조 설명 */}
             <div className={styles.avatar}>
                 <img
@@ -74,6 +81,6 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
             <span className={clsx(styles.status, statusStyles[status])}>
                 {statusLabels[status]}
             </span>
-        </div>
+        </Button>
     );
 }

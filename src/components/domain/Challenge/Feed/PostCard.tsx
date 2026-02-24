@@ -28,6 +28,8 @@ interface PostCardProps {
   isLiked?: boolean;
   canPinNotice?: boolean;
   onOpenDetail?: () => void;
+  inlineThreadExpanded?: boolean;
+  onInlineThreadExpandedChange?: (expanded: boolean) => void;
 }
 
 /**
@@ -47,6 +49,8 @@ export function PostCard({
   isLiked: initialIsLiked,
   canPinNotice = false,
   onOpenDetail,
+  inlineThreadExpanded,
+  onInlineThreadExpandedChange,
 }: PostCardProps) {
   const { challengeId: routeChallengeId } = useChallengeRoute();
   const { confirm } = useConfirmDialog();
@@ -56,7 +60,20 @@ export function PostCard({
   const [isLiked, setIsLiked] = useState(initialIsLiked || false);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isThreadExpanded, setIsThreadExpanded] = useState(false);
+  const [internalThreadExpanded, setInternalThreadExpanded] = useState(false);
+
+  const isThreadExpanded = inlineThreadExpanded ?? internalThreadExpanded;
+  const setThreadExpanded = (nextExpanded: boolean | ((prevExpanded: boolean) => boolean)) => {
+    const resolved = typeof nextExpanded === 'function'
+      ? nextExpanded(isThreadExpanded)
+      : nextExpanded;
+
+    if (onInlineThreadExpandedChange) {
+      onInlineThreadExpandedChange(resolved);
+      return;
+    }
+    setInternalThreadExpanded(resolved);
+  };
 
   const toggleLike = useToggleLike(challengeId);
   const deletePost = useDeletePost(challengeId);
@@ -242,7 +259,7 @@ export function PostCard({
       </div>
 
       <div className={styles.footer}>
-        <button className={clsx(styles.actionButton, isLiked && 'text-red-500')} onClick={handleLike}>
+        <button className={clsx(styles.actionButton, isLiked && styles.activeActionButton)} onClick={handleLike}>
           <Heart fill={isLiked ? 'currentColor' : 'none'} size={18} />
           <span>{likeCount}</span>
         </button>
@@ -250,7 +267,7 @@ export function PostCard({
           className={styles.actionButton}
           onClick={() => {
             if (capabilities.feedInlineThread) {
-              setIsThreadExpanded(prev => !prev);
+              setThreadExpanded(prev => !prev);
               return;
             }
             handleOpenDetail();
@@ -271,9 +288,10 @@ export function PostCard({
             challengeId={challengeId}
             postId={id}
             mode="inline"
+            commentCountHint={commentCount}
             expanded={isThreadExpanded}
             previewCount={2}
-            onExpandChange={setIsThreadExpanded}
+            onExpandChange={setThreadExpanded}
           />
         </div>
       ) : null}

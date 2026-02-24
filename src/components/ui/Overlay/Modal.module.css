@@ -1,0 +1,104 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  background: var(--color-overlay-dark);
+  backdrop-filter: blur(4px);
+}
+
+.overlay[data-state='open'] {
+  animation: overlayIn 180ms ease-out;
+}
+
+.overlay[data-state='closed'] {
+  animation: overlayOut 150ms ease-in forwards;
+}
+
+.content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 1300;
+  display: grid;
+  width: calc(100% - (var(--space-6) * 2));
+  max-width: 40rem;
+  transform: translate(-50%, -50%);
+  gap: var(--space-4);
+  border: 1px solid var(--color-grey-200);
+  background: var(--color-surface);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.content[data-state='open'] {
+  animation: contentIn 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.content[data-state='closed'] {
+  animation: contentOut 150ms ease-in forwards;
+}
+
+.closeButton {
+  position: absolute;
+  right: var(--space-4);
+  top: var(--space-4);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .content {
+    width: calc(100% - (var(--space-4) * 2));
+    padding: var(--space-5);
+  }
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes contentIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -47%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes contentOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -47%);
+  }
+}

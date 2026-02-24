@@ -1,5 +1,5 @@
 import styles from './FeedPage.module.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PostEditor } from './PostEditor';
 import { PostCard } from './PostCard';
@@ -15,10 +15,15 @@ import { useChallengeDetail } from '@/hooks/useChallenge';
 export function FeedPage() {
   const { challengeId, isResolving } = useChallengeRoute();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [threadExpandedByPostId, setThreadExpandedByPostId] = useState<Record<string, boolean>>({});
   const { data: posts, isLoading, error } = useFeed(challengeId);
   const { data: challenge } = useChallengeDetail(challengeId);
   const { onOpen: openPostDetail } = usePostDetailModalStore();
   const isLeader = challenge?.myMembership?.role === 'LEADER';
+
+  const setThreadExpanded = (postId: string, expanded: boolean) => {
+    setThreadExpandedByPostId(prev => ({ ...prev, [postId]: expanded }));
+  };
 
   useEffect(() => {
     const targetPostId = searchParams.get('postId');
@@ -77,6 +82,8 @@ export function FeedPage() {
               {...post}
               canPinNotice={isLeader}
               onOpenDetail={() => openPostDetail(post)}
+              inlineThreadExpanded={Boolean(threadExpandedByPostId[post.id])}
+              onInlineThreadExpandedChange={(expanded) => setThreadExpanded(post.id, expanded)}
             />
           ))
         )}

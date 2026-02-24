@@ -11,6 +11,8 @@ const CODE_PREFIX_MESSAGE: Record<string, string> = {
   ACCOUNT: '계좌 요청을 처리할 수 없습니다.',
   ABUSE: '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.',
   NOTIFICATION: '알림 요청을 처리할 수 없습니다.',
+  LEDGER: '장부 요청을 처리할 수 없습니다.',
+  POST: '게시글 요청을 처리할 수 없습니다.',
   VALIDATION: '입력값을 확인해 주세요.',
 };
 

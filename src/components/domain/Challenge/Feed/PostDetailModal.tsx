@@ -33,7 +33,6 @@ export function PostDetailModal() {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className={styles.container}>
-                {/* 보조 설명 */}
                 <div className={styles.header}>
                     <img
                         src={post.createdBy.profileImage || '/images/avatar-fallback.svg'}
@@ -50,14 +49,12 @@ export function PostDetailModal() {
                     </div>
                 </div>
 
-                {/* 보조 설명 */}
                 <div className={styles.content}>
                     <p className={styles.text}>
                         {post.content}
                     </p>
                 </div>
 
-                {/* 보조 설명 */}
                 {post.images && post.images.length > 0 && (
                     <div className={clsx(styles.images, styles[`grid${Math.min(post.images.length, 4)}`])}>
                         {post.images.map((url: string, index: number) => (
@@ -71,7 +68,6 @@ export function PostDetailModal() {
                     </div>
                 )}
 
-                {/* 보조 설명 */}
                 <div className={styles.stats}>
                     <span className={styles.statItem}>
                         <Heart size={14} /> {post.likeCount}
@@ -81,10 +77,10 @@ export function PostDetailModal() {
                     </span>
                 </div>
 
-                {/* 보조 설명 */}
-                <CommentSection challengeId={challengeId} postId={post.id} />
+                <div className={styles.commentSection}>
+                    <CommentSection challengeId={challengeId} postId={post.id} />
+                </div>
             </div>
         </Modal>
     );
 }
-

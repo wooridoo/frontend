@@ -48,6 +48,8 @@ export interface ChallengeAccountGraph {
     challengeId: string;
     months: number;
     calculatedAt?: string;
+    graphSource?: 'DJANGO' | 'JAVA_FALLBACK';
+    graphStatusCode?: 'LEDGER_OK' | 'LEDGER_004' | 'LEDGER_010' | 'LEDGER_011';
     monthlyExpenses: MonthlyExpensePoint[];
     monthlyBalances: MonthlyBalancePoint[];
 }

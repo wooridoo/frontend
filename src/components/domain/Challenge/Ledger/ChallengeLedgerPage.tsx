@@ -54,6 +54,7 @@ export function ChallengeLedgerPage() {
     };
   });
   const hasGraphData = chartRows.length > 0;
+  const isFallbackGraph = graphData?.graphSource === 'JAVA_FALLBACK' && graphData?.graphStatusCode === 'LEDGER_004';
 
   return (
     <div className={styles.container}>
@@ -78,6 +79,11 @@ export function ChallengeLedgerPage() {
 
       <section className={styles.chartSection}>
         <h3 className={styles.sectionTitle}>월별 소비/잔액 그래프</h3>
+        {isFallbackGraph ? (
+          <div className={styles.fallbackBanner}>
+            Django 연동이 일시적으로 불안정하여 임시 계산 데이터로 표시 중입니다.
+          </div>
+        ) : null}
         {hasGraphData ? (
           <div className={styles.chartCard}>
             <ResponsiveContainer width="100%" height={280}>

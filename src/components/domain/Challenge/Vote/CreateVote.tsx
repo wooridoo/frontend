@@ -11,6 +11,7 @@ import { useChallengeRoute } from '@/hooks/useChallengeRoute';
 import { useConfirmDialog } from '@/store/modal/useConfirmDialogStore';
 import { VoteActionBar, VoteFormField } from './VoteUi';
 import styles from './CreateVote.module.css';
+import uiStyles from './VoteUi.module.css';
 
 interface VoteForm {
   type: VoteType;
@@ -147,7 +148,7 @@ export function CreateVote() {
               setForm({ ...form, type: e.target.value as VoteType });
               setError(null);
             }}
-            className={styles.select}
+            className={uiStyles.formControl}
           >
             <option value="EXPENSE">지출 승인</option>
             <option value="KICK">멤버 강퇴</option>
@@ -178,7 +179,7 @@ export function CreateVote() {
               setError(null);
             }}
             placeholder="상세 내용을 입력하세요"
-            className={styles.textarea}
+            className={`${uiStyles.formControl} ${uiStyles.textareaControl}`}
             rows={4}
           />
         </VoteFormField>
@@ -193,7 +194,7 @@ export function CreateVote() {
                   setForm({ ...form, meetingId: e.target.value });
                   setError(null);
                 }}
-                className={styles.select}
+                className={uiStyles.formControl}
               >
                 <option value="">모임을 선택하세요</option>
                 {meetings.map((meeting) => (
@@ -238,7 +239,7 @@ export function CreateVote() {
                 setForm({ ...form, targetId: e.target.value });
                 setError(null);
               }}
-              className={styles.select}
+              className={uiStyles.formControl}
             >
               <option value="">멤버를 선택하세요</option>
               {kickCandidates.map((member) => (
@@ -278,7 +279,7 @@ export function CreateVote() {
               setForm({ ...form, deadline: e.target.value });
               setError(null);
             }}
-            className={styles.dateInput}
+            className={uiStyles.formControl}
             required
           />
         </VoteFormField>

@@ -53,7 +53,7 @@ export function ExpenseApproveModal() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={handleClose} className={layoutStyles.modalShell}>
       <ExpenseModalLayout
         title="지출 승인"
         description="승인 또는 거절 사유를 남길 수 있습니다."

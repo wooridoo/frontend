@@ -44,7 +44,7 @@ export function ExpenseDetailModal() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} className={layoutStyles.modalShell}>
       {isLoading ? (
         <div className={layoutStyles.stateText}>불러오는 중...</div>
       ) : !expense ? (

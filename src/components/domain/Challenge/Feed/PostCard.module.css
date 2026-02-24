@@ -123,7 +123,7 @@
 
 /* 공통 설명 */
 .content {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
 .text {
@@ -177,6 +177,7 @@
   gap: var(--space-4);
   border-top: 1px solid var(--color-grey-100);
   padding-top: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .actionButton {
@@ -192,6 +193,10 @@
   color: var(--color-orange-500);
 }
 
+.activeActionButton {
+  color: var(--color-danger);
+}
+
 .shareAction {
   margin-left: auto;
   display: flex;
@@ -202,6 +207,5 @@
 }
 
 .inlineThread {
-  margin-top: var(--space-3);
-  border-top: 1px solid var(--color-grey-100);
+  margin-top: var(--space-2);
 }

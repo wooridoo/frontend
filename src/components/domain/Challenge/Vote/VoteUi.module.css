@@ -20,6 +20,26 @@
   gap: var(--space-2);
 }
 
+.formControl {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-grey-300);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  transition: border-color 0.2s;
+  background: var(--color-surface);
+}
+
+.formControl:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.textareaControl {
+  min-height: var(--size-px-96);
+  resize: vertical;
+}
+
 .fieldLabel {
   font-size: var(--font-size-sm);
   font-weight: 600;

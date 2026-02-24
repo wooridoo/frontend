@@ -8,6 +8,7 @@
 
 .inlineContainer {
   padding-top: var(--spacing-md);
+  border-top: none;
 }
 
 .titleRow {
@@ -108,6 +109,20 @@
 .replyTargetItem {
   background: var(--color-primary-light);
   box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.composerRow {
+  display: flex;
+  gap: var(--spacing-sm);
+  width: 100%;
+  align-items: flex-start;
+}
+
+.composerInputWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
 }
 
 .deletedItem {

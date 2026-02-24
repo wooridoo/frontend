@@ -34,6 +34,8 @@ export async function getChallengeAccountGraph(
     challengeId: response.challengeId || normalizedChallengeId,
     months: Number(response.months || months || 6),
     calculatedAt: response.calculatedAt,
+    graphSource: response.graphSource,
+    graphStatusCode: response.graphStatusCode,
     monthlyExpenses: (response.monthlyExpenses || []).map((point) => ({
       month: point.month,
       expense: Number(point.expense || 0),

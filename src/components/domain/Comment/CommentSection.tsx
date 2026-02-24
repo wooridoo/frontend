@@ -30,6 +30,7 @@ interface CommentSectionProps {
   postId: string;
   mode?: 'modal' | 'inline';
   previewCount?: number;
+  commentCountHint?: number;
   expanded?: boolean;
   onExpandChange?: (expanded: boolean) => void;
 }
@@ -65,13 +66,27 @@ export function CommentSection({
   postId,
   mode = 'modal',
   previewCount = DEFAULT_PREVIEW_COUNT,
+  commentCountHint = 0,
   expanded = true,
   onExpandChange,
 }: CommentSectionProps) {
   const inlineMode = mode === 'inline';
   const isExpanded = inlineMode ? expanded : true;
+  const normalizedCommentCountHint = Number.isFinite(commentCountHint) ? Math.max(0, commentCountHint) : 0;
+  const isLazyFetchCandidate = inlineMode && !isExpanded && normalizedCommentCountHint === 0;
+  const [isCommentFetchEnabled, setCommentFetchEnabled] = useState(!isLazyFetchCandidate);
 
-  const { data: comments = [], isLoading } = useComments(challengeId, postId);
+  const shouldFetchComments = !isLazyFetchCandidate || isCommentFetchEnabled;
+
+  useEffect(() => {
+    if (!isLazyFetchCandidate) {
+      setCommentFetchEnabled(true);
+    }
+  }, [isLazyFetchCandidate]);
+
+  const { data: comments = [], isLoading } = useComments(challengeId, postId, {
+    enabled: shouldFetchComments,
+  });
   const createMutation = useCreateComment(challengeId, postId);
   const deleteMutation = useDeleteComment(challengeId, postId);
   const updateMutation = useUpdateComment(challengeId, postId);
@@ -139,6 +154,7 @@ export function CommentSection({
     if (!trimmed) return;
 
     try {
+      setCommentFetchEnabled(true);
       await createMutation.mutateAsync({
         content: trimmed,
         parentId: replyTarget?.id,
@@ -196,6 +212,7 @@ export function CommentSection({
     setReplyTarget(nextTarget);
 
     if (!nextTarget) return;
+    setCommentFetchEnabled(true);
     if (inlineMode && !isExpanded) {
       onExpandChange?.(true);
     }
@@ -349,7 +366,7 @@ export function CommentSection({
   };
 
   const showExpandToggle = inlineMode && totalCount > previewCount;
-  const canWriteComment = Boolean(user && (!inlineMode || isExpanded));
+  const canWriteComment = Boolean(user);
 
   return (
     <div className={clsx(styles.container, inlineMode && styles.inlineContainer)}>
@@ -389,9 +406,9 @@ export function CommentSection({
             </div>
           ) : null}
 
-          <div className="flex gap-2 w-full items-start">
+          <div className={styles.composerRow}>
             <div className={styles.avatar}>{user?.name?.charAt(0) || '?'}</div>
-            <div className="flex-1 flex flex-col gap-2">
+            <div className={styles.composerInputWrap}>
               <input
                 ref={inputRef}
                 className={styles.input}

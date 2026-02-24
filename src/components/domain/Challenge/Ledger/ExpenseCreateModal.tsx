@@ -94,7 +94,7 @@ export function ExpenseCreateModal() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={handleClose} className={layoutStyles.modalShell}>
       <ExpenseModalLayout
         title="지출 등록"
         description="모임 지출은 생성 후 투표를 통해 승인/거절됩니다."
