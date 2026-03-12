@@ -47,6 +47,7 @@ function getContextFiles(config, profile = 'default') {
  */
 function loadContext(wooriDoDir, files) {
   const contexts = [];
+  const loaded = new Set();
 
   for (const file of files) {
     const filePath = path.join(wooriDoDir, file);
@@ -61,16 +62,23 @@ function loadContext(wooriDoDir, files) {
           .map(f => path.join(filePath, f));
 
         for (const mdFile of mdFiles) {
-          contexts.push({
-            path: path.relative(wooriDoDir, mdFile),
-            content: fs.readFileSync(mdFile, 'utf-8')
-          });
+          const relativePath = path.relative(wooriDoDir, mdFile);
+          if (!loaded.has(relativePath)) {
+            loaded.add(relativePath);
+            contexts.push({
+              path: relativePath,
+              content: fs.readFileSync(mdFile, 'utf-8')
+            });
+          }
         }
       } else if (filePath.endsWith('.md')) {
-        contexts.push({
-          path: file,
-          content: fs.readFileSync(filePath, 'utf-8')
-        });
+        if (!loaded.has(file)) {
+          loaded.add(file);
+          contexts.push({
+            path: file,
+            content: fs.readFileSync(filePath, 'utf-8')
+          });
+        }
       }
     }
   }
@@ -94,8 +102,7 @@ function main() {
   }
 
   try {
-    const raw = fs.readFileSync(configPath, 'utf-8').replace(/^\uFEFF/, '');
-    const config = JSON.parse(raw);
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
     const wooriDoDir = path.dirname(path.dirname(configPath));
 
     // 환경 변수나 설정에서 프로파일 결정

@@ -6,6 +6,11 @@ description: 기능 개발 계획 문서 생성 (PDCA Plan Phase)
 
 > 기능 개발을 위한 계획 문서를 생성합니다.
 
+Active default:
+
+- Go + PostgreSQL modular monolith 기준으로 작성
+- legacy Spring/Django/Oracle 가정은 기본으로 넣지 않음
+
 ## 사용법
 
 ```bash
@@ -64,8 +69,8 @@ docs/01-plan/features/{feature-name}.plan.md
 ### 4.3 Fintech 규정 준수
 - [ ] 해당 없음
 - [ ] 동시성 제어 필요
-- [ ] 트랜잭션 격리 수준: READ_COMMITTED
-- [ ] 비관적 락 사용: 
+- [ ] append-only 금융 원장 고려
+- [ ] idempotency key 또는 동등한 중복 방지 고려
 
 ## 5. 범위
 
@@ -91,15 +96,16 @@ docs/01-plan/features/{feature-name}.plan.md
 | | | |
 
 ## 8. 다음 단계
-- [ ] `/pdca-design {feature-name}` 실행
+- [ ] design.template.md 기반 설계 문서 작성
 ```
 
 ### 4. WooriDo 규칙 자동 주입
 - `금융`, `결제`, `정산` 키워드 포함 시 → Fintech 섹션 강조
 - `당도`, `Brix`, `신뢰` 키워드 포함 시 → Brix 섹션 강조
 - `보증금`, `락`, `Lock` 키워드 포함 시 → Deposit 섹션 강조
+- 가능하면 `docs/00_CANONICAL/*` 와 active skill reference를 먼저 참조
 
 ### 5. 완료 후
 
 - 생성된 문서 경로 출력
-- 다음 단계 안내: `/pdca-design {feature-name}`
+- 다음 단계 안내: design.template.md 기반 설계 문서 작성

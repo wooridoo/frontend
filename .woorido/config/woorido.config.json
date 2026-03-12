@@ -1,20 +1,86 @@
-﻿{
+{
   "project": {
     "name": "WooriDo",
-    "version": "1.0.0",
-    "strictMode": true
+    "version": "2.0.0",
+    "strictMode": true,
+    "defaultProfile": "default"
   },
   "profiles": {
-    "default": ["_core", "_constants"],
-    "frontend": ["_core/persona.md", "_core/thinking.md", "_domain/ia_structure.md", "_constants/design_tokens.md"],
-    "backend": ["_core/persona.md", "_core/thinking.md", "_security/fintech_rules.md", "_constants/terminology.md", "_constants/error_codes.md"],
-    "architect": ["_core", "_domain", "_security", "_constants"]
+    "default": [
+      "_core/persona.md",
+      "_core/philosophy.md",
+      "_security/fintech_rules.md",
+      "_constants/design_tokens.md",
+      "references/active/00-navigation.md",
+      "references/active/01-terms.md",
+      "references/active/02-state-model.md",
+      "references/active/03-financial-model.md",
+      "references/active/04-api-boundary.md",
+      "references/active/05-db-schema.md"
+    ],
+    "frontend": [
+      "_core/persona.md",
+      "_core/philosophy.md",
+      "_constants/design_tokens.md",
+      "references/active/01-terms.md",
+      "references/active/04-api-boundary.md"
+    ],
+    "backend-go": [
+      "_core/persona.md",
+      "_core/philosophy.md",
+      "_security/fintech_rules.md",
+      "references/active/01-terms.md",
+      "references/active/02-state-model.md",
+      "references/active/03-financial-model.md",
+      "references/active/04-api-boundary.md",
+      "references/active/05-db-schema.md",
+      "references/active/06-brix.md"
+    ],
+    "architect-go": [
+      "_core/persona.md",
+      "_core/philosophy.md",
+      "_security/fintech_rules.md",
+      "_constants/design_tokens.md",
+      "references/active/00-navigation.md",
+      "references/active/01-terms.md",
+      "references/active/02-state-model.md",
+      "references/active/03-financial-model.md",
+      "references/active/04-api-boundary.md",
+      "references/active/05-db-schema.md",
+      "references/active/06-brix.md"
+    ],
+    "migration": [
+      "_core/persona.md",
+      "_core/philosophy.md",
+      "_security/fintech_rules.md",
+      "references/active/01-terms.md",
+      "references/active/02-state-model.md",
+      "references/active/03-financial-model.md",
+      "references/active/04-api-boundary.md",
+      "references/active/05-db-schema.md",
+      "references/legacy/01-architecture.md",
+      "references/legacy/02-api-compat.md",
+      "references/legacy/03-schema-mapping.md"
+    ]
   },
   "triggers": {
     "keywords": {
-      "money|pay|settle|?뺤궛|寃곗젣": ["_security/fintech_rules.md", "_domain/logic_brix.md"],
-      "search|recommend|寃??異붿쿇": ["strategies/search.md"],
-      "chart|graph|?듦퀎": ["_constants/design_tokens.md"]
+      "money|pay|settle|정산|결제|refund|deposit|보증금|출금|입금|ledger|환급": [
+        "_security/fintech_rules.md",
+        "references/active/03-financial-model.md"
+      ],
+      "state|status|vote|meeting|challenge|상태|투표|모임|챌린지": [
+        "references/active/02-state-model.md"
+      ],
+      "schema|table|ddl|sql|db|database|스키마|테이블": [
+        "references/active/05-db-schema.md"
+      ],
+      "search|recommend|검색|추천": [
+        "references/active/04-api-boundary.md"
+      ],
+      "brix|sweetness|trust|당도|신뢰도": [
+        "references/active/06-brix.md"
+      ]
     }
   },
   "performance": {
@@ -23,4 +89,3 @@
     "cacheDuration": 3600
   }
 }
-

@@ -36,22 +36,22 @@
     }
   },
   "backend": {
-    "spring_boot": {
-      "architecture": "Controller -> Service -> Mapper -> DB",
-      "api_response": "Wrap all responses in ApiResponse<T>",
-      "db_access": "MyBatis with XML Mappers (Oracle SQL)",
-      "concurrency": "Optimistic Lock (version) default, Pessimistic Lock (SFU) for money"
+    "active": {
+      "architecture": "Go API -> PostgreSQL -> Worker",
+      "db_access": "pgx + sqlc",
+      "finance_rules": "Append-only ledger, idempotency keys, transaction boundaries",
+      "state_rules": "Use canonical enums only"
     },
-    "django": {
-      "role": "Sub Backend (Read/Compute Only)",
-      "restrictions": [
-        "NO INSERT/UPDATE/DELETE on Oracle directly"
-      ],
-      "patterns": "DRF ViewSets, Elasticsearch Queries"
+    "legacy": {
+      "status": "migration_only",
+      "notes": [
+        "Spring Boot, Django, Oracle, and MyBatis are not default recommendations",
+        "Use legacy skill only when explicitly migrating or comparing"
+      ]
     }
   },
   "general": {
-    "architecture": "3-Tier (React - Spring/Django - Oracle)",
+    "architecture": "React - Go - PostgreSQL",
     "commit_message": "Type: Subject \\n\\n Body"
   }
 }

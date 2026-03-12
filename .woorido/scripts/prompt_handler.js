@@ -12,8 +12,7 @@ const BASE_DIR = path.resolve(__dirname, '..');
 
 function loadConfig() {
   if (fs.existsSync(CONFIG_PATH)) {
-    const raw = fs.readFileSync(CONFIG_PATH, 'utf8').replace(/^\uFEFF/, '');
-    return JSON.parse(raw);
+    return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
   }
   return { profiles: {}, triggers: { keywords: {} } };
 }
@@ -23,21 +22,8 @@ function detectTriggers(userInput, config) {
   const keywords = config.triggers.keywords || {};
 
   for (const [pattern, files] of Object.entries(keywords)) {
-    let isMatch = false;
-
-    try {
-      const regex = new RegExp(pattern, 'i');
-      isMatch = regex.test(userInput);
-    } catch {
-      const tokens = String(pattern)
-        .split('|')
-        .map(token => token.trim())
-        .filter(Boolean);
-      const lowerInput = String(userInput).toLowerCase();
-      isMatch = tokens.some(token => lowerInput.includes(token.toLowerCase()));
-    }
-
-    if (isMatch) {
+    const regex = new RegExp(pattern, 'i');
+    if (regex.test(userInput)) {
       files.forEach(f => triggeredFiles.add(f));
     }
   }
@@ -64,33 +50,20 @@ function generateSystemPrompt(profileName, userInput) {
   fileList = [...new Set(fileList)];
 
   fileList.forEach(filePath => {
+    // Determine full path (handle _core shortcut vs absolute)
     let fullPath = path.join(BASE_DIR, filePath);
 
-    if (!fs.existsSync(fullPath) && !filePath.endsWith('.md')) {
-      if (fs.existsSync(fullPath + '.md')) {
-        fullPath += '.md';
-      }
+    // If it's a directory, maybe load all md files? (For now assume explicit paths or core shortcuts)
+    // If it points to _core (directory), load essential files
+    if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isDirectory()) {
+      // logic to load all md in dir could be added, but manual list is safer
+      // Skip for now, assume config points to files or we handle specific dirs
+    } else if (!filePath.endsWith('.md')) {
+      // Try adding .md extension
+      if (fs.existsSync(fullPath + '.md')) fullPath += '.md';
     }
 
-    if (!fs.existsSync(fullPath)) {
-      return;
-    }
-
-    const stat = fs.lstatSync(fullPath);
-    if (stat.isDirectory()) {
-      // Keep deterministic order so generated prompts are stable.
-      const mdFiles = fs.readdirSync(fullPath)
-        .filter(name => name.endsWith('.md'))
-        .sort()
-        .map(name => path.join(fullPath, name));
-
-      mdFiles.forEach(mdFile => {
-        finalContent += compileMarkdown(mdFile) + "\n\n";
-      });
-      return;
-    }
-
-    if (stat.isFile()) {
+    if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isFile()) {
       finalContent += compileMarkdown(fullPath) + "\n\n";
     }
   });

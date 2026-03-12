@@ -34,9 +34,10 @@
 
 ### 4.3 Fintech 규정 준수
 - [ ] 해당 없음
-- [ ] 동시성 제어 필요 (비관적/낙관적 락)
-- [ ] 트랜잭션 격리 수준: READ_COMMITTED
-- [ ] BigDecimal 금액 처리
+- [ ] 동시성 제어 필요
+- [ ] append-only 금융 원장 고려
+- [ ] idempotency key 또는 동등한 중복 방지 고려
+- [ ] 트랜잭션 경계 정의
 
 ## 5. 범위
 
@@ -62,4 +63,4 @@
 | | | |
 
 ## 8. 다음 단계
-- [ ] 이 문서 검토 후 `/pdca-design {feature-name}` 실행
+- [ ] 이 문서 검토 후 design.template.md 기반 설계 문서 작성

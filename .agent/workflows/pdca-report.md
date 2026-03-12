@@ -6,6 +6,11 @@ description: 기능 개발 완료 보고서 생성 (PDCA Act Phase)
 
 > 기능 개발 완료 보고서를 생성합니다.
 
+Active default:
+
+- 보고서는 active canonical과의 정합성 중심으로 작성
+- legacy 구현 세부는 migration 작업이 아닌 한 기본 보고 항목에 넣지 않음
+
 ## 사용법
 
 ```bash

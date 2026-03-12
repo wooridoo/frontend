@@ -45,8 +45,8 @@
 
 ### 4.2 Fintech 규칙
 - ✅ 준수 / ⬜ 해당없음
-- 격리 수준: READ_COMMITTED
-- 락 전략: 비관적/낙관적 락
+- 원장 모델: append-only
+- 중복 방지: idempotency key 또는 동등한 장치
 
 ### 4.3 WDS 토큰
 - ✅ 100% 사용

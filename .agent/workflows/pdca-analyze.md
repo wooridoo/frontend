@@ -6,6 +6,11 @@ description: 설계-구현 Gap 분석 실행 (PDCA Check Phase)
 
 > 설계 문서와 실제 구현 간의 Gap을 분석합니다.
 
+Active default:
+
+- active canonical 문서와 구현 정합성을 먼저 비교
+- legacy 구조는 migration 작업일 때만 비교 대상으로 사용
+
 ## 사용법
 
 ```bash
@@ -40,9 +45,9 @@ description: 설계-구현 Gap 분석 실행 (PDCA Check Phase)
 
 **Fintech 규칙:**
 ```
-☑ READ_COMMITTED 격리 수준
-☑ 비관적 락(SELECT FOR UPDATE) 사용
-☑ BigDecimal 금액 처리
+☑ append-only 원장 사용
+☑ idempotency key 또는 동등한 중복 방지
+☑ expense_execution_sessions 또는 동등한 실행 모델
 ☑ 트랜잭션 롤백 처리
 ```
 

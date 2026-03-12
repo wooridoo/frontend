@@ -1,11 +1,11 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "description": "WooriDo Skills Hook Configuration",
   "hooks": [
     {
       "name": "SessionStart",
       "script": "./.woorido/scripts/session-start.js",
-      "description": "세션 시작 시 프로젝트 컨텍스트 자동 로드"
+      "description": "세션 시작 시 active canonical profile 로드"
     },
     {
       "name": "PreToolUse",
@@ -23,11 +23,13 @@
           "결제",
           "보증금",
           "당도",
-          "brix"
+          "brix",
+          "wallet",
+          "ledger"
         ]
       },
       "script": "./.woorido/scripts/pre-tool-use.js",
-      "description": "코드 수정 전 도메인 규칙 검증"
+      "description": "코드 수정 전 active 도메인 규칙 검증"
     },
     {
       "name": "PostToolUse",
@@ -46,22 +48,41 @@
     "frontend": {
       "autoLoad": [
         "_core/persona.md",
-        "_constants/design_tokens.md"
+        "_constants/design_tokens.md",
+        "references/active/01-terms.md",
+        "references/active/04-api-boundary.md"
       ],
       "skipHooks": []
     },
-    "backend": {
+    "backend-go": {
       "autoLoad": [
         "_core/persona.md",
-        "_security/fintech_rules.md"
+        "_security/fintech_rules.md",
+        "references/active/02-state-model.md",
+        "references/active/03-financial-model.md",
+        "references/active/05-db-schema.md"
       ],
       "skipHooks": []
     },
-    "architect": {
+    "architect-go": {
       "autoLoad": [
-        "_core",
-        "_domain",
-        "_security"
+        "_core/persona.md",
+        "_core/philosophy.md",
+        "references/active/00-navigation.md",
+        "references/active/02-state-model.md",
+        "references/active/03-financial-model.md",
+        "references/active/04-api-boundary.md",
+        "references/active/05-db-schema.md"
+      ],
+      "skipHooks": []
+    },
+    "migration": {
+      "autoLoad": [
+        "references/active/02-state-model.md",
+        "references/active/03-financial-model.md",
+        "references/legacy/01-architecture.md",
+        "references/legacy/02-api-compat.md",
+        "references/legacy/03-schema-mapping.md"
       ],
       "skipHooks": []
     }

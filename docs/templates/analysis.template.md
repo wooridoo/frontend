@@ -22,9 +22,9 @@
 - [ ] 당도 변동 이벤트 로깅
 
 ### 3.2 Fintech 규칙
-- [ ] READ_COMMITTED 격리 수준
-- [ ] 비관적 락 / 낙관적 락 적용 여부
-- [ ] BigDecimal 금액 처리
+- [ ] append-only 원장 사용 여부
+- [ ] idempotency key 적용 여부
+- [ ] expense execution 모델 존재 여부
 - [ ] 트랜잭션 롤백 처리
 
 ### 3.3 WDS 토큰

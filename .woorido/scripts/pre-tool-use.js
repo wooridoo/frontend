@@ -16,7 +16,8 @@ const path = require('path');
 const FINTECH_KEYWORDS = [
   'money', 'pay', 'payment', 'settle', 'settlement',
   'deposit', 'withdraw', 'transfer', 'transaction',
-  '정산', '결제', '보증금', '출금', '입금', '송금'
+  'wallet', 'ledger', 'refund',
+  '정산', '결제', '보증금', '출금', '입금', '송금', '장부', '환급'
 ];
 
 // 당도(Brix) 관련 키워드
@@ -66,12 +67,12 @@ function generateWarnings(filePath, content, toolName) {
       type: 'FINTECH',
       severity: 'high',
       message: `💰 금융 관련 코드 수정 감지: [${fintechMatches.join(', ')}]`,
-      rule: '_security/fintech_rules.md 참조 필수',
+      rule: 'docs/00_CANONICAL/03_FINANCIAL_MODEL.md 또는 .woorido/references/active/03-financial-model.md 참조 필수',
       checklist: [
-        'READ_COMMITTED 격리 수준 확인',
-        '비관적 락(SELECT FOR UPDATE) 사용 여부',
-        'BigDecimal/Decimal 정밀도 확인',
-        '트랜잭션 롤백 처리 확인'
+        'append-only 원장 사용 여부',
+        'idempotency key 또는 동등한 중복 방지 확인',
+        'projection과 원장 분리 여부 확인',
+        '트랜잭션 경계와 롤백 처리 확인'
       ]
     });
   }
@@ -83,7 +84,7 @@ function generateWarnings(filePath, content, toolName) {
       type: 'BRIX',
       severity: 'medium',
       message: `🍊 당도 시스템 관련 코드 수정 감지: [${brixMatches.join(', ')}]`,
-      rule: '_domain/logic_brix.md 참조 필수',
+      rule: '.woorido/references/active/06-brix.md 또는 프로젝트 canonical 문서 참조 필수',
       formula: '당도 = 납입당도(0.7) + 활동당도(0.15) + 기본값(12), 상한 80'
     });
   }
@@ -95,7 +96,7 @@ function generateWarnings(filePath, content, toolName) {
       type: 'CONCURRENCY',
       severity: 'high',
       message: `🔒 동시성 제어 코드 수정 감지: [${concurrencyMatches.join(', ')}]`,
-      rule: 'Virtual Threads + Pessimistic Lock 전략 확인',
+      rule: 'active transaction boundary + locking strategy 확인',
       checklist: [
         'DB 격리 수준 확인',
         '데드락 가능성 검토',
